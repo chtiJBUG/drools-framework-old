@@ -10,4 +10,6 @@ package org.chtijbug.drools.runtime;
  */
 public interface RuleBasePackage {
     
+    public RuleBaseSession createRuleBaseSession();
+    
 }

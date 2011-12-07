@@ -4,10 +4,12 @@
  */
 package org.chtijbug.drools.runtime.impl;
 
+import org.chtijbug.drools.runtime.RuleBasePackage;
+
 /**
  *
  * @author nheron
  */
-public class RuleBaseSingleton {
+public class RuleBaseSingleton implements RuleBasePackage{
     
 }

@@ -72,5 +72,7 @@
 	</dependencyManagement>
 	<modules>
 		<module>drools-framework-runtime-base</module>
+		<module>drools-framework-runtime-entity</module>
+		<module>drools-framework-runtime-supervision</module>
 	</modules>
 </project>

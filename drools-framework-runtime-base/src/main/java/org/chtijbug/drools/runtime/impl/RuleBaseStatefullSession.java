@@ -34,6 +34,8 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
     public FactObject getFactObject(Object searchO){
         return listFactObjects.get(searchO);
     }
+    
+    @Override
     public HistoryContainer getHistoryContainer() {
         return historyContainer;
     }

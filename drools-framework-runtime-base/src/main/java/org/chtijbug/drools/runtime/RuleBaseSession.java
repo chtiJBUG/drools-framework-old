@@ -4,6 +4,8 @@
  */
 package org.chtijbug.drools.runtime;
 
+import org.chtijbug.drools.entity.history.HistoryContainer;
+
 /**
  *
  * @author nheron
@@ -15,5 +17,6 @@ public interface RuleBaseSession {
     public void fireAllRules();
     public void startProcess(String processName);
     public void dispose();
+    public HistoryContainer getHistoryContainer();
     
 }

@@ -4,8 +4,13 @@
  */
 package org.chtijbug.drools.runtime.impl;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
+
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
@@ -14,6 +19,8 @@ import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.io.Resource;
 import org.drools.io.ResourceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -21,6 +28,9 @@ import org.drools.io.ResourceFactory;
  */
 public class RuleBaseSingleton implements RuleBasePackage{
      private KnowledgeBase kbase = null;
+     
+     static final Logger LOGGER = LoggerFactory.getLogger(RuleBaseSingleton.class);
+
      
      private void loadKAgent(){
                  StringBuffer changesetxml = null;

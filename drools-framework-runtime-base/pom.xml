@@ -1,17 +1,41 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
   
-  <parent>
-    <groupId>org.chtijbug.drools</groupId>
-    <artifactId>drools-framework-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
-  </parent>
+    <parent>
+        <groupId>org.chtijbug.drools</groupId>
+        <artifactId>drools-framework-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
   
   
-  <artifactId>drools-framework-runtime-base</artifactId>
+    <artifactId>drools-framework-runtime-base</artifactId>
 
-  <name>runtime-base</name>
-  <description>runtime-base project</description>
+    <name>runtime-base</name>
+    <description>runtime-base project</description>
+    <dependencies>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>knowledge-api</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-compiler</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jdt.core.compiler</groupId>
+            <artifactId>ecj</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jbpm</groupId>
+            <artifactId>jbpm-bpmn2</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

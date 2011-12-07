@@ -6,6 +6,7 @@ package org.chtijbug.drools.runtime.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.FactHandle;
@@ -20,12 +21,21 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
     private Map<FactHandle, Object> listObject = new HashMap<FactHandle, Object>();
     private Map<Object, FactHandle> listFact = new HashMap<Object, FactHandle>();
     private FactHandlerListener factListener;
+    private HistoryContainer historyContainer = new HistoryContainer();
 
     public RuleBaseStatefullSession(StatefulKnowledgeSession knowledgeSession) {
         this.knowledgeSession = knowledgeSession;
         factListener = new FactHandlerListener(this);
         knowledgeSession.addEventListener(factListener);
 
+    }
+
+    public HistoryContainer getHistoryContainer() {
+        return historyContainer;
+    }
+
+    public StatefulKnowledgeSession getKnowledgeSession() {
+        return knowledgeSession;
     }
 
     public void setData(FactHandle f, Object o) {

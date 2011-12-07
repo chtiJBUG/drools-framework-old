@@ -4,6 +4,10 @@
  */
 package org.chtijbug.drools.runtime.impl;
 
+import org.chtijbug.drools.entity.history.FactObject;
+import org.chtijbug.drools.entity.history.fact.DeletedFactHistoryEvent;
+import org.chtijbug.drools.entity.history.fact.InsertedFactHistoryEvent;
+import org.chtijbug.drools.entity.history.fact.UpdatedFactHistoryEvent;
 import org.drools.event.rule.ObjectInsertedEvent;
 import org.drools.event.rule.ObjectRetractedEvent;
 import org.drools.event.rule.ObjectUpdatedEvent;
@@ -33,12 +37,20 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
         FactHandle f = event.getFactHandle();
         Object newIbject = event.getObject();
         ruleBaseSession.setData(f, newIbject);
+        FactObject ff = FactObject.createFactObject(newIbject);
+        InsertedFactHistoryEvent insertFactHistoryEvent = new InsertedFactHistoryEvent(ff);
+        this.ruleBaseSession.getHistoryContainer().addHistoryElement(insertFactHistoryEvent);
     }
 
     @Override
     public void objectUpdated(ObjectUpdatedEvent event) {
         LOGGER.debug("Fact updated :: ", event.getObject());
-        //events.add("Fact updated :: " + event.getObject().toString());
+        Object oldValue = event.getOldObject();
+        Object newValue = event.getObject();
+        FactObject factOldValue = FactObject.createFactObject(oldValue);
+        FactObject factnewValue = FactObject.createFactObject(newValue);
+        UpdatedFactHistoryEvent updatedFactHistoryEvent = new UpdatedFactHistoryEvent(factOldValue, factnewValue);
+        this.ruleBaseSession.getHistoryContainer().addHistoryElement(updatedFactHistoryEvent);
     }
 
     @Override
@@ -47,6 +59,9 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
         // events.add("Fact retracted :: " + event.getOldObject().toString());
         FactHandle f = event.getFactHandle();
         Object newIbject = event.getOldObject();
+        FactObject deletedFact = FactObject.createFactObject(newIbject);
+        DeletedFactHistoryEvent deleteFactEvent = new DeletedFactHistoryEvent(deletedFact);
+        this.ruleBaseSession.getHistoryContainer().addHistoryElement(deleteFactEvent);
         ruleBaseSession.unsetData(f, newIbject);
     }
 

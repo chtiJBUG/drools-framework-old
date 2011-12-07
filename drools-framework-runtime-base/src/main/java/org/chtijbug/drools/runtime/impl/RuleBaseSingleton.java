@@ -63,7 +63,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
     }
 
     private void loadKAgent() {
-        loadKAgent();
         StringBuffer changesetxml = null;
         try {
 

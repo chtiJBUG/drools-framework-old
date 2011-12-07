@@ -38,6 +38,7 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
         listFact.remove(o);
     }
 
+    @Override
     public void dispose() {
 
         knowledgeSession.removeEventListener(factListener);

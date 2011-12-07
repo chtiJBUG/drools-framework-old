@@ -14,5 +14,6 @@ public interface RuleBaseSession {
     public void retractObject(Object oldObject);
     public void fireAllRules();
     public void startProcess(String processName);
+    public void dispose();
     
 }

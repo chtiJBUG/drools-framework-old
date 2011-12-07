@@ -75,4 +75,14 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
         FactHandle factToDelete = listFact.get(oldObject);
         this.knowledgeSession.retract(factToDelete);
     }
+
+    @Override
+    public void fireAllRules() {
+        this.knowledgeSession.fireAllRules();
+    }
+
+    @Override
+    public void startProcess(String processName) {
+        this.knowledgeSession.startProcess(processName);
+    }
 }

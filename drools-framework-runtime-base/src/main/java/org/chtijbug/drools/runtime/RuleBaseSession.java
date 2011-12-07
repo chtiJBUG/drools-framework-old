@@ -12,5 +12,7 @@ public interface RuleBaseSession {
     public void insertObject(Object newObject);
     public void updateObject(Object updatedObject);
     public void retractObject(Object oldObject);
+    public void fireAllRules();
+    public void startProcess(String processName);
     
 }

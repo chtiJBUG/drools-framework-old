@@ -43,7 +43,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
         loadKAgent();
     }
 
-    public RuleBaseSingleton(String guvnor_url, String guvnor_appName, String guvnor_packageName,  String guvnor_username, String guvnor_password,String guvnor_packageVersion) {
+    public RuleBaseSingleton(String guvnor_url, String guvnor_appName, String guvnor_packageName, String guvnor_packageVersion, String guvnor_username, String guvnor_password) {
         this.guvnor_url = guvnor_url;
         this.guvnor_appName = guvnor_appName;
         this.guvnor_packageName = guvnor_packageName;
@@ -53,10 +53,10 @@ public class RuleBaseSingleton implements RuleBasePackage {
         loadKAgent();
     }
 
-    public RuleBaseSingleton(String guvnor_url, String guvnor_appName, String guvnor_packageName,  String guvnor_username, String guvnor_password) {
+    public RuleBaseSingleton(String guvnor_url,String guvnor_appName, String guvnor_packageName, String guvnor_username, String guvnor_password) {
         this.guvnor_url = guvnor_url;
         this.guvnor_packageName = guvnor_packageName;
-        this.guvnor_packageVersion = guvnor_packageVersion;
+        this.guvnor_appName = guvnor_appName;
         this.guvnor_username = guvnor_username;
         this.guvnor_password = guvnor_password;
         loadKAgent();

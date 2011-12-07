@@ -36,8 +36,8 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
         // events.add("Fact inserted :: " + event.getObject().toString());
         FactHandle f = event.getFactHandle();
         Object newIbject = event.getObject();
-        ruleBaseSession.setData(f, newIbject);
         FactObject ff = FactObject.createFactObject(newIbject);
+        ruleBaseSession.setData(f, newIbject, ff);
         InsertedFactHistoryEvent insertFactHistoryEvent = new InsertedFactHistoryEvent(ff);
         this.ruleBaseSession.getHistoryContainer().addHistoryElement(insertFactHistoryEvent);
     }
@@ -47,8 +47,8 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
         LOGGER.debug("Fact updated :: ", event.getObject());
         Object oldValue = event.getOldObject();
         Object newValue = event.getObject();
-        FactObject factOldValue = FactObject.createFactObject(oldValue);
-        FactObject factnewValue = FactObject.createFactObject(newValue);
+        FactObject factOldValue = this.ruleBaseSession.getFactObject(oldValue);
+        FactObject factnewValue = FactObject.createFactObject(newValue, factOldValue.getNextObjectVersion());
         UpdatedFactHistoryEvent updatedFactHistoryEvent = new UpdatedFactHistoryEvent(factOldValue, factnewValue);
         this.ruleBaseSession.getHistoryContainer().addHistoryElement(updatedFactHistoryEvent);
     }
@@ -59,7 +59,7 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
         // events.add("Fact retracted :: " + event.getOldObject().toString());
         FactHandle f = event.getFactHandle();
         Object newIbject = event.getOldObject();
-        FactObject deletedFact = FactObject.createFactObject(newIbject);
+        FactObject deletedFact = this.ruleBaseSession.getFactObject(newIbject);
         DeletedFactHistoryEvent deleteFactEvent = new DeletedFactHistoryEvent(deletedFact);
         this.ruleBaseSession.getHistoryContainer().addHistoryElement(deleteFactEvent);
         ruleBaseSession.unsetData(f, newIbject);

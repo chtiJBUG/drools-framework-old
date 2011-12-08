@@ -86,7 +86,9 @@ public class RuleBaseSingleton implements RuleBasePackage {
             File fxml = null;
             try {
 
-                fxml = new File("ChangeSet.xml");
+            	fxml =  File.createTempFile("ChangeSet", ".xml");
+            	fxml.deleteOnExit();
+            	
                 BufferedWriter output = new BufferedWriter(new FileWriter(fxml));
                 output.write(changesetxml.toString());
                 output.close();
@@ -94,7 +96,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
             }
 
             KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-            //Resource res = ResourceFactory.newClassPathResource("ChangeSet.xml");
             Resource res = ResourceFactory.newFileResource(fxml);
             kbuilder.add(res, ResourceType.CHANGE_SET);
             kbase = KnowledgeBaseFactory.newKnowledgeBase();

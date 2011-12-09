@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  */
 public class FactHandlerListener implements WorkingMemoryEventListener {
 
-    private RuleBaseStatefullSession ruleBaseSession;
+    private final RuleBaseStatefullSession ruleBaseSession;
     static final Logger LOGGER = LoggerFactory.getLogger(FactHandlerListener.class);
 
     public FactHandlerListener(RuleBaseStatefullSession ruleBaseSession) {
@@ -45,10 +45,12 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
     @Override
     public void objectUpdated(ObjectUpdatedEvent event) {
         LOGGER.debug("Fact updated :: ", event.getObject());
+        FactHandle f = event.getFactHandle();
         Object oldValue = event.getOldObject();
         Object newValue = event.getObject();
-        FactObject factOldValue = this.ruleBaseSession.getFactObject(oldValue);
+        FactObject factOldValue = this.ruleBaseSession.getLastFactObjectVersion(oldValue);
         FactObject factnewValue = FactObject.createFactObject(newValue, factOldValue.getNextObjectVersion());
+        ruleBaseSession.setData(f, newValue, factnewValue);
         UpdatedFactHistoryEvent updatedFactHistoryEvent = new UpdatedFactHistoryEvent(factOldValue, factnewValue);
         this.ruleBaseSession.getHistoryContainer().addHistoryElement(updatedFactHistoryEvent);
     }
@@ -59,7 +61,7 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
         // events.add("Fact retracted :: " + event.getOldObject().toString());
         FactHandle f = event.getFactHandle();
         Object newIbject = event.getOldObject();
-        FactObject deletedFact = this.ruleBaseSession.getFactObject(newIbject);
+        FactObject deletedFact = this.ruleBaseSession.getLastFactObjectVersion(newIbject);
         DeletedFactHistoryEvent deleteFactEvent = new DeletedFactHistoryEvent(deletedFact);
         this.ruleBaseSession.getHistoryContainer().addHistoryElement(deleteFactEvent);
         ruleBaseSession.unsetData(f, newIbject);

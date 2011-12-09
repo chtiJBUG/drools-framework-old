@@ -5,6 +5,8 @@
 package org.chtijbug.drools.runtime.impl;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import org.chtijbug.drools.entity.history.FactObject;
 import org.chtijbug.drools.entity.history.HistoryContainer;
@@ -21,7 +23,7 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
     private StatefulKnowledgeSession knowledgeSession = null;
     private Map<FactHandle, Object> listObject = new HashMap<FactHandle, Object>();
     private Map<Object, FactHandle> listFact = new HashMap<Object, FactHandle>();
-    private Map<Object, FactObject> listFactObjects = new HashMap<Object, FactObject>();
+    private Map<Object, List<FactObject>> listFactObjects = new HashMap<Object, List<FactObject>>();
     private FactHandlerListener factListener;
     private HistoryContainer historyContainer = new HistoryContainer();
 
@@ -31,10 +33,34 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
         knowledgeSession.addEventListener(factListener);
 
     }
-    public FactObject getFactObject(Object searchO){
-        return listFactObjects.get(searchO);
+
+    public FactObject getLastFactObjectVersion(Object searchO) {
+        int lastVersion = listFactObjects.get(searchO).size()-1;
+        return getFactObjectVersion(searchO,lastVersion);
     }
-    
+
+    public FactObject getFactObjectVersion(Object search0, int version) {
+        return listFactObjects.get(search0).get(version);
+    }
+
+    public FactObject getLastFactObjectVersionFromFactHandle(FactHandle factToFind) {
+        
+        Object searchObject = this.listObject.get(factToFind);
+        if (searchObject == null) {
+            return null;
+        }
+        int lastVersion = listFactObjects.get(factToFind).size()-1;
+        return listFactObjects.get(searchObject).get(lastVersion);
+    }
+
+    public FactObject getFactObjectVersionFromFactHandle(FactHandle factToFind, int version) {
+        Object searchObject = this.listObject.get(factToFind);
+        if (searchObject == null) {
+            return null;
+        }
+        return listFactObjects.get(searchObject).get(version);
+    }
+
     @Override
     public HistoryContainer getHistoryContainer() {
         return historyContainer;
@@ -44,10 +70,19 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
         return knowledgeSession;
     }
 
-    public void setData(FactHandle f, Object o,FactObject fObject) {
-        listObject.put(f, o);
+    public void setData(FactHandle f, Object o, FactObject fObject) {
+        if (listObject.containsKey(f)==true){
+            listFact.remove(listObject.get(f));
+        }
+        listObject.put(f, o);      
         listFact.put(o, f);
-        listFactObjects.put(o, fObject);
+        if (listFactObjects.containsKey(o) == false) {
+            List<FactObject> newList = new LinkedList<FactObject>();
+            newList.add(fObject);
+            listFactObjects.put(o, newList);
+        } else {
+            listFactObjects.get(o).add(fObject);
+        }
     }
 
     public void unsetData(FactHandle f, Object o) {

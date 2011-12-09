@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import org.chtijbug.drools.entity.history.FactObject;
 import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.RuleBaseSession;
@@ -15,127 +16,133 @@ import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.FactHandle;
 
 /**
- *
+ * 
  * @author nheron
  */
 public class RuleBaseStatefullSession implements RuleBaseSession {
 
-    private StatefulKnowledgeSession knowledgeSession = null;
-    private Map<FactHandle, Object> listObject = new HashMap<FactHandle, Object>();
-    private Map<Object, FactHandle> listFact = new HashMap<Object, FactHandle>();
-    private Map<Object, List<FactObject>> listFactObjects = new HashMap<Object, List<FactObject>>();
-    private FactHandlerListener factListener;
-    private HistoryContainer historyContainer = new HistoryContainer();
+	private StatefulKnowledgeSession knowledgeSession = null;
+	private final Map<FactHandle, Object> listObject = new HashMap<FactHandle, Object>();
+	private final Map<Object, FactHandle> listFact = new HashMap<Object, FactHandle>();
+	private final Map<Object, List<FactObject>> listFactObjects = new HashMap<Object, List<FactObject>>();
+	private FactHandlerListener factListener;
+	private final RuleHandlerListener runHandlerListener;
+	private final HistoryContainer historyContainer = new HistoryContainer();
 
-    public RuleBaseStatefullSession(StatefulKnowledgeSession knowledgeSession) {
-        this.knowledgeSession = knowledgeSession;
-        factListener = new FactHandlerListener(this);
-        knowledgeSession.addEventListener(factListener);
+	public RuleBaseStatefullSession(StatefulKnowledgeSession knowledgeSession) {
+		this.knowledgeSession = knowledgeSession;
 
-    }
+		factListener = new FactHandlerListener(this);
+		runHandlerListener = new RuleHandlerListener(this);
 
-    public FactObject getLastFactObjectVersion(Object searchO) {
-        int lastVersion = listFactObjects.get(searchO).size()-1;
-        return getFactObjectVersion(searchO,lastVersion);
-    }
+		knowledgeSession.addEventListener(factListener);
+		knowledgeSession.addEventListener(runHandlerListener);
 
-    public FactObject getFactObjectVersion(Object search0, int version) {
-        return listFactObjects.get(search0).get(version);
-    }
+	}
 
-    public FactObject getLastFactObjectVersionFromFactHandle(FactHandle factToFind) {
-        
-        Object searchObject = this.listObject.get(factToFind);
-        if (searchObject == null) {
-            return null;
-        }
-        int lastVersion = listFactObjects.get(factToFind).size()-1;
-        return listFactObjects.get(searchObject).get(lastVersion);
-    }
+	public FactObject getLastFactObjectVersion(Object searchO) {
+		int lastVersion = listFactObjects.get(searchO).size() - 1;
+		return getFactObjectVersion(searchO, lastVersion);
+	}
 
-    public FactObject getFactObjectVersionFromFactHandle(FactHandle factToFind, int version) {
-        Object searchObject = this.listObject.get(factToFind);
-        if (searchObject == null) {
-            return null;
-        }
-        return listFactObjects.get(searchObject).get(version);
-    }
+	public FactObject getFactObjectVersion(Object search0, int version) {
+		return listFactObjects.get(search0).get(version);
+	}
 
-    @Override
-    public HistoryContainer getHistoryContainer() {
-        return historyContainer;
-    }
+	public FactObject getLastFactObjectVersionFromFactHandle(FactHandle factToFind) {
 
-    public StatefulKnowledgeSession getKnowledgeSession() {
-        return knowledgeSession;
-    }
+		Object searchObject = this.listObject.get(factToFind);
+		if (searchObject == null) {
+			return null;
+		}
+		int lastVersion = listFactObjects.get(factToFind).size() - 1;
+		return listFactObjects.get(searchObject).get(lastVersion);
+	}
 
-    public void setData(FactHandle f, Object o, FactObject fObject) {
-        if (listObject.containsKey(f)==true){
-            listFact.remove(listObject.get(f));
-        }
-        listObject.put(f, o);      
-        listFact.put(o, f);
-        if (listFactObjects.containsKey(o) == false) {
-            List<FactObject> newList = new LinkedList<FactObject>();
-            newList.add(fObject);
-            listFactObjects.put(o, newList);
-        } else {
-            listFactObjects.get(o).add(fObject);
-        }
-    }
+	public FactObject getFactObjectVersionFromFactHandle(FactHandle factToFind, int version) {
+		Object searchObject = this.listObject.get(factToFind);
+		if (searchObject == null) {
+			return null;
+		}
+		return listFactObjects.get(searchObject).get(version);
+	}
 
-    public void unsetData(FactHandle f, Object o) {
-        listObject.remove(f);
-        listFact.remove(o);
-    }
+	@Override
+	public HistoryContainer getHistoryContainer() {
+		return historyContainer;
+	}
 
-    @Override
-    public void dispose() {
+	public StatefulKnowledgeSession getKnowledgeSession() {
+		return knowledgeSession;
+	}
 
-        knowledgeSession.removeEventListener(factListener);
-        //knowledgeSession.removeEventListener(aFiredRulesListener);
-        //knowledgeSession.removeEventListener(processHandler);
-        for (FactHandle f : listObject.keySet()) {
-            knowledgeSession.retract(f);
-        }
+	public void setData(FactHandle f, Object o, FactObject fObject) {
+		if (listObject.containsKey(f) == true) {
+			listFact.remove(listObject.get(f));
+		}
+		listObject.put(f, o);
+		listFact.put(o, f);
+		if (listFactObjects.containsKey(o) == false) {
+			List<FactObject> newList = new LinkedList<FactObject>();
+			newList.add(fObject);
+			listFactObjects.put(o, newList);
+		} else {
+			listFactObjects.get(o).add(fObject);
+		}
+	}
 
-        //aFiredRulesListener.dispose();
-        //aFiredRulesListener.dispose();
-        //aFiredRulesListener = null;
-        //processHandler.dispose();
-        //processHandler = null;
-        factListener.dispose();
-        factListener = null;
-        knowledgeSession.dispose();
-        knowledgeSession = null;
+	public void unsetData(FactHandle f, Object o) {
+		listObject.remove(f);
+		listFact.remove(o);
+	}
 
-    }
+	@Override
+	public void dispose() {
 
-    @Override
-    public void insertObject(Object newObject) {
-        this.knowledgeSession.insert(newObject);
-    }
+		knowledgeSession.removeEventListener(factListener);
+		knowledgeSession.removeEventListener(runHandlerListener);
 
-    @Override
-    public void updateObject(Object updatedObject) {
-        FactHandle factToUpdate = listFact.get(updatedObject);
-        this.knowledgeSession.update(factToUpdate, updatedObject);
-    }
+		// knowledgeSession.removeEventListener(aFiredRulesListener);
+		// knowledgeSession.removeEventListener(processHandler);
+		for (FactHandle f : listObject.keySet()) {
+			knowledgeSession.retract(f);
+		}
+		// aFiredRulesListener.dispose();
+		// aFiredRulesListener.dispose();
+		// aFiredRulesListener = null;
+		// processHandler.dispose();
+		// processHandler = null;
+		factListener.dispose();
+		factListener = null;
+		knowledgeSession.dispose();
+		knowledgeSession = null;
 
-    @Override
-    public void retractObject(Object oldObject) {
-        FactHandle factToDelete = listFact.get(oldObject);
-        this.knowledgeSession.retract(factToDelete);
-    }
+	}
 
-    @Override
-    public void fireAllRules() {
-        this.knowledgeSession.fireAllRules();
-    }
+	@Override
+	public void insertObject(Object newObject) {
+		this.knowledgeSession.insert(newObject);
+	}
 
-    @Override
-    public void startProcess(String processName) {
-        this.knowledgeSession.startProcess(processName);
-    }
+	@Override
+	public void updateObject(Object updatedObject) {
+		FactHandle factToUpdate = listFact.get(updatedObject);
+		this.knowledgeSession.update(factToUpdate, updatedObject);
+	}
+
+	@Override
+	public void retractObject(Object oldObject) {
+		FactHandle factToDelete = listFact.get(oldObject);
+		this.knowledgeSession.retract(factToDelete);
+	}
+
+	@Override
+	public void fireAllRules() {
+		this.knowledgeSession.fireAllRules();
+	}
+
+	@Override
+	public void startProcess(String processName) {
+		this.knowledgeSession.startProcess(processName);
+	}
 }

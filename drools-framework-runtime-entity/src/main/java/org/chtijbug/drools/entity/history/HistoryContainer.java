@@ -8,19 +8,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- *
+ * 
  * @author nheron
  */
 public class HistoryContainer {
 
-    private List<HistoryEvent> listHistoryEvent = new LinkedList<HistoryEvent>();
+	private final List<HistoryEvent> listHistoryEvent = new LinkedList<HistoryEvent>();
 
-    public List<HistoryEvent> getListHistoryEvent() {
-        return listHistoryEvent;
-    }
+	public List<HistoryEvent> getListHistoryEvent() {
+		return listHistoryEvent;
+	}
 
-    public void addHistoryElement(HistoryEvent newHistoryElement){
-        this.listHistoryEvent.add(newHistoryElement);
-        
-    }
+	public void addHistoryElement(HistoryEvent newHistoryElement) {
+		this.listHistoryEvent.add(newHistoryElement);
+
+	}
 }

@@ -4,9 +4,11 @@
  */
 package org.chtijbug.drools.entity.history;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.beanutils.BeanMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -14,21 +16,24 @@ import java.util.List;
  */
 public class FactObject {
 
+    static final Logger LOGGER = LoggerFactory.getLogger(FactObject.class);
     private String fullClassName;
     private int hashCode;
     private int version;
     private List<FactObjectAttribute> listfactObjectAttributes = new ArrayList<FactObjectAttribute>();
+    private Object realObject;
 
-    public FactObject(String fullClassName, int hashCode) {
-        this.fullClassName = fullClassName;
-        this.hashCode = hashCode;
-        this.version = 0;
-    }
-
-    public FactObject(String fullClassName, int hashCode, int version) {
-        this.fullClassName = fullClassName;
-        this.hashCode = hashCode;
+    public FactObject(Object realObject, int version) {
+        this.realObject = realObject;
         this.version = version;
+        this.fullClassName = realObject.getClass().getCanonicalName();
+        this.hashCode = realObject.hashCode();
+        try {
+            this.introspect();
+        } catch (Exception e) {
+            LOGGER.error("Not possible to introspect {}", realObject);
+        }
+
     }
 
     public int getObjectVersion() {
@@ -63,6 +68,18 @@ public class FactObject {
         this.hashCode = hashCode;
     }
 
+    private void introspect() throws Exception {
+        BeanMap m = new BeanMap(this.realObject);
+        for (Object para : m.keySet()) {
+            if (!para.toString().equals("class")) {
+                FactObjectAttribute attribute = new FactObjectAttribute(para.toString(), m.get(para).toString(), m.get(para).getClass().getSimpleName());
+                this.listfactObjectAttributes.add(attribute);
+            }
+
+        }
+
+    }
+
     public static FactObject createFactObject(Object o) {
         return createFactObject(o, 0);
     }
@@ -70,7 +87,7 @@ public class FactObject {
     public static FactObject createFactObject(Object o, int version) {
         FactObject createFactObject = null;
         if (o != null) {
-            createFactObject = new FactObject(o.getClass().getCanonicalName(), o.hashCode(), version);
+            createFactObject = new FactObject(o, version);
         }
         return createFactObject;
     }

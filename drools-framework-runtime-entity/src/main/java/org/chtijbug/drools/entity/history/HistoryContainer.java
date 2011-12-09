@@ -4,7 +4,6 @@
  */
 package org.chtijbug.drools.entity.history;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

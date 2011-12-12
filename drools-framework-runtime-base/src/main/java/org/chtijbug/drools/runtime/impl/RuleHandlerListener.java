@@ -35,17 +35,14 @@ public class RuleHandlerListener implements AgendaEventListener {
 
 	@Override
 	public void activationCreated(ActivationCreatedEvent ace) {
-		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
 	public void activationCancelled(ActivationCancelledEvent ace) {
-		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
 	public void beforeActivationFired(BeforeActivationFiredEvent bafe) {
-		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
@@ -74,11 +71,9 @@ public class RuleHandlerListener implements AgendaEventListener {
 
 	@Override
 	public void agendaGroupPopped(AgendaGroupPoppedEvent agpe) {
-		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
 	public void agendaGroupPushed(AgendaGroupPushedEvent agpe) {
-		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

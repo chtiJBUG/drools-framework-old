@@ -14,12 +14,16 @@ import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.FactHandle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
  * @author nheron
  */
 public class RuleBaseStatefullSession implements RuleBaseSession {
+
+	private static Logger LOGGER = LoggerFactory.getLogger(RuleBaseStatefullSession.class);
 
 	private StatefulKnowledgeSession knowledgeSession = null;
 	private final Map<FactHandle, Object> listObject = new HashMap<FactHandle, Object>();
@@ -55,7 +59,15 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 		if (searchObject == null) {
 			return null;
 		}
-		int lastVersion = listFactObjects.get(factToFind).size() - 1;
+
+		List<FactObject> facto = listFactObjects.get(searchObject);
+
+		if (facto == null) {
+			LOGGER.error("List of FactObject can not be null for FactHandle {}", factToFind);
+			return null;
+		}
+
+		int lastVersion = facto.size() - 1;
 		return listFactObjects.get(searchObject).get(lastVersion);
 	}
 
@@ -77,11 +89,15 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 	}
 
 	public void setData(FactHandle f, Object o, FactObject fObject) {
-		if (listObject.containsKey(f) == true) {
-			listFact.remove(listObject.get(f));
+
+		Object objectSearch = listObject.containsKey(f);
+		if (objectSearch != null) {
+			listFact.remove(objectSearch);
 		}
+
 		listObject.put(f, o);
 		listFact.put(o, f);
+
 		if (listFactObjects.containsKey(o) == false) {
 			List<FactObject> newList = new LinkedList<FactObject>();
 			newList.add(fObject);

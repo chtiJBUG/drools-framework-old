@@ -6,6 +6,7 @@ package org.chtijbug.drools.entity.history.rule;
 
 import java.util.Date;
 
+import org.chtijbug.drools.entity.DroolsRuleObject;
 import org.chtijbug.drools.entity.history.HistoryEvent;
 
 /**
@@ -13,12 +14,14 @@ import org.chtijbug.drools.entity.history.HistoryEvent;
  * @author nheron
  */
 public class RuleHistoryEvent extends HistoryEvent {
-	private final String ruleName;
 
-	public RuleHistoryEvent(String ruleName) {
+	private static final long serialVersionUID = 7433690026159716847L;
+	private final DroolsRuleObject rule;
+
+	public RuleHistoryEvent(DroolsRuleObject rule) {
 
 		super(new Date(), HistoryEvent.TypeEvent.Rule);
-		this.ruleName = ruleName;
+		this.rule = rule;
 	}
 
 	/*
@@ -29,6 +32,6 @@ public class RuleHistoryEvent extends HistoryEvent {
 	@Override
 	public String toString() {
 
-		return super.toString() + "\nRuleName = " + ruleName;
+		return super.toString() + "\n" + rule;
 	}
 }

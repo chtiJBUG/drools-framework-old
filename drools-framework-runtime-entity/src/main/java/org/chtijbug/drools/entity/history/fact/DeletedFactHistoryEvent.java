@@ -9,23 +9,27 @@ import java.util.Date;
 import org.chtijbug.drools.entity.DroolsFactObject;
 
 /**
- *
+ * 
  * @author nheron
  */
-public class DeletedFactHistoryEvent extends FactHistoryEvent{
+public class DeletedFactHistoryEvent extends FactHistoryEvent {
 
-    private DroolsFactObject deletedObject;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1924924006386653359L;
+	private DroolsFactObject deletedObject;
 
-    public DeletedFactHistoryEvent(DroolsFactObject deletedObject) {
-        super(new Date());
-        this.deletedObject = deletedObject;
-    }
+	public DeletedFactHistoryEvent(DroolsFactObject deletedObject) {
+		super(new Date());
+		this.deletedObject = deletedObject;
+	}
 
-    public DroolsFactObject getDeletedObject() {
-        return deletedObject;
-    }
+	public DroolsFactObject getDeletedObject() {
+		return deletedObject;
+	}
 
-    public void setDeletedObject(DroolsFactObject deletedObject) {
-        this.deletedObject = deletedObject;
-    }
+	public void setDeletedObject(DroolsFactObject deletedObject) {
+		this.deletedObject = deletedObject;
+	}
 }

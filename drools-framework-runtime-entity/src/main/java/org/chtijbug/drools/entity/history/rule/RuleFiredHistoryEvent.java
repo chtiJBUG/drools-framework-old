@@ -7,6 +7,7 @@ package org.chtijbug.drools.entity.history.rule;
 import java.util.ArrayList;
 
 import org.chtijbug.drools.entity.DroolsFactObject;
+import org.chtijbug.drools.entity.DroolsRuleObject;
 
 /**
  * 
@@ -14,10 +15,15 @@ import org.chtijbug.drools.entity.DroolsFactObject;
  */
 public class RuleFiredHistoryEvent extends RuleHistoryEvent {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8587421328193577240L;
 	private final ArrayList<DroolsFactObject> whenObjects;
 
-	public RuleFiredHistoryEvent(String ruleName) {
-		super(ruleName);
+	public RuleFiredHistoryEvent(DroolsRuleObject rule) {
+
+		super(rule);
 		this.whenObjects = new ArrayList<DroolsFactObject>();
 	}
 

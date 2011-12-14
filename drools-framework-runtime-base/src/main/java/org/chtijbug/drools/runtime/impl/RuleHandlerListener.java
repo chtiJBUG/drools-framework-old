@@ -7,6 +7,7 @@ package org.chtijbug.drools.runtime.impl;
 import java.util.List;
 
 import org.chtijbug.drools.entity.DroolsFactObject;
+import org.chtijbug.drools.entity.DroolsRuleObject;
 import org.chtijbug.drools.entity.history.rule.RuleFiredHistoryEvent;
 import org.drools.event.rule.ActivationCancelledEvent;
 import org.drools.event.rule.ActivationCreatedEvent;
@@ -49,14 +50,17 @@ public class RuleHandlerListener implements AgendaEventListener {
 	public void afterActivationFired(AfterActivationFiredEvent event) {
 		Activation activation = event.getActivation();
 		List<? extends FactHandle> listFact = activation.getFactHandles();
-		RuleFiredHistoryEvent newRuleEvent = new RuleFiredHistoryEvent(activation.getRule().getName());
+
+		DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(activation.getRule());
+
+		RuleFiredHistoryEvent newRuleEvent = new RuleFiredHistoryEvent(droolsRuleObject);
 
 		for (FactHandle h : listFact) {
 			DroolsFactObject sourceFactObject = ruleBaseSession.getLastFactObjectVersionFromFactHandle(h);
 			newRuleEvent.getWhenObjects().add(sourceFactObject);
 		}
 
-		LOGGER.debug("AfterActivationFiredEvent. Rule name: {} ", activation.getRule().getName());
+		LOGGER.debug("AfterActivationFiredEvent. Rule name: {} ", droolsRuleObject.getRuleName());
 		ruleBaseSession.getHistoryContainer().addHistoryElement(newRuleEvent);
 
 		// nbRuleFired++;

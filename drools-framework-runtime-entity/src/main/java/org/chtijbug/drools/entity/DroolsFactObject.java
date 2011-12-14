@@ -4,6 +4,7 @@
  */
 package org.chtijbug.drools.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +16,12 @@ import org.slf4j.LoggerFactory;
  * 
  * @author nheron
  */
-public class DroolsFactObject {
+public class DroolsFactObject implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8185674445343213645L;
 	static final Logger LOGGER = LoggerFactory.getLogger(DroolsFactObject.class);
 	private String fullClassName;
 	private int hashCode;
@@ -24,7 +29,7 @@ public class DroolsFactObject {
 	private List<DroolsFactObjectAttribute> listfactObjectAttributes = new ArrayList<DroolsFactObjectAttribute>();
 	private final Object realObject;
 
-	public DroolsFactObject(Object realObject, int version) {
+	protected DroolsFactObject(Object realObject, int version) {
 		this.realObject = realObject;
 		this.version = version;
 		this.fullClassName = realObject.getClass().getCanonicalName();

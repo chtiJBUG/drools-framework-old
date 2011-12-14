@@ -10,8 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.chtijbug.drools.entity.DroolsFactObject;
+import org.chtijbug.drools.entity.DroolsRuleObject;
 import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.RuleBaseSession;
+import org.drools.definition.rule.Rule;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.FactHandle;
 import org.slf4j.Logger;
@@ -26,22 +28,45 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 	private static Logger LOGGER = LoggerFactory.getLogger(RuleBaseStatefullSession.class);
 
 	private StatefulKnowledgeSession knowledgeSession = null;
-	private final Map<FactHandle, Object> listObject = new HashMap<FactHandle, Object>();
-	private final Map<Object, FactHandle> listFact = new HashMap<Object, FactHandle>();
-	private final Map<Object, List<DroolsFactObject>> listFactObjects = new HashMap<Object, List<DroolsFactObject>>();
+	private final Map<FactHandle, Object> listObject;
+	private final Map<Object, FactHandle> listFact;
+	private final Map<Object, List<DroolsFactObject>> listFactObjects;
+	private final HistoryContainer historyContainer;
+	private final Map<Rule, DroolsRuleObject> listRules;
+
+	// Listeners can be dispose ...
 	private FactHandlerListener factListener;
 	private final RuleHandlerListener runHandlerListener;
-	private final HistoryContainer historyContainer = new HistoryContainer();
 
 	public RuleBaseStatefullSession(StatefulKnowledgeSession knowledgeSession) {
 		this.knowledgeSession = knowledgeSession;
 
 		factListener = new FactHandlerListener(this);
 		runHandlerListener = new RuleHandlerListener(this);
+		historyContainer = new HistoryContainer();
+		listFactObjects = new HashMap<Object, List<DroolsFactObject>>();
+		listFact = new HashMap<Object, FactHandle>();
+		listObject = new HashMap<FactHandle, Object>();
+		listRules = new HashMap<Rule, DroolsRuleObject>();
 
 		knowledgeSession.addEventListener(factListener);
 		knowledgeSession.addEventListener(runHandlerListener);
 
+	}
+
+	public DroolsRuleObject getDroolsRuleObject(Rule rule) {
+		DroolsRuleObject droolsRuleObject = listRules.get(rule);
+
+		if (droolsRuleObject == null) {
+			droolsRuleObject = DroolsRuleObject.createDroolRuleObject(rule);
+			addDroolsRuleObject(droolsRuleObject);
+		}
+
+		return droolsRuleObject;
+	}
+
+	public void addDroolsRuleObject(DroolsRuleObject droolsRuleObject) {
+		listRules.put(droolsRuleObject.getRule(), droolsRuleObject);
 	}
 
 	public DroolsFactObject getLastFactObjectVersion(Object searchO) {
@@ -128,6 +153,7 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 		// aFiredRulesListener = null;
 		// processHandler.dispose();
 		// processHandler = null;
+
 		factListener.dispose();
 		factListener = null;
 		knowledgeSession.dispose();

@@ -4,13 +4,19 @@
  */
 package org.chtijbug.drools.entity.history;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 
  * @author nheron
  */
-public class HistoryEvent {
+public class HistoryEvent implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6640538290066213804L;
+
 	public enum TypeEvent {
 		Fact, Rule, BPMN
 	};

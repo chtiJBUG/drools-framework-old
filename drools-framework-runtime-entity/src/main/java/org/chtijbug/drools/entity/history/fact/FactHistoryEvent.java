@@ -14,6 +14,11 @@ import org.chtijbug.drools.entity.history.HistoryEvent;
  */
 public abstract class FactHistoryEvent extends HistoryEvent {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5320437389177977457L;
+
 	public FactHistoryEvent(Date dateEvent) {
 
 		super(dateEvent, TypeEvent.Fact);

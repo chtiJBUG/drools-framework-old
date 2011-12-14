@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.chtijbug.drools.entity.DroolsFactObject;
+import org.chtijbug.drools.entity.DroolsNodeInstanceObject;
+import org.chtijbug.drools.entity.DroolsNodeObject;
 import org.chtijbug.drools.entity.DroolsProcessInstanceObject;
 import org.chtijbug.drools.entity.DroolsProcessObject;
 import org.chtijbug.drools.entity.DroolsRuleObject;
@@ -14,6 +16,7 @@ import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.drools.definition.rule.Rule;
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.drools.runtime.process.NodeInstance;
 import org.drools.runtime.process.ProcessInstance;
 import org.drools.runtime.rule.FactHandle;
 import org.slf4j.Logger;
@@ -70,6 +73,23 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 			processInstanceList.put(droolsProcessInstanceObject.getId(), droolsProcessInstanceObject);
 		}
 		return droolsProcessInstanceObject;
+	}
+
+	public DroolsNodeInstanceObject getDroolsNodeInstanceObject(NodeInstance nodeInstance) {
+		DroolsProcessInstanceObject droolsProcessInstanceObject = processInstanceList.get(nodeInstance.getProcessInstance().getId());
+		if (droolsProcessInstanceObject == null) {
+			droolsProcessInstanceObject = this.getDroolsProcessInstanceObject(nodeInstance.getProcessInstance());
+		}
+
+		DroolsNodeInstanceObject droolsNodeInstanceObject = droolsProcessInstanceObject.getDroolsNodeInstanceObjet(String.valueOf(nodeInstance.getId()));
+		if (droolsNodeInstanceObject == null) {
+			DroolsNodeObject droolsNodeObject = DroolsNodeObject.createDroolsNodeObject(String.valueOf(nodeInstance.getNode().getId()));
+			droolsProcessInstanceObject.getProcess().addDroolsNodeObject(droolsNodeObject);
+			droolsNodeInstanceObject = DroolsNodeInstanceObject.createDroolsNodeInstanceObject(String.valueOf(nodeInstance.getId()), droolsNodeObject);
+			droolsProcessInstanceObject.addDroolsNodeInstanceObject(droolsNodeInstanceObject);
+		}
+
+		return droolsNodeInstanceObject;
 	}
 
 	public DroolsRuleObject getDroolsRuleObject(Rule rule) {

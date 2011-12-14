@@ -23,211 +23,224 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
+ *
  * @author nheron
  */
 public class RuleBaseStatefullSession implements RuleBaseSession {
 
-	private static Logger LOGGER = LoggerFactory.getLogger(RuleBaseStatefullSession.class);
-	private StatefulKnowledgeSession knowledgeSession = null;
-	private final Map<FactHandle, Object> listObject;
-	private final Map<Object, FactHandle> listFact;
-	private final Map<Object, List<DroolsFactObject>> listFactObjects;
-	private final HistoryContainer historyContainer;
-	private final Map<String, DroolsRuleObject> listRules;
-	private final Map<String, DroolsProcessObject> processList;
-	private final Map<String, DroolsProcessInstanceObject> processInstanceList;
-	// Listeners can be dispose ...
-	private FactHandlerListener factListener;
-	private final RuleHandlerListener runHandlerListener;
+    private static Logger LOGGER = LoggerFactory.getLogger(RuleBaseStatefullSession.class);
+    private StatefulKnowledgeSession knowledgeSession = null;
+    private final Map<FactHandle, Object> listObject;
+    private final Map<Object, FactHandle> listFact;
+    private final Map<Object, List<DroolsFactObject>> listFactObjects;
+    private final HistoryContainer historyContainer;
+    private final Map<String, DroolsRuleObject> listRules;
+    private final Map<String, DroolsProcessObject> processList;
+    private final Map<String, DroolsProcessInstanceObject> processInstanceList;
+    // Listeners can be dispose ...
+    private FactHandlerListener factListener;
+    private final RuleHandlerListener runHandlerListener;
+    private int maxNumberRuleToExecute;
 
-	public RuleBaseStatefullSession(StatefulKnowledgeSession knowledgeSession) {
-		this.knowledgeSession = knowledgeSession;
+    public RuleBaseStatefullSession(StatefulKnowledgeSession knowledgeSession,int maxNumberRuleToExecute) {
+        this.knowledgeSession = knowledgeSession;
+        this.maxNumberRuleToExecute = maxNumberRuleToExecute;
+        factListener = new FactHandlerListener(this);
+        runHandlerListener = new RuleHandlerListener(this);
+        historyContainer = new HistoryContainer();
+        listFactObjects = new HashMap<Object, List<DroolsFactObject>>();
+        listFact = new HashMap<Object, FactHandle>();
+        listObject = new HashMap<FactHandle, Object>();
+        listRules = new HashMap<String, DroolsRuleObject>();
+        processList = new HashMap<String, DroolsProcessObject>();
+        processInstanceList = new HashMap<String, DroolsProcessInstanceObject>();
 
-		factListener = new FactHandlerListener(this);
-		runHandlerListener = new RuleHandlerListener(this);
-		historyContainer = new HistoryContainer();
-		listFactObjects = new HashMap<Object, List<DroolsFactObject>>();
-		listFact = new HashMap<Object, FactHandle>();
-		listObject = new HashMap<FactHandle, Object>();
-		listRules = new HashMap<String, DroolsRuleObject>();
-		processList = new HashMap<String, DroolsProcessObject>();
-		processInstanceList = new HashMap<String, DroolsProcessInstanceObject>();
+        knowledgeSession.addEventListener(factListener);
+        knowledgeSession.addEventListener(runHandlerListener);
 
-		knowledgeSession.addEventListener(factListener);
-		knowledgeSession.addEventListener(runHandlerListener);
-	}
+    }
 
-	public DroolsProcessInstanceObject getDroolsProcessInstanceObject(ProcessInstance processInstance) {
-		DroolsProcessInstanceObject droolsProcessInstanceObject = processInstanceList.get(processInstance.getId());
-		if (droolsProcessInstanceObject == null) {
-			DroolsProcessObject droolsProcessObject = processList.get(processInstance.getProcess().getId());
+    public int getMaxNumberRuleToExecute() {
+        return maxNumberRuleToExecute;
+    }
 
-			if (droolsProcessObject == null) {
-				droolsProcessObject = DroolsProcessObject.createDroolsProcessObject(processInstance.getProcess().getId(), processInstance.getProcess().getName(), processInstance
-						.getProcess().getPackageName(), processInstance.getProcess().getType(), processInstance.getProcess().getVersion());
-				processList.put(processInstance.getProcess().getId(), droolsProcessObject);
-			}
+    public void setMaxNumberRuleToExecute(int maxNumberRuleToExecute) {
+        this.maxNumberRuleToExecute = maxNumberRuleToExecute;
+    }
 
-			droolsProcessInstanceObject = DroolsProcessInstanceObject.createDroolsProcessInstanceObject(String.valueOf(processInstance.getId()), droolsProcessObject);
-			processInstanceList.put(droolsProcessInstanceObject.getId(), droolsProcessInstanceObject);
-		}
-		return droolsProcessInstanceObject;
-	}
+    public DroolsProcessInstanceObject getDroolsProcessInstanceObject(ProcessInstance processInstance) {
+        DroolsProcessInstanceObject droolsProcessInstanceObject = processInstanceList.get(processInstance.getId());
+        if (droolsProcessInstanceObject == null) {
+            DroolsProcessObject droolsProcessObject = processList.get(processInstance.getProcess().getId());
 
-	public DroolsNodeInstanceObject getDroolsNodeInstanceObject(NodeInstance nodeInstance) {
-		DroolsProcessInstanceObject droolsProcessInstanceObject = processInstanceList.get(nodeInstance.getProcessInstance().getId());
-		if (droolsProcessInstanceObject == null) {
-			droolsProcessInstanceObject = this.getDroolsProcessInstanceObject(nodeInstance.getProcessInstance());
-		}
+            if (droolsProcessObject == null) {
+                droolsProcessObject = DroolsProcessObject.createDroolsProcessObject(processInstance.getProcess().getId(),
+                        processInstance.getProcess().getName(),
+                        processInstance.getProcess().getPackageName(), processInstance.getProcess().getType(), processInstance.getProcess().getVersion());
+                processList.put(processInstance.getProcess().getId(), droolsProcessObject);
+            }
 
-		DroolsNodeInstanceObject droolsNodeInstanceObject = droolsProcessInstanceObject.getDroolsNodeInstanceObjet(String.valueOf(nodeInstance.getId()));
-		if (droolsNodeInstanceObject == null) {
-			DroolsNodeObject droolsNodeObject = DroolsNodeObject.createDroolsNodeObject(String.valueOf(nodeInstance.getNode().getId()));
-			droolsProcessInstanceObject.getProcess().addDroolsNodeObject(droolsNodeObject);
-			droolsNodeInstanceObject = DroolsNodeInstanceObject.createDroolsNodeInstanceObject(String.valueOf(nodeInstance.getId()), droolsNodeObject);
-			droolsProcessInstanceObject.addDroolsNodeInstanceObject(droolsNodeInstanceObject);
-		}
+            droolsProcessInstanceObject = DroolsProcessInstanceObject.createDroolsProcessInstanceObject(String.valueOf(processInstance.getId()), droolsProcessObject);
+            processInstanceList.put(droolsProcessInstanceObject.getId(), droolsProcessInstanceObject);
+        }
+        return droolsProcessInstanceObject;
+    }
 
-		return droolsNodeInstanceObject;
-	}
+    public DroolsNodeInstanceObject getDroolsNodeInstanceObject(NodeInstance nodeInstance) {
+        DroolsProcessInstanceObject droolsProcessInstanceObject = processInstanceList.get(nodeInstance.getProcessInstance().getId());
+        if (droolsProcessInstanceObject == null) {
+            droolsProcessInstanceObject = this.getDroolsProcessInstanceObject(nodeInstance.getProcessInstance());
+        }
 
-	public DroolsRuleObject getDroolsRuleObject(Rule rule) {
-		DroolsRuleObject droolsRuleObject = listRules.get(rule);
+        DroolsNodeInstanceObject droolsNodeInstanceObject = droolsProcessInstanceObject.getDroolsNodeInstanceObjet(String.valueOf(nodeInstance.getId()));
+        if (droolsNodeInstanceObject == null) {
+            DroolsNodeObject droolsNodeObject = DroolsNodeObject.createDroolsNodeObject(String.valueOf(nodeInstance.getNode().getId()));
+            droolsProcessInstanceObject.getProcess().addDroolsNodeObject(droolsNodeObject);
+            droolsNodeInstanceObject = DroolsNodeInstanceObject.createDroolsNodeInstanceObject(String.valueOf(nodeInstance.getId()), droolsNodeObject);
+            droolsProcessInstanceObject.addDroolsNodeInstanceObject(droolsNodeInstanceObject);
+        }
 
-		if (droolsRuleObject == null) {
-			droolsRuleObject = DroolsRuleObject.createDroolRuleObject(rule.getName(), rule.getPackageName());
-			addDroolsRuleObject(droolsRuleObject);
-		}
 
-		return droolsRuleObject;
-	}
 
-	public void addDroolsRuleObject(DroolsRuleObject droolsRuleObject) {
-		listRules.put(droolsRuleObject.getRulePackageName() + droolsRuleObject.getRuleName(), droolsRuleObject);
-	}
+        return droolsNodeInstanceObject;
+    }
 
-	public DroolsFactObject getLastFactObjectVersion(Object searchO) {
-		int lastVersion = listFactObjects.get(searchO).size() - 1;
-		return getFactObjectVersion(searchO, lastVersion);
-	}
+    public DroolsRuleObject getDroolsRuleObject(Rule rule) {
+        DroolsRuleObject droolsRuleObject = listRules.get(rule);
 
-	public DroolsFactObject getFactObjectVersion(Object search0, int version) {
-		return listFactObjects.get(search0).get(version);
-	}
+        if (droolsRuleObject == null) {
+            droolsRuleObject = DroolsRuleObject.createDroolRuleObject(rule.getName(), rule.getPackageName());
+            addDroolsRuleObject(droolsRuleObject);
+        }
 
-	public DroolsFactObject getLastFactObjectVersionFromFactHandle(FactHandle factToFind) {
+        return droolsRuleObject;
+    }
 
-		Object searchObject = this.listObject.get(factToFind);
-		if (searchObject == null) {
-			return null;
-		}
+    public void addDroolsRuleObject(DroolsRuleObject droolsRuleObject) {
+        listRules.put(droolsRuleObject.getRulePackageName() + droolsRuleObject.getRuleName(), droolsRuleObject);
+    }
 
-		List<DroolsFactObject> facto = listFactObjects.get(searchObject);
+    public DroolsFactObject getLastFactObjectVersion(Object searchO) {
+        int lastVersion = listFactObjects.get(searchO).size() - 1;
+        return getFactObjectVersion(searchO, lastVersion);
+    }
 
-		if (facto == null) {
-			LOGGER.error("List of FactObject can not be null for FactHandle {}", factToFind);
-			return null;
-		}
+    public DroolsFactObject getFactObjectVersion(Object search0, int version) {
+        return listFactObjects.get(search0).get(version);
+    }
 
-		int lastVersion = facto.size() - 1;
-		return listFactObjects.get(searchObject).get(lastVersion);
-	}
+    public DroolsFactObject getLastFactObjectVersionFromFactHandle(FactHandle factToFind) {
 
-	public DroolsFactObject getFactObjectVersionFromFactHandle(FactHandle factToFind, int version) {
-		Object searchObject = this.listObject.get(factToFind);
-		if (searchObject == null) {
-			return null;
-		}
-		return listFactObjects.get(searchObject).get(version);
-	}
+        Object searchObject = this.listObject.get(factToFind);
+        if (searchObject == null) {
+            return null;
+        }
 
-	@Override
-	public HistoryContainer getHistoryContainer() {
-		return historyContainer;
-	}
+        List<DroolsFactObject> facto = listFactObjects.get(searchObject);
 
-	public StatefulKnowledgeSession getKnowledgeSession() {
-		return knowledgeSession;
-	}
+        if (facto == null) {
+            LOGGER.error("List of FactObject can not be null for FactHandle {}", factToFind);
+            return null;
+        }
 
-	public void setData(FactHandle f, Object o, DroolsFactObject fObject) {
+        int lastVersion = facto.size() - 1;
+        return listFactObjects.get(searchObject).get(lastVersion);
+    }
 
-		Object objectSearch = listObject.containsKey(f);
-		if (objectSearch != null) {
-			listFact.remove(objectSearch);
-		}
+    public DroolsFactObject getFactObjectVersionFromFactHandle(FactHandle factToFind, int version) {
+        Object searchObject = this.listObject.get(factToFind);
+        if (searchObject == null) {
+            return null;
+        }
+        return listFactObjects.get(searchObject).get(version);
+    }
 
-		listObject.put(f, o);
-		listFact.put(o, f);
+    @Override
+    public HistoryContainer getHistoryContainer() {
+        return historyContainer;
+    }
 
-		if (listFactObjects.containsKey(o) == false) {
-			List<DroolsFactObject> newList = new LinkedList<DroolsFactObject>();
-			newList.add(fObject);
-			listFactObjects.put(o, newList);
-		} else {
-			listFactObjects.get(o).add(fObject);
-		}
-	}
+    public StatefulKnowledgeSession getKnowledgeSession() {
+        return knowledgeSession;
+    }
 
-	public void unsetData(FactHandle f, Object o) {
-		listObject.remove(f);
-		listFact.remove(o);
-	}
+    public void setData(FactHandle f, Object o, DroolsFactObject fObject) {
 
-	@Override
-	public void dispose() {
+        Object objectSearch = listObject.containsKey(f);
+        if (objectSearch != null) {
+            listFact.remove(objectSearch);
+        }
 
-		knowledgeSession.removeEventListener(factListener);
-		knowledgeSession.removeEventListener(runHandlerListener);
+        listObject.put(f, o);
+        listFact.put(o, f);
 
-		// knowledgeSession.removeEventListener(aFiredRulesListener);
-		// knowledgeSession.removeEventListener(processHandler);
-		for (FactHandle f : listObject.keySet()) {
-			knowledgeSession.retract(f);
-		}
-		// aFiredRulesListener.dispose();
-		// aFiredRulesListener.dispose();
-		// aFiredRulesListener = null;
-		// processHandler.dispose();
-		// processHandler = null;
+        if (listFactObjects.containsKey(o) == false) {
+            List<DroolsFactObject> newList = new LinkedList<DroolsFactObject>();
+            newList.add(fObject);
+            listFactObjects.put(o, newList);
+        } else {
+            listFactObjects.get(o).add(fObject);
+        }
+    }
 
-		factListener.dispose();
-		factListener = null;
-		knowledgeSession.dispose();
-		knowledgeSession = null;
+    public void unsetData(FactHandle f, Object o) {
+        listObject.remove(f);
+        listFact.remove(o);
+    }
 
-	}
+    @Override
+    public void dispose() {
 
-	@Override
-	public void insertObject(Object newObject) {
-		this.knowledgeSession.insert(newObject);
-	}
+        knowledgeSession.removeEventListener(factListener);
+        knowledgeSession.removeEventListener(runHandlerListener);
 
-	@Override
-	public void updateObject(Object updatedObject) {
-		FactHandle factToUpdate = listFact.get(updatedObject);
-		this.knowledgeSession.update(factToUpdate, updatedObject);
-	}
+        // knowledgeSession.removeEventListener(aFiredRulesListener);
+        // knowledgeSession.removeEventListener(processHandler);
+        for (FactHandle f : listObject.keySet()) {
+            knowledgeSession.retract(f);
+        }
+        // aFiredRulesListener.dispose();
+        // aFiredRulesListener.dispose();
+        // aFiredRulesListener = null;
+        // processHandler.dispose();
+        // processHandler = null;
 
-	@Override
-	public void retractObject(Object oldObject) {
-		FactHandle factToDelete = listFact.get(oldObject);
-		this.knowledgeSession.retract(factToDelete);
-	}
+        factListener.dispose();
+        factListener = null;
+        knowledgeSession.dispose();
+        knowledgeSession = null;
 
-	@Override
-	public void fireAllRules() {
-		this.knowledgeSession.fireAllRules();
-	}
+    }
 
-	@Override
-	public void startProcess(String processName) {
-		this.knowledgeSession.startProcess(processName);
-	}
+    @Override
+    public void insertObject(Object newObject) {
+        this.knowledgeSession.insert(newObject);
+    }
 
-	@Override
-	public Collection<DroolsRuleObject> listRules() {
-		return listRules.values();
-	}
+    @Override
+    public void updateObject(Object updatedObject) {
+        FactHandle factToUpdate = listFact.get(updatedObject);
+        this.knowledgeSession.update(factToUpdate, updatedObject);
+    }
+
+    @Override
+    public void retractObject(Object oldObject) {
+        FactHandle factToDelete = listFact.get(oldObject);
+        this.knowledgeSession.retract(factToDelete);
+    }
+
+    @Override
+    public void fireAllRules() {
+        this.knowledgeSession.fireAllRules();
+    }
+
+    @Override
+    public void startProcess(String processName) {
+        this.knowledgeSession.startProcess(processName);
+    }
+
+    @Override
+    public Collection<DroolsRuleObject> listRules() {
+        return listRules.values();
+    }
 }

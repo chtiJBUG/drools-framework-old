@@ -5,7 +5,8 @@
 package org.chtijbug.drools.entity.history.fact;
 
 import java.util.Date;
-import org.chtijbug.drools.entity.history.FactObject;
+
+import org.chtijbug.drools.entity.DroolsFactObject;
 
 /**
  *
@@ -13,18 +14,18 @@ import org.chtijbug.drools.entity.history.FactObject;
  */
 public class DeletedFactHistoryEvent extends FactHistoryEvent{
 
-    private FactObject deletedObject;
+    private DroolsFactObject deletedObject;
 
-    public DeletedFactHistoryEvent(FactObject deletedObject) {
+    public DeletedFactHistoryEvent(DroolsFactObject deletedObject) {
         super(new Date());
         this.deletedObject = deletedObject;
     }
 
-    public FactObject getDeletedObject() {
+    public DroolsFactObject getDeletedObject() {
         return deletedObject;
     }
 
-    public void setDeletedObject(FactObject deletedObject) {
+    public void setDeletedObject(DroolsFactObject deletedObject) {
         this.deletedObject = deletedObject;
     }
 }

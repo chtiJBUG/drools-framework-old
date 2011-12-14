@@ -5,6 +5,8 @@
 package org.chtijbug.drools.entity.history;
 
 import java.math.BigDecimal;
+
+import org.chtijbug.drools.entity.DroolsFactObject;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -38,7 +40,7 @@ public class FactObjectTest {
     @Test
     public void TestIntrosepct() {
         TestPojoOne underTest = new TestPojoOne();
-        FactObject fact = FactObject.createFactObject(underTest, 1);
+        DroolsFactObject fact = DroolsFactObject.createFactObject(underTest, 1);
         assertTrue(fact.getListfactObjectAttributes().size()==7);
         
     }

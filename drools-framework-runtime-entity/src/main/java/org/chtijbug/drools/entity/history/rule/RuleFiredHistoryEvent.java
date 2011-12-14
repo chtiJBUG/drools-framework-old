@@ -6,7 +6,7 @@ package org.chtijbug.drools.entity.history.rule;
 
 import java.util.ArrayList;
 
-import org.chtijbug.drools.entity.history.FactObject;
+import org.chtijbug.drools.entity.DroolsFactObject;
 
 /**
  * 
@@ -14,14 +14,14 @@ import org.chtijbug.drools.entity.history.FactObject;
  */
 public class RuleFiredHistoryEvent extends RuleHistoryEvent {
 
-	private final ArrayList<FactObject> whenObjects;
+	private final ArrayList<DroolsFactObject> whenObjects;
 
 	public RuleFiredHistoryEvent(String ruleName) {
 		super(ruleName);
-		this.whenObjects = new ArrayList<FactObject>();
+		this.whenObjects = new ArrayList<DroolsFactObject>();
 	}
 
-	public ArrayList<FactObject> getWhenObjects() {
+	public ArrayList<DroolsFactObject> getWhenObjects() {
 		return whenObjects;
 	}
 
@@ -37,7 +37,7 @@ public class RuleFiredHistoryEvent extends RuleHistoryEvent {
 		str.append(super.toString() + "\n");
 
 		str.append("When objects :\n");
-		for (FactObject fact : whenObjects) {
+		for (DroolsFactObject fact : whenObjects) {
 			str.append("- " + fact + "\n");
 		}
 		return str.toString();

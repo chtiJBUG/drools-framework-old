@@ -6,26 +6,26 @@ package org.chtijbug.drools.entity.history.fact;
 
 import java.util.Date;
 
-import org.chtijbug.drools.entity.history.FactObject;
-import org.chtijbug.drools.entity.history.FactObjectAttribute;
+import org.chtijbug.drools.entity.DroolsFactObject;
+import org.chtijbug.drools.entity.DroolsFactObjectAttribute;
 
 /**
  * 
  * @author nheron
  */
 public class InsertedFactHistoryEvent extends FactHistoryEvent {
-	private FactObject insertedObject;
+	private DroolsFactObject insertedObject;
 
-	public InsertedFactHistoryEvent(FactObject insertedObject) {
+	public InsertedFactHistoryEvent(DroolsFactObject insertedObject) {
 		super(new Date());
 		this.insertedObject = insertedObject;
 	}
 
-	public FactObject getInsertedObject() {
+	public DroolsFactObject getInsertedObject() {
 		return insertedObject;
 	}
 
-	public void setInsertedObject(FactObject insertedObject) {
+	public void setInsertedObject(DroolsFactObject insertedObject) {
 		this.insertedObject = insertedObject;
 	}
 
@@ -42,7 +42,7 @@ public class InsertedFactHistoryEvent extends FactHistoryEvent {
 		str.append("inserted Object : " + insertedObject.getFullClassName() + "\n");
 		str.append("version Object : " + insertedObject.getObjectVersion() + "\n");
 		str.append("attributes :\n");
-		for (FactObjectAttribute foa : insertedObject.getListfactObjectAttributes()) {
+		for (DroolsFactObjectAttribute foa : insertedObject.getListfactObjectAttributes()) {
 			str.append("- " + foa.getAttributeType() + " " + foa.getAttributeName() + "=" + foa.getAttributeValue() + "\n");
 		}
 

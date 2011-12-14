@@ -4,7 +4,7 @@
  */
 package org.chtijbug.drools.runtime.impl;
 
-import org.chtijbug.drools.entity.history.FactObject;
+import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.history.fact.DeletedFactHistoryEvent;
 import org.chtijbug.drools.entity.history.fact.InsertedFactHistoryEvent;
 import org.chtijbug.drools.entity.history.fact.UpdatedFactHistoryEvent;
@@ -36,7 +36,7 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
         // events.add("Fact inserted :: " + event.getObject().toString());
         FactHandle f = event.getFactHandle();
         Object newIbject = event.getObject();
-        FactObject ff = FactObject.createFactObject(newIbject);
+        DroolsFactObject ff = DroolsFactObject.createFactObject(newIbject);
         ruleBaseSession.setData(f, newIbject, ff);
         InsertedFactHistoryEvent insertFactHistoryEvent = new InsertedFactHistoryEvent(ff);
         this.ruleBaseSession.getHistoryContainer().addHistoryElement(insertFactHistoryEvent);
@@ -48,8 +48,8 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
         FactHandle f = event.getFactHandle();
         Object oldValue = event.getOldObject();
         Object newValue = event.getObject();
-        FactObject factOldValue = this.ruleBaseSession.getLastFactObjectVersion(oldValue);
-        FactObject factnewValue = FactObject.createFactObject(newValue, factOldValue.getNextObjectVersion());
+        DroolsFactObject factOldValue = this.ruleBaseSession.getLastFactObjectVersion(oldValue);
+        DroolsFactObject factnewValue = DroolsFactObject.createFactObject(newValue, factOldValue.getNextObjectVersion());
         ruleBaseSession.setData(f, newValue, factnewValue);
         UpdatedFactHistoryEvent updatedFactHistoryEvent = new UpdatedFactHistoryEvent(factOldValue, factnewValue);
         this.ruleBaseSession.getHistoryContainer().addHistoryElement(updatedFactHistoryEvent);
@@ -61,7 +61,7 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
         // events.add("Fact retracted :: " + event.getOldObject().toString());
         FactHandle f = event.getFactHandle();
         Object newIbject = event.getOldObject();
-        FactObject deletedFact = this.ruleBaseSession.getLastFactObjectVersion(newIbject);
+        DroolsFactObject deletedFact = this.ruleBaseSession.getLastFactObjectVersion(newIbject);
         DeletedFactHistoryEvent deleteFactEvent = new DeletedFactHistoryEvent(deletedFact);
         this.ruleBaseSession.getHistoryContainer().addHistoryElement(deleteFactEvent);
         ruleBaseSession.unsetData(f, newIbject);

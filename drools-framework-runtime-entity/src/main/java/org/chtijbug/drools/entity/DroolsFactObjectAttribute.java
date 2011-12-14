@@ -2,19 +2,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.chtijbug.drools.entity.history;
+package org.chtijbug.drools.entity;
 
 /**
  *
  * @author nheron
  */
-public class FactObjectAttribute {
+public class DroolsFactObjectAttribute {
 
     private String attributeName;
     private String attributeValue;
     private String attributeType;
 
-    public FactObjectAttribute(String attributeName, String attributeValue, String attributeType) {
+    public DroolsFactObjectAttribute(String attributeName, String attributeValue, String attributeType) {
         this.attributeName = attributeName;
         this.attributeValue = attributeValue;
         this.attributeType = attributeType;

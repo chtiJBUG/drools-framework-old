@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.chtijbug.drools.entity.history;
+package org.chtijbug.drools.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +15,16 @@ import org.slf4j.LoggerFactory;
  * 
  * @author nheron
  */
-public class FactObject {
+public class DroolsFactObject {
 
-	static final Logger LOGGER = LoggerFactory.getLogger(FactObject.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(DroolsFactObject.class);
 	private String fullClassName;
 	private int hashCode;
 	private final int version;
-	private List<FactObjectAttribute> listfactObjectAttributes = new ArrayList<FactObjectAttribute>();
+	private List<DroolsFactObjectAttribute> listfactObjectAttributes = new ArrayList<DroolsFactObjectAttribute>();
 	private final Object realObject;
 
-	public FactObject(Object realObject, int version) {
+	public DroolsFactObject(Object realObject, int version) {
 		this.realObject = realObject;
 		this.version = version;
 		this.fullClassName = realObject.getClass().getCanonicalName();
@@ -55,11 +55,11 @@ public class FactObject {
 		return version + 1;
 	}
 
-	public List<FactObjectAttribute> getListfactObjectAttributes() {
+	public List<DroolsFactObjectAttribute> getListfactObjectAttributes() {
 		return listfactObjectAttributes;
 	}
 
-	public void setListfactObjectAttributes(List<FactObjectAttribute> listfactObjectAttributes) {
+	public void setListfactObjectAttributes(List<DroolsFactObjectAttribute> listfactObjectAttributes) {
 		this.listfactObjectAttributes = listfactObjectAttributes;
 	}
 
@@ -83,21 +83,21 @@ public class FactObject {
 		BeanMap m = new BeanMap(this.realObject);
 		for (Object para : m.keySet()) {
 			if (!para.toString().equals("class")) {
-				FactObjectAttribute attribute = new FactObjectAttribute(para.toString(), m.get(para).toString(), m.get(para).getClass().getSimpleName());
+				DroolsFactObjectAttribute attribute = new DroolsFactObjectAttribute(para.toString(), m.get(para).toString(), m.get(para).getClass().getSimpleName());
 				this.listfactObjectAttributes.add(attribute);
 			}
 
 		}
 	}
 
-	public static FactObject createFactObject(Object o) {
+	public static DroolsFactObject createFactObject(Object o) {
 		return createFactObject(o, 0);
 	}
 
-	public static FactObject createFactObject(Object o, int version) {
-		FactObject createFactObject = null;
+	public static DroolsFactObject createFactObject(Object o, int version) {
+		DroolsFactObject createFactObject = null;
 		if (o != null) {
-			createFactObject = new FactObject(o, version);
+			createFactObject = new DroolsFactObject(o, version);
 		}
 		return createFactObject;
 	}

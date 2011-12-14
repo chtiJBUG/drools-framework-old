@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.chtijbug.drools.entity.history.FactObject;
+import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.drools.runtime.StatefulKnowledgeSession;
@@ -28,7 +28,7 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 	private StatefulKnowledgeSession knowledgeSession = null;
 	private final Map<FactHandle, Object> listObject = new HashMap<FactHandle, Object>();
 	private final Map<Object, FactHandle> listFact = new HashMap<Object, FactHandle>();
-	private final Map<Object, List<FactObject>> listFactObjects = new HashMap<Object, List<FactObject>>();
+	private final Map<Object, List<DroolsFactObject>> listFactObjects = new HashMap<Object, List<DroolsFactObject>>();
 	private FactHandlerListener factListener;
 	private final RuleHandlerListener runHandlerListener;
 	private final HistoryContainer historyContainer = new HistoryContainer();
@@ -44,23 +44,23 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 
 	}
 
-	public FactObject getLastFactObjectVersion(Object searchO) {
+	public DroolsFactObject getLastFactObjectVersion(Object searchO) {
 		int lastVersion = listFactObjects.get(searchO).size() - 1;
 		return getFactObjectVersion(searchO, lastVersion);
 	}
 
-	public FactObject getFactObjectVersion(Object search0, int version) {
+	public DroolsFactObject getFactObjectVersion(Object search0, int version) {
 		return listFactObjects.get(search0).get(version);
 	}
 
-	public FactObject getLastFactObjectVersionFromFactHandle(FactHandle factToFind) {
+	public DroolsFactObject getLastFactObjectVersionFromFactHandle(FactHandle factToFind) {
 
 		Object searchObject = this.listObject.get(factToFind);
 		if (searchObject == null) {
 			return null;
 		}
 
-		List<FactObject> facto = listFactObjects.get(searchObject);
+		List<DroolsFactObject> facto = listFactObjects.get(searchObject);
 
 		if (facto == null) {
 			LOGGER.error("List of FactObject can not be null for FactHandle {}", factToFind);
@@ -71,7 +71,7 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 		return listFactObjects.get(searchObject).get(lastVersion);
 	}
 
-	public FactObject getFactObjectVersionFromFactHandle(FactHandle factToFind, int version) {
+	public DroolsFactObject getFactObjectVersionFromFactHandle(FactHandle factToFind, int version) {
 		Object searchObject = this.listObject.get(factToFind);
 		if (searchObject == null) {
 			return null;
@@ -88,7 +88,7 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 		return knowledgeSession;
 	}
 
-	public void setData(FactHandle f, Object o, FactObject fObject) {
+	public void setData(FactHandle f, Object o, DroolsFactObject fObject) {
 
 		Object objectSearch = listObject.containsKey(f);
 		if (objectSearch != null) {
@@ -99,7 +99,7 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 		listFact.put(o, f);
 
 		if (listFactObjects.containsKey(o) == false) {
-			List<FactObject> newList = new LinkedList<FactObject>();
+			List<DroolsFactObject> newList = new LinkedList<DroolsFactObject>();
 			newList.add(fObject);
 			listFactObjects.put(o, newList);
 		} else {

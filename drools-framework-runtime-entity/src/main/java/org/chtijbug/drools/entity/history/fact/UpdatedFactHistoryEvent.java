@@ -5,36 +5,37 @@
 package org.chtijbug.drools.entity.history.fact;
 
 import java.util.Date;
-import org.chtijbug.drools.entity.history.FactObject;
+
+import org.chtijbug.drools.entity.DroolsFactObject;
 
 /**
  *
  * @author nheron
  */
 public class UpdatedFactHistoryEvent extends FactHistoryEvent{
-    private FactObject objectOldValue;
-    private FactObject objectNewValue;
+    private DroolsFactObject objectOldValue;
+    private DroolsFactObject objectNewValue;
 
-    public UpdatedFactHistoryEvent(FactObject objectOldValue, FactObject objectNewValue) {
+    public UpdatedFactHistoryEvent(DroolsFactObject objectOldValue, DroolsFactObject objectNewValue) {
         super(new Date());
         this.objectOldValue = objectOldValue;
         this.objectNewValue = objectNewValue;
       
     }
 
-    public FactObject getObjectNewValue() {
+    public DroolsFactObject getObjectNewValue() {
         return objectNewValue;
     }
 
-    public void setObjectNewValue(FactObject objectNewValue) {
+    public void setObjectNewValue(DroolsFactObject objectNewValue) {
         this.objectNewValue = objectNewValue;
     }
 
-    public FactObject getObjectOldValue() {
+    public DroolsFactObject getObjectOldValue() {
         return objectOldValue;
     }
 
-    public void setObjectOldValue(FactObject objectOldValue) {
+    public void setObjectOldValue(DroolsFactObject objectOldValue) {
         this.objectOldValue = objectOldValue;
     }
     

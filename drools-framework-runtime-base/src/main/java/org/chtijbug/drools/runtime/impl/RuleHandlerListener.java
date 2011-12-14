@@ -6,7 +6,7 @@ package org.chtijbug.drools.runtime.impl;
 
 import java.util.List;
 
-import org.chtijbug.drools.entity.history.FactObject;
+import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.history.rule.RuleFiredHistoryEvent;
 import org.drools.event.rule.ActivationCancelledEvent;
 import org.drools.event.rule.ActivationCreatedEvent;
@@ -52,7 +52,7 @@ public class RuleHandlerListener implements AgendaEventListener {
 		RuleFiredHistoryEvent newRuleEvent = new RuleFiredHistoryEvent(activation.getRule().getName());
 
 		for (FactHandle h : listFact) {
-			FactObject sourceFactObject = ruleBaseSession.getLastFactObjectVersionFromFactHandle(h);
+			DroolsFactObject sourceFactObject = ruleBaseSession.getLastFactObjectVersionFromFactHandle(h);
 			newRuleEvent.getWhenObjects().add(sourceFactObject);
 		}
 

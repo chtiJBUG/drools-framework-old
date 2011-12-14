@@ -5,8 +5,6 @@ package org.chtijbug.drools.entity;
 
 import java.io.Serializable;
 
-import org.drools.definition.rule.Rule;
-
 /**
  * @author Bertrand Gressier
  * @date 14 déc. 2011
@@ -20,21 +18,30 @@ public class DroolsRuleObject implements Serializable {
 	 */
 	private static final long serialVersionUID = -716077698281963299L;
 
-	private final Rule rule;
+	private final String ruleName;
+	private final String rulePackageName;
 
 	/**
-	 * Define a Rule Object with this name
-	 * 
+	 * @param ruleName
+	 * @param rulePackageName
 	 */
-	protected DroolsRuleObject(Rule rule) {
-		this.rule = rule;
+	protected DroolsRuleObject(String ruleName, String rulePackageName) {
+		this.ruleName = ruleName;
+		this.rulePackageName = rulePackageName;
 	}
 
 	/**
 	 * @return the ruleName
 	 */
 	public String getRuleName() {
-		return rule.getName();
+		return ruleName;
+	}
+
+	/**
+	 * @return the rulePackageName
+	 */
+	public String getRulePackageName() {
+		return rulePackageName;
 	}
 
 	/*
@@ -47,14 +54,7 @@ public class DroolsRuleObject implements Serializable {
 		return "Rule object with name :" + getRuleName();
 	}
 
-	/**
-	 * @return
-	 */
-	public Rule getRule() {
-		return rule;
-	}
-
-	public static DroolsRuleObject createDroolRuleObject(Rule rule) {
-		return new DroolsRuleObject(rule);
+	public static DroolsRuleObject createDroolRuleObject(String ruleName, String rulePackageName) {
+		return new DroolsRuleObject(ruleName, rulePackageName);
 	}
 }

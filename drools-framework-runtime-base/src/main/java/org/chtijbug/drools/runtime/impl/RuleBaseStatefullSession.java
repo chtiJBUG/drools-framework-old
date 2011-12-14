@@ -1,5 +1,6 @@
 package org.chtijbug.drools.runtime.impl;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 	private final Map<Object, FactHandle> listFact;
 	private final Map<Object, List<DroolsFactObject>> listFactObjects;
 	private final HistoryContainer historyContainer;
-	private final Map<Rule, DroolsRuleObject> listRules;
+	private final Map<String, DroolsRuleObject> listRules;
 	private final Map<DroolsProcessObject, List<DroolsNodeObject>> processDefinitions;
 	private final Map<DroolsProcessInstanceObject, List<DroolsNodeInstanceObject>> processInstances;
 
@@ -49,7 +50,7 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 		listFactObjects = new HashMap<Object, List<DroolsFactObject>>();
 		listFact = new HashMap<Object, FactHandle>();
 		listObject = new HashMap<FactHandle, Object>();
-		listRules = new HashMap<Rule, DroolsRuleObject>();
+		listRules = new HashMap<String, DroolsRuleObject>();
 		processDefinitions = new HashMap<DroolsProcessObject, List<DroolsNodeObject>>();
 		processInstances = new HashMap<DroolsProcessInstanceObject, List<DroolsNodeInstanceObject>>();
 
@@ -59,10 +60,10 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 	}
 
 	public DroolsRuleObject getDroolsRuleObject(Rule rule) {
-		DroolsRuleObject droolsRuleObject = listRules.get(rule);
+		DroolsRuleObject droolsRuleObject = listRules.get(rule.getPackageName() + rule.getName());
 
 		if (droolsRuleObject == null) {
-			droolsRuleObject = DroolsRuleObject.createDroolRuleObject(rule);
+			droolsRuleObject = DroolsRuleObject.createDroolRuleObject(rule.getName(), rule.getPackageName());
 			addDroolsRuleObject(droolsRuleObject);
 		}
 
@@ -70,7 +71,7 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 	}
 
 	public void addDroolsRuleObject(DroolsRuleObject droolsRuleObject) {
-		listRules.put(droolsRuleObject.getRule(), droolsRuleObject);
+		listRules.put(droolsRuleObject.getRulePackageName() + droolsRuleObject.getRuleName(), droolsRuleObject);
 	}
 
 	public DroolsFactObject getLastFactObjectVersion(Object searchO) {
@@ -190,5 +191,10 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 	@Override
 	public void startProcess(String processName) {
 		this.knowledgeSession.startProcess(processName);
+	}
+
+	@Override
+	public Collection<DroolsRuleObject> listRules() {
+		return listRules.values();
 	}
 }

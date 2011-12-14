@@ -70,5 +70,7 @@ public class RuleBaseStatefullSessionTest {
 		for (HistoryEvent hevent : session.getHistoryContainer().getListHistoryEvent()) {
 			System.out.println(hevent);
 		}
+
+		Assert.assertEquals(3, session.listRules().size());
 	}
 }

@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.chtijbug.drools.entity.DroolsFactObject;
-import org.chtijbug.drools.entity.DroolsNodeInstanceObject;
-import org.chtijbug.drools.entity.DroolsNodeObject;
 import org.chtijbug.drools.entity.DroolsProcessInstanceObject;
 import org.chtijbug.drools.entity.DroolsProcessObject;
 import org.chtijbug.drools.entity.DroolsRuleObject;
@@ -16,6 +14,7 @@ import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.drools.definition.rule.Rule;
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.drools.runtime.process.ProcessInstance;
 import org.drools.runtime.rule.FactHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,16 +26,14 @@ import org.slf4j.LoggerFactory;
 public class RuleBaseStatefullSession implements RuleBaseSession {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(RuleBaseStatefullSession.class);
-
 	private StatefulKnowledgeSession knowledgeSession = null;
 	private final Map<FactHandle, Object> listObject;
 	private final Map<Object, FactHandle> listFact;
 	private final Map<Object, List<DroolsFactObject>> listFactObjects;
 	private final HistoryContainer historyContainer;
 	private final Map<String, DroolsRuleObject> listRules;
-	private final Map<DroolsProcessObject, List<DroolsNodeObject>> processDefinitions;
-	private final Map<DroolsProcessInstanceObject, List<DroolsNodeInstanceObject>> processInstances;
-
+	private final Map<String, DroolsProcessObject> processList;
+	private final Map<String, DroolsProcessInstanceObject> processInstanceList;
 	// Listeners can be dispose ...
 	private FactHandlerListener factListener;
 	private final RuleHandlerListener runHandlerListener;
@@ -51,16 +48,32 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 		listFact = new HashMap<Object, FactHandle>();
 		listObject = new HashMap<FactHandle, Object>();
 		listRules = new HashMap<String, DroolsRuleObject>();
-		processDefinitions = new HashMap<DroolsProcessObject, List<DroolsNodeObject>>();
-		processInstances = new HashMap<DroolsProcessInstanceObject, List<DroolsNodeInstanceObject>>();
+		processList = new HashMap<String, DroolsProcessObject>();
+		processInstanceList = new HashMap<String, DroolsProcessInstanceObject>();
 
 		knowledgeSession.addEventListener(factListener);
 		knowledgeSession.addEventListener(runHandlerListener);
+	}
 
+	public DroolsProcessInstanceObject getDroolsProcessInstanceObject(ProcessInstance processInstance) {
+		DroolsProcessInstanceObject droolsProcessInstanceObject = processInstanceList.get(processInstance.getId());
+		if (droolsProcessInstanceObject == null) {
+			DroolsProcessObject droolsProcessObject = processList.get(processInstance.getProcess().getId());
+
+			if (droolsProcessObject == null) {
+				droolsProcessObject = DroolsProcessObject.createDroolsProcessObject(processInstance.getProcess().getId(), processInstance.getProcess().getName(), processInstance
+						.getProcess().getPackageName(), processInstance.getProcess().getType(), processInstance.getProcess().getVersion());
+				processList.put(processInstance.getProcess().getId(), droolsProcessObject);
+			}
+
+			droolsProcessInstanceObject = DroolsProcessInstanceObject.createDroolsProcessInstanceObject(String.valueOf(processInstance.getId()), droolsProcessObject);
+			processInstanceList.put(droolsProcessInstanceObject.getId(), droolsProcessInstanceObject);
+		}
+		return droolsProcessInstanceObject;
 	}
 
 	public DroolsRuleObject getDroolsRuleObject(Rule rule) {
-		DroolsRuleObject droolsRuleObject = listRules.get(rule.getPackageName() + rule.getName());
+		DroolsRuleObject droolsRuleObject = listRules.get(rule);
 
 		if (droolsRuleObject == null) {
 			droolsRuleObject = DroolsRuleObject.createDroolRuleObject(rule.getName(), rule.getPackageName());

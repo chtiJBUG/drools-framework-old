@@ -5,7 +5,6 @@
 package org.chtijbug.drools.entity.history.rule;
 
 import java.util.ArrayList;
-
 import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.DroolsRuleObject;
 

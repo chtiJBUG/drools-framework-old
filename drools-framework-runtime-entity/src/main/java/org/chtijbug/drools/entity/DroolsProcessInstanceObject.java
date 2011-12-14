@@ -5,8 +5,10 @@
 package org.chtijbug.drools.entity;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -20,11 +22,12 @@ public class DroolsProcessInstanceObject implements Serializable {
 	private static final long serialVersionUID = 5436434746711988139L;
 	private final String id;
 	private final DroolsProcessObject process;
-	private final List<DroolsNodeInstanceObject> nodeInstances = new LinkedList<DroolsNodeInstanceObject>();
+	private final Map<String,DroolsNodeInstanceObject> nodeInstances;
 
-	public DroolsProcessInstanceObject(String id, DroolsProcessObject process) {
+	protected DroolsProcessInstanceObject(String id, DroolsProcessObject process) {
 		this.id = id;
 		this.process = process;
+                 nodeInstances = new HashMap<String,DroolsNodeInstanceObject>();
 	}
 
 	public String getId() {
@@ -34,10 +37,13 @@ public class DroolsProcessInstanceObject implements Serializable {
 	public DroolsProcessObject getProcess() {
 		return process;
 	}
-
-	public List<DroolsNodeInstanceObject> getNodeInstances() {
-		return nodeInstances;
-	}
+        public void addDroolsNodeInstanceObject(DroolsNodeInstanceObject droolsNodeInstanceObject){
+            nodeInstances.put(droolsNodeInstanceObject.getId(), droolsNodeInstanceObject);
+        }
+	
+        public DroolsNodeInstanceObject getDroolsNodeInstanceObjet(String id){
+            return nodeInstances.get(id);
+        }
 
 	@Override
 	public boolean equals(Object obj) {
@@ -64,5 +70,11 @@ public class DroolsProcessInstanceObject implements Serializable {
 		hash = 17 * hash + (this.process != null ? this.process.hashCode() : 0);
 		return hash;
 	}
+        
+        public static DroolsProcessInstanceObject createDroolsProcessInstanceObject(String processInstanceID,DroolsProcessObject process){
+                    
+            return new DroolsProcessInstanceObject(processInstanceID, process);
+        }
+        
 
 }

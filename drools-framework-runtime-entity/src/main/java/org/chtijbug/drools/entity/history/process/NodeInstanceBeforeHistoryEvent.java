@@ -10,14 +10,14 @@ import org.chtijbug.drools.entity.DroolsNodeInstanceObject;
  * 
  * @author nheron
  */
-public class NodeInstanceHistoryEvent extends ProcessHistoryEvent {
+public class NodeInstanceBeforeHistoryEvent extends ProcessHistoryEvent {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7909713944850159592L;
-	private DroolsNodeInstanceObject nodeInstance;
+	private final DroolsNodeInstanceObject nodeInstance;
 
-	public NodeInstanceHistoryEvent(DroolsNodeInstanceObject nodeInstance) {
+	public NodeInstanceBeforeHistoryEvent(DroolsNodeInstanceObject nodeInstance) {
 		this.nodeInstance = nodeInstance;
 	}
 
@@ -25,8 +25,5 @@ public class NodeInstanceHistoryEvent extends ProcessHistoryEvent {
 		return nodeInstance;
 	}
 
-	public void setNodeInstance(DroolsNodeInstanceObject nodeInstance) {
-		this.nodeInstance = nodeInstance;
-	}
 
 }

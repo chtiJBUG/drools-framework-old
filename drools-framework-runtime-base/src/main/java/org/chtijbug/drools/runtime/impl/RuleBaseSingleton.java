@@ -6,7 +6,6 @@ package org.chtijbug.drools.runtime.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
@@ -82,7 +81,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
 			kbase = KnowledgeBaseFactory.newKnowledgeBase();
 			kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-
 		} catch (Exception e) {
 			LOGGER.error("error to load Agent", e);
 		}

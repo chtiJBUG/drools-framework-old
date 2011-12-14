@@ -4,60 +4,65 @@
  */
 package org.chtijbug.drools.entity;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- *
+ * 
  * @author nheron
  */
-public class DroolsProcessInstanceObject {
+public class DroolsProcessInstanceObject implements Serializable {
 
-    private final String id;
-    private final DroolsProcessObject process;
-    private final List<DroolsNodeInstanceObject> nodeInstances = new LinkedList<DroolsNodeInstanceObject>();
-    
-    public DroolsProcessInstanceObject(String id, DroolsProcessObject process) {
-        this.id = id;
-        this.process = process;
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5436434746711988139L;
+	private final String id;
+	private final DroolsProcessObject process;
+	private final List<DroolsNodeInstanceObject> nodeInstances = new LinkedList<DroolsNodeInstanceObject>();
 
-    public String getId() {
-        return id;
-    }
+	public DroolsProcessInstanceObject(String id, DroolsProcessObject process) {
+		this.id = id;
+		this.process = process;
+	}
 
-    public DroolsProcessObject getProcess() {
-        return process;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public List<DroolsNodeInstanceObject> getNodeInstances() {
-        return nodeInstances;
-    }
+	public DroolsProcessObject getProcess() {
+		return process;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final DroolsProcessInstanceObject other = (DroolsProcessInstanceObject) obj;
-        if ((this.id == null) ? (other.id != null) : !this.id.equals(other.id)) {
-            return false;
-        }
-        if (this.process != other.process && (this.process == null || !this.process.equals(other.process))) {
-            return false;
-        }
-        return true;
-    }
+	public List<DroolsNodeInstanceObject> getNodeInstances() {
+		return nodeInstances;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 17 * hash + (this.id != null ? this.id.hashCode() : 0);
-        hash = 17 * hash + (this.process != null ? this.process.hashCode() : 0);
-        return hash;
-    }
-    
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final DroolsProcessInstanceObject other = (DroolsProcessInstanceObject) obj;
+		if ((this.id == null) ? (other.id != null) : !this.id.equals(other.id)) {
+			return false;
+		}
+		if (this.process != other.process && (this.process == null || !this.process.equals(other.process))) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 17 * hash + (this.id != null ? this.id.hashCode() : 0);
+		hash = 17 * hash + (this.process != null ? this.process.hashCode() : 0);
+		return hash;
+	}
+
 }

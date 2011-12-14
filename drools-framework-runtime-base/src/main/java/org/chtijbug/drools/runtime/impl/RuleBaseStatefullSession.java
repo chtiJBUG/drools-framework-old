@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.chtijbug.drools.runtime.impl;
 
 import java.util.HashMap;
@@ -10,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.chtijbug.drools.entity.DroolsFactObject;
+import org.chtijbug.drools.entity.DroolsNodeInstanceObject;
+import org.chtijbug.drools.entity.DroolsNodeObject;
+import org.chtijbug.drools.entity.DroolsProcessInstanceObject;
+import org.chtijbug.drools.entity.DroolsProcessObject;
 import org.chtijbug.drools.entity.DroolsRuleObject;
 import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.RuleBaseSession;
@@ -33,6 +33,8 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 	private final Map<Object, List<DroolsFactObject>> listFactObjects;
 	private final HistoryContainer historyContainer;
 	private final Map<Rule, DroolsRuleObject> listRules;
+	private final Map<DroolsProcessObject, List<DroolsNodeObject>> processDefinitions;
+	private final Map<DroolsProcessInstanceObject, List<DroolsNodeInstanceObject>> processInstances;
 
 	// Listeners can be dispose ...
 	private FactHandlerListener factListener;
@@ -48,6 +50,8 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 		listFact = new HashMap<Object, FactHandle>();
 		listObject = new HashMap<FactHandle, Object>();
 		listRules = new HashMap<Rule, DroolsRuleObject>();
+		processDefinitions = new HashMap<DroolsProcessObject, List<DroolsNodeObject>>();
+		processInstances = new HashMap<DroolsProcessInstanceObject, List<DroolsNodeInstanceObject>>();
 
 		knowledgeSession.addEventListener(factListener);
 		knowledgeSession.addEventListener(runHandlerListener);

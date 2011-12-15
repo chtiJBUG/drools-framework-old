@@ -12,9 +12,7 @@ import javax.management.ObjectName;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.mbeans.RuleBaseSupervision;
-import org.chtijbug.drools.runtime.mbeans.RuleBaseSupervisionMBean;
 import org.chtijbug.drools.runtime.mbeans.StatefullSessionSupervision;
-import org.chtijbug.drools.runtime.mbeans.StatefullSessionSupervisionMBean;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
@@ -33,8 +31,8 @@ public class RuleBaseSingleton implements RuleBasePackage {
     static final Logger LOGGER = LoggerFactory.getLogger(RuleBaseSingleton.class);
     private KnowledgeBase kbase = null;
     private final List<DroolsResource> listResouces;
-    private RuleBaseSupervisionMBean mbsRuleBase;
-    private StatefullSessionSupervisionMBean mbsSession;
+    private RuleBaseSupervision mbsRuleBase;
+    private StatefullSessionSupervision mbsSession;
     private int maxNumberRuleToExecute = 2000;
 
     public RuleBaseSingleton() {
@@ -62,7 +60,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
         RuleBaseSession newRuleBaseSession = null;
         if (kbase != null) {
             StatefulKnowledgeSession newDroolsSession = kbase.newStatefulKnowledgeSession();
-            newRuleBaseSession = new RuleBaseStatefullSession(newDroolsSession, maxNumberRuleToExecute);
+            newRuleBaseSession = new RuleBaseStatefullSession(newDroolsSession, maxNumberRuleToExecute, mbsSession);
 
         } else {
             throw new UnsupportedOperationException("Kbase not initialized");
@@ -105,8 +103,8 @@ public class RuleBaseSingleton implements RuleBasePackage {
             kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
             MBeanServer server = ManagementFactory.getPlatformMBeanServer();
 
-            ObjectName nameRuleBase = new ObjectName("org.chtijbug.drools.runtime.mbeans.impl:type=RuleBaseSupervision");
-            ObjectName nameSession = new ObjectName("org.chtijbug.drools.runtime.mbeans.impl:type=StateFullSessionSupervision");
+            ObjectName nameRuleBase = new ObjectName("org.chtijbug.drools.runtime:type=RuleBaseSupervision");
+            ObjectName nameSession = new ObjectName("org.chtijbug.drools.runtime:type=StateFullSessionSupervision");
             mbsRuleBase = new RuleBaseSupervision(this);
             mbsSession = new StatefullSessionSupervision();
             server.registerMBean(mbsRuleBase, nameRuleBase);

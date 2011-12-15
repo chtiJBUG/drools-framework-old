@@ -77,4 +77,9 @@ public class RuleHandlerListener implements AgendaEventListener {
     @Override
     public void agendaGroupPushed(AgendaGroupPushedEvent agpe) {
     }
+
+    public int getNbRuleFired() {
+        return nbRuleFired;
+    }
+    
 }

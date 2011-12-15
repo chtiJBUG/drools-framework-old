@@ -14,6 +14,7 @@ import org.chtijbug.drools.entity.DroolsProcessObject;
 import org.chtijbug.drools.entity.DroolsRuleObject;
 import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.RuleBaseSession;
+import org.chtijbug.drools.runtime.mbeans.StatefullSessionSupervision;
 import org.drools.definition.rule.Rule;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.NodeInstance;
@@ -39,25 +40,28 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
     private final Map<String, DroolsProcessInstanceObject> processInstanceList;
     // Listeners can be dispose ...
     private FactHandlerListener factListener;
-    private final RuleHandlerListener runHandlerListener;
+    private RuleHandlerListener ruleHandlerListener;
+    private ProcessHandlerListener processHandlerListener;
     private int maxNumberRuleToExecute;
+    private StatefullSessionSupervision mbeanStatefulleSessionSupervision;
 
-    public RuleBaseStatefullSession(StatefulKnowledgeSession knowledgeSession,int maxNumberRuleToExecute) {
+    public RuleBaseStatefullSession(StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefullSessionSupervision mbeanStatefulleSessionSupervision) {
         this.knowledgeSession = knowledgeSession;
         this.maxNumberRuleToExecute = maxNumberRuleToExecute;
-        factListener = new FactHandlerListener(this);
-        runHandlerListener = new RuleHandlerListener(this);
-        historyContainer = new HistoryContainer();
-        listFactObjects = new HashMap<Object, List<DroolsFactObject>>();
-        listFact = new HashMap<Object, FactHandle>();
-        listObject = new HashMap<FactHandle, Object>();
-        listRules = new HashMap<String, DroolsRuleObject>();
-        processList = new HashMap<String, DroolsProcessObject>();
-        processInstanceList = new HashMap<String, DroolsProcessInstanceObject>();
-
+        this.factListener = new FactHandlerListener(this);
+        this.ruleHandlerListener = new RuleHandlerListener(this);
+        this.processHandlerListener = new ProcessHandlerListener(this);
+        this.historyContainer = new HistoryContainer();
+        this.listFactObjects = new HashMap<Object, List<DroolsFactObject>>();
+        this.listFact = new HashMap<Object, FactHandle>();
+        this.listObject = new HashMap<FactHandle, Object>();
+        this.listRules = new HashMap<String, DroolsRuleObject>();
+        this.processList = new HashMap<String, DroolsProcessObject>();
+        this.processInstanceList = new HashMap<String, DroolsProcessInstanceObject>();
+        this.mbeanStatefulleSessionSupervision = mbeanStatefulleSessionSupervision;
         knowledgeSession.addEventListener(factListener);
-        knowledgeSession.addEventListener(runHandlerListener);
-
+        knowledgeSession.addEventListener(ruleHandlerListener);
+        knowledgeSession.addEventListener(processHandlerListener);
     }
 
     public int getMaxNumberRuleToExecute() {
@@ -192,21 +196,16 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
     public void dispose() {
 
         knowledgeSession.removeEventListener(factListener);
-        knowledgeSession.removeEventListener(runHandlerListener);
-
-        // knowledgeSession.removeEventListener(aFiredRulesListener);
-        // knowledgeSession.removeEventListener(processHandler);
+        knowledgeSession.removeEventListener(ruleHandlerListener);
+        knowledgeSession.removeEventListener(processHandlerListener);
         for (FactHandle f : listObject.keySet()) {
             knowledgeSession.retract(f);
         }
-        // aFiredRulesListener.dispose();
-        // aFiredRulesListener.dispose();
-        // aFiredRulesListener = null;
-        // processHandler.dispose();
-        // processHandler = null;
 
         factListener.dispose();
         factListener = null;
+        ruleHandlerListener = null;
+        processHandlerListener = null;
         knowledgeSession.dispose();
         knowledgeSession = null;
 
@@ -231,7 +230,12 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 
     @Override
     public void fireAllRules() {
+        long startTime = System.currentTimeMillis();
+        long beforeNumberRules = ruleHandlerListener.getNbRuleFired();
         this.knowledgeSession.fireAllRules();
+        long stopTime = System.currentTimeMillis();
+        long afterNumberRules = ruleHandlerListener.getNbRuleFired();
+        mbeanStatefulleSessionSupervision.fireAllRulesExecuted(stopTime - startTime, afterNumberRules - beforeNumberRules, historyContainer);
     }
 
     @Override

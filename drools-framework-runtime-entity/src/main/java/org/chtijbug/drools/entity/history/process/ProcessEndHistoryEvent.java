@@ -13,7 +13,7 @@ import org.chtijbug.drools.entity.DroolsProcessInstanceObject;
 public class ProcessEndHistoryEvent extends ProcessHistoryEvent {
 
 	private static final long serialVersionUID = 6327973844897501016L;
-	private final DroolsProcessInstanceObject processInstance;
+	protected DroolsProcessInstanceObject processInstance;
 
 	public ProcessEndHistoryEvent(DroolsProcessInstanceObject processInstance) {
 		this.processInstance = processInstance;

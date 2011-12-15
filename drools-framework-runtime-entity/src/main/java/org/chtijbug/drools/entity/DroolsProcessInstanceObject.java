@@ -15,9 +15,9 @@ import java.util.Map;
 public class DroolsProcessInstanceObject implements Serializable {
 
 	private static final long serialVersionUID = 5436434746711988139L;
-	private final String id;
-	private final DroolsProcessObject process;
-	private final Map<String, DroolsNodeInstanceObject> nodeInstances;
+	protected String id;
+	protected DroolsProcessObject process;
+	protected Map<String, DroolsNodeInstanceObject> nodeInstances;
 
 	protected DroolsProcessInstanceObject(String id, DroolsProcessObject process) {
 		this.id = id;

@@ -17,8 +17,8 @@ public class UpdatedFactHistoryEvent extends FactHistoryEvent {
 	 * 
 	 */
 	private static final long serialVersionUID = 2427277089998136875L;
-	private DroolsFactObject objectOldValue;
-	private DroolsFactObject objectNewValue;
+	protected DroolsFactObject objectOldValue;
+	protected DroolsFactObject objectNewValue;
 
 	public UpdatedFactHistoryEvent(DroolsFactObject objectOldValue, DroolsFactObject objectNewValue) {
 		super(new Date());

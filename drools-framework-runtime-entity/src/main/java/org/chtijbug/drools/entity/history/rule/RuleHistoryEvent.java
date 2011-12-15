@@ -16,7 +16,7 @@ import org.chtijbug.drools.entity.history.HistoryEvent;
 public class RuleHistoryEvent extends HistoryEvent {
 
 	private static final long serialVersionUID = 7433690026159716847L;
-	private final DroolsRuleObject rule;
+	protected DroolsRuleObject rule;
 
 	public RuleHistoryEvent(DroolsRuleObject rule) {
 

@@ -7,17 +7,19 @@ package org.chtijbug.drools.entity.history.process;
 import org.chtijbug.drools.entity.DroolsProcessInstanceObject;
 
 /**
- *
+ * 
  * @author nheron
  */
 public class ProcessEndHistoryEvent extends ProcessHistoryEvent {
-    private final DroolsProcessInstanceObject processInstance;
 
-    public ProcessEndHistoryEvent(DroolsProcessInstanceObject processInstance) {
-        this.processInstance = processInstance;
-    }
+	private static final long serialVersionUID = 6327973844897501016L;
+	private final DroolsProcessInstanceObject processInstance;
 
-    public DroolsProcessInstanceObject getProcessInstance() {
-        return processInstance;
-    } 
+	public ProcessEndHistoryEvent(DroolsProcessInstanceObject processInstance) {
+		this.processInstance = processInstance;
+	}
+
+	public DroolsProcessInstanceObject getProcessInstance() {
+		return processInstance;
+	}
 }

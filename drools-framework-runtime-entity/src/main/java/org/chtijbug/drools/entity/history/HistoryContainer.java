@@ -4,6 +4,7 @@
  */
 package org.chtijbug.drools.entity.history;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,8 +12,9 @@ import java.util.List;
  * 
  * @author nheron
  */
-public class HistoryContainer {
+public class HistoryContainer implements Serializable {
 
+	private static final long serialVersionUID = 5645452451089006572L;
 	private final List<HistoryEvent> listHistoryEvent = new LinkedList<HistoryEvent>();
 
 	public List<HistoryEvent> getListHistoryEvent() {

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.chtijbug.drools.runtime.test;
 
@@ -17,60 +17,103 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 /**
- * @author Bertrand Gressier
- * @date 12 déc. 2011
- * 
- * 
+ * @author Bertrand Gressier @date 12 déc. 2011
+ *
+ *
  */
 @RunWith(MockitoJUnitRunner.class)
 public class RuleBaseStatefullSessionTest {
 
-	RuleBaseSession session;
+    RuleBaseSession session;
+    static RuleBasePackage ruleBasePackage;
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
+    /**
+     * @throws java.lang.Exception
+     */
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+        DrlDroolsResource resource = DrlDroolsResource.createClassPathResource("fibonacci.drl");
+        Assert.assertNotNull("DrlDroolsResource can't be null - fibonacci.drl not found", resource.getResource());
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
+        ruleBasePackage = new RuleBaseSingleton();
+        ruleBasePackage.addDroolsResouce(resource);
+        ruleBasePackage.createKBase();
+    }
 
-		DrlDroolsResource resource = DrlDroolsResource.createClassPathResource("fibonacci.drl");
-		Assert.assertNotNull("DrlDroolsResource can't be null - fibonacci.drl not found", resource.getResource());
+    /**
+     * @throws java.lang.Exception
+     */
+    @Before
+    public void setUp() throws Exception {
+        session = ruleBasePackage.createRuleBaseSession();
+    }
 
-		RuleBasePackage ruleBasePackage = new RuleBaseSingleton();
-		ruleBasePackage.addDroolsResouce(resource);
+    /**
+     * @throws java.lang.Exception
+     */
+    @After
+    public void tearDown() throws Exception {
+        session.dispose();
+    }
 
-		ruleBasePackage.createKBase();
-		session = ruleBasePackage.createRuleBaseSession();
+    @Test
+    public void testFireAllRulesIsOk() throws InterruptedException {
+        Assert.assertNotNull("RuleBaseSession can't be null", session);
+        for (int i = 0; i < 1000; i++) {
+            RuleBaseSession session1 = ruleBasePackage.createRuleBaseSession();
+            Fibonacci fibonacci = new Fibonacci(5);
+            session1.insertObject(fibonacci);
+            session1.fireAllRules();
+            session1.dispose();
+            Thread.sleep(2000);
+        }
 
-	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-		session.dispose();
-	}
+        Assert.assertEquals(3, session.listRules().size());
+    }
 
-	@Test
-	public void testFireAllRulesIsOk() {
-		Assert.assertNotNull("RuleBaseSession can't be null", session);
+    @Test
+    public void testFireAllRulesIsOk1() {
+        Assert.assertNotNull("RuleBaseSession can't be null", session);
 
-		Fibonacci fibonacci = new Fibonacci(5);
-		session.insertObject(fibonacci);
-		session.fireAllRules();
+        Fibonacci fibonacci = new Fibonacci(5);
+        session.insertObject(fibonacci);
+        session.fireAllRules();
 
-		for (HistoryEvent hevent : session.getHistoryContainer().getListHistoryEvent()) {
-			System.out.println(hevent);
-		}
+        for (HistoryEvent hevent : session.getHistoryContainer().getListHistoryEvent()) {
+            System.out.println(hevent);
+        }
 
-		Assert.assertEquals(3, session.listRules().size());
-	}
+        Assert.assertEquals(3, session.listRules().size());
+    }
+
+    @Test
+    public void testFireAllRulesIsOk2() {
+        Assert.assertNotNull("RuleBaseSession can't be null", session);
+
+        Fibonacci fibonacci = new Fibonacci(5);
+        session.insertObject(fibonacci);
+        session.fireAllRules();
+
+        for (HistoryEvent hevent : session.getHistoryContainer().getListHistoryEvent()) {
+            System.out.println(hevent);
+        }
+
+        Assert.assertEquals(3, session.listRules().size());
+    }
+
+    @Test
+    public void testFireAllRulesIs3Ok() {
+        Assert.assertNotNull("RuleBaseSession can't be null", session);
+
+        Fibonacci fibonacci = new Fibonacci(5);
+        session.insertObject(fibonacci);
+        session.fireAllRules();
+
+        for (HistoryEvent hevent : session.getHistoryContainer().getListHistoryEvent()) {
+            System.out.println(hevent);
+        }
+
+        Assert.assertEquals(3, session.listRules().size());
+    }
 }

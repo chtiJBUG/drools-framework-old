@@ -57,7 +57,7 @@ public class RuleBaseStatefullSessionTest {
     }
 
     @Test
-    public void testFireAllRulesIsOk() throws InterruptedException {
+    public void testFireAllRulesIsOk() throws Exception {
         Assert.assertNotNull("RuleBaseSession can't be null", session);
         for (int i = 0; i < 1000; i++) {
             RuleBaseSession session1 = ruleBasePackage.createRuleBaseSession();

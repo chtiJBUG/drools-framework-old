@@ -5,12 +5,8 @@
 package org.chtijbug.drools.runtime.mbeans;
 
 import java.util.List;
-import javax.management.AttributeChangeNotification;
-import javax.management.MBeanNotificationInfo;
-import javax.management.Notification;
 import javax.management.NotificationBroadcasterSupport;
 import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
-import org.chtijbug.drools.runtime.mbeans.RuleBaseSupervisionMBean;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
 
 /**
@@ -37,6 +33,11 @@ public class RuleBaseSupervision extends NotificationBroadcasterSupport implemen
     @Override
     public boolean isKbaseLoaded() {
         return ruleBaseSession.isKbaseLoaded();
+    }
+
+    @Override
+    public void reLoadRuleBase() {
+        ruleBaseSession.createKBase();
     }
 
     

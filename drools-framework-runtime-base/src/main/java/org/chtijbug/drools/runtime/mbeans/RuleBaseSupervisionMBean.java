@@ -15,5 +15,6 @@ public interface RuleBaseSupervisionMBean {
  
     public List<DroolsResource> getDroolsRessource();
     public boolean isKbaseLoaded();
+    public void reLoadRuleBase();
     
 }

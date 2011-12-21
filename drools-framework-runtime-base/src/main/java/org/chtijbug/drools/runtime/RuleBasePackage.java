@@ -17,7 +17,7 @@ public interface RuleBasePackage {
 	 * 
 	 * @return 
 	 */
-    public RuleBaseSession createRuleBaseSession();
+    public RuleBaseSession createRuleBaseSession()  throws Exception;
 
     /**
      * 

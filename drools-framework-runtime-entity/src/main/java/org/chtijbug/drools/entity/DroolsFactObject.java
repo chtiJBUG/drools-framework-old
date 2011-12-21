@@ -25,9 +25,9 @@ public class DroolsFactObject implements Serializable {
 	static final Logger LOGGER = LoggerFactory.getLogger(DroolsFactObject.class);
 	private String fullClassName;
 	private int hashCode;
-	private final int version;
+	protected int version;
 	private List<DroolsFactObjectAttribute> listfactObjectAttributes = new ArrayList<DroolsFactObjectAttribute>();
-	private final Object realObject;
+	private final transient Object realObject;
 
 	protected DroolsFactObject(Object realObject, int version) {
 		this.realObject = realObject;

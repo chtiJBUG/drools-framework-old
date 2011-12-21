@@ -15,12 +15,12 @@ import java.util.Map;
 public class DroolsProcessObject implements Serializable {
 
 	private static final long serialVersionUID = 4718079763911002405L;
-	private final String id;
-	private final String name;
-	private final String packageName;
-	private final String type;
-	private final String version;
-	private final Map<String, DroolsNodeObject> nodeLists;
+	protected String id;
+	protected String name;
+	protected String packageName;
+	protected String type;
+	protected String version;
+	protected Map<String, DroolsNodeObject> nodeLists;
 
 	protected DroolsProcessObject(String id, String name, String packageName, String type, String version) {
 		this.id = id;

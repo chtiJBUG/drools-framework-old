@@ -15,7 +15,7 @@ import java.util.List;
 public class HistoryContainer implements Serializable {
 
 	private static final long serialVersionUID = 5645452451089006572L;
-	private final List<HistoryEvent> listHistoryEvent = new LinkedList<HistoryEvent>();
+	protected List<HistoryEvent> listHistoryEvent = new LinkedList<HistoryEvent>();
 
 	public List<HistoryEvent> getListHistoryEvent() {
 		return listHistoryEvent;

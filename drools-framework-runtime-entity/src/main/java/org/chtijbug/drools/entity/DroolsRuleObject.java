@@ -18,8 +18,8 @@ public class DroolsRuleObject implements Serializable {
 	 */
 	private static final long serialVersionUID = -716077698281963299L;
 
-	private final String ruleName;
-	private final String rulePackageName;
+	protected String ruleName;
+	protected String rulePackageName;
 
 	/**
 	 * @param ruleName

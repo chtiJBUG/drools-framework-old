@@ -7,7 +7,6 @@ package org.chtijbug.drools.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.beanutils.BeanMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

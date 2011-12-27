@@ -31,5 +31,4 @@ public interface StatefullSessionSupervisionMBean {
     public double getMaxRuleThroughout();
 
     public void resetStatistics();
-   // public HistoryContainer getHistoryContainer();
 }

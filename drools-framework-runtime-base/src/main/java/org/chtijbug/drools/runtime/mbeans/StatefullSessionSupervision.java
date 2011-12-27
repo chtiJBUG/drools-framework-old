@@ -4,9 +4,11 @@
  */
 package org.chtijbug.drools.runtime.mbeans;
 
+import com.thoughtworks.xstream.XStream;
 import javax.management.*;
 import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
+import org.drools.runtime.help.impl.XStreamXML;
 
 /**
  *
@@ -27,6 +29,8 @@ public class StatefullSessionSupervision extends NotificationBroadcasterSupport 
     private double minRuleThroughout = 1000000;
     private double maxRuleThroughout = 0;
     //private HistoryContainer historyContainer;
+    private MBeanNotificationInfo[] notificationInfo = null;
+    private XStream xstream = new XStream();
 
     public synchronized void fireAllRulesExecuted(long executionTime, long numberRulesExecuted, HistoryContainer historyContainer) {
         numberFireAllRulesExecuted++;
@@ -59,12 +63,15 @@ public class StatefullSessionSupervision extends NotificationBroadcasterSupport 
                 new AttributeChangeNotification(this,
                 numberFireAllRulesExecuted,
                 System.currentTimeMillis(),
-                "FireAllRules",
+                "number of FireAllRules ",
                 "HistoryContainer",
-                "HistoryContainer",
+                String.class.getName(),
                 "No",
-                historyContainer);
-        //n.setUserData(historyContainer);
+                historyContainer.toString());
+        
+        String xml = xstream.toXML(historyContainer);
+        System.out.println(xml);
+        n.setUserData(xml);
         sendNotification(n);
 
     }
@@ -139,7 +146,19 @@ public class StatefullSessionSupervision extends NotificationBroadcasterSupport 
         MBeanNotificationInfo info =
                 new MBeanNotificationInfo(types, name, description);
 
-        return new MBeanNotificationInfo[]{info};
+        notificationInfo = new MBeanNotificationInfo[]{
+            new MBeanNotificationInfo(new String[]{"service.user.start"},
+            Notification.class.getName(),
+            "DateTime service start."),
+            new MBeanNotificationInfo(new String[]{
+                AttributeChangeNotification.ATTRIBUTE_CHANGE},
+            AttributeChangeNotification.class.getName(),
+            "Fire All rules attribute changes.")
+        };
+
+
+
+        return notificationInfo;
     }
 
     @Override

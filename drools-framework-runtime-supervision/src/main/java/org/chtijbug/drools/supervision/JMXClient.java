@@ -5,6 +5,8 @@
 package org.chtijbug.drools.supervision;
 
 import com.thoughtworks.xstream.XStream;
+import java.util.HashMap;
+import java.util.Map;
 import javax.management.*;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
@@ -27,21 +29,38 @@ public class JMXClient implements NotificationListener {
     private static Logger LOGGER = LoggerFactory.getLogger(JMXClient.class);
     private int port;
     private String serverName;
+    private String user;
+    private String password;
     private RuleBaseSupervisionMBean mbeanRuleProxy = null;
     private StatefullSessionSupervisionMBean mbeanSessionProxy = null;
-    private ObjectName nameRuleBase=null;
-    private ObjectName nameSession=null;
+    private ObjectName nameRuleBase = null;
+    private ObjectName nameSession = null;
     private FireAllRulesListener listener = null;
     private XStream xstream = new XStream();
 
-    public JMXClient(String serverName, int port) {
+    private JMXConnector getRemoteConnection(String host, int port, String user, String password) throws Exception {
+        JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://" + host + ":" + port + "/jmxrmi");
+        final Map<String, String[]> environment = new HashMap<String, String[]>();
+        environment.put(JMXConnector.CREDENTIALS, new String[]{user, password});
+        return JMXConnectorFactory.connect(url, environment);
+    }
+
+    public JMXClient(String host, int port, String user, String password) {
         this.port = port;
-        this.serverName = serverName;
+        this.serverName = host;
+        this.user = user;
+        this.password = password;
+        JMXConnector jmxc = null;
         try {
 
-            //JMXServiceURL url = new   JMXServiceURL("rmi", serverName, port);
             JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://" + this.serverName + ":" + this.port + "/jmxrmi");
-            JMXConnector jmxc = JMXConnectorFactory.connect(url, null);
+            if (user == null) {
+                jmxc = JMXConnectorFactory.connect(url, null);
+            } else {
+                final Map<String, String[]> environment = new HashMap<String, String[]>();
+                environment.put(JMXConnector.CREDENTIALS, new String[]{user, password});
+                jmxc = JMXConnectorFactory.connect(url, environment);
+            }
             this.mbsc = jmxc.getMBeanServerConnection();
             this.nameRuleBase = new ObjectName(HistoryContainer.nameRuleBaseObjectName);
             this.nameSession = new ObjectName(HistoryContainer.nameSessionObjectName);
@@ -62,18 +81,18 @@ public class JMXClient implements NotificationListener {
     }
 
     public void registerListener(FireAllRulesListener newListener) {
-        
+
         try {
-             mbsc.addNotificationListener(nameSession, this, null, null);
-             this.listener = newListener;
+            mbsc.addNotificationListener(nameSession, this, null, null);
+            this.listener = newListener;
         } catch (Exception e) {
             LOGGER.error("Cannot connect to notification", e);
         }
-       
+
     }
 
     public static void main(String args[]) throws Exception {
-        JMXClient client = new JMXClient("localhost", 20000);
+        JMXClient client = new JMXClient("10.2.147.43", 8999, "admin", "admin");
         client.registerListener(new FireAllRulesListener() {
 
             @Override
@@ -81,7 +100,10 @@ public class JMXClient implements NotificationListener {
                 System.out.println(container.toString());
             }
         });
-        Thread.sleep(200000);
+        for (int i = 0; i < 10000; i++) {
+            Thread.sleep(200);
+        }
+
         System.out.println("OK");
     }
 

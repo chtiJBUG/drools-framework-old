@@ -9,20 +9,22 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 
+ *
  * @author nheron
  */
 public class HistoryContainer implements Serializable {
 
-	private static final long serialVersionUID = 5645452451089006572L;
-	protected List<HistoryEvent> listHistoryEvent = new LinkedList<HistoryEvent>();
+    public static String nameRuleBaseObjectName = "org.chtijbug.drools.runtime:type=RuleBaseSupervision";
+    public static String nameSessionObjectName = "org.chtijbug.drools.runtime:type=StateFullSessionSupervision";
+    private static final long serialVersionUID = 5645452451089006572L;
+    protected List<HistoryEvent> listHistoryEvent = new LinkedList<HistoryEvent>();
 
-	public List<HistoryEvent> getListHistoryEvent() {
-		return listHistoryEvent;
-	}
+    public List<HistoryEvent> getListHistoryEvent() {
+        return listHistoryEvent;
+    }
 
-	public void addHistoryElement(HistoryEvent newHistoryElement) {
-		this.listHistoryEvent.add(newHistoryElement);
+    public void addHistoryElement(HistoryEvent newHistoryElement) {
+        this.listHistoryEvent.add(newHistoryElement);
 
-	}
+    }
 }

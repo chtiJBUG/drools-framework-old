@@ -53,6 +53,14 @@ public class JMXClient implements NotificationListener {
         }
     }
 
+    public RuleBaseSupervisionMBean getMbeanRuleProxy() {
+        return mbeanRuleProxy;
+    }
+
+    public StatefullSessionSupervisionMBean getMbeanSessionProxy() {
+        return mbeanSessionProxy;
+    }
+
     public void registerListener(FireAllRulesListener newListener) {
         
         try {

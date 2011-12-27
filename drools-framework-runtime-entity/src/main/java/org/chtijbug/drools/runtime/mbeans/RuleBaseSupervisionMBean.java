@@ -5,7 +5,6 @@
 package org.chtijbug.drools.runtime.mbeans;
 
 import java.util.List;
-import org.chtijbug.drools.runtime.resource.DroolsResource;
 
 /**
  *
@@ -13,7 +12,8 @@ import org.chtijbug.drools.runtime.resource.DroolsResource;
  */
 public interface RuleBaseSupervisionMBean {
  
-    public List<DroolsResource> getDroolsRessource();
+    public List<String> getDroolsRessource();
     public boolean isKbaseLoaded();
+    public void reLoadRuleBase();
     
 }

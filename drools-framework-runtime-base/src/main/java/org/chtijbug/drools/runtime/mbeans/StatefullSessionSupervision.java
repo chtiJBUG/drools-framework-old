@@ -4,6 +4,7 @@
  */
 package org.chtijbug.drools.runtime.mbeans;
 
+import com.thoughtworks.xstream.XStream;
 import javax.management.AttributeChangeNotification;
 import javax.management.MBeanNotificationInfo;
 import javax.management.Notification;
@@ -17,17 +18,20 @@ import org.chtijbug.drools.entity.history.HistoryContainer;
 public class StatefullSessionSupervision extends NotificationBroadcasterSupport implements StatefullSessionSupervisionMBean {
 
     private long averageTimeExecution;
-    private long minTimeExecution=1000000;
-    private long maxTimeExecution=0;
+    private long minTimeExecution = 1000000;
+    private long maxTimeExecution = 0;
     private long totalTimeExecution;
     private long totalNumberRulesExecuted;
     private long averageRulesExecuted;
-    private long minRulesExecuted=10000000;
-    private long maxRulesExecuted=0;
+    private long minRulesExecuted = 10000000;
+    private long maxRulesExecuted = 0;
     private long numberFireAllRulesExecuted;
     private double averageRuleThroughout;
-    private double minRuleThroughout=1000000;
-    private double maxRuleThroughout=0;
+    private double minRuleThroughout = 1000000;
+    private double maxRuleThroughout = 0;
+    //private HistoryContainer historyContainer;
+    private MBeanNotificationInfo[] notificationInfo = null;
+    private XStream xstream = new XStream();
 
     public synchronized void fireAllRulesExecuted(long executionTime, long numberRulesExecuted, HistoryContainer historyContainer) {
         numberFireAllRulesExecuted++;
@@ -38,35 +42,39 @@ public class StatefullSessionSupervision extends NotificationBroadcasterSupport 
             maxRulesExecuted = numberRulesExecuted;
         }
         totalNumberRulesExecuted = totalNumberRulesExecuted + numberRulesExecuted;
-        averageRulesExecuted = totalNumberRulesExecuted/numberFireAllRulesExecuted;
+        averageRulesExecuted = totalNumberRulesExecuted / numberFireAllRulesExecuted;
         totalTimeExecution = totalTimeExecution + executionTime;
-        double throughput = numberRulesExecuted / (executionTime/1000.0);
+        double throughput = numberRulesExecuted / (executionTime / 1000.0);
         if (throughput < minRuleThroughout) {
             minRuleThroughout = throughput;
         }
         if (throughput > maxRuleThroughout) {
             maxRuleThroughout = throughput;
         }
-        averageRuleThroughout = totalNumberRulesExecuted / (totalTimeExecution/1000.0);
-        if (executionTime < minTimeExecution){
+        averageRuleThroughout = totalNumberRulesExecuted / (totalTimeExecution / 1000.0);
+        if (executionTime < minTimeExecution) {
             minTimeExecution = executionTime;
         }
-        if (executionTime> maxTimeExecution){
+        if (executionTime > maxTimeExecution) {
             maxTimeExecution = executionTime;
         }
-        averageTimeExecution = totalTimeExecution/numberFireAllRulesExecuted;
+        averageTimeExecution = totalTimeExecution / numberFireAllRulesExecuted;
+        // this.historyContainer = historyContainer;
         Notification n =
                 new AttributeChangeNotification(this,
                 numberFireAllRulesExecuted,
                 System.currentTimeMillis(),
-                "FireAllRules",
-                "History Event",
-                "HistoryEvent",
-                historyContainer,
-                historyContainer);
-
+                "number of FireAllRules ",
+                "HistoryContainer",
+                String.class.getName(),
+                "No",
+                historyContainer.toString());
         
+        String xml = xstream.toXML(historyContainer);
+        System.out.println(xml);
+        n.setUserData(xml);
         sendNotification(n);
+
     }
 
     @Override
@@ -114,6 +122,21 @@ public class StatefullSessionSupervision extends NotificationBroadcasterSupport 
         return maxRuleThroughout;
     }
 
+    // public HistoryContainer getHistoryContainer() {
+    //     return historyContainer;
+    //}
+    public long getNumberFireAllRulesExecuted() {
+        return numberFireAllRulesExecuted;
+    }
+
+    public long getTotalNumberRulesExecuted() {
+        return totalNumberRulesExecuted;
+    }
+
+    public long getTotalTimeExecution() {
+        return totalTimeExecution;
+    }
+
     @Override
     public MBeanNotificationInfo[] getNotificationInfo() {
         String[] types = new String[]{
@@ -123,10 +146,34 @@ public class StatefullSessionSupervision extends NotificationBroadcasterSupport 
         String description = "Fire All rules ";
         MBeanNotificationInfo info =
                 new MBeanNotificationInfo(types, name, description);
-        MBeanNotificationInfo info1 =
-                new MBeanNotificationInfo(types, "toto", description);
-        MBeanNotificationInfo info2 =
-                new MBeanNotificationInfo(types, "zizi", description);
-        return new MBeanNotificationInfo[]{info,info1,info2};
+
+        notificationInfo = new MBeanNotificationInfo[]{
+            new MBeanNotificationInfo(new String[]{"service.user.start"},
+            Notification.class.getName(),
+            "DateTime service start."),
+            new MBeanNotificationInfo(new String[]{
+                AttributeChangeNotification.ATTRIBUTE_CHANGE},
+            AttributeChangeNotification.class.getName(),
+            "Fire All rules attribute changes.")
+        };
+
+
+
+        return notificationInfo;
+    }
+
+    @Override
+    public void resetStatistics() {
+        this.minTimeExecution = 1000000;
+        this.maxTimeExecution = 0;
+        this.totalTimeExecution = 0;
+        this.totalNumberRulesExecuted = 0;
+        this.averageRulesExecuted = 0;
+        this.minRulesExecuted = 10000000;
+        this.maxRulesExecuted = 0;
+        this.numberFireAllRulesExecuted = 0;
+        this.averageRuleThroughout = 0;
+        this.minRuleThroughout = 1000000;
+        this.maxRuleThroughout = 0;
     }
 }

@@ -7,8 +7,10 @@ package org.chtijbug.drools.runtime.impl;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
+import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.mbeans.RuleBaseSupervision;
@@ -34,6 +36,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
     private RuleBaseSupervision mbsRuleBase;
     private StatefullSessionSupervision mbsSession;
     private int maxNumberRuleToExecute = 2000;
+    private Semaphore lockKbase = new Semaphore(1);
 
     public RuleBaseSingleton() {
         listResouces = new ArrayList<DroolsResource>();
@@ -56,12 +59,14 @@ public class RuleBaseSingleton implements RuleBasePackage {
     }
 
     @Override
-    public RuleBaseSession createRuleBaseSession() {
+    public RuleBaseSession createRuleBaseSession() throws Exception {
         RuleBaseSession newRuleBaseSession = null;
         if (kbase != null) {
+
+            lockKbase.acquire();
             StatefulKnowledgeSession newDroolsSession = kbase.newStatefulKnowledgeSession();
             newRuleBaseSession = new RuleBaseStatefullSession(newDroolsSession, maxNumberRuleToExecute, mbsSession);
-
+            lockKbase.release();
         } else {
             throw new UnsupportedOperationException("Kbase not initialized");
         }
@@ -86,7 +91,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
      * @see org.chtijbug.drools.runtime.RuleBasePackage#createKBase()
      */
     @Override
-    public void createKBase() {
+    public synchronized void createKBase() {
 
         if (kbase != null) {
             // TODO dispose all elements
@@ -99,12 +104,15 @@ public class RuleBaseSingleton implements RuleBasePackage {
                 kbuilder.add(res.getResource(), res.getResourceType());
             }
 
-            kbase = KnowledgeBaseFactory.newKnowledgeBase();
-            kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
+            KnowledgeBase newkbase = KnowledgeBaseFactory.newKnowledgeBase();
+            newkbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
+            lockKbase.acquire();
+            kbase = newkbase;
+            lockKbase.release();
             MBeanServer server = ManagementFactory.getPlatformMBeanServer();
 
-            ObjectName nameRuleBase = new ObjectName("org.chtijbug.drools.runtime:type=RuleBaseSupervision");
-            ObjectName nameSession = new ObjectName("org.chtijbug.drools.runtime:type=StateFullSessionSupervision");
+            ObjectName nameRuleBase = new ObjectName(HistoryContainer.nameRuleBaseObjectName);
+            ObjectName nameSession = new ObjectName(HistoryContainer.nameSessionObjectName);
             mbsRuleBase = new RuleBaseSupervision(this);
             mbsSession = new StatefullSessionSupervision();
             server.registerMBean(mbsRuleBase, nameRuleBase);

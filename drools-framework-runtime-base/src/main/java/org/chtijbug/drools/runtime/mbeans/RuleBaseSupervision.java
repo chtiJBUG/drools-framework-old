@@ -4,13 +4,10 @@
  */
 package org.chtijbug.drools.runtime.mbeans;
 
+import java.util.ArrayList;
 import java.util.List;
-import javax.management.AttributeChangeNotification;
-import javax.management.MBeanNotificationInfo;
-import javax.management.Notification;
 import javax.management.NotificationBroadcasterSupport;
 import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
-import org.chtijbug.drools.runtime.mbeans.RuleBaseSupervisionMBean;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
 
 /**
@@ -30,13 +27,22 @@ public class RuleBaseSupervision extends NotificationBroadcasterSupport implemen
     
     
     @Override
-    public List<DroolsResource> getDroolsRessource() {
-        return ruleBaseSession.getListDroolsRessources();
+    public List<String> getDroolsRessource() {
+        List<String> ll = new ArrayList<String>();
+        for (DroolsResource d :ruleBaseSession.getListDroolsRessources() ){
+            ll.add(d.toString());
+        }
+        return ll;
     }
 
     @Override
     public boolean isKbaseLoaded() {
         return ruleBaseSession.isKbaseLoaded();
+    }
+
+    @Override
+    public void reLoadRuleBase() {
+        ruleBaseSession.createKBase();
     }
 
     

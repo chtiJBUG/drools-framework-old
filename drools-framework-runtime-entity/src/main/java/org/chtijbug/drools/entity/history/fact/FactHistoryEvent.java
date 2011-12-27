@@ -19,6 +19,13 @@ public abstract class FactHistoryEvent extends HistoryEvent {
 	 */
 	private static final long serialVersionUID = 5320437389177977457L;
 
+	/**
+	 * Mandatory for GWT Serialization
+	 */
+	public FactHistoryEvent() {
+
+	}
+
 	public FactHistoryEvent(Date dateEvent) {
 
 		super(dateEvent, TypeEvent.Fact);

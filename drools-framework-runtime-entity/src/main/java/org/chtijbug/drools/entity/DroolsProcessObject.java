@@ -22,6 +22,9 @@ public class DroolsProcessObject implements Serializable {
 	protected String version;
 	protected Map<String, DroolsNodeObject> nodeLists;
 
+	public DroolsProcessObject() {
+	}
+
 	protected DroolsProcessObject(String id, String name, String packageName, String type, String version) {
 		this.id = id;
 		this.name = name;

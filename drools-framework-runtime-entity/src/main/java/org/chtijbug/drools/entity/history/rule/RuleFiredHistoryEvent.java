@@ -21,6 +21,12 @@ public class RuleFiredHistoryEvent extends RuleHistoryEvent {
 	private static final long serialVersionUID = -8587421328193577240L;
 	protected ArrayList<DroolsFactObject> whenObjects;
 
+	/**
+	 * 
+	 */
+	public RuleFiredHistoryEvent() {
+	}
+
 	public RuleFiredHistoryEvent(DroolsRuleObject rule) {
 
 		super(rule);

@@ -17,6 +17,12 @@ public class HistoryContainer implements Serializable {
 	private static final long serialVersionUID = 5645452451089006572L;
 	protected List<HistoryEvent> listHistoryEvent = new LinkedList<HistoryEvent>();
 
+	/**
+	 * 
+	 */
+	public HistoryContainer() {
+	}
+
 	public List<HistoryEvent> getListHistoryEvent() {
 		return listHistoryEvent;
 	}

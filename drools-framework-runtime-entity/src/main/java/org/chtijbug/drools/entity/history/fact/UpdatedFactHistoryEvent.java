@@ -20,6 +20,12 @@ public class UpdatedFactHistoryEvent extends FactHistoryEvent {
 	protected DroolsFactObject objectOldValue;
 	protected DroolsFactObject objectNewValue;
 
+	/**
+	 * 
+	 */
+	public UpdatedFactHistoryEvent() {
+	}
+
 	public UpdatedFactHistoryEvent(DroolsFactObject objectOldValue, DroolsFactObject objectNewValue) {
 		super(new Date());
 		this.objectOldValue = objectOldValue;

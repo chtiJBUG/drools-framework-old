@@ -24,6 +24,12 @@ public class HistoryEvent implements Serializable {
 	protected Date dateEvent;
 	protected TypeEvent typeEvent;
 
+	/**
+	 * Mandatory for GWT Serialization
+	 */
+	public HistoryEvent() {
+	}
+
 	public HistoryEvent(Date dateEvent, TypeEvent typeEvent) {
 		this.dateEvent = dateEvent;
 		this.typeEvent = typeEvent;

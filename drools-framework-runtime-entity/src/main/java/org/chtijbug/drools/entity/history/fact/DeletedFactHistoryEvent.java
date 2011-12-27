@@ -20,6 +20,12 @@ public class DeletedFactHistoryEvent extends FactHistoryEvent {
 	private static final long serialVersionUID = -1924924006386653359L;
 	protected DroolsFactObject deletedObject;
 
+	/**
+	 * 
+	 */
+	public DeletedFactHistoryEvent() {
+	}
+
 	public DeletedFactHistoryEvent(DroolsFactObject deletedObject) {
 		super(new Date());
 		this.deletedObject = deletedObject;

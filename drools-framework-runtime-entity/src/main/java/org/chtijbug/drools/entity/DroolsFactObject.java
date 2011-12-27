@@ -8,10 +8,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.beanutils.BeanMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * 
  * @author nheron
@@ -22,23 +18,22 @@ public class DroolsFactObject implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 8185674445343213645L;
-	static final Logger LOGGER = LoggerFactory.getLogger(DroolsFactObject.class);
 	private String fullClassName;
 	private int hashCode;
 	protected int version;
 	private List<DroolsFactObjectAttribute> listfactObjectAttributes = new ArrayList<DroolsFactObjectAttribute>();
 	private final transient Object realObject;
 
-	protected DroolsFactObject(Object realObject, int version) {
+	/**
+	 * 
+	 */
+	public DroolsFactObject() {
+		realObject = null;
+	}
+
+	public DroolsFactObject(Object realObject, int version) {
 		this.realObject = realObject;
 		this.version = version;
-		this.fullClassName = realObject.getClass().getCanonicalName();
-		this.hashCode = realObject.hashCode();
-		try {
-			this.introspect();
-		} catch (Exception e) {
-			LOGGER.error("Not possible to introspect {}", realObject);
-		}
 	}
 
 	/*
@@ -82,28 +77,5 @@ public class DroolsFactObject implements Serializable {
 
 	public void setHashCode(int hashCode) {
 		this.hashCode = hashCode;
-	}
-
-	private void introspect() throws Exception {
-		BeanMap m = new BeanMap(this.realObject);
-		for (Object para : m.keySet()) {
-			if (!para.toString().equals("class")) {
-				DroolsFactObjectAttribute attribute = new DroolsFactObjectAttribute(para.toString(), m.get(para).toString(), m.get(para).getClass().getSimpleName());
-				this.listfactObjectAttributes.add(attribute);
-			}
-
-		}
-	}
-
-	public static DroolsFactObject createFactObject(Object o) {
-		return createFactObject(o, 0);
-	}
-
-	public static DroolsFactObject createFactObject(Object o, int version) {
-		DroolsFactObject createFactObject = null;
-		if (o != null) {
-			createFactObject = new DroolsFactObject(o, version);
-		}
-		return createFactObject;
 	}
 }

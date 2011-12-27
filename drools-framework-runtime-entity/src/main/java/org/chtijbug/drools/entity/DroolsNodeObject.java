@@ -18,6 +18,12 @@ public class DroolsNodeObject implements Serializable {
 	private static final long serialVersionUID = 2149698078767524188L;
 	protected String id;
 
+	/**
+	 * 
+	 */
+	public DroolsNodeObject() {
+	}
+
 	protected DroolsNodeObject(String id) {
 		this.id = id;
 	}

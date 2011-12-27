@@ -19,6 +19,12 @@ public class DroolsProcessInstanceObject implements Serializable {
 	protected DroolsProcessObject process;
 	protected Map<String, DroolsNodeInstanceObject> nodeInstances;
 
+	/**
+	 * 
+	 */
+	public DroolsProcessInstanceObject() {
+	}
+
 	protected DroolsProcessInstanceObject(String id, DroolsProcessObject process) {
 		this.id = id;
 		this.process = process;

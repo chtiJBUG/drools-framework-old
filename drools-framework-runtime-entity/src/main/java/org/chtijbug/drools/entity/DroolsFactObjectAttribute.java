@@ -17,6 +17,12 @@ public class DroolsFactObjectAttribute implements Serializable {
 	private String attributeValue;
 	private String attributeType;
 
+	/**
+	 * 
+	 */
+	public DroolsFactObjectAttribute() {
+	}
+
 	public DroolsFactObjectAttribute(String attributeName, String attributeValue, String attributeType) {
 		this.attributeName = attributeName;
 		this.attributeValue = attributeValue;

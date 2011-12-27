@@ -15,6 +15,12 @@ public class ProcessEndHistoryEvent extends ProcessHistoryEvent {
 	private static final long serialVersionUID = 6327973844897501016L;
 	protected DroolsProcessInstanceObject processInstance;
 
+	/**
+	 * 
+	 */
+	public ProcessEndHistoryEvent() {
+	}
+
 	public ProcessEndHistoryEvent(DroolsProcessInstanceObject processInstance) {
 		this.processInstance = processInstance;
 	}

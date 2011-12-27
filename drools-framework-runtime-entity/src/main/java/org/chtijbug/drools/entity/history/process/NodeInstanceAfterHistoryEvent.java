@@ -15,6 +15,12 @@ public class NodeInstanceAfterHistoryEvent extends ProcessHistoryEvent {
 	private static final long serialVersionUID = 1117121703139545755L;
 	protected DroolsNodeInstanceObject nodeInstance;
 
+	/**
+	 * 
+	 */
+	public NodeInstanceAfterHistoryEvent() {
+	}
+
 	public NodeInstanceAfterHistoryEvent(DroolsNodeInstanceObject nodeInstance) {
 		this.nodeInstance = nodeInstance;
 	}

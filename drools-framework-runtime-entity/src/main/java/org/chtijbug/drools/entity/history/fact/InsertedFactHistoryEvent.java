@@ -20,6 +20,9 @@ public class InsertedFactHistoryEvent extends FactHistoryEvent {
 	private static final long serialVersionUID = -4530420814276942059L;
 	protected DroolsFactObject insertedObject;
 
+	public InsertedFactHistoryEvent() {
+	}
+
 	public InsertedFactHistoryEvent(DroolsFactObject insertedObject) {
 		super(new Date());
 		this.insertedObject = insertedObject;

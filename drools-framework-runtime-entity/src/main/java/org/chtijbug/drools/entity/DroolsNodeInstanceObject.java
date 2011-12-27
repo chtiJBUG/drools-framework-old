@@ -19,6 +19,12 @@ public class DroolsNodeInstanceObject implements Serializable {
 	protected String id;
 	protected DroolsNodeObject node;
 
+	/**
+	 * 
+	 */
+	public DroolsNodeInstanceObject() {
+	}
+
 	protected DroolsNodeInstanceObject(String id, DroolsNodeObject node) {
 		this.id = id;
 		this.node = node;

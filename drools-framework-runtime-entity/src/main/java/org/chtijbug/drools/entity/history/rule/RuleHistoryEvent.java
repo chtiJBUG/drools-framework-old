@@ -18,6 +18,12 @@ public class RuleHistoryEvent extends HistoryEvent {
 	private static final long serialVersionUID = 7433690026159716847L;
 	protected DroolsRuleObject rule;
 
+	/**
+	 * 
+	 */
+	public RuleHistoryEvent() {
+	}
+
 	public RuleHistoryEvent(DroolsRuleObject rule) {
 
 		super(new Date(), HistoryEvent.TypeEvent.Rule);

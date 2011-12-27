@@ -22,6 +22,12 @@ public class DroolsRuleObject implements Serializable {
 	protected String rulePackageName;
 
 	/**
+	 * 
+	 */
+	public DroolsRuleObject() {
+	}
+
+	/**
 	 * @param ruleName
 	 * @param rulePackageName
 	 */

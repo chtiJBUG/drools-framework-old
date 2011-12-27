@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
+import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.mbeans.RuleBaseSupervision;
@@ -36,8 +37,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
     private StatefullSessionSupervision mbsSession;
     private int maxNumberRuleToExecute = 2000;
     private Semaphore lockKbase = new Semaphore(1);
-    public static String nameRuleBaseObjectName = "org.chtijbug.drools.runtime:type=RuleBaseSupervision";
-    public static String nameSessionObjectName = "org.chtijbug.drools.runtime:type=StateFullSessionSupervision";
 
     public RuleBaseSingleton() {
         listResouces = new ArrayList<DroolsResource>();
@@ -112,8 +111,8 @@ public class RuleBaseSingleton implements RuleBasePackage {
             lockKbase.release();
             MBeanServer server = ManagementFactory.getPlatformMBeanServer();
 
-            ObjectName nameRuleBase = new ObjectName(RuleBaseSingleton.nameRuleBaseObjectName);
-            ObjectName nameSession = new ObjectName(RuleBaseSingleton.nameSessionObjectName);
+            ObjectName nameRuleBase = new ObjectName(HistoryContainer.nameRuleBaseObjectName);
+            ObjectName nameSession = new ObjectName(HistoryContainer.nameSessionObjectName);
             mbsRuleBase = new RuleBaseSupervision(this);
             mbsSession = new StatefullSessionSupervision();
             server.registerMBean(mbsRuleBase, nameRuleBase);

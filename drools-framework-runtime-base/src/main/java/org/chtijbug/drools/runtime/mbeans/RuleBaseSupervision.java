@@ -4,6 +4,7 @@
  */
 package org.chtijbug.drools.runtime.mbeans;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.management.NotificationBroadcasterSupport;
 import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
@@ -26,8 +27,12 @@ public class RuleBaseSupervision extends NotificationBroadcasterSupport implemen
     
     
     @Override
-    public List<DroolsResource> getDroolsRessource() {
-        return ruleBaseSession.getListDroolsRessources();
+    public List<String> getDroolsRessource() {
+        List<String> ll = new ArrayList<String>();
+        for (DroolsResource d :ruleBaseSession.getListDroolsRessources() ){
+            ll.add(d.toString());
+        }
+        return ll;
     }
 
     @Override

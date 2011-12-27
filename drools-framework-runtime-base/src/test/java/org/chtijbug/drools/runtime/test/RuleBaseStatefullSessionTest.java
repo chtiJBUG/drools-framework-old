@@ -116,4 +116,5 @@ public class RuleBaseStatefullSessionTest {
 
         Assert.assertEquals(3, session.listRules().size());
     }
+
 }

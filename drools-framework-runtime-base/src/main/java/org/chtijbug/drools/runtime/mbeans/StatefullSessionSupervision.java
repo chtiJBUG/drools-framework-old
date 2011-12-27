@@ -5,10 +5,11 @@
 package org.chtijbug.drools.runtime.mbeans;
 
 import com.thoughtworks.xstream.XStream;
-import javax.management.*;
+import javax.management.AttributeChangeNotification;
+import javax.management.MBeanNotificationInfo;
+import javax.management.Notification;
+import javax.management.NotificationBroadcasterSupport;
 import org.chtijbug.drools.entity.history.HistoryContainer;
-import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
-import org.drools.runtime.help.impl.XStreamXML;
 
 /**
  *

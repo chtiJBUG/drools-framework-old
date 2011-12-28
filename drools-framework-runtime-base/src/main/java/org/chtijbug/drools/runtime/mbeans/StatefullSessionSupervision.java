@@ -5,6 +5,7 @@
 package org.chtijbug.drools.runtime.mbeans;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 import javax.management.AttributeChangeNotification;
 import javax.management.MBeanNotificationInfo;
 import javax.management.Notification;
@@ -31,7 +32,7 @@ public class StatefullSessionSupervision extends NotificationBroadcasterSupport 
     private double maxRuleThroughout = 0;
     //private HistoryContainer historyContainer;
     private MBeanNotificationInfo[] notificationInfo = null;
-    private XStream xstream = new XStream();
+    private XStream xstream = new XStream(new JettisonMappedXmlDriver());
 
     public synchronized void fireAllRulesExecuted(long executionTime, long numberRulesExecuted, HistoryContainer historyContainer) {
         numberFireAllRulesExecuted++;
@@ -69,7 +70,7 @@ public class StatefullSessionSupervision extends NotificationBroadcasterSupport 
                 String.class.getName(),
                 "No",
                 historyContainer.toString());
-        
+        xstream.setMode(XStream.NO_REFERENCES);
         String xml = xstream.toXML(historyContainer);
         System.out.println(xml);
         n.setUserData(xml);

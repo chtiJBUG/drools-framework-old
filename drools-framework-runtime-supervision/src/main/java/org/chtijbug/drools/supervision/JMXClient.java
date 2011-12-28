@@ -5,6 +5,7 @@
 package org.chtijbug.drools.supervision;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 import java.util.HashMap;
 import java.util.Map;
 import javax.management.*;
@@ -36,7 +37,7 @@ public class JMXClient implements NotificationListener {
     private ObjectName nameRuleBase = null;
     private ObjectName nameSession = null;
     private FireAllRulesListener listener = null;
-    private XStream xstream = new XStream();
+    private XStream xstream = new XStream(new JettisonMappedXmlDriver());
 
     private JMXConnector getRemoteConnection(String host, int port, String user, String password) throws Exception {
         JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://" + host + ":" + port + "/jmxrmi");

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package org.chtijbug.drools.runtime.test
+package org.chtijbug.drools.runtime
 
-import org.chtijbug.drools.runtime.test.Fibonacci;
+import org.chtijbug.drools.runtime.Fibonacci;
 
 dialect "mvel"
 

@@ -12,10 +12,10 @@ import org.chtijbug.drools.runtime.resource.DrlDroolsResource;
  * @author nheron
  */
 public class Main {
-    
+
     public static void main(String args[]) {
         DrlDroolsResource resource = DrlDroolsResource.createClassPathResource("fibonacci.drl");
- 
+
         RuleBasePackage ruleBasePackage = new RuleBaseSingleton();
         ruleBasePackage.addDroolsResouce(resource);
         ruleBasePackage.createKBase();

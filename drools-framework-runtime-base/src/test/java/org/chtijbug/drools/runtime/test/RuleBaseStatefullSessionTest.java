@@ -59,17 +59,18 @@ public class RuleBaseStatefullSessionTest {
     @Test
     public void testFireAllRulesIsOk() throws Exception {
         Assert.assertNotNull("RuleBaseSession can't be null", session);
-        for (int i = 0; i < 1000; i++) {
+       // for (int i = 0; i < 1000; i++) {
             RuleBaseSession session1 = ruleBasePackage.createRuleBaseSession();
             Fibonacci fibonacci = new Fibonacci(5);
             session1.insertObject(fibonacci);
             session1.fireAllRules();
+	    Assert.assertEquals(3, session1.listRules().size());
             session1.dispose();
-            Thread.sleep(2000);
-        }
+            //Thread.sleep(2000);
+        //}
 
 
-        Assert.assertEquals(3, session.listRules().size());
+       
     }
 
     @Test

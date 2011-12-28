@@ -72,7 +72,6 @@ public class StatefullSessionSupervision extends NotificationBroadcasterSupport 
                 historyContainer.toString());
         xstream.setMode(XStream.NO_REFERENCES);
         String xml = xstream.toXML(historyContainer);
-        System.out.println(xml);
         n.setUserData(xml);
         sendNotification(n);
 

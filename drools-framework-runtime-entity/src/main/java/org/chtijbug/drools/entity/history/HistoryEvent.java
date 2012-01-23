@@ -34,6 +34,14 @@ public class HistoryEvent implements Serializable {
 		this.dateEvent = dateEvent;
 		this.typeEvent = typeEvent;
 	}
+	
+	public Date getDateEvent() {
+		return dateEvent;
+	}
+	
+	public TypeEvent getTypeEvent() {
+		return typeEvent;
+	}
 
 	@Override
 	public String toString() {

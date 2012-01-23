@@ -42,13 +42,6 @@
 	    <scope>test</scope>
 	</dependency>
 	<dependency>
-	    <groupId>sun.jdk</groupId>
-	    <artifactId>tools</artifactId>
-	    <version>1.6.0_11</version>
-	    <type>jar</type>
-	    <scope>provided</scope>
-	</dependency>
-	<dependency>
 	    <groupId>org.codehaus.jettison</groupId>
 	    <artifactId>jettison</artifactId>
 	</dependency>

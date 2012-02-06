@@ -1,17 +1,8 @@
 package org.chtijbug.drools.runtime.impl;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.chtijbug.drools.entity.DroolsFactObject;
-import org.chtijbug.drools.entity.DroolsNodeInstanceObject;
-import org.chtijbug.drools.entity.DroolsNodeObject;
-import org.chtijbug.drools.entity.DroolsProcessInstanceObject;
-import org.chtijbug.drools.entity.DroolsProcessObject;
-import org.chtijbug.drools.entity.DroolsRuleObject;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
+import org.chtijbug.drools.entity.*;
 import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.mbeans.StatefullSessionSupervision;
@@ -23,8 +14,9 @@ import org.drools.runtime.rule.FactHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.*;
+
 /**
- *
  * @author nheron
  */
 public class RuleBaseStatefullSession implements RuleBaseSession {
@@ -44,6 +36,8 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
     private ProcessHandlerListener processHandlerListener;
     private int maxNumberRuleToExecute;
     private StatefullSessionSupervision mbeanStatefulleSessionSupervision;
+
+    private XStream xstream = new XStream(new JettisonMappedXmlDriver());
 
     public RuleBaseStatefullSession(StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefullSessionSupervision mbeanStatefulleSessionSupervision) {
         this.knowledgeSession = knowledgeSession;
@@ -105,7 +99,6 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
         }
 
 
-
         return droolsNodeInstanceObject;
     }
 
@@ -162,6 +155,39 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
     @Override
     public HistoryContainer getHistoryContainer() {
         return historyContainer;
+    }
+
+    @Override
+    public String getHistoryContainerXML() {
+        String result = null;
+        if (historyContainer != null) {
+            xstream.setMode(XStream.NO_REFERENCES);
+            result = xstream.toXML(historyContainer);
+        }
+        return result;
+    }
+
+    @Override
+    public Collection<DroolsFactObject> listLastVersionObjects() {
+        Collection<DroolsFactObject> list = new ArrayList<DroolsFactObject>();
+        for (Object o : this.listFact.keySet()) {
+            FactHandle factHandle = this.listFact.get(o);
+            List<DroolsFactObject> versionList = this.listFactObjects.get(o);
+            list.add(this.getLastFactObjectVersionFromFactHandle(factHandle));
+
+        }
+        return list;
+    }
+
+    @Override
+    public String listLastVersionObjectsXML() {
+        String result = null;
+        Collection<DroolsFactObject> list = this.listLastVersionObjects();
+        if (list != null) {
+            xstream.setMode(XStream.NO_REFERENCES);
+            result = xstream.toXML(list);
+        }
+        return result;
     }
 
     public StatefulKnowledgeSession getKnowledgeSession() {

@@ -8,17 +8,16 @@ import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
 import org.chtijbug.drools.runtime.resource.DrlDroolsResource;
 
 /**
- *
  * @author nheron
  */
 public class Main {
 
     public static void main(String args[]) {
         DrlDroolsResource resource = DrlDroolsResource.createClassPathResource("fibonacci.drl");
-
         RuleBasePackage ruleBasePackage = new RuleBaseSingleton();
         ruleBasePackage.addDroolsResouce(resource);
         ruleBasePackage.createKBase();
+        //RuleBasePackage ruleBasePackage = RuleBaseBuilder.createGuvnorRuleBasePackage("http://localhost:8080/", "drools-guvnor/", "amag/", "LATEST", "", "")     ;
         try {
             for (int i = 0; i < 1000; i++) {
                 RuleBaseSession session1 = ruleBasePackage.createRuleBaseSession();

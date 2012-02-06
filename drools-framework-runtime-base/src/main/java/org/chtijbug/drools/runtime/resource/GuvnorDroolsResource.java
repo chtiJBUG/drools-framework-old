@@ -31,27 +31,16 @@ public class GuvnorDroolsResource implements DroolsResource {
     private Resource changesetResource;
 
 
-    private GuvnorDroolsResource(String guvnor_url, String guvnor_packageName, String guvnor_username, String guvnor_password) {
-        this.guvnor_url = guvnor_url;
-        this.guvnor_packageName = guvnor_packageName;
-        this.guvnor_username = guvnor_username;
-        this.guvnor_password = guvnor_password;
-
-    }
-
-
-    private GuvnorDroolsResource(String guvnor_url, String guvnor_appName, String guvnor_packageName, String guvnor_username, String guvnor_password) {
-        this(guvnor_url, guvnor_packageName, guvnor_username, guvnor_password);
-        this.guvnor_appName = guvnor_appName;
-    }
-
     public static GuvnorDroolsResource createGuvnorRessource(String guvnor_url, String guvnor_appName, String guvnor_packageName, String guvnor_packageVersion, String guvnor_username, String guvnor_password) {
         return new GuvnorDroolsResource(guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion, guvnor_username, guvnor_password);
     }
 
     public GuvnorDroolsResource(String guvnor_url, String guvnor_appName, String guvnor_packageName, String guvnor_packageVersion, String guvnor_username, String guvnor_password) {
-        this(guvnor_url, guvnor_appName, guvnor_packageVersion, guvnor_username, guvnor_password);
-
+        this.guvnor_url = guvnor_url;
+        this.guvnor_packageName = guvnor_packageName;
+        this.guvnor_username = guvnor_username;
+        this.guvnor_password = guvnor_password;
+        this.guvnor_appName = guvnor_appName;
         this.guvnor_packageVersion = guvnor_packageVersion;
     }
 

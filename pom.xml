@@ -112,6 +112,14 @@
     <module>drools-framework-runtime-supervision</module>
   </modules>
 
+
+  <repositories>
+    <repository>
+      <id>jboss-Snapshot</id>
+      <name>jboss-Snapshot</name>
+      <url>https://repository.jboss.org/nexus/content/repositories/snapshots//</url>
+    </repository>
+  </repositories>
   <distributionManagement>
     <repository>
       <id>chtijbug-release</id>

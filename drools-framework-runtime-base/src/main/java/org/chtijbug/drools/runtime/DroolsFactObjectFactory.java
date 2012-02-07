@@ -36,8 +36,14 @@ public class DroolsFactObjectFactory {
                 BeanMap m = new BeanMap(o);
                 for (Object para : m.keySet()) {
                     if (!para.toString().equals("class")) {
-                        DroolsFactObjectAttribute attribute = new DroolsFactObjectAttribute(para.toString(), m.get(para).toString(), m.get(para).getClass().getSimpleName());
-                        createFactObject.getListfactObjectAttributes().add(attribute);
+                        if (m.get(para) != null) {
+                            DroolsFactObjectAttribute attribute = new DroolsFactObjectAttribute(para.toString(), m.get(para).toString(), m.get(para).getClass().getSimpleName());
+                            createFactObject.getListfactObjectAttributes().add(attribute);
+                        } else {
+                            DroolsFactObjectAttribute attribute = new DroolsFactObjectAttribute(para.toString(), "null", "null");
+                            createFactObject.getListfactObjectAttributes().add(attribute);
+                        }
+
                     }
 
                 }

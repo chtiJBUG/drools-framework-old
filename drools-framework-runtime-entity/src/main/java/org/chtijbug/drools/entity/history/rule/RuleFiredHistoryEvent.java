@@ -49,7 +49,9 @@ public class RuleFiredHistoryEvent extends RuleHistoryEvent {
 
         str.append("When objects :\n");
         for (DroolsFactObject fact : whenObjects) {
-            str.append("**" + fact.toString() + "\n");
+            if (fact != null) {
+                str.append("**" + fact.toString() + "\n");
+            }
         }
         return str.toString();
     }

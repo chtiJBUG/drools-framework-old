@@ -4,7 +4,6 @@
  */
 package org.chtijbug.drools.runtime.impl;
 
-import java.util.List;
 import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.DroolsRuleObject;
 import org.chtijbug.drools.entity.history.rule.RuleFiredHistoryEvent;
@@ -15,8 +14,9 @@ import org.drools.runtime.rule.FactHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 /**
- *
  * @author nheron
  */
 public class RuleHandlerListener implements AgendaEventListener {
@@ -78,8 +78,29 @@ public class RuleHandlerListener implements AgendaEventListener {
     public void agendaGroupPushed(AgendaGroupPushedEvent agpe) {
     }
 
+    @Override
+    public void beforeRuleFlowGroupActivated(RuleFlowGroupActivatedEvent ruleFlowGroupActivatedEvent) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void afterRuleFlowGroupActivated(RuleFlowGroupActivatedEvent ruleFlowGroupActivatedEvent) {
+
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void beforeRuleFlowGroupDeactivated(RuleFlowGroupDeactivatedEvent ruleFlowGroupDeactivatedEvent) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void afterRuleFlowGroupDeactivated(RuleFlowGroupDeactivatedEvent ruleFlowGroupDeactivatedEvent) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     public int getNbRuleFired() {
         return nbRuleFired;
     }
-    
+
 }

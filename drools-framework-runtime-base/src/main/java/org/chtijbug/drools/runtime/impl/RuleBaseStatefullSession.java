@@ -11,6 +11,7 @@ import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.NodeInstance;
 import org.drools.runtime.process.ProcessInstance;
 import org.drools.runtime.rule.FactHandle;
+import org.jbpm.workflow.instance.node.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,6 +68,7 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
     }
 
     public DroolsProcessInstanceObject getDroolsProcessInstanceObject(ProcessInstance processInstance) {
+
         DroolsProcessInstanceObject droolsProcessInstanceObject = processInstanceList.get(processInstance.getId());
         if (droolsProcessInstanceObject == null) {
             DroolsProcessObject droolsProcessObject = processList.get(processInstance.getProcess().getId());
@@ -85,6 +87,20 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
     }
 
     public DroolsNodeInstanceObject getDroolsNodeInstanceObject(NodeInstance nodeInstance) {
+        String nodeType = "UNKNOWN";
+        if (nodeInstance instanceof StartNodeInstance) {
+            nodeType = StartNodeInstance.class.getCanonicalName();
+        } else if (nodeInstance instanceof RuleSetNodeInstance) {
+            RuleSetNodeInstance aRuleSet = (RuleSetNodeInstance) nodeInstance;
+            //String ruleFlowName = aRuleSet.getRuleSetEventType();
+            nodeType = RuleSetNodeInstance.class.getCanonicalName();
+        } else if (nodeInstance instanceof SplitInstance) {
+            nodeType = SplitInstance.class.getCanonicalName();
+        } else if (nodeInstance instanceof JoinInstance) {
+            nodeType = JoinInstance.class.getCanonicalName();
+        } else if (nodeInstance instanceof EndNodeInstance) {
+            nodeType = EndNodeInstance.class.getCanonicalName();
+        }
         DroolsProcessInstanceObject droolsProcessInstanceObject = processInstanceList.get(nodeInstance.getProcessInstance().getId());
         if (droolsProcessInstanceObject == null) {
             droolsProcessInstanceObject = this.getDroolsProcessInstanceObject(nodeInstance.getProcessInstance());
@@ -92,7 +108,7 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 
         DroolsNodeInstanceObject droolsNodeInstanceObject = droolsProcessInstanceObject.getDroolsNodeInstanceObjet(String.valueOf(nodeInstance.getId()));
         if (droolsNodeInstanceObject == null) {
-            DroolsNodeObject droolsNodeObject = DroolsNodeObject.createDroolsNodeObject(String.valueOf(nodeInstance.getNode().getId()));
+            DroolsNodeObject droolsNodeObject = DroolsNodeObject.createDroolsNodeObject(String.valueOf(nodeInstance.getNode().getId()), nodeType);
             droolsProcessInstanceObject.getProcess().addDroolsNodeObject(droolsNodeObject);
             droolsNodeInstanceObject = DroolsNodeInstanceObject.createDroolsNodeInstanceObject(String.valueOf(nodeInstance.getId()), droolsNodeObject);
             droolsProcessInstanceObject.addDroolsNodeInstanceObject(droolsNodeInstanceObject);

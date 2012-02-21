@@ -16,6 +16,7 @@ public class DroolsNodeObject implements Serializable {
      */
     private static final long serialVersionUID = 2149698078767524188L;
     protected String id;
+    private String nodeType;
 
     /**
      *
@@ -23,8 +24,9 @@ public class DroolsNodeObject implements Serializable {
     public DroolsNodeObject() {
     }
 
-    protected DroolsNodeObject(String id) {
+    protected DroolsNodeObject(String id, String nodeType) {
         this.id = id;
+        this.nodeType = nodeType;
     }
 
     public String getId() {
@@ -53,8 +55,8 @@ public class DroolsNodeObject implements Serializable {
         return hash;
     }
 
-    public static DroolsNodeObject createDroolsNodeObject(String id) {
-        return new DroolsNodeObject(id);
+    public static DroolsNodeObject createDroolsNodeObject(String id, String nodeType) {
+        return new DroolsNodeObject(id, nodeType);
     }
 
     @Override
@@ -62,6 +64,7 @@ public class DroolsNodeObject implements Serializable {
         final StringBuffer sb = new StringBuffer();
         sb.append("DroolsNodeObject");
         sb.append("{id='").append(id).append('\'');
+        sb.append("nodeType='").append(nodeType).append('\'');
         sb.append('}');
         return sb.toString();
     }

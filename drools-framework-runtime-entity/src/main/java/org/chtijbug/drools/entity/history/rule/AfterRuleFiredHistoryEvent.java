@@ -4,37 +4,29 @@
  */
 package org.chtijbug.drools.entity.history.rule;
 
-import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.DroolsRuleObject;
-
-import java.util.ArrayList;
 
 /**
  * @author nheron
  */
-public class RuleFiredHistoryEvent extends RuleHistoryEvent {
+public class AfterRuleFiredHistoryEvent extends RuleHistoryEvent {
 
     /**
      *
      */
     private static final long serialVersionUID = -8587421328193577240L;
-    protected ArrayList<DroolsFactObject> whenObjects;
 
     /**
      *
      */
-    public RuleFiredHistoryEvent() {
+    public AfterRuleFiredHistoryEvent() {
     }
 
-    public RuleFiredHistoryEvent(DroolsRuleObject rule) {
+    public AfterRuleFiredHistoryEvent(DroolsRuleObject rule) {
 
         super(rule);
-        this.whenObjects = new ArrayList<DroolsFactObject>();
     }
 
-    public ArrayList<DroolsFactObject> getWhenObjects() {
-        return whenObjects;
-    }
 
     /*
       * (non-Javadoc)
@@ -47,12 +39,7 @@ public class RuleFiredHistoryEvent extends RuleHistoryEvent {
         StringBuilder str = new StringBuilder();
         str.append(super.toString() + "\n");
 
-        str.append("When objects :\n");
-        for (DroolsFactObject fact : whenObjects) {
-            if (fact != null) {
-                str.append("**" + fact.toString() + "\n");
-            }
-        }
+        str.append("End Rule :\n");
         return str.toString();
     }
 

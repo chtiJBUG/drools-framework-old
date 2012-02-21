@@ -73,7 +73,7 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 
             if (droolsProcessObject == null) {
                 droolsProcessObject = DroolsProcessObject.createDroolsProcessObject(processInstance.getProcess().getId(),
-                        processInstance.getProcess().getName(),
+                        processInstance.getProcessId(),
                         processInstance.getProcess().getPackageName(), processInstance.getProcess().getType(), processInstance.getProcess().getVersion());
                 processList.put(processInstance.getProcess().getId(), droolsProcessObject);
             }

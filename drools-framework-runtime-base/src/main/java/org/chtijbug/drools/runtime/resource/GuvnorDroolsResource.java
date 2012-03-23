@@ -50,7 +50,7 @@ public class GuvnorDroolsResource implements DroolsResource {
       * @see org.chtijbug.drools.runtime.resource.DroolsResource#getResource()
       */
     @Override
-    public Resource getResource() {
+    public Resource getResource() throws Exception {
         if (changesetResource != null) {
             return changesetResource;
         }

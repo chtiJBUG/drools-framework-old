@@ -15,6 +15,7 @@ public class Main {
     public static void main(String args[]) {
         DrlDroolsResource resource = DrlDroolsResource.createClassPathResource("fibonacci.drl");
         RuleBasePackage ruleBasePackage = new RuleBaseSingleton();
+        //RuleBasePackage ruleBasePackage = RuleBaseBuilder.createBinaryPackageBasePackage("classpath:risk.pkg");
         ruleBasePackage.addDroolsResouce(resource);
         ruleBasePackage.createKBase();
         //RuleBasePackage ruleBasePackage = RuleBaseBuilder.createGuvnorRuleBasePackage("http://localhost:8080/", "drools-guvnor/", "amag/", "LATEST", "", "")     ;

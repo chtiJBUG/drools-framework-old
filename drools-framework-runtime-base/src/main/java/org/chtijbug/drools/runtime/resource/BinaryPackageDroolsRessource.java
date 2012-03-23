@@ -17,7 +17,7 @@ import java.io.FileWriter;
  * To change this template use File | Settings | File Templates.
  */
 public class BinaryPackageDroolsRessource implements DroolsResource {
-    static final Logger LOGGER = LoggerFactory.getLogger(GuvnorDroolsResource.class);
+    static final Logger LOGGER = LoggerFactory.getLogger(BinaryPackageDroolsRessource.class);
     private Resource resource;
     private String fileName;
 
@@ -40,7 +40,8 @@ public class BinaryPackageDroolsRessource implements DroolsResource {
         // http://anonsvn.jboss.org/repos/labs/labs/jbossrules/trunk/drools-api/src/main/resources/change-set-1.0.0.xsd'
         changesetxml.append("<resource source='");
         changesetxml.append(buff.toString());
-        changesetxml.append("\" /> \n </add> \n </change-set>\n");
+        changesetxml.append("' type='PKG' ");
+        changesetxml.append("/> \n </add> \n </change-set>\n");
         File fxml = null;
         try {
 

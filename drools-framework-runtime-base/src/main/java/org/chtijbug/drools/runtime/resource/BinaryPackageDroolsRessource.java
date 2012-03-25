@@ -6,10 +6,6 @@ import org.drools.io.ResourceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-
 /**
  * Created by IntelliJ IDEA.
  * Date: 23/03/12
@@ -30,6 +26,7 @@ public class BinaryPackageDroolsRessource implements DroolsResource {
         if (resource != null) {
             return resource;
         }
+        /*
         StringBuffer changesetxml = null;
 
         StringBuilder buff = new StringBuilder();
@@ -56,11 +53,13 @@ public class BinaryPackageDroolsRessource implements DroolsResource {
         }
 
         resource = ResourceFactory.newFileResource(fxml);
+        */
+        resource = ResourceFactory.newClassPathResource(fileName);
         return resource;
     }
 
     @Override
     public ResourceType getResourceType() {
-        return ResourceType.CHANGE_SET;
+        return ResourceType.PKG;
     }
 }

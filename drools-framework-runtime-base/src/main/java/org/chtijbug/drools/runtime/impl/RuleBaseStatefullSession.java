@@ -4,6 +4,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 import org.chtijbug.drools.entity.*;
 import org.chtijbug.drools.entity.history.HistoryContainer;
+import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.mbeans.StatefullSessionSupervision;
 import org.drools.definition.rule.Rule;
@@ -271,10 +272,16 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
     }
 
     @Override
-    public void fireAllRules() {
+    public void fireAllRules() throws DroolsChtijbugException {
         long startTime = System.currentTimeMillis();
         long beforeNumberRules = ruleHandlerListener.getNbRuleFired();
+        try{
         this.knowledgeSession.fireAllRules();
+        }catch (Exception e){
+            DroolsChtijbugException droolsChtijbugException = new DroolsChtijbugException("fireAllRules","",e);
+            throw droolsChtijbugException;
+        }
+
         long stopTime = System.currentTimeMillis();
         long afterNumberRules = ruleHandlerListener.getNbRuleFired();
         mbeanStatefulleSessionSupervision.fireAllRulesExecuted(stopTime - startTime, afterNumberRules - beforeNumberRules, historyContainer);

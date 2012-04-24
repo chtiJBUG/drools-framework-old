@@ -74,7 +74,7 @@ public class RuleBaseStatefullSessionTest {
     }
 
     @Test
-    public void testFireAllRulesIsOk1() {
+    public void testFireAllRulesIsOk1() throws  Exception{
         Assert.assertNotNull("RuleBaseSession can't be null", session);
 
         Fibonacci fibonacci = new Fibonacci(5);
@@ -89,7 +89,7 @@ public class RuleBaseStatefullSessionTest {
     }
 
     @Test
-    public void testFireAllRulesIsOk2() {
+    public void testFireAllRulesIsOk2() throws  Exception{
         Assert.assertNotNull("RuleBaseSession can't be null", session);
 
         Fibonacci fibonacci = new Fibonacci(5);
@@ -104,7 +104,7 @@ public class RuleBaseStatefullSessionTest {
     }
 
     @Test
-    public void testFireAllRulesIs3Ok() {
+    public void testFireAllRulesIs3Ok() throws  Exception{
         Assert.assertNotNull("RuleBaseSession can't be null", session);
 
         Fibonacci fibonacci = new Fibonacci(5);

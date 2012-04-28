@@ -1,6 +1,6 @@
 package org.chtijbug.drools.guvnor.rest;
 
-import org.drools.ide.common.client.modeldriven.dt52.GuidedDecisionTable52;
+import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,12 +14,12 @@ public class GuvnorRepositoryConnectorTest {
     GuvnorRepositoryConnector guvnorRepositoryConnector;
     @Before
     public void setUp() throws Exception {
-        guvnorRepositoryConnector = new GuvnorRepositoryConnector("http://localhost:8080/","drools-guvnor/","amag","tomcat","tomcat");
+        guvnorRepositoryConnector = new GuvnorRepositoryConnector("http://localhost:8080/","drools-guvnor/","test","tomcat","tomcat");
     }
 
     @Test
     public void testName() throws Exception {
-        GuidedDecisionTable52 toto = guvnorRepositoryConnector.getGuidedDecisionTable("common_cargroup_cat");;
+        DecisionTable toto = guvnorRepositoryConnector.getGuidedDecisionTable("test");
         System.out.println(toto.toString());
     }
 }

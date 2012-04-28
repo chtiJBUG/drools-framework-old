@@ -1,9 +1,6 @@
 package org.chtijbug.drools.guvnor.rest.dt;
 
-import org.drools.ide.common.client.modeldriven.dt52.ActionInsertFactCol52;
-import org.drools.ide.common.client.modeldriven.dt52.AttributeCol52;
-import org.drools.ide.common.client.modeldriven.dt52.DTCellValue52;
-import org.drools.ide.common.client.modeldriven.dt52.Pattern52;
+import org.drools.ide.common.client.modeldriven.dt52.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,41 +14,57 @@ public class ColumnDefinition {
     private boolean hideColumn;
     private boolean hasDefaultValue;
     private String defaultValue;
+    private String fieldType;
+    private RowNumberCol52 rowNumberCol52;
+    private DescriptionCol52 descriptionCol52;
     private AttributeCol52 attributeCol52;
-    private Pattern52 pattern52;
+    private ConditionCol52 conditionCol52;
     private ActionInsertFactCol52 actionInsertFact52;
-    private  DTCellValue52 defaultValueCell;
+    private DTCellValue52 defaultValueCell;
 
+    public ColumnDefinition(int columnNumber, RowNumberCol52 rowNumberCol52) {
+        this.columnNumber = columnNumber;
+        this.columnType = ColumnType.rowNumber;
+        this.rowNumberCol52 = rowNumberCol52;
+    }
+
+    public ColumnDefinition(int columnNumber, DescriptionCol52 descriptionCol52) {
+        this.columnNumber = columnNumber;
+        this.columnType = ColumnType.description;
+        this.descriptionCol52 = descriptionCol52;
+    }
     public ColumnDefinition(int columnNumber, AttributeCol52 attributeCol52) {
         this.attributeCol52 = attributeCol52;
         this.columnNumber = columnNumber;
         this.columnType = ColumnType.attribute;
         if (attributeCol52.getDefaultValue() != null) {
             this.hasDefaultValue = true;
-            this.defaultValueCell =  attributeCol52.getDefaultValue();
-            this.defaultValue = getDefaultValue(attributeCol52.getDefaultValue());
+            this.defaultValueCell = attributeCol52.getDefaultValue();
+            this.defaultValue = getValue(attributeCol52.getDefaultValue());
         }
         this.hideColumn = attributeCol52.isHideColumn();
     }
 
-    public ColumnDefinition(int columnNumber, Pattern52 pattern52) {
-        this.pattern52 = pattern52;
+    public ColumnDefinition(int columnNumber, ConditionCol52 conditionCol52) {
+        this.conditionCol52 = conditionCol52;
         this.columnNumber = columnNumber;
         this.columnType = ColumnType.condition;
-        if (pattern52.getDefaultValue() != null) {
+        this.fieldType = conditionCol52.getFieldType();
+        if (conditionCol52.getDefaultValue() != null) {
             this.hasDefaultValue = true;
-            this.defaultValue = getDefaultValue(pattern52.getDefaultValue());
+            this.defaultValue = getValue(conditionCol52.getDefaultValue());
         }
-        this.hideColumn = pattern52.isHideColumn();
+        this.hideColumn = conditionCol52.isHideColumn();
     }
 
     public ColumnDefinition(int columnNumber, ActionInsertFactCol52 actionInsertFact52) {
         this.actionInsertFact52 = actionInsertFact52;
         this.columnNumber = columnNumber;
         this.columnType = ColumnType.action;
+        this.fieldType = actionInsertFact52.getFactType();
         if (actionInsertFact52.getDefaultValue() != null) {
             this.hasDefaultValue = true;
-            this.defaultValue = getDefaultValue(actionInsertFact52.getDefaultValue());
+            this.defaultValue = getValue(actionInsertFact52.getDefaultValue());
         }
         this.hideColumn = actionInsertFact52.isHideColumn();
     }
@@ -80,21 +93,31 @@ public class ColumnDefinition {
         return attributeCol52;
     }
 
-    public Pattern52 getPattern52() {
-        return pattern52;
+    public ConditionCol52 getPattern52() {
+        return conditionCol52;
     }
 
     public ActionInsertFactCol52 getActionInsertFact52() {
         return actionInsertFact52;
     }
 
-    private String getDefaultValue(DTCellValue52 cell) {
+    public String getFieldType() {
+        return fieldType;
+    }
+
+    public static String getValue(DTCellValue52 cell) {
         String value = null;
         switch (cell.getDataType()) {
             case BOOLEAN:
                 value = Boolean.toString(cell.getBooleanValue());
                 break;
             case NUMERIC:
+                value = cell.getNumericValue().toString();
+                break;
+            case NUMERIC_INTEGER:
+                value = cell.getNumericValue().toString();
+                break;
+            case NUMERIC_DOUBLE:
                 value = cell.getNumericValue().toString();
                 break;
             case STRING:
@@ -104,28 +127,42 @@ public class ColumnDefinition {
                 value = cell.getDateValue().toString();
                 break;
         }
+        /**
+         *  STRING,
+             NUMERIC,
+             NUMERIC_BIGDECIMAL,
+             NUMERIC_BIGINTEGER,
+             NUMERIC_BYTE,
+             NUMERIC_DOUBLE,
+             NUMERIC_FLOAT,
+             NUMERIC_INTEGER,
+             NUMERIC_LONG,
+             NUMERIC_SHORT,
+             DATE,
+             BOOLEAN
+         */
         return value;
     }
     /**
-    private boolean isDataValid(String newValue,DTCellValue52 cell) throws  Exception{
-          boolean result = true
-         DTCellValue52 cell = this.columnDefinition.
-         switch (cell.getDataType()) {
-             case BOOLEAN:
-                 new Boolean(newValuue);
-                 value = Boolean.toString(cell.getBooleanValue());
-                 break;
-             case NUMERIC:
-                 value = cell.getNumericValue().toString();
-                 break;
-             case STRING:
-                 value = cell.getStringValue();
-                 break;
-             case DATE:
-                 value = cell.getDateValue().toString();
-                 break;
-         }
-         return value;
+     private boolean isDataValid(String newValue,DTCellValue52 cell) throws  Exception{
+     boolean result = true
+     DTCellValue52 cell = this.columnDefinition.
+     switch (cell.getDataType()) {
+     case BOOLEAN:
+     new Boolean(newValuue);
+     value = Boolean.toString(cell.getBooleanValue());
+     break;
+     case NUMERIC:
+     value = cell.getNumericValue().toString();
+     break;
+     case STRING:
+     value = cell.getStringValue();
+     break;
+     case DATE:
+     value = cell.getDateValue().toString();
+     break;
+     }
+     return value;
      }
      **/
 }

@@ -1,5 +1,6 @@
 package org.chtijbug.drools.guvnor.rest;
 
+import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.cxf.common.util.Base64Utility;
@@ -33,21 +34,23 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector{
     }
 
     @Override
-    public GuidedDecisionTable52 getGuidedDecisionTable(String dtName) {
+    public DecisionTable getGuidedDecisionTable(String dtName) {
         WebClient client = WebClient.create(this.url);
         client.header("Authorization", this.authorizationHeader);
         String content = client.path(this.clientPath + dtName + "/source").accept("text/plain").get(String.class);
         GuidedDecisionTable52 guidedDecisionTable52 = GuidedDTXMLPersistence.getInstance().unmarshal(content);
-        return guidedDecisionTable52;
+        DecisionTable decisionTable = new DecisionTable(guidedDecisionTable52);
+        return decisionTable;
     }
 
     @Override
-    public void commitChanges(GuidedDecisionTable52 guidedDecisionTable52) {
-        String dtName = guidedDecisionTable52.getTableName();
+    public void commitChanges(DecisionTable guidedDecisionTable52) {
+       /** String dtName = guidedDecisionTable52.getTableName();
         String newContent = GuidedDTXMLPersistence.getInstance().marshal(guidedDecisionTable52);
         WebClient client2 = WebClient.create(this.url);
         client2.header("Authorization", this.authorizationHeader);
         client2.path(this.clientPath + dtName + "/source").accept("application/xml").put(newContent);
+        **/
     }
 
 }

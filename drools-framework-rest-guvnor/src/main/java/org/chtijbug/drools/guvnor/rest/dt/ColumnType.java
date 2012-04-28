@@ -7,5 +7,5 @@ package org.chtijbug.drools.guvnor.rest.dt;
  * To change this template use File | Settings | File Templates.
  */
 public enum ColumnType {
-    attribute, condition, action
+    rowNumber,description,attribute, condition, action
 }

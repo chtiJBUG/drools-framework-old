@@ -7,6 +7,7 @@ package org.chtijbug.drools.guvnor.rest;
  * To change this template use File | Settings | File Templates.
  */
 
+import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
 import org.drools.ide.common.client.modeldriven.dt52.GuidedDecisionTable52;
 
 public interface RestRepositoryConnector {
@@ -19,8 +20,8 @@ public interface RestRepositoryConnector {
      * @return {@link GuidedDecisionTable52} the
      * @throws GuvnorConnexionFailedException - if the connexion to the Guvnor repository failed.
      */
-    GuidedDecisionTable52 getGuidedDecisionTable(String dtName) throws GuvnorConnexionFailedException;
+    DecisionTable getGuidedDecisionTable(String dtName) throws GuvnorConnexionFailedException;
 
-    void commitChanges(GuidedDecisionTable52 guidedDecisionTable52) throws GuvnorConnexionFailedException;
+    void commitChanges(DecisionTable guidedDecisionTable52) throws GuvnorConnexionFailedException;
 }
 

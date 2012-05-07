@@ -64,7 +64,7 @@ public class DecisionTable {
         }
     }
 
-    private Row createEmptyRow(int rowNumber) throws ChtijbugDroolsRestException {
+    public Row createEmptyRow(int rowNumber) throws ChtijbugDroolsRestException {
         Row newRow = new Row();
         for (ColumnDefinition col : columnDefinitionList) {
             RowElement newRowElement = new RowElement(col);

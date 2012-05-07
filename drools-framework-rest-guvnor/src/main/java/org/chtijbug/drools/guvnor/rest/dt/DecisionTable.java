@@ -18,7 +18,7 @@ public class DecisionTable {
     private List<ColumnDefinition> columnDefinitionList = new ArrayList<ColumnDefinition>();
     private List<Row> rows = new ArrayList<Row>();
 
-    public DecisionTable(GuidedDecisionTable52 guidedDecisionTable52) throws ChtijbugDroolsRestException{
+    public DecisionTable(GuidedDecisionTable52 guidedDecisionTable52) throws ChtijbugDroolsRestException {
         this.guidedDecisionTable52 = guidedDecisionTable52;
         this.name = this.guidedDecisionTable52.getTableName();
         ColumnDefinition rowNumberColumn = new ColumnDefinition(0, guidedDecisionTable52.getRowNumberCol());
@@ -49,7 +49,7 @@ public class DecisionTable {
         }
         for (List<DTCellValue52> line : this.guidedDecisionTable52.getData()) {
             try {
-                Row newRow = new Row(line,this);
+                Row newRow = new Row(line, this);
                 //Row newRow = fillRow(line);
                 rows.add(newRow);
             } catch (ChtijbugDroolsRestException e) {
@@ -66,16 +66,26 @@ public class DecisionTable {
     }
 
     public Row createEmptyRow(int rowNumber) throws ChtijbugDroolsRestException {
-        for (int j=rowNumber;j < this.rows.size();j++){
-            this.rows.get(j).updateRowNumber(j+1);
+        for (int j = rowNumber; j < this.rows.size(); j++) {
+            this.rows.get(j).updateRowNumber(j + 1);
         }
-        Row newRow = new Row(this,rowNumber);
-
+        Row newRow = new Row(this, rowNumber);
+        rows.add(newRow);
+        this.guidedDecisionTable52.getData().add(newRow.getCellValue52List());
         return newRow;
     }
 
-    public void clearAllData(){
+    private void removeRow(int rowNumber) throws ChtijbugDroolsRestException {
+        rows.remove(rowNumber);
+        this.guidedDecisionTable52.getData().remove(rowNumber);
+        for (int j = rowNumber; j < this.rows.size(); j++) {
+            this.rows.get(j).updateRowNumber(j);
+        }
+    }
 
+    public void clearAllData() {
+        this.guidedDecisionTable52.getData().clear();
+        this.getRows().clear();
     }
 
     public String getName() {

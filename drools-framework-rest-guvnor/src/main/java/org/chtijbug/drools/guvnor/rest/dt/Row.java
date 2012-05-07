@@ -69,4 +69,8 @@ public class Row {
     public void addRowElement(RowElement newRowElement) {
         this.rowElements.add(newRowElement);
     }
+
+    public List<DTCellValue52> getCellValue52List() {
+        return cellValue52List;
+    }
 }

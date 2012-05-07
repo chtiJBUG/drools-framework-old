@@ -49,7 +49,8 @@ public class DecisionTable {
         }
         for (List<DTCellValue52> line : this.guidedDecisionTable52.getData()) {
             try {
-                Row newRow = fillRow(line);
+                Row newRow = new Row(line,this);
+                //Row newRow = fillRow(line);
                 rows.add(newRow);
             } catch (ChtijbugDroolsRestException e) {
                 ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException();
@@ -65,21 +66,16 @@ public class DecisionTable {
     }
 
     public Row createEmptyRow(int rowNumber) throws ChtijbugDroolsRestException {
-        Row newRow = new Row();
-        for (ColumnDefinition col : columnDefinitionList) {
-            RowElement newRowElement = new RowElement(col);
-            newRow.addRowElement(newRowElement);
+        for (int j=rowNumber;j < this.rows.size();j++){
+            this.rows.get(j).updateRowNumber(j+1);
         }
+        Row newRow = new Row(this,rowNumber);
+
         return newRow;
     }
 
-    private Row fillRow(List<DTCellValue52> line) throws ChtijbugDroolsRestException {
-        Row newRow = new Row();
-        for (ColumnDefinition col : columnDefinitionList) {
-            RowElement newRowElement = new RowElement(col, line.get(col.getColumnNumber()));
-            newRow.addRowElement(newRowElement);
-        }
-        return newRow;
+    public void clearAllData(){
+
     }
 
     public String getName() {

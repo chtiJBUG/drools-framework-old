@@ -17,10 +17,10 @@ import java.util.Date;
  */
 public class RowElement {
     private ColumnDefinition columnDefinition;
-    private String value;
+    private String value = "";
     private DTCellValue52 dtCellValue52;
 
-    public RowElement(ColumnDefinition columnDefinition, DTCellValue52 dtCellValue52)throws ChtijbugDroolsRestException {
+    public RowElement(ColumnDefinition columnDefinition, DTCellValue52 dtCellValue52) throws ChtijbugDroolsRestException {
         this.columnDefinition = columnDefinition;
         this.dtCellValue52 = dtCellValue52;
         this.value = ColumnDefinition.getValue(this.dtCellValue52);
@@ -29,29 +29,32 @@ public class RowElement {
     public RowElement(ColumnDefinition columnDefinition) throws ChtijbugDroolsRestException {
         this.columnDefinition = columnDefinition;
         this.dtCellValue52 = new DTCellValue52();
-        if (this.columnDefinition.getColumnDefinition() == ColumnType.rowNumber) {
-            int rowNumber = new Integer(value).intValue();
-            this.dtCellValue52.setNumericValue(rowNumber);
+        if (this.columnDefinition.isHasDefaultValue()) {
+            this.value = this.columnDefinition.getDefaultValue();
+            if (this.columnDefinition.getColumnDefinition() == ColumnType.rowNumber) {
+                int rowNumber = new Integer(value).intValue();
+                this.dtCellValue52.setNumericValue(rowNumber);
 
-        } else if (this.columnDefinition.getColumnDefinition() == ColumnType.description) {
-            this.dtCellValue52.setStringValue(value);
+            } else if (this.columnDefinition.getColumnDefinition() == ColumnType.description) {
+                this.dtCellValue52.setStringValue(value);
 
-        } else if (this.columnDefinition.getColumnDefinition() == ColumnType.attribute) {
-            this.dtCellValue52.setStringValue(value);
+            } else if (this.columnDefinition.getColumnDefinition() == ColumnType.attribute) {
+                this.dtCellValue52.setStringValue(value);
 
-        } else if (this.columnDefinition.getColumnDefinition() == ColumnType.condition) {
-            try {
-                setValuedtCell(this.value);
-            } catch (Exception e) {
-                ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException();
-                chtijbugDroolsRestException.setClassName("RowElement");
-                chtijbugDroolsRestException.setAttribute(this.columnDefinition.toString());
-                chtijbugDroolsRestException.setValue(this.value);
-                chtijbugDroolsRestException.setOriginalException(e);
-                throw  chtijbugDroolsRestException;
+            } else if (this.columnDefinition.getColumnDefinition() == ColumnType.condition) {
+                try {
+                    setValuedtCell(this.value);
+                } catch (Exception e) {
+                    ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException();
+                    chtijbugDroolsRestException.setClassName("RowElement");
+                    chtijbugDroolsRestException.setAttribute(this.columnDefinition.toString());
+                    chtijbugDroolsRestException.setValue(this.value);
+                    chtijbugDroolsRestException.setOriginalException(e);
+                    throw chtijbugDroolsRestException;
+                }
+            } else if (this.columnDefinition.getColumnDefinition() == ColumnType.action) {
+
             }
-        } else if (this.columnDefinition.getColumnDefinition() == ColumnType.action) {
-
         }
     }
 
@@ -59,8 +62,9 @@ public class RowElement {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(String value) throws Exception {
         this.value = value;
+        setValuedtCell(value);
     }
 
     public ColumnDefinition getColumnDefinition() {

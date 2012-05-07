@@ -1,5 +1,6 @@
 package org.chtijbug.drools.guvnor.rest.dt;
 
+import org.chtijbug.drools.guvnor.rest.ChtijbugDroolsRestException;
 import org.drools.ide.common.client.modeldriven.dt52.*;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class DecisionTable {
     private List<ColumnDefinition> columnDefinitionList = new ArrayList<ColumnDefinition>();
     private List<Row> rows = new ArrayList<Row>();
 
-    public DecisionTable(GuidedDecisionTable52 guidedDecisionTable52) {
+    public DecisionTable(GuidedDecisionTable52 guidedDecisionTable52) throws ChtijbugDroolsRestException{
         this.guidedDecisionTable52 = guidedDecisionTable52;
         this.name = this.guidedDecisionTable52.getTableName();
         ColumnDefinition rowNumberColumn = new ColumnDefinition(0, guidedDecisionTable52.getRowNumberCol());
@@ -47,11 +48,23 @@ public class DecisionTable {
             }
         }
         for (List<DTCellValue52> line : this.guidedDecisionTable52.getData()) {
-            Row newRow = fillRow(line);
-            rows.add(newRow);
+            try {
+                Row newRow = fillRow(line);
+                rows.add(newRow);
+            } catch (ChtijbugDroolsRestException e) {
+                ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException();
+                chtijbugDroolsRestException.setOriginalException(e);
+                e.setClassName("DecisionTable.Constructor");
+                e.setAttribute("Data");
+                e.setValue(line.toString());
+                throw chtijbugDroolsRestException;
+
+            }
+
         }
     }
-    private Row createEmptyRow(int rowNumber){
+
+    private Row createEmptyRow(int rowNumber) throws ChtijbugDroolsRestException {
         Row newRow = new Row();
         for (ColumnDefinition col : columnDefinitionList) {
             RowElement newRowElement = new RowElement(col);
@@ -59,7 +72,8 @@ public class DecisionTable {
         }
         return newRow;
     }
-    private Row fillRow( List<DTCellValue52> line) {
+
+    private Row fillRow(List<DTCellValue52> line) throws ChtijbugDroolsRestException {
         Row newRow = new Row();
         for (ColumnDefinition col : columnDefinitionList) {
             RowElement newRowElement = new RowElement(col, line.get(col.getColumnNumber()));

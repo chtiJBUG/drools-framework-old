@@ -12,4 +12,35 @@ public class ChtijbugDroolsRestException extends Exception {
     private  String value;
     private  Exception originalException;
 
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getAttribute() {
+        return Attribute;
+    }
+
+    public void setAttribute(String attribute) {
+        Attribute = attribute;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public Exception getOriginalException() {
+        return originalException;
+    }
+
+    public void setOriginalException(Exception originalException) {
+        this.originalException = originalException;
+    }
 }

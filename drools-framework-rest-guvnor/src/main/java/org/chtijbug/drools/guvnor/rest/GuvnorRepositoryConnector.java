@@ -34,7 +34,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector{
     }
 
     @Override
-    public DecisionTable getGuidedDecisionTable(String dtName) {
+    public DecisionTable getGuidedDecisionTable(String dtName) throws ChtijbugDroolsRestException{
         WebClient client = WebClient.create(this.url);
         client.header("Authorization", this.authorizationHeader);
         String content = client.path(this.clientPath + dtName + "/source").accept("text/plain").get(String.class);

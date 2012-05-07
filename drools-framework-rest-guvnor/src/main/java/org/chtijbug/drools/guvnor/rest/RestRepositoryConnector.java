@@ -20,7 +20,7 @@ public interface RestRepositoryConnector {
      * @return {@link GuidedDecisionTable52} the
      * @throws GuvnorConnexionFailedException - if the connexion to the Guvnor repository failed.
      */
-    DecisionTable getGuidedDecisionTable(String dtName) throws GuvnorConnexionFailedException;
+    DecisionTable getGuidedDecisionTable(String dtName) throws GuvnorConnexionFailedException, ChtijbugDroolsRestException;
 
     void commitChanges(DecisionTable guidedDecisionTable52) throws GuvnorConnexionFailedException;
 }

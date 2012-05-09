@@ -45,12 +45,12 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector{
 
     @Override
     public void commitChanges(DecisionTable guidedDecisionTable52) {
-       /** String dtName = guidedDecisionTable52.getTableName();
-        String newContent = GuidedDTXMLPersistence.getInstance().marshal(guidedDecisionTable52);
+        String dtName = guidedDecisionTable52.getGuidedDecisionTable52().getTableName();
+        String newContent = GuidedDTXMLPersistence.getInstance().marshal(guidedDecisionTable52.getGuidedDecisionTable52());
         WebClient client2 = WebClient.create(this.url);
         client2.header("Authorization", this.authorizationHeader);
         client2.path(this.clientPath + dtName + "/source").accept("application/xml").put(newContent);
-        **/
+
     }
 
 }

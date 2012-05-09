@@ -20,11 +20,14 @@ public class Row {
 
     protected Row(DecisionTable decisionTable, int rowNumber) throws ChtijbugDroolsRestException {
         this.decisionTable = decisionTable;
+        this.cellValue52List = new ArrayList<DTCellValue52>();
         for (ColumnDefinition col : this.decisionTable.getColumnDefinitionList()) {
             RowElement newRowElement = new RowElement(col);
+            this.cellValue52List.add(newRowElement.getDtCellValue52());
             if (col.getColumnNumber() == 0) {
                 try {
-                    newRowElement.setValue(String.valueOf(rowNumber));
+                    String newString =  String.valueOf(rowNumber);
+                    newRowElement.setValue(newString);
                 } catch (Exception e) {
                     ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException();
                     chtijbugDroolsRestException.setClassName("Row");

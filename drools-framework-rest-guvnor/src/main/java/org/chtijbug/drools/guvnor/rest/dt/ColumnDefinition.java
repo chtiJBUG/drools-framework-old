@@ -25,18 +25,21 @@ public class ColumnDefinition {
     public ColumnDefinition(int columnNumber, RowNumberCol52 rowNumberCol52) {
         this.columnNumber = columnNumber;
         this.columnType = ColumnType.rowNumber;
+        this.fieldType   =DTDataTypes52.NUMERIC_INTEGER.toString();
         this.rowNumberCol52 = rowNumberCol52;
     }
 
     public ColumnDefinition(int columnNumber, DescriptionCol52 descriptionCol52) {
         this.columnNumber = columnNumber;
         this.columnType = ColumnType.description;
+        this.fieldType=DTDataTypes52.STRING.toString();
         this.descriptionCol52 = descriptionCol52;
     }
     public ColumnDefinition(int columnNumber, AttributeCol52 attributeCol52) {
         this.attributeCol52 = attributeCol52;
         this.columnNumber = columnNumber;
         this.columnType = ColumnType.attribute;
+        this.fieldType=DTDataTypes52.STRING.toString();
         if (attributeCol52.getDefaultValue() != null) {
             this.hasDefaultValue = true;
             this.defaultValueCell = attributeCol52.getDefaultValue();
@@ -61,10 +64,13 @@ public class ColumnDefinition {
         this.actionInsertFact52 = actionInsertFact52;
         this.columnNumber = columnNumber;
         this.columnType = ColumnType.action;
-        this.fieldType = actionInsertFact52.getFactType();
-        if (actionInsertFact52.getDefaultValue() != null) {
-            this.hasDefaultValue = true;
-            this.defaultValue = getValue(actionInsertFact52.getDefaultValue());
+        this.fieldType = actionInsertFact52.getType();
+        if (actionInsertFact52.getDefaultValue() != null ) {
+            DTCellValue52 defaultValue = actionInsertFact52.getDefaultValue();
+            if (!(DTDataTypes52.STRING.equals(defaultValue.getDataType()) && defaultValue.getStringValue().isEmpty())){
+                this.hasDefaultValue = true;
+                this.defaultValue = getValue(actionInsertFact52.getDefaultValue());
+            }
         }
         this.hideColumn = actionInsertFact52.isHideColumn();
     }

@@ -10,7 +10,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <drools.version>5.4.0.CR1</drools.version>
+    <drools.version>5.4.0.Final</drools.version>
   </properties>
 
   <scm>

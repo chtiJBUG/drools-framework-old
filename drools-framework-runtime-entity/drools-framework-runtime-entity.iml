@@ -13,6 +13,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/target/drools-framework-runtime-entity-1.1-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/target/drools-framework-runtime-entity-1.1.0.2" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
     </content>

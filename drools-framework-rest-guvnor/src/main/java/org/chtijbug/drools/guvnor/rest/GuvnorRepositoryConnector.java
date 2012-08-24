@@ -1,5 +1,6 @@
 package org.chtijbug.drools.guvnor.rest;
 
+import static java.lang.String.*;
 import org.apache.cxf.common.util.Base64Utility;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
 import org.apache.cxf.jaxrs.client.WebClient;
@@ -18,19 +19,26 @@ import org.slf4j.LoggerFactory;
  * To change this template use File | Settings | File Templates.
  */
 public class GuvnorRepositoryConnector implements RestRepositoryConnector{
-
+    /** Class logger */
+    private static Logger logger = LoggerFactory.getLogger(GuvnorRepositoryConnector.class);
+    /** The URL used for retrieving the Guvnor rule Package */
     private String url;
+    /** Guvnor application name used while connecting to rules repository */
     private String guvnorAppName;
+    /** Rule package name */
     private String packageName;
     private String clientPath;
+    /** Authorisation header containing user and password for authentication to Guvnor */
     private String authorizationHeader;
-    private long connectionTimeout=0;
-    private long receivedTimeout=0;
-    private static final Logger LOGGER = LoggerFactory.getLogger(GuvnorRepositoryConnector.class);
+    /** connection timeout for requesting the rule package binaries */
+    private long connectionTimeout=0L;
+    /** Reception timeout */
+    private long receivedTimeout=0L;
 
     public GuvnorRepositoryConnector(String guvnorUrl,String guvnorAppName,String packageName,String guvnorUserName,String guvnorPassword) {
-
-
+        if(logger.isDebugEnabled()) {
+            logger.debug(format("Creating new GuvnorRepositoryConnector with args : %s, %s, %s", guvnorUrl, guvnorAppName,packageName));
+        }
         this.url = guvnorUrl;
         this.guvnorAppName = guvnorAppName;
         this.packageName = packageName;
@@ -60,8 +68,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector{
         client.header("Authorization", this.authorizationHeader);
         String content = client.path(this.clientPath + dtName + "/source").accept("text/plain").get(String.class);
         GuidedDecisionTable52 guidedDecisionTable52 = GuidedDTXMLPersistence.getInstance().unmarshal(content);
-        DecisionTable decisionTable = new DecisionTable(guidedDecisionTable52);
-        return decisionTable;
+        return new DecisionTable(guidedDecisionTable52);
     }
 
     @Override

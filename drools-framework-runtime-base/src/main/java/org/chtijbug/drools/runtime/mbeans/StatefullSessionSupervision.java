@@ -6,11 +6,12 @@ package org.chtijbug.drools.runtime.mbeans;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
+import org.chtijbug.drools.entity.history.HistoryContainer;
+
 import javax.management.AttributeChangeNotification;
 import javax.management.MBeanNotificationInfo;
 import javax.management.Notification;
 import javax.management.NotificationBroadcasterSupport;
-import org.chtijbug.drools.entity.history.HistoryContainer;
 
 /**
  *
@@ -30,6 +31,7 @@ public class StatefullSessionSupervision extends NotificationBroadcasterSupport 
     private double averageRuleThroughout;
     private double minRuleThroughout = 1000000;
     private double maxRuleThroughout = 0;
+    private boolean generateXMLHistoryContainer=false;
     //private HistoryContainer historyContainer;
     private MBeanNotificationInfo[] notificationInfo = null;
     private XStream xstream = new XStream(new JettisonMappedXmlDriver());
@@ -70,9 +72,11 @@ public class StatefullSessionSupervision extends NotificationBroadcasterSupport 
                 String.class.getName(),
                 "No",
                 historyContainer.toString());
-        xstream.setMode(XStream.NO_REFERENCES);
-        String xml = xstream.toXML(historyContainer);
-        n.setUserData(xml);
+        if (generateXMLHistoryContainer=true){
+            xstream.setMode(XStream.NO_REFERENCES);
+            String xml = xstream.toXML(historyContainer);
+            n.setUserData(xml);
+        }
         sendNotification(n);
 
     }
@@ -160,6 +164,14 @@ public class StatefullSessionSupervision extends NotificationBroadcasterSupport 
 
 
         return notificationInfo;
+    }
+    @Override
+    public boolean isGenerateXMLHistoryContainer() {
+        return generateXMLHistoryContainer;
+    }
+    @Override
+    public void setGenerateXMLHistoryContainer(boolean generateXMLHistoryContainer) {
+        this.generateXMLHistoryContainer = generateXMLHistoryContainer;
     }
 
     @Override

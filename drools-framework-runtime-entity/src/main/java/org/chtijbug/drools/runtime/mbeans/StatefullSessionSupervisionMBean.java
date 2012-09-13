@@ -4,8 +4,6 @@
  */
 package org.chtijbug.drools.runtime.mbeans;
 
-import org.chtijbug.drools.entity.history.HistoryContainer;
-
 /**
  *
  * @author nheron
@@ -31,4 +29,8 @@ public interface StatefullSessionSupervisionMBean {
     public double getMaxRuleThroughout();
 
     public void resetStatistics();
+
+    public boolean isGenerateXMLHistoryContainer();
+
+    public void setGenerateXMLHistoryContainer(boolean generateXMLHistoryContainer);
 }

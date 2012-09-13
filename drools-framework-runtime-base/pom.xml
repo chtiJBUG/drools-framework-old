@@ -24,14 +24,6 @@
       <artifactId>commons-collections</artifactId>
       <version>3.0</version>
     </dependency>
-    <dependency>
-      <groupId>org.drools</groupId>
-      <artifactId>drools-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.drools</groupId>
-      <artifactId>knowledge-api</artifactId>
-    </dependency>
 
     <dependency>
       <groupId>org.drools</groupId>

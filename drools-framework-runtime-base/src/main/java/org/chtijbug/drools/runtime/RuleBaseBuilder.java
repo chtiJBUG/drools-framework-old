@@ -5,7 +5,7 @@
 package org.chtijbug.drools.runtime;
 
 import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
-import org.chtijbug.drools.runtime.resource.BinaryPackageDroolsRessource;
+import org.chtijbug.drools.runtime.resource.DrlDroolsResource;
 import org.chtijbug.drools.runtime.resource.GuvnorDroolsResource;
 
 /**
@@ -33,12 +33,16 @@ public class RuleBaseBuilder {
         return newRuleBasePackage;
     }
 
-    public static RuleBasePackage createBinaryPackageBasePackage(String filename) {
-        RuleBasePackage newRuleBasePackage = new RuleBaseSingleton();
-        BinaryPackageDroolsRessource gdr = new BinaryPackageDroolsRessource(filename);
-        newRuleBasePackage.addDroolsResouce(gdr);
-        newRuleBasePackage.createKBase();
 
-        return newRuleBasePackage;
+    public static RuleBasePackage createPackageBasePackage(String ... filenames) {
+
+        RuleBasePackage ruleBasePackage = new RuleBaseSingleton();
+        for (String filename : filenames){
+            DrlDroolsResource resource = DrlDroolsResource.createClassPathResource(filename);
+            ruleBasePackage.addDroolsResouce(resource);
+        }
+        ruleBasePackage.createKBase();
+        return ruleBasePackage;
     }
+
 }

@@ -74,10 +74,10 @@
         <version>${drools.version}</version>
       </dependency>
       <dependency>
-    			<groupId>org.drools</groupId>
-    			<artifactId>droolsjbpm-ide-common</artifactId>
-    			<version>${drools.version}</version>
-    		</dependency>
+        <groupId>org.drools</groupId>
+        <artifactId>droolsjbpm-ide-common</artifactId>
+        <version>${drools.version}</version>
+      </dependency>
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
@@ -124,10 +124,10 @@
         <version>1.3</version>
       </dependency>
       <dependency>
-      <groupId>org.apache.cxf</groupId>
-   			<artifactId>cxf-bundle-jaxrs</artifactId>
-   			<version>2.3.0</version>
-   		</dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-bundle-jaxrs</artifactId>
+        <version>2.3.0</version>
+      </dependency>
     </dependencies>
 
   </dependencyManagement>
@@ -152,15 +152,15 @@
       <url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
     </repository>
     <repository>
-          <id>chtijbug-release</id>
-          <name>chtijbug repo release</name>
-          <url>http://openesb-dev.org:8081/nexus/content/repositories/chtijbug-release/</url>
-        </repository>
-        <repository>
-          <id>chtijbug-snapshot</id>
-          <name>chtijbug repo release</name>
-          <url>http://nexus.openesb-dev.org:8081/nexus/content/repositories/chtijbug-snapshot/</url>
-        </repository>
+      <id>chtijbug-release</id>
+      <name>chtijbug repo release</name>
+      <url>http://openesb-dev.org:8081/nexus/content/repositories/chtijbug-release/</url>
+    </repository>
+    <repository>
+      <id>chtijbug-snapshot</id>
+      <name>chtijbug repo release</name>
+      <url>http://nexus.openesb-dev.org:8081/nexus/content/repositories/chtijbug-snapshot/</url>
+    </repository>
   </repositories>
 
   <distributionManagement>

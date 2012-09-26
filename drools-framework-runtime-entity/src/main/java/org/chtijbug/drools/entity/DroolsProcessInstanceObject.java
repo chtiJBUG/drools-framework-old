@@ -15,6 +15,10 @@ public class DroolsProcessInstanceObject implements Serializable {
 
     private static final long serialVersionUID = 5436434746711988139L;
     protected String id;
+    private String name;
+    private String packageName;
+    private String type;
+    private String version;
     protected DroolsProcessObject process;
     protected Map<String, DroolsNodeInstanceObject> nodeInstances;
 
@@ -26,6 +30,10 @@ public class DroolsProcessInstanceObject implements Serializable {
 
     protected DroolsProcessInstanceObject(String id, DroolsProcessObject process) {
         this.id = id;
+        this.name = process.getName();
+        this.packageName = process.getPackageName();
+        this.type = process.getType();
+        this.version = process.getVersion();
         this.process = process;
         nodeInstances = new HashMap<String, DroolsNodeInstanceObject>();
     }
@@ -44,6 +52,38 @@ public class DroolsProcessInstanceObject implements Serializable {
 
     public DroolsNodeInstanceObject getDroolsNodeInstanceObjet(String id) {
         return nodeInstances.get(id);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     @Override
@@ -82,6 +122,10 @@ public class DroolsProcessInstanceObject implements Serializable {
         final StringBuffer sb = new StringBuffer();
         sb.append("DroolsProcessInstanceObject");
         sb.append("{id='").append(id).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", packageName='").append(packageName).append('\'');
+        sb.append(", type='").append(type).append('\'');
+        sb.append(", version='").append(version).append('\'');
         sb.append(", process=").append(process);
         sb.append(", nodeInstances=").append(nodeInstances);
         sb.append('}');

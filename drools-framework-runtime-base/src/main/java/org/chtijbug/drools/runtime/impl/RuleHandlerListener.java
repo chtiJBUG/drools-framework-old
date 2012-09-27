@@ -99,6 +99,10 @@ public class RuleHandlerListener implements AgendaEventListener {
 
         LOGGER.debug("afterRuleFlowGroupActivated. Rule name: {} ", "");
         AfterRuleFlowActivatedHistoryEvent afterRuleFlowActivatedHistoryEvent = new AfterRuleFlowActivatedHistoryEvent();
+        if (ruleFlowGroupActivatedEvent.getRuleFlowGroup() != null && ruleFlowGroupActivatedEvent.getRuleFlowGroup().getName() != null) {
+            afterRuleFlowActivatedHistoryEvent.setRuleFlowGroupName(ruleFlowGroupActivatedEvent.getRuleFlowGroup().getName());
+        }
+
         ruleBaseSession.getHistoryContainer().addHistoryElement(afterRuleFlowActivatedHistoryEvent);
     }
 
@@ -111,6 +115,9 @@ public class RuleHandlerListener implements AgendaEventListener {
     public void afterRuleFlowGroupDeactivated(RuleFlowGroupDeactivatedEvent ruleFlowGroupDeactivatedEvent) {
         LOGGER.debug("afterRuleFlowGroupDeactivated. Rule name: {} ", "");
         AfterRuleFlowDeactivatedHistoryEvent afterRuleFlowGroupDeactivated = new AfterRuleFlowDeactivatedHistoryEvent();
+        if (ruleFlowGroupDeactivatedEvent.getRuleFlowGroup() != null && ruleFlowGroupDeactivatedEvent.getRuleFlowGroup().getName() != null) {
+            afterRuleFlowGroupDeactivated.setRuleFlowGroupName(ruleFlowGroupDeactivatedEvent.getRuleFlowGroup().getName());
+        }
         ruleBaseSession.getHistoryContainer().addHistoryElement(afterRuleFlowGroupDeactivated);
     }
 

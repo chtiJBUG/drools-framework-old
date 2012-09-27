@@ -9,10 +9,20 @@ import org.chtijbug.drools.entity.DroolsRuleObject;
  * To change this template use File | Settings | File Templates.
  */
 public class AfterRuleFlowActivatedHistoryEvent extends RuleHistoryEvent {
+    private String ruleFlowGroupName;
+
     public AfterRuleFlowActivatedHistoryEvent() {
     }
 
     public AfterRuleFlowActivatedHistoryEvent(DroolsRuleObject rule) {
         super(rule);
+    }
+
+    public String getRuleFlowGroupName() {
+        return ruleFlowGroupName;
+    }
+
+    public void setRuleFlowGroupName(String ruleFlowGroupName) {
+        this.ruleFlowGroupName = ruleFlowGroupName;
     }
 }

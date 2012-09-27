@@ -263,7 +263,8 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 
     @Override
     public void insertObject(Object newObject) {
-        this.knowledgeSession.insert(newObject);
+        FactHandle newFactHandle = this.knowledgeSession.insert(newObject);
+        listFact.put(newObject,newFactHandle);
     }
 
     @Override

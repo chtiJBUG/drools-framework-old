@@ -7,7 +7,7 @@ package org.chtijbug.drools.runtime;
 import org.chtijbug.drools.common.log.Logger;
 import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
-import org.chtijbug.drools.runtime.resource.BinaryPackageDroolsRessource;
+import org.chtijbug.drools.runtime.resource.DrlDroolsResource;
 import org.chtijbug.drools.runtime.resource.GuvnorDroolsResource;
 
 /**
@@ -16,6 +16,7 @@ import org.chtijbug.drools.runtime.resource.GuvnorDroolsResource;
 public class RuleBaseBuilder {
     /** Class Logger */
     private static Logger logger = LoggerFactory.getLogger(RuleBaseBuilder.class);
+
 
     /**
      * @param guvnor_url
@@ -41,17 +42,19 @@ public class RuleBaseBuilder {
         }
     }
 
-    public static RuleBasePackage createBinaryPackageBasePackage(String filename) {
+    public static RuleBasePackage createPackageBasePackage(String ... filenames) {
         logger.entry("createBinaryPackageBasePackage");
-        RuleBasePackage newRuleBasePackage = new RuleBaseSingleton();
+        RuleBasePackage ruleBasePackage = new RuleBaseSingleton();
         try {
-            BinaryPackageDroolsRessource gdr = new BinaryPackageDroolsRessource(filename);
-            newRuleBasePackage.addDroolsResouce(gdr);
-            newRuleBasePackage.createKBase();
-            //_____ Returning the result
-            return newRuleBasePackage;
+            for (String filename : filenames){
+                DrlDroolsResource resource = DrlDroolsResource.createClassPathResource(filename);
+                ruleBasePackage.addDroolsResouce(resource);
+            }
+            ruleBasePackage.createKBase();
+            return ruleBasePackage;
         } finally {
-            logger.exit("createBinaryPackageBasePackage", newRuleBasePackage);
+            logger.exit("createBinaryPackageBasePackage", ruleBasePackage);
         }
     }
+
 }

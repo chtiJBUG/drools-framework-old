@@ -35,6 +35,7 @@ public class DroolsFactObject implements Serializable {
         this.version = version;
     }
 
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer();
@@ -82,5 +83,8 @@ public class DroolsFactObject implements Serializable {
 
     public void setHashCode(int hashCode) {
         this.hashCode = hashCode;
+    }
+    public Object getRealObject(){
+        return realObject;
     }
 }

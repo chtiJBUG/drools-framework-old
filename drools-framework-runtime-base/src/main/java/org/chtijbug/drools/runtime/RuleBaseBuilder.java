@@ -17,7 +17,6 @@ public class RuleBaseBuilder {
     /** Class Logger */
     private static Logger logger = LoggerFactory.getLogger(RuleBaseBuilder.class);
 
-
     /**
      * @param guvnor_url
      * @param guvnor_appName
@@ -43,7 +42,7 @@ public class RuleBaseBuilder {
     }
 
     public static RuleBasePackage createPackageBasePackage(String ... filenames) {
-        logger.entry("createBinaryPackageBasePackage");
+        logger.entry("createPackageBasePackage");
         RuleBasePackage ruleBasePackage = new RuleBaseSingleton();
         try {
             for (String filename : filenames){
@@ -51,9 +50,10 @@ public class RuleBaseBuilder {
                 ruleBasePackage.addDroolsResouce(resource);
             }
             ruleBasePackage.createKBase();
+            //_____ Returning the result
             return ruleBasePackage;
         } finally {
-            logger.exit("createBinaryPackageBasePackage", ruleBasePackage);
+            logger.exit("createPackageBasePackage", ruleBasePackage);
         }
     }
 

@@ -2,6 +2,9 @@ package org.chtijbug.drools.runtime.impl;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
+import org.chtijbug.drools.common.log.Logger;
+import org.chtijbug.drools.common.log.LoggerFactory;
+import org.chtijbug.drools.common.reflection.ReflectionUtils;
 import org.chtijbug.drools.entity.*;
 import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
@@ -13,22 +16,26 @@ import org.drools.runtime.process.NodeInstance;
 import org.drools.runtime.process.ProcessInstance;
 import org.drools.runtime.rule.FactHandle;
 import org.jbpm.workflow.instance.node.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.mvel2.util.ReflectionUtil;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
  * @author nheron
  */
 public class RuleBaseStatefullSession implements RuleBaseSession {
-
+    /** Class Logger */
     private static Logger LOGGER = LoggerFactory.getLogger(RuleBaseStatefullSession.class);
+    /** The wrapped Drools KnowledgeSession */
     private StatefulKnowledgeSession knowledgeSession = null;
+    /** All objects inserted into the session as fact */
     private final Map<FactHandle, Object> listObject;
     private final Map<Object, FactHandle> listFact;
     private final Map<Object, List<DroolsFactObject>> listFactObjects;
     private final HistoryContainer historyContainer;
+    /** All the  */
     private final Map<String, DroolsRuleObject> listRules;
     private final Map<String, DroolsProcessObject> processList;
     private final Map<String, DroolsProcessInstanceObject> processInstanceList;
@@ -257,6 +264,38 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
     @Override
     public void insertObject(Object newObject) {
         this.knowledgeSession.insert(newObject);
+    }
+
+    @Override
+    public void insertByReflection(Object newObject) {
+        Class<?> clazz = newObject.getClass();
+        Method[] methods = clazz.getMethods();
+
+        for (Method method : methods) {
+            //____ only manage getters
+            if (!ReflectionUtils.IsGetter(method)) {
+                continue;
+            }
+            Object getterValue = null;
+            try {
+                getterValue = method.invoke(newObject, (Object[]) null);
+            } catch (Exception e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+            if (getterValue == null)
+                continue;
+            //____ If returned value is not a collection, insert it in the ksession
+            if(!(getterValue instanceof Iterable)) {
+                this.insertObject(getterValue);
+                this.insertByReflection(getterValue);
+            } else {
+                Iterable<?> iterable = (Iterable)getterValue;
+                for (Object item : iterable) {
+                    this.insertObject(item);
+                    this.insertByReflection(item);
+                }
+            }
+        }
     }
 
     @Override

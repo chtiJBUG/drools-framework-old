@@ -14,8 +14,19 @@ import java.util.Collection;
  * @author nheron
  */
 public interface RuleBaseSession {
-
+    /**
+     * This method injects the newObject parameter into this session.
+     * No deep insertion(using relfection) is done
+     * @param newObject
+     */
     public void insertObject(Object newObject);
+
+    /**
+     * This method injects the newObject parameter into this session.
+     * No deep insertion(using relfection) is done
+     * @param newObject
+     */
+    public void insertByReflection(Object newObject);
 
     public void updateObject(Object updatedObject);
 

@@ -14,6 +14,10 @@
   <name>runtime-base</name>
   <description>runtime-base project</description>
   <dependencies>
+      <dependency>
+          <groupId>org.chtijbug.drools</groupId>
+          <artifactId>drools-framework-common</artifactId>
+      </dependency>
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>

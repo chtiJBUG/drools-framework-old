@@ -15,6 +15,7 @@ public class ColumnDefinition {
     private boolean hasDefaultValue;
     private String defaultValue;
     private String fieldType;
+    private String hearder;
     private RowNumberCol52 rowNumberCol52;
     private DescriptionCol52 descriptionCol52;
     private AttributeCol52 attributeCol52;
@@ -27,11 +28,13 @@ public class ColumnDefinition {
         this.columnType = ColumnType.rowNumber;
         this.fieldType   =DTDataTypes52.NUMERIC_INTEGER.toString();
         this.rowNumberCol52 = rowNumberCol52;
+        this.hearder = rowNumberCol52.getHeader();
     }
 
     public ColumnDefinition(int columnNumber, DescriptionCol52 descriptionCol52) {
         this.columnNumber = columnNumber;
         this.columnType = ColumnType.description;
+        this.hearder = descriptionCol52.getHeader();
         this.fieldType=DTDataTypes52.STRING.toString();
         this.descriptionCol52 = descriptionCol52;
     }
@@ -45,6 +48,7 @@ public class ColumnDefinition {
             this.defaultValueCell = attributeCol52.getDefaultValue();
             this.defaultValue = getValue(attributeCol52.getDefaultValue());
         }
+        this.hearder = attributeCol52.getHeader();
         this.hideColumn = attributeCol52.isHideColumn();
     }
 
@@ -65,6 +69,7 @@ public class ColumnDefinition {
         this.columnNumber = columnNumber;
         this.columnType = ColumnType.action;
         this.fieldType = actionInsertFact52.getType();
+        this.hearder = actionInsertFact52.getHeader();
         if (actionInsertFact52.getDefaultValue() != null ) {
             DTCellValue52 defaultValue = actionInsertFact52.getDefaultValue();
             if (!(DTDataTypes52.STRING.equals(defaultValue.getDataType()) && defaultValue.getStringValue().isEmpty())){
@@ -111,6 +116,10 @@ public class ColumnDefinition {
         return fieldType;
     }
 
+    public String getHearder() {
+        return hearder;
+    }
+
     public static String getValue(DTCellValue52 cell) {
         String value = null;
         switch (cell.getDataType()) {
@@ -149,26 +158,5 @@ public class ColumnDefinition {
          */
         return value;
     }
-    /**
-     private boolean isDataValid(String newValue,DTCellValue52 cell) throws  Exception{
-     boolean result = true
-     DTCellValue52 cell = this.columnDefinition.
-     switch (cell.getDataType()) {
-     case BOOLEAN:
-     new Boolean(newValuue);
-     value = Boolean.toString(cell.getBooleanValue());
-     break;
-     case NUMERIC:
-     value = cell.getNumericValue().toString();
-     break;
-     case STRING:
-     value = cell.getStringValue();
-     break;
-     case DATE:
-     value = cell.getDateValue().toString();
-     break;
-     }
-     return value;
-     }
-     **/
+
 }

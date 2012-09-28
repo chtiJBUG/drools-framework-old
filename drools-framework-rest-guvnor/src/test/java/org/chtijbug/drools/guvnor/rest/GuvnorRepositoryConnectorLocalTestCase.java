@@ -10,7 +10,7 @@ import org.junit.Test;
  * Time: 10:31
  * To change this template use File | Settings | File Templates.
  */
-public class GuvnorRepositoryConnectorTest {
+public class GuvnorRepositoryConnectorLocalTestCase {
     GuvnorRepositoryConnector guvnorRepositoryConnector;
     @Before
     public void setUp() throws Exception {

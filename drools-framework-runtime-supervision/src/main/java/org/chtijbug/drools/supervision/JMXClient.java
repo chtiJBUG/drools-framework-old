@@ -6,17 +6,19 @@ package org.chtijbug.drools.supervision;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
-import java.util.HashMap;
-import java.util.Map;
-import javax.management.*;
-import javax.management.remote.JMXConnector;
-import javax.management.remote.JMXConnectorFactory;
-import javax.management.remote.JMXServiceURL;
 import org.chtijbug.drools.entity.history.HistoryContainer;
+import org.chtijbug.drools.runtime.mbeans.ResultStructure;
 import org.chtijbug.drools.runtime.mbeans.RuleBaseSupervisionMBean;
 import org.chtijbug.drools.runtime.mbeans.StatefullSessionSupervisionMBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.management.*;
+import javax.management.remote.JMXConnector;
+import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXServiceURL;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -38,6 +40,7 @@ public class JMXClient implements NotificationListener {
     private ObjectName nameSession = null;
     private FireAllRulesListener listener = null;
     private XStream xstream = new XStream(new JettisonMappedXmlDriver());
+    private JMXConnector jmxc;
 
     private JMXConnector getRemoteConnection(String host, int port, String user, String password) throws Exception {
         JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://" + host + ":" + port + "/jmxrmi");
@@ -51,7 +54,7 @@ public class JMXClient implements NotificationListener {
         this.serverName = host;
         this.user = user;
         this.password = password;
-        JMXConnector jmxc = null;
+        jmxc = null;
         try {
 
             JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://" + this.serverName + ":" + this.port + "/jmxrmi");
@@ -80,7 +83,9 @@ public class JMXClient implements NotificationListener {
     public StatefullSessionSupervisionMBean getMbeanSessionProxy() {
         return mbeanSessionProxy;
     }
-
+    public void close() throws Exception{
+        this.jmxc.close();
+    }
     public void registerListener(FireAllRulesListener newListener) {
 
         try {
@@ -93,11 +98,11 @@ public class JMXClient implements NotificationListener {
     }
 
     public static void main(String args[]) throws Exception {
-        JMXClient client = new JMXClient("10.2.147.43", 8999, "admin", "admin");
+        JMXClient client = new JMXClient("localhost", 8999, "admin", "admin");
         client.registerListener(new FireAllRulesListener() {
 
             @Override
-            public void fireAllRules(HistoryContainer container) {
+            public void fireAllRules(ResultStructure container) {
                 System.out.println(container.toString());
             }
         });
@@ -115,7 +120,7 @@ public class JMXClient implements NotificationListener {
             Object userObject = nn.getUserData();
             if (userObject != null && userObject instanceof String && this.listener != null) {
                 String userString = (String) userObject;
-                HistoryContainer historyContainer = (HistoryContainer) xstream.fromXML(userString);
+                ResultStructure historyContainer = (ResultStructure) xstream.fromXML(userString);
                 this.listener.fireAllRules(historyContainer);
             }
         }

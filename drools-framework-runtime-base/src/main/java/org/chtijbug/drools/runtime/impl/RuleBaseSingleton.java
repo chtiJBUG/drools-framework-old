@@ -4,12 +4,6 @@
  */
 package org.chtijbug.drools.runtime.impl;
 
-import java.lang.management.ManagementFactory;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Semaphore;
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
 import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
@@ -24,6 +18,13 @@ import org.drools.runtime.StatefulKnowledgeSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+import java.lang.management.ManagementFactory;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Semaphore;
+
 /**
  *
  * @author Bertrand Gressier
@@ -37,6 +38,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
     private StatefullSessionSupervision mbsSession;
     private int maxNumberRuleToExecute = 2000;
     private Semaphore lockKbase = new Semaphore(1);
+    MBeanServer server=null;
 
     public RuleBaseSingleton() {
         listResouces = new ArrayList<DroolsResource>();
@@ -109,7 +111,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
             lockKbase.acquire();
             kbase = newkbase;
             lockKbase.release();
-            MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+            server = ManagementFactory.getPlatformMBeanServer();
 
             ObjectName nameRuleBase = new ObjectName(HistoryContainer.nameRuleBaseObjectName);
             ObjectName nameSession = new ObjectName(HistoryContainer.nameSessionObjectName);

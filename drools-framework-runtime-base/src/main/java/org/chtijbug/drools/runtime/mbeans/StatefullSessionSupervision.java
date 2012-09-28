@@ -62,21 +62,36 @@ public class StatefullSessionSupervision extends NotificationBroadcasterSupport 
             maxTimeExecution = executionTime;
         }
         averageTimeExecution = totalTimeExecution / numberFireAllRulesExecuted;
+        ResultStructure result = new ResultStructure();
+        result.setAverageRulesExecuted(this.averageRulesExecuted);
+        result.setAverageRuleThroughout(this.averageRuleThroughout);
+        result.setAverageTimeExecution(this.averageTimeExecution);
+        result.setMaxRulesExecuted(this.getMaxRulesExecuted());
+        result.setMaxRuleThroughout(this.maxRuleThroughout);
+        result.setMaxTimeExecution(this.maxTimeExecution);
+        result.setMinRulesExecuted(this.minRulesExecuted);
+        result.setMinRuleThroughout(this.minRuleThroughout);
+        result.setMinTimeExecution(this.minTimeExecution);
+        result.setNumberFireAllRulesExecuted(this.numberFireAllRulesExecuted);
+        result.setNumberRulesExecuted(numberRulesExecuted);
+
+
         // this.historyContainer = historyContainer;
         Notification n =
                 new AttributeChangeNotification(this,
                 numberFireAllRulesExecuted,
                 System.currentTimeMillis(),
                 "number of FireAllRules ",
-                "HistoryContainer",
+                "ResultStructure",
                 String.class.getName(),
                 "No",
                 historyContainer.toString());
-        if (generateXMLHistoryContainer=true){
-            xstream.setMode(XStream.NO_REFERENCES);
-            String xml = xstream.toXML(historyContainer);
-            n.setUserData(xml);
+        if (generateXMLHistoryContainer==true){
+             result.setHistoryContainer(historyContainer);
         }
+        xstream.setMode(XStream.NO_REFERENCES);
+        String xml = xstream.toXML(result);
+        n.setUserData(xml);
         sendNotification(n);
 
     }

@@ -4,7 +4,7 @@
  */
 package org.chtijbug.drools.supervision;
 
-import org.chtijbug.drools.entity.history.HistoryContainer;
+import org.chtijbug.drools.runtime.mbeans.ResultStructure;
 
 /**
  *
@@ -12,6 +12,6 @@ import org.chtijbug.drools.entity.history.HistoryContainer;
  */
 public interface FireAllRulesListener {
     
-    public void fireAllRules (HistoryContainer container);
+    public void fireAllRules (ResultStructure container);
     
 }

@@ -4,6 +4,8 @@
  */
 package org.chtijbug.drools.runtime.impl;
 
+import org.chtijbug.drools.common.log.Logger;
+import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
@@ -15,8 +17,6 @@ import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
@@ -30,8 +30,9 @@ import java.util.concurrent.Semaphore;
  * @author Bertrand Gressier
  */
 public class RuleBaseSingleton implements RuleBasePackage {
-
+    /** Class Logger */
     static final Logger LOGGER = LoggerFactory.getLogger(RuleBaseSingleton.class);
+    /** KnwoledgeBase reference */
     private KnowledgeBase kbase = null;
     private final List<DroolsResource> listResouces;
     private RuleBaseSupervision mbsRuleBase;
@@ -67,7 +68,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
             lockKbase.acquire();
             StatefulKnowledgeSession newDroolsSession = kbase.newStatefulKnowledgeSession();
-            newRuleBaseSession = new RuleBaseStatefullSession(newDroolsSession, maxNumberRuleToExecute, mbsSession);
+            newRuleBaseSession = new RuleBaseStatefulSession(newDroolsSession, maxNumberRuleToExecute, mbsSession);
             lockKbase.release();
         } else {
             throw new UnsupportedOperationException("Kbase not initialized");

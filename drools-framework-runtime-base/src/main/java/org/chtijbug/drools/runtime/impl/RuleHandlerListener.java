@@ -24,12 +24,12 @@ import java.util.List;
  */
 public class RuleHandlerListener implements AgendaEventListener {
 
-    private final RuleBaseStatefullSession ruleBaseSession;
+    private final RuleBaseStatefulSession ruleBaseSession;
     static final Logger LOGGER = LoggerFactory.getLogger(RuleHandlerListener.class);
     private int nbRuleFired = 0;
     private int maxNumberRuleToExecute;
 
-    public RuleHandlerListener(RuleBaseStatefullSession ruleBaseSession) {
+    public RuleHandlerListener(RuleBaseStatefulSession ruleBaseSession) {
         this.ruleBaseSession = ruleBaseSession;
         this.maxNumberRuleToExecute = ruleBaseSession.getMaxNumberRuleToExecute();
     }

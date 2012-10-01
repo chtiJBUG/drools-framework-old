@@ -19,10 +19,10 @@ import org.slf4j.LoggerFactory;
  */
 public class ProcessHandlerListener extends DefaultProcessEventListener {
 
-    private final RuleBaseStatefullSession ruleBaseSession;
+    private final RuleBaseStatefulSession ruleBaseSession;
     static final Logger LOGGER = LoggerFactory.getLogger(ProcessHandlerListener.class);
 
-    public ProcessHandlerListener(RuleBaseStatefullSession ruleBaseSession) {
+    public ProcessHandlerListener(RuleBaseStatefulSession ruleBaseSession) {
 
         this.ruleBaseSession = ruleBaseSession;
     }

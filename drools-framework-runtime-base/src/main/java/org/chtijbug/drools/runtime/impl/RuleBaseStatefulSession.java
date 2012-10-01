@@ -16,18 +16,16 @@ import org.drools.runtime.process.NodeInstance;
 import org.drools.runtime.process.ProcessInstance;
 import org.drools.runtime.rule.FactHandle;
 import org.jbpm.workflow.instance.node.*;
-import org.mvel2.util.ReflectionUtil;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
 /**
  * @author nheron
  */
-public class RuleBaseStatefullSession implements RuleBaseSession {
+public class RuleBaseStatefulSession implements RuleBaseSession {
     /** Class Logger */
-    private static Logger LOGGER = LoggerFactory.getLogger(RuleBaseStatefullSession.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(RuleBaseStatefulSession.class);
     /** The wrapped Drools KnowledgeSession */
     private StatefulKnowledgeSession knowledgeSession = null;
     /** All objects inserted into the session as fact */
@@ -48,7 +46,7 @@ public class RuleBaseStatefullSession implements RuleBaseSession {
 
     private XStream xstream = new XStream(new JettisonMappedXmlDriver());
 
-    public RuleBaseStatefullSession(StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefullSessionSupervision mbeanStatefulleSessionSupervision) {
+    public RuleBaseStatefulSession(StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefullSessionSupervision mbeanStatefulleSessionSupervision) {
         this.knowledgeSession = knowledgeSession;
         this.maxNumberRuleToExecute = maxNumberRuleToExecute;
         this.factListener = new FactHandlerListener(this);

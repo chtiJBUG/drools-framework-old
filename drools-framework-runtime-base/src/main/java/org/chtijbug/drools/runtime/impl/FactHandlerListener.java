@@ -23,10 +23,10 @@ import org.slf4j.LoggerFactory;
  */
 public class FactHandlerListener implements WorkingMemoryEventListener {
 
-	private final RuleBaseStatefullSession ruleBaseSession;
+	private final RuleBaseStatefulSession ruleBaseSession;
 	static final Logger LOGGER = LoggerFactory.getLogger(FactHandlerListener.class);
 
-	public FactHandlerListener(RuleBaseStatefullSession ruleBaseSession) {
+	public FactHandlerListener(RuleBaseStatefulSession ruleBaseSession) {
 		this.ruleBaseSession = ruleBaseSession;
 	}
 

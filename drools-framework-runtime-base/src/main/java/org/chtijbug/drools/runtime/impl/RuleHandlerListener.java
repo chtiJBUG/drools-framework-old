@@ -22,11 +22,14 @@ import java.util.List;
 /**
  * @author nheron
  */
-public class RuleHandlerListener implements AgendaEventListener {
-
+public class RuleHandlerListener extends DefaultAgendaEventListener {
+    /** Class logger */
+    private static Logger logger = LoggerFactory.getLogger(RuleHandlerListener.class);
+    /** The Knowledge sessions sending events */
     private final RuleBaseStatefulSession ruleBaseSession;
-    static final Logger LOGGER = LoggerFactory.getLogger(RuleHandlerListener.class);
+    /** The rule fired count */
     private int nbRuleFired = 0;
+    /** The rule fire limit */
     private int maxNumberRuleToExecute;
 
     public RuleHandlerListener(RuleBaseStatefulSession ruleBaseSession) {
@@ -35,89 +38,84 @@ public class RuleHandlerListener implements AgendaEventListener {
     }
 
     @Override
-    public void activationCreated(ActivationCreatedEvent ace) {
-    }
-
-    @Override
-    public void activationCancelled(ActivationCancelledEvent ace) {
-    }
-
-    @Override
     public void beforeActivationFired(BeforeActivationFiredEvent event) {
-        Activation activation = event.getActivation();
-        List<? extends FactHandle> listFact = activation.getFactHandles();
-
-        DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(activation.getRule());
-
-        BeforeRuleFiredHistoryEvent newBeforeRuleEvent = new BeforeRuleFiredHistoryEvent(droolsRuleObject);
-
-        for (FactHandle h : listFact) {
-            DroolsFactObject sourceFactObject = ruleBaseSession.getLastFactObjectVersionFromFactHandle(h);
-            newBeforeRuleEvent.getWhenObjects().add(sourceFactObject);
+        logger.entry("beforeActivationFired", event);
+        try {
+            Activation activation = event.getActivation();
+            List<? extends FactHandle> listFact = activation.getFactHandles();
+            //____ Getting the Rule object summary from the session
+            DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(activation.getRule());
+            //____ Creating the specific History event for history managment
+            BeforeRuleFiredHistoryEvent newBeforeRuleEvent = new BeforeRuleFiredHistoryEvent(droolsRuleObject);
+            //____ Adding all objects info contained in the Activation object into the history Events
+            for (FactHandle h : listFact) {
+                DroolsFactObject sourceFactObject = ruleBaseSession.getLastFactObjectVersionFromFactHandle(h);
+                newBeforeRuleEvent.getWhenObjects().add(sourceFactObject);
+            }
+            //_____ Add Event into the History Container
+            ruleBaseSession.getHistoryContainer().addHistoryElement(newBeforeRuleEvent);
+        } finally {
+            logger.exit("beforeActivationFired");
         }
-
-        LOGGER.debug("BeforeActivationFiredEvent. Rule name: {} ", droolsRuleObject.getRuleName());
-        ruleBaseSession.getHistoryContainer().addHistoryElement(newBeforeRuleEvent);
     }
 
     @Override
     public void afterActivationFired(AfterActivationFiredEvent event) {
-        Activation activation = event.getActivation();
-
-        DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(activation.getRule());
-
-        AfterRuleFiredHistoryEvent newAfterRuleEvent = new AfterRuleFiredHistoryEvent(droolsRuleObject);
-
-        LOGGER.debug("AfterActivationFiredEvent. Rule name: {} ", droolsRuleObject.getRuleName());
-        ruleBaseSession.getHistoryContainer().addHistoryElement(newAfterRuleEvent);
-
-        nbRuleFired++;
-
-        if (nbRuleFired > maxNumberRuleToExecute) {
-            KnowledgeRuntime runTime = event.getKnowledgeRuntime();
-            runTime.halt();
+        logger.entry("afterActivationFired", event);
+        try {
+            Activation activation = event.getActivation();
+            //____ Getting the Rule Object Summary from the session
+            DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(activation.getRule());
+            //____ Creating the specific "After Rule Fired" History Event
+            AfterRuleFiredHistoryEvent newAfterRuleEvent = new AfterRuleFiredHistoryEvent(droolsRuleObject);
+            ruleBaseSession.getHistoryContainer().addHistoryElement(newAfterRuleEvent);
+            //____ Increment the global rule fired count
+            nbRuleFired++;
+            //____ If the max number rule able to be executed threshold is raised, stop the session execution
+            if (nbRuleFired > maxNumberRuleToExecute) {
+                logger.warn(String.format("%d rules have been fired. This is the limit.", maxNumberRuleToExecute));
+                logger.warn("The session execution will be stop");
+                KnowledgeRuntime runTime = event.getKnowledgeRuntime();
+                runTime.halt();
+            }
+            logger.debug("nbre RDG Fired ==> ", nbRuleFired);
+        } finally {
+            logger.exit("afterActivationFired");
         }
-        LOGGER.debug("nbre RDG Fired ", nbRuleFired);
-
-    }
-
-    @Override
-    public void agendaGroupPopped(AgendaGroupPoppedEvent agpe) {
-    }
-
-    @Override
-    public void agendaGroupPushed(AgendaGroupPushedEvent agpe) {
-    }
-
-    @Override
-    public void beforeRuleFlowGroupActivated(RuleFlowGroupActivatedEvent ruleFlowGroupActivatedEvent) {
     }
 
     @Override
     public void afterRuleFlowGroupActivated(RuleFlowGroupActivatedEvent ruleFlowGroupActivatedEvent) {
-
-        LOGGER.debug("afterRuleFlowGroupActivated. Rule name: {} ", "");
-        AfterRuleFlowActivatedHistoryEvent afterRuleFlowActivatedHistoryEvent = new AfterRuleFlowActivatedHistoryEvent();
-        if (ruleFlowGroupActivatedEvent.getRuleFlowGroup() != null && ruleFlowGroupActivatedEvent.getRuleFlowGroup().getName() != null) {
-            afterRuleFlowActivatedHistoryEvent.setRuleFlowGroupName(ruleFlowGroupActivatedEvent.getRuleFlowGroup().getName());
+        logger.entry("afterRuleFlowGroupActivated", ruleFlowGroupActivatedEvent);
+        try {
+            //____ Creating history event
+            AfterRuleFlowActivatedHistoryEvent afterRuleFlowActivatedHistoryEvent = new AfterRuleFlowActivatedHistoryEvent();
+            //____ Filling the event with the rule flow group name activated
+            if (ruleFlowGroupActivatedEvent.getRuleFlowGroup() != null && ruleFlowGroupActivatedEvent.getRuleFlowGroup().getName() != null) {
+                afterRuleFlowActivatedHistoryEvent.setRuleFlowGroupName(ruleFlowGroupActivatedEvent.getRuleFlowGroup().getName());
+            }
+            //____ Adding into the History container
+            ruleBaseSession.getHistoryContainer().addHistoryElement(afterRuleFlowActivatedHistoryEvent);
+        } finally {
+            logger.exit("afterRuleFlowGroupActivated");
         }
-
-        ruleBaseSession.getHistoryContainer().addHistoryElement(afterRuleFlowActivatedHistoryEvent);
-    }
-
-    @Override
-    public void beforeRuleFlowGroupDeactivated(RuleFlowGroupDeactivatedEvent ruleFlowGroupDeactivatedEvent) {
-
     }
 
     @Override
     public void afterRuleFlowGroupDeactivated(RuleFlowGroupDeactivatedEvent ruleFlowGroupDeactivatedEvent) {
-        LOGGER.debug("afterRuleFlowGroupDeactivated. Rule name: {} ", "");
-        AfterRuleFlowDeactivatedHistoryEvent afterRuleFlowGroupDeactivated = new AfterRuleFlowDeactivatedHistoryEvent();
-        if (ruleFlowGroupDeactivatedEvent.getRuleFlowGroup() != null && ruleFlowGroupDeactivatedEvent.getRuleFlowGroup().getName() != null) {
-            afterRuleFlowGroupDeactivated.setRuleFlowGroupName(ruleFlowGroupDeactivatedEvent.getRuleFlowGroup().getName());
+        logger.entry("afterRuleFlowGroupDeactivated", ruleFlowGroupDeactivatedEvent);
+        try {
+            //____ Creating history event
+            AfterRuleFlowDeactivatedHistoryEvent afterRuleFlowGroupDeactivated = new AfterRuleFlowDeactivatedHistoryEvent();
+            //____ Filling with the deactivated rule flow group name
+            if (ruleFlowGroupDeactivatedEvent.getRuleFlowGroup() != null && ruleFlowGroupDeactivatedEvent.getRuleFlowGroup().getName() != null) {
+                afterRuleFlowGroupDeactivated.setRuleFlowGroupName(ruleFlowGroupDeactivatedEvent.getRuleFlowGroup().getName());
+            }
+            //_____ Adding the event to the History container
+            ruleBaseSession.getHistoryContainer().addHistoryElement(afterRuleFlowGroupDeactivated);
+        } finally {
+            logger.exit("afterRuleFlowGroupDeactivated");
         }
-        ruleBaseSession.getHistoryContainer().addHistoryElement(afterRuleFlowGroupDeactivated);
     }
 
     public int getNbRuleFired() {

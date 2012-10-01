@@ -267,10 +267,15 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
     @Override
     public void insertByReflection(Object newObject) {
-        Class<?> clazz = newObject.getClass();
-        Method[] methods = clazz.getMethods();
+        // Avoid inserting java.* classes
+        if(newObject.getClass().getPackage().getName().startsWith("java.")) {
+            return;
+        }
 
-        for (Method method : methods) {
+        //____ First insert the root object
+        insertObject(newObject);
+        //____ Then foreach getters insert item by reflection
+        for (Method method : newObject.getClass().getMethods()) {
             //____ only manage getters
             if (!ReflectionUtils.IsGetter(method)) {
                 continue;
@@ -279,18 +284,17 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             try {
                 getterValue = method.invoke(newObject, (Object[]) null);
             } catch (Exception e) {
+                //TODO
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
             if (getterValue == null)
                 continue;
             //____ If returned value is not a collection, insert it in the ksession
             if(!(getterValue instanceof Iterable)) {
-                this.insertObject(getterValue);
                 this.insertByReflection(getterValue);
             } else {
                 Iterable<?> iterable = (Iterable)getterValue;
                 for (Object item : iterable) {
-                    this.insertObject(item);
                     this.insertByReflection(item);
                 }
             }

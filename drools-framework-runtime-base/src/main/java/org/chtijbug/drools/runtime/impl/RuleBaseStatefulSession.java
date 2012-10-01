@@ -9,7 +9,7 @@ import org.chtijbug.drools.entity.*;
 import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBaseSession;
-import org.chtijbug.drools.runtime.mbeans.StatefullSessionSupervision;
+import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervision;
 import org.drools.definition.rule.Rule;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.NodeInstance;
@@ -42,11 +42,11 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     private RuleHandlerListener ruleHandlerListener;
     private ProcessHandlerListener processHandlerListener;
     private int maxNumberRuleToExecute;
-    private StatefullSessionSupervision mbeanStatefulleSessionSupervision;
+    private StatefulSessionSupervision mbeanStatefulSessionSupervision;
 
     private XStream xstream = new XStream(new JettisonMappedXmlDriver());
 
-    public RuleBaseStatefulSession(StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefullSessionSupervision mbeanStatefulleSessionSupervision) {
+    public RuleBaseStatefulSession(StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefulSessionSupervision mbeanStatefulSessionSupervision) {
         this.knowledgeSession = knowledgeSession;
         this.maxNumberRuleToExecute = maxNumberRuleToExecute;
         this.factListener = new FactHandlerListener(this);
@@ -59,7 +59,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         this.listRules = new HashMap<String, DroolsRuleObject>();
         this.processList = new HashMap<String, DroolsProcessObject>();
         this.processInstanceList = new HashMap<String, DroolsProcessInstanceObject>();
-        this.mbeanStatefulleSessionSupervision = mbeanStatefulleSessionSupervision;
+        this.mbeanStatefulSessionSupervision = mbeanStatefulSessionSupervision;
         knowledgeSession.addEventListener(factListener);
         knowledgeSession.addEventListener(ruleHandlerListener);
         knowledgeSession.addEventListener(processHandlerListener);
@@ -69,13 +69,14 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         return maxNumberRuleToExecute;
     }
 
+    @Deprecated
     public void setMaxNumberRuleToExecute(int maxNumberRuleToExecute) {
         this.maxNumberRuleToExecute = maxNumberRuleToExecute;
     }
 
     public DroolsProcessInstanceObject getDroolsProcessInstanceObject(ProcessInstance processInstance) {
 
-        DroolsProcessInstanceObject droolsProcessInstanceObject = processInstanceList.get(processInstance.getId());
+        DroolsProcessInstanceObject droolsProcessInstanceObject = processInstanceList.get(Long.toString(processInstance.getId()));
         if (droolsProcessInstanceObject == null) {
             DroolsProcessObject droolsProcessObject = processList.get(processInstance.getProcess().getId());
 
@@ -107,7 +108,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         } else if (nodeInstance instanceof EndNodeInstance) {
             nodeType = EndNodeInstance.class.getCanonicalName();
         }
-        DroolsProcessInstanceObject droolsProcessInstanceObject = processInstanceList.get(nodeInstance.getProcessInstance().getId());
+        DroolsProcessInstanceObject droolsProcessInstanceObject = processInstanceList.get(Long.toString(nodeInstance.getProcessInstance().getId()));
         if (droolsProcessInstanceObject == null) {
             droolsProcessInstanceObject = this.getDroolsProcessInstanceObject(nodeInstance.getProcessInstance());
         }
@@ -125,7 +126,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     }
 
     public DroolsRuleObject getDroolsRuleObject(Rule rule) {
-        DroolsRuleObject droolsRuleObject = listRules.get(rule);
+        DroolsRuleObject droolsRuleObject = listRules.get(rule.toString());
 
         if (droolsRuleObject == null) {
             droolsRuleObject = DroolsRuleObject.createDroolRuleObject(rule.getName(), rule.getPackageName());
@@ -166,6 +167,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         return listFactObjects.get(searchObject).get(lastVersion);
     }
 
+    @Deprecated
     public DroolsFactObject getFactObjectVersionFromFactHandle(FactHandle factToFind, int version) {
         Object searchObject = this.listObject.get(factToFind);
         if (searchObject == null) {
@@ -194,7 +196,6 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         Collection<DroolsFactObject> list = new ArrayList<DroolsFactObject>();
         for (Object o : this.listFact.keySet()) {
             FactHandle factHandle = this.listFact.get(o);
-            List<DroolsFactObject> versionList = this.listFactObjects.get(o);
             list.add(this.getLastFactObjectVersionFromFactHandle(factHandle));
 
         }
@@ -212,10 +213,6 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         return result;
     }
 
-    public StatefulKnowledgeSession getKnowledgeSession() {
-        return knowledgeSession;
-    }
-
     public void setData(FactHandle f, Object o, DroolsFactObject fObject) {
 
         Object objectSearch = listObject.containsKey(f);
@@ -226,7 +223,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         listObject.put(f, o);
         listFact.put(o, f);
 
-        if (listFactObjects.containsKey(o) == false) {
+        if (!listFactObjects.containsKey(o)) {
             List<DroolsFactObject> newList = new LinkedList<DroolsFactObject>();
             newList.add(fObject);
             listFactObjects.put(o, newList);
@@ -250,7 +247,6 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             knowledgeSession.retract(f);
         }
 
-        factListener.dispose();
         factListener = null;
         ruleHandlerListener = null;
         processHandlerListener = null;
@@ -318,15 +314,14 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         long startTime = System.currentTimeMillis();
         long beforeNumberRules = ruleHandlerListener.getNbRuleFired();
         try{
-        this.knowledgeSession.fireAllRules();
+            this.knowledgeSession.fireAllRules();
         }catch (Exception e){
-            DroolsChtijbugException droolsChtijbugException = new DroolsChtijbugException("fireAllRules","",e);
-            throw droolsChtijbugException;
+            throw new DroolsChtijbugException("fireAllRules","",e);
         }
 
         long stopTime = System.currentTimeMillis();
         long afterNumberRules = ruleHandlerListener.getNbRuleFired();
-        mbeanStatefulleSessionSupervision.fireAllRulesExecuted(stopTime - startTime, afterNumberRules - beforeNumberRules, historyContainer);
+        mbeanStatefulSessionSupervision.fireAllRulesExecuted(stopTime - startTime, afterNumberRules - beforeNumberRules, historyContainer);
     }
 
     @Override

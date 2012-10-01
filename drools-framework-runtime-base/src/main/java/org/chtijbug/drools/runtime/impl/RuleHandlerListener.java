@@ -4,6 +4,8 @@
  */
 package org.chtijbug.drools.runtime.impl;
 
+import org.chtijbug.drools.common.log.Logger;
+import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.DroolsRuleObject;
 import org.chtijbug.drools.entity.history.rule.AfterRuleFiredHistoryEvent;
@@ -14,8 +16,6 @@ import org.drools.event.rule.*;
 import org.drools.runtime.KnowledgeRuntime;
 import org.drools.runtime.rule.Activation;
 import org.drools.runtime.rule.FactHandle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -63,7 +63,6 @@ public class RuleHandlerListener implements AgendaEventListener {
     @Override
     public void afterActivationFired(AfterActivationFiredEvent event) {
         Activation activation = event.getActivation();
-        List<? extends FactHandle> listFact = activation.getFactHandles();
 
         DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(activation.getRule());
 

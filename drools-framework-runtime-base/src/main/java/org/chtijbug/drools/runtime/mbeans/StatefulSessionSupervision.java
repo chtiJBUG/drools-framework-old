@@ -17,7 +17,7 @@ import javax.management.NotificationBroadcasterSupport;
  *
  * @author nheron
  */
-public class StatefullSessionSupervision extends NotificationBroadcasterSupport implements StatefullSessionSupervisionMBean {
+public class StatefulSessionSupervision extends NotificationBroadcasterSupport implements StatefullSessionSupervisionMBean {
 
     private long averageTimeExecution;
     private long minTimeExecution = 1000000;

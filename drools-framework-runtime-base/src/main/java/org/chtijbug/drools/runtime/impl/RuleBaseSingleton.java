@@ -10,7 +10,7 @@ import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.mbeans.RuleBaseSupervision;
-import org.chtijbug.drools.runtime.mbeans.StatefullSessionSupervision;
+import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervision;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
@@ -36,7 +36,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
     private KnowledgeBase kbase = null;
     private final List<DroolsResource> listResouces;
     private RuleBaseSupervision mbsRuleBase;
-    private StatefullSessionSupervision mbsSession;
+    private StatefulSessionSupervision mbsSession;
     private int maxNumberRuleToExecute = 2000;
     private Semaphore lockKbase = new Semaphore(1);
     MBeanServer server=null;
@@ -117,7 +117,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
             ObjectName nameRuleBase = new ObjectName(HistoryContainer.nameRuleBaseObjectName);
             ObjectName nameSession = new ObjectName(HistoryContainer.nameSessionObjectName);
             mbsRuleBase = new RuleBaseSupervision(this);
-            mbsSession = new StatefullSessionSupervision();
+            mbsSession = new StatefulSessionSupervision();
             server.registerMBean(mbsRuleBase, nameRuleBase);
             server.registerMBean(mbsSession, nameSession);
 

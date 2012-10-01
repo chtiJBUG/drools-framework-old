@@ -10,7 +10,6 @@ import org.drools.io.Resource;
 import org.drools.io.ResourceFactory;
 
 import java.io.*;
-import java.net.URL;
 
 /**
  * @author Bertrand Gressier

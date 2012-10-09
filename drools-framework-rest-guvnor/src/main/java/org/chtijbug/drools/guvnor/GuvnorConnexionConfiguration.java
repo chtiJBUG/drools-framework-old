@@ -1,6 +1,6 @@
 package org.chtijbug.drools.guvnor;
 
-import org.apache.commons.lang.builder.*;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.cxf.common.util.Base64Utility;
 
 /**
@@ -14,14 +14,17 @@ public class GuvnorConnexionConfiguration {
     private String hostname;
     /** Web application Name */
     private String webappName;
+    /** The package name which contains all business assets */
+    private String packageName;
     /** username for login*/
     private String username;
     /** password for login */
     private String password;
 
-    public GuvnorConnexionConfiguration(String hostname, String webappName, String username, String password) {
+    public GuvnorConnexionConfiguration(String hostname, String webappName, String packageName, String username, String password) {
         this.hostname = hostname;
         this.webappName = webappName;
+        this.packageName = packageName;
         this.username = username;
         this.password = password;
     }
@@ -34,21 +37,16 @@ public class GuvnorConnexionConfiguration {
         return webappName;
     }
 
+    public String getPackageName() {
+        return packageName;
+    }
+
     public String getUsername() {
         return username;
     }
 
     public String getPassword() {
         return password;
-    }
-
-    /**
-     * Create the REST API base URL part for the package name passed as argument
-     * @param packageName The package name to request from Guvnor Web Application
-     * @return The REST API Base URL part
-     */
-    public String getRestAPIPathForPackage(String packageName) {
-        return this.getHostname() + "/rest/packages/" + packageName + "/assets/";
     }
 
     /**

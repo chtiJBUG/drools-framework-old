@@ -10,6 +10,8 @@ package org.chtijbug.drools.guvnor.rest;
 import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
 import org.drools.ide.common.client.modeldriven.dt52.GuidedDecisionTable52;
 
+import java.io.InputStream;
+
 public interface RestRepositoryConnector {
 
 
@@ -23,5 +25,8 @@ public interface RestRepositoryConnector {
     DecisionTable getGuidedDecisionTable(String dtName) throws GuvnorConnexionFailedException, ChtijbugDroolsRestException;
 
     void commitChanges(DecisionTable guidedDecisionTable52) throws GuvnorConnexionFailedException;
+
+    InputStream getPojoModel();
+
 }
 

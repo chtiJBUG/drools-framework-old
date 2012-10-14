@@ -30,13 +30,13 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector{
     private final GuvnorConnexionConfiguration configuration;
 
 
-    public GuvnorRepositoryConnector(GuvnorConnexionConfiguration configuration, String packageName) {
-        logger.debug(format("Creating new GuvnorRepositoryConnector with args : %s, %s", configuration, packageName));
+    public GuvnorRepositoryConnector(GuvnorConnexionConfiguration configuration) {
+        logger.debug(format("Creating new GuvnorRepositoryConnector with args : %s", configuration.toString()));
         this.configuration = configuration;
     }
 
     public GuvnorRepositoryConnector(String guvnorUrl,String guvnorAppName,String packageName,String guvnorUserName,String guvnorPassword) {
-        this(new GuvnorConnexionConfiguration(guvnorUrl, guvnorAppName,packageName, guvnorUserName, guvnorPassword), packageName);
+        this(new GuvnorConnexionConfiguration(guvnorUrl, guvnorAppName,packageName, guvnorUserName, guvnorPassword));
     }
 
     @Override

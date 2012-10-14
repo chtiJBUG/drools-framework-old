@@ -1,14 +1,16 @@
 package org.chtijbug.drools.runner;
 
-import org.apache.commons.io.DirectoryWalker;
 import org.apache.commons.io.FileUtils;
+import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
+import org.chtijbug.drools.guvnor.rest.GuvnorRepositoryConnector;
+import org.chtijbug.drools.guvnor.rest.RestRepositoryConnector;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,11 +26,13 @@ public class WebApplicationBuilderTestCase {
         assertNotNull(workspaceFolder);
 
         try {
-            RunnerConfiguration runnerConfiguration = new RunnerConfiguration("guvnorAppUrl", "JUNIT", "inputClassName", "outputClassName");
+            GuvnorConnexionConfiguration configuration = new GuvnorConnexionConfiguration("http://192.168.255.60:8080", "drools-guvnor","amag", "tomcat", "tomcat");
+            RunnerConfiguration runnerConfiguration = new RunnerConfiguration(configuration, "com.axonactive.amag.pojo.Decision", "com.axonactive.amag.pojo.Decision");
+            RestRepositoryConnector repositoryConnector = new GuvnorRepositoryConnector(configuration);
             WebApplicationBuilder toTest = new WebApplicationBuilder(runnerConfiguration);
             toTest.buildProjectSkeleton();
             //_____ If the method is correctly executed, then it is correct.
-            // TODO Add some file system searches to be sure directories are corretly created
+            // TODO Add some file system searches to be sure directories are correctly created
         } catch (Throwable e) {
             e.printStackTrace();
             fail();
@@ -37,4 +41,24 @@ public class WebApplicationBuilderTestCase {
         }
     }
 
+    @Test
+    public void testBuildWebApplication() throws Exception {
+        File workspaceFolder = new File(RunnerConfiguration.WORKSPACE_FOLDER);
+        assertNotNull(workspaceFolder);
+
+        try {
+            GuvnorConnexionConfiguration configuration = new GuvnorConnexionConfiguration("http://192.168.255.60:8080/", "drools-guvnor/","amag", "tomcat", "tomcat");
+            RunnerConfiguration runnerConfiguration = new RunnerConfiguration(configuration, "com.axonactive.amag.pojo.Decision", "com.axonactive.amag.pojo.Decision");
+            RestRepositoryConnector repositoryConnector = new GuvnorRepositoryConnector(configuration);
+            WebApplicationBuilder toTest = new WebApplicationBuilder(runnerConfiguration);
+            toTest.buildWebApplication();
+            //_____ If the method is correctly executed, then it is correct.
+            // TODO Add some file system searches to be sure all expected files are present and content be replaced
+        } catch (Throwable e) {
+            e.printStackTrace();
+            fail();
+        } finally {
+            //FileUtils.deleteDirectory(workspaceFolder);
+        }
+    }
 }

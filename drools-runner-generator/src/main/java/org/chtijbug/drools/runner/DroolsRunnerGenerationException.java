@@ -1,5 +1,7 @@
 package org.chtijbug.drools.runner;
 
+import java.io.IOException;
+
 /**
  * Created with IntelliJ IDEA.
  * User: samuel
@@ -10,5 +12,9 @@ public class DroolsRunnerGenerationException extends Throwable {
 
     public DroolsRunnerGenerationException(String message) {
         super(message);
+    }
+
+    public DroolsRunnerGenerationException(String message, IOException cause) {
+        super(message, cause);
     }
 }

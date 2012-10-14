@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>drools-service-runner</groupId>
+    <groupId>org.chtijbug.drools</groupId>
     <artifactId>drools-service-runner</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
@@ -20,6 +20,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.chtijbug.drools</groupId>
+            <artifactId>model</artifactId>
+            <version>1.0</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-bundle</artifactId>
@@ -119,8 +124,31 @@
 	    <finalName>#WAR_NAME#</finalName>
         <plugins>
             <plugin>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.3.1</version>
+                <executions>
+                    <execution>
+                        <id>install-model</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>org.chtijbug.drools</groupId>
+                            <artifactId>model</artifactId>
+                            <version>1.0</version>
+                            <file>${project.basedir}/lib/model.jar</file>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                            <createChecksum>true</createChecksum>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
                 <configuration>
                     <source>1.6</source>
                     <target>${java.version}</target>

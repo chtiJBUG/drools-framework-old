@@ -1,6 +1,6 @@
-chtijbug.guvnor.host=http://192.168.255.60:8080/
-chtijbug.guvnor.app=drools-guvnor
-chtijbug.guvnor.package=amag/
+chtijbug.guvnor.host=#HOSTNAME#
+chtijbug.guvnor.app=#WEBAPPNAME#
+chtijbug.guvnor.package=#PACKAGE#
 chtijbug.guvnor.version=LATEST
-chtijbug.guvnor.username=tomcat
-chtijbug.guvnor.password=tomcat
+chtijbug.guvnor.username=#USERNAME#
+chtijbug.guvnor.password=#PASSWORD#

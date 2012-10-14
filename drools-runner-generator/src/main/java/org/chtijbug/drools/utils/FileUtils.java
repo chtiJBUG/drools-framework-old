@@ -73,4 +73,15 @@ public final class FileUtils {
         }
     }
 
+    public static void createFileFromInputStream(File folder, String filename, InputStream inputStream) throws IOException {
+        File newFile = new File(folder, filename);
+        newFile.createNewFile();
+        FileOutputStream outputStream = new FileOutputStream(newFile) ;
+        int ch;
+        while ((ch = inputStream.read()) != -1) {
+            outputStream.write(ch);
+        }
+        IOUtils.closeQuietly(inputStream);
+        IOUtils.closeQuietly(outputStream);
+    }
 }

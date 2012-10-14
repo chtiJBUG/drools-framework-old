@@ -1,5 +1,9 @@
 package org.chtijbug.drools.runner;
 
+import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
+
+import java.io.File;
+
 /**
  * Created with IntelliJ IDEA.
  * User: samuel
@@ -8,10 +12,11 @@ package org.chtijbug.drools.runner;
  */
 public class RunnerConfiguration {
     protected static final String WORKSPACE_FOLDER = "/tmp/chtijbug";
-    /** Guvnor connexion information */
+    /** The string used to separator packages */
+    public static final String PACKAGE_SEPARATOR = ".";
 
-    /** basic guvnor web app URL */
-    private String guvnorAppUrl;
+    /** Guvnor connexion configuration bean */
+    private GuvnorConnexionConfiguration configuration;
     /** The business package name */
     private String packageName;
     /** Class name to be used as an argument */
@@ -19,15 +24,14 @@ public class RunnerConfiguration {
     /** Class name to be used as a result */
     private String outputClassName;
 
-    public RunnerConfiguration(String guvnorAppUrl, String packageName, String inputClassName, String outputClassName) {
-        this.guvnorAppUrl = guvnorAppUrl;
-        this.packageName = packageName;
+    public RunnerConfiguration(GuvnorConnexionConfiguration configuration, String inputClassName, String outputClassName) {
+        this.configuration = configuration;
         this.inputClassName = inputClassName;
         this.outputClassName = outputClassName;
     }
 
-    public String getGuvnorAppUrl() {
-        return guvnorAppUrl;
+    protected GuvnorConnexionConfiguration getConfiguration() {
+        return configuration;
     }
 
     public String getPackageName() {
@@ -40,5 +44,42 @@ public class RunnerConfiguration {
 
     public String getOutputClassName() {
         return outputClassName;
+    }
+
+    public String getInputClassShortName() {
+        return stripPackageName(getInputClassName());
+    }
+
+    public String getOutputClassShortName() {
+        return stripPackageName(getOutputClassName());
+    }
+
+    public static String stripPackageName(final String classname) {
+        int idx = classname.lastIndexOf(PACKAGE_SEPARATOR);
+        if (idx != -1)
+            return classname.substring(idx + 1, classname.length());
+        return classname;
+    }
+
+    public String getWebappName() {
+        return getPackageName().concat("-rules-service");  //To change body of created methods use File | Settings | File Templates.
+    }
+
+    public String getProjectRootPath() {
+        return WORKSPACE_FOLDER.concat("/").concat(getWebappName());
+    }
+
+    // TODO Ajouter un JUNIT
+    public String getPomFilePath() {
+        return getProjectRootPath().concat(File.separator).concat("pom.xml");
+    }
+
+    // TODO Ajouter un JUNIT
+    public String getWarFileFile() {
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append(getProjectRootPath()).append(File.separator);
+        stringBuffer.append("target").append(File.separator);
+        stringBuffer.append(getWebappName()).append(".war");
+        return stringBuffer.toString();
     }
 }

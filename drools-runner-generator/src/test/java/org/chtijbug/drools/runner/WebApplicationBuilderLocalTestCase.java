@@ -18,7 +18,7 @@ import static org.junit.Assert.fail;
  * Date: 03/10/12
  * Time: 18:13
  */
-public class WebApplicationBuilderTestCase {
+public class WebApplicationBuilderLocalTestCase {
 
     @Test
     public void runBuildProjectSkeleton() throws IOException {

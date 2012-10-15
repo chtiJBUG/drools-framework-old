@@ -63,7 +63,7 @@ public class RulesRunnerServiceImpl implements RulesRunnerService, InitializingB
         return input;
     }
 
-    private void fireAllRules(Decision input, String processName) throws Exception {
+    private void fireAllRules(#INPUT_CLASS_NAME# input, String processName) throws Exception {
         RuleBaseSession session = this.ruleBasePackage.createRuleBaseSession();
         session.insertByReflection(input);
         if (processName != null) {

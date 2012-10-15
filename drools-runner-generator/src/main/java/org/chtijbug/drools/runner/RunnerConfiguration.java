@@ -17,8 +17,6 @@ public class RunnerConfiguration {
 
     /** Guvnor connexion configuration bean */
     private GuvnorConnexionConfiguration configuration;
-    /** The business package name */
-    private String packageName;
     /** Class name to be used as an argument */
     private String inputClassName;
     /** Class name to be used as a result */
@@ -35,7 +33,7 @@ public class RunnerConfiguration {
     }
 
     public String getPackageName() {
-        return packageName;
+        return this.configuration.getPackageName();
     }
 
     public String getInputClassName() {

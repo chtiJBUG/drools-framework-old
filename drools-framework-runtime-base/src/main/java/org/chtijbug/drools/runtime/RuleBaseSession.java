@@ -26,7 +26,7 @@ public interface RuleBaseSession {
      * No deep insertion(using relfection) is done
      * @param newObject
      */
-    public void insertByReflection(Object newObject);
+    public void insertByReflection(Object newObject) throws DroolsChtijbugException;
 
     public void updateObject(Object updatedObject);
 

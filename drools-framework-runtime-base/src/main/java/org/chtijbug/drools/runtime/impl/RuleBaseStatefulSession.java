@@ -262,7 +262,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     }
 
     @Override
-    public void insertByReflection(Object newObject) {
+    public void insertByReflection(Object newObject) throws DroolsChtijbugException{
         // Avoid inserting java.* classes
         if(newObject.getClass().getPackage().getName().startsWith("java.")) {
             return;
@@ -280,8 +280,8 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             try {
                 getterValue = method.invoke(newObject, (Object[]) null);
             } catch (Exception e) {
-                //TODO
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                DroolsChtijbugException ee  = new DroolsChtijbugException("insertByReflection","getterValue = method.invoke(newObject, (Object[]) null);",e);
+                throw ee;
             }
             if (getterValue == null)
                 continue;

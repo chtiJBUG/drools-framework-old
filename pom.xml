@@ -24,6 +24,15 @@
         <url>https://chtijbug.atlassian.net/</url>
     </issueManagement>
 
+    <modules>
+        <module>drools-framework-common</module>
+        <module>drools-framework-runtime-base</module>
+        <module>drools-framework-runtime-entity</module>
+        <module>drools-framework-runtime-supervision</module>
+        <module>drools-framework-rest-guvnor</module>
+        <module>drools-runner-generator</module>
+    </modules>
+
 
     <build>
         <plugins>
@@ -169,19 +178,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-
-
-
-    <modules>
-        <module>drools-framework-common</module>
-        <module>drools-framework-runtime-base</module>
-        <module>drools-framework-runtime-entity</module>
-        <module>drools-framework-runtime-supervision</module>
-        <module>drools-framework-rest-guvnor</module>
-
-    </modules>
-
 
     <repositories>
         <repository>

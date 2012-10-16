@@ -28,6 +28,13 @@ public interface RuleBaseSession {
      */
     public void insertByReflection(Object newObject);
 
+    /**
+     * This method helps for introducing a global object into the RuleBaseSession
+     * @param identifier
+     * @param value
+     */
+    public void setGlobal(String identifier, Object value);
+
     public void updateObject(Object updatedObject);
 
     public void retractObject(Object oldObject);

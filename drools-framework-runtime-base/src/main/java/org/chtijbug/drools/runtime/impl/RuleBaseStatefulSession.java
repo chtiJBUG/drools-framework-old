@@ -267,7 +267,6 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         if(newObject.getClass().getPackage().getName().startsWith("java.")) {
             return;
         }
-
         //____ First insert the root object
         insertObject(newObject);
         //____ Then foreach getters insert item by reflection
@@ -295,6 +294,11 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
                 }
             }
         }
+    }
+
+    @Override
+    public void setGlobal(String identifier, Object value) {
+        this.knowledgeSession.setGlobal(identifier, value);
     }
 
     @Override

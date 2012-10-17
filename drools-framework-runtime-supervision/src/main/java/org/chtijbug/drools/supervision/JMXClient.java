@@ -9,7 +9,7 @@ import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.mbeans.ResultStructure;
 import org.chtijbug.drools.runtime.mbeans.RuleBaseSupervisionMBean;
-import org.chtijbug.drools.runtime.mbeans.StatefullSessionSupervisionMBean;
+import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervisionMBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +35,7 @@ public class JMXClient implements NotificationListener {
     private String user;
     private String password;
     private RuleBaseSupervisionMBean mbeanRuleProxy = null;
-    private StatefullSessionSupervisionMBean mbeanSessionProxy = null;
+    private StatefulSessionSupervisionMBean mbeanSessionProxy = null;
     private ObjectName nameRuleBase = null;
     private ObjectName nameSession = null;
     private FireAllRulesListener listener = null;
@@ -69,7 +69,7 @@ public class JMXClient implements NotificationListener {
             this.nameRuleBase = new ObjectName(HistoryContainer.nameRuleBaseObjectName);
             this.nameSession = new ObjectName(HistoryContainer.nameSessionObjectName);
             this.mbeanRuleProxy = JMX.newMBeanProxy(mbsc, nameRuleBase, RuleBaseSupervisionMBean.class, true);
-            this.mbeanSessionProxy = JMX.newMBeanProxy(mbsc, nameSession, StatefullSessionSupervisionMBean.class, true);
+            this.mbeanSessionProxy = JMX.newMBeanProxy(mbsc, nameSession, StatefulSessionSupervisionMBean.class, true);
 
         } catch (Exception e) {
             LOGGER.error("Erreur Connection JMX", e);
@@ -80,7 +80,7 @@ public class JMXClient implements NotificationListener {
         return mbeanRuleProxy;
     }
 
-    public StatefullSessionSupervisionMBean getMbeanSessionProxy() {
+    public StatefulSessionSupervisionMBean getMbeanSessionProxy() {
         return mbeanSessionProxy;
     }
     public void close() throws Exception{

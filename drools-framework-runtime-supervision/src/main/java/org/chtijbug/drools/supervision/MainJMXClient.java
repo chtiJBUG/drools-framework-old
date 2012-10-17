@@ -1,6 +1,7 @@
 package org.chtijbug.drools.supervision;
 
 import org.chtijbug.drools.runtime.mbeans.ResultStructure;
+import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervisionMBean;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -87,7 +88,8 @@ public class MainJMXClient extends JDialog {
 
     private void onOK() {
         this.client = new JMXClient(this.hostname.getText(), Integer.valueOf(this.portNumber.getText()).intValue(), null, null);//, this.userName.getText(), this.password.getText());
-        this.client.getMbeanSessionProxy().setGenerateXMLHistoryContainer(true);
+        StatefulSessionSupervisionMBean toto = this.client.getMbeanSessionProxy();
+        toto.setGenerateXMLHistoryContainer(true);
         client.registerListener(new FireAllRulesListener() {
 
             @Override

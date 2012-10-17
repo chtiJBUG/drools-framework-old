@@ -8,7 +8,7 @@ package org.chtijbug.drools.runtime.mbeans;
  *
  * @author nheron
  */
-public interface StatefullSessionSupervisionMBean {
+public interface StatefulSessionSupervisionMBean {
 
     public long getAverageTimeExecution();
 

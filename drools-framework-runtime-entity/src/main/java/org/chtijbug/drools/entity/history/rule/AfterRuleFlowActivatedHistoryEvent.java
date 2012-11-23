@@ -14,8 +14,8 @@ public class AfterRuleFlowActivatedHistoryEvent extends RuleHistoryEvent {
     public AfterRuleFlowActivatedHistoryEvent() {
     }
 
-    public AfterRuleFlowActivatedHistoryEvent(DroolsRuleObject rule) {
-        super(rule);
+    public AfterRuleFlowActivatedHistoryEvent(int eventID,DroolsRuleObject rule) {
+        super(eventID,rule);
     }
 
     public String getRuleFlowGroupName() {

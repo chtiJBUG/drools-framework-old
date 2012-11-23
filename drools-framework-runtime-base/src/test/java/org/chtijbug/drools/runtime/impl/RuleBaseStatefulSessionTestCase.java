@@ -17,12 +17,13 @@ import static org.junit.Assert.*;
  * Time: 17:55
  */
 public class RuleBaseStatefulSessionTestCase {
-    private static RuleBaseSingleton ruleBase = new RuleBaseSingleton();
+    private static RuleBaseSingleton ruleBase ;
 
     private RuleBaseStatefulSession session;
 
     @Before
     public void before() throws Exception {
+        ruleBase = new RuleBaseSingleton();
         // TODO Créer une kbase
         ruleBase.createKBase();
         // TODO créer une session à partir dela KBase

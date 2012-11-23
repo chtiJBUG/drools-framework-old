@@ -20,9 +20,9 @@ public class BeforeRuleFiredHistoryEvent extends RuleHistoryEvent {
     public BeforeRuleFiredHistoryEvent() {
     }
 
-    public BeforeRuleFiredHistoryEvent(DroolsRuleObject rule) {
+    public BeforeRuleFiredHistoryEvent(int eventID,DroolsRuleObject rule) {
 
-        super(rule);
+        super(eventID,rule);
         this.whenObjects = new ArrayList<DroolsFactObject>();
     }
 

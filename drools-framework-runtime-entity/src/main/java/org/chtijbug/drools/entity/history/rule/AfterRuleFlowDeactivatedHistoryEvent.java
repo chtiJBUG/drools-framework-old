@@ -13,8 +13,8 @@ public class AfterRuleFlowDeactivatedHistoryEvent extends RuleHistoryEvent {
     public AfterRuleFlowDeactivatedHistoryEvent() {
     }
 
-    public AfterRuleFlowDeactivatedHistoryEvent(DroolsRuleObject rule) {
-        super(rule);
+    public AfterRuleFlowDeactivatedHistoryEvent(int eventID,DroolsRuleObject rule) {
+        super(eventID,rule);
     }
 
     public String getRuleFlowGroupName() {

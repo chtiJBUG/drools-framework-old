@@ -27,7 +27,7 @@ public class RuleBaseBuilder {
      * @return
      */
     public static RuleBasePackage createGuvnorRuleBasePackage(String guvnor_url, String guvnor_appName, String guvnor_packageName, String guvnor_packageVersion,
-                                                              String guvnor_username, String guvnor_password) {
+                                                              String guvnor_username, String guvnor_password) throws DroolsChtijbugException{
         logger.entry("createGuvnorRuleBasePackage", guvnor_url, guvnor_appName, guvnor_packageName,guvnor_packageVersion, guvnor_username, guvnor_password);
         RuleBasePackage newRuleBasePackage = new RuleBaseSingleton();
         try {
@@ -41,7 +41,7 @@ public class RuleBaseBuilder {
         }
     }
 
-    public static RuleBasePackage createPackageBasePackage(String ... filenames) {
+    public static RuleBasePackage createPackageBasePackage(String ... filenames) throws DroolsChtijbugException{
         logger.entry("createPackageBasePackage");
         RuleBasePackage ruleBasePackage = new RuleBaseSingleton();
         try {

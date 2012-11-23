@@ -40,7 +40,7 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
             DroolsFactObject ff = DroolsFactObjectFactory.createFactObject(newObject);
             ruleBaseSession.setData(f, newObject, ff);
             //____ Adding the Insert Event from the History Container
-            InsertedFactHistoryEvent insertFactHistoryEvent = new InsertedFactHistoryEvent(ff);
+            InsertedFactHistoryEvent insertFactHistoryEvent = new InsertedFactHistoryEvent(this.ruleBaseSession.getNextEventCounter(),ff);
             this.ruleBaseSession.getHistoryContainer().addHistoryElement(insertFactHistoryEvent);
         } finally {
             logger.exit("objectInserted");
@@ -59,7 +59,7 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
             DroolsFactObject factNewValue = DroolsFactObjectFactory.createFactObject(newValue, factOldValue.getNextObjectVersion());
             ruleBaseSession.setData(f, newValue, factNewValue);
             //____ Adding the Update Event from the History Container
-            UpdatedFactHistoryEvent updatedFactHistoryEvent = new UpdatedFactHistoryEvent(factOldValue, factNewValue);
+            UpdatedFactHistoryEvent updatedFactHistoryEvent = new UpdatedFactHistoryEvent(this.ruleBaseSession.getNextEventCounter(),factOldValue, factNewValue);
             this.ruleBaseSession.getHistoryContainer().addHistoryElement(updatedFactHistoryEvent);
         } finally {
             logger.exit("objectUpdated");
@@ -76,7 +76,7 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
             DroolsFactObject deletedFact = this.ruleBaseSession.getLastFactObjectVersion(newObject);
             ruleBaseSession.unsetData(f, newObject);
             //____ Adding a Delete Event from the HistoryContainer
-            DeletedFactHistoryEvent deleteFactEvent = new DeletedFactHistoryEvent(deletedFact);
+            DeletedFactHistoryEvent deleteFactEvent = new DeletedFactHistoryEvent(this.ruleBaseSession.getNextEventCounter(),deletedFact);
             this.ruleBaseSession.getHistoryContainer().addHistoryElement(deleteFactEvent);
 
         } finally {

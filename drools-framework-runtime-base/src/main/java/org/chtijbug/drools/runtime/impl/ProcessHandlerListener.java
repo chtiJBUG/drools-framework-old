@@ -32,7 +32,7 @@ public class ProcessHandlerListener extends DefaultProcessEventListener {
         logger.entry("afterNodeLeft", event);
         try {
             DroolsNodeInstanceObject droolsNodeInstanceObject = ruleBaseSession.getDroolsNodeInstanceObject(event.getNodeInstance());
-            NodeInstanceAfterHistoryEvent afterHistoryEvent = new NodeInstanceAfterHistoryEvent(droolsNodeInstanceObject);
+            NodeInstanceAfterHistoryEvent afterHistoryEvent = new NodeInstanceAfterHistoryEvent(this.ruleBaseSession.getNextEventCounter(),droolsNodeInstanceObject);
             ruleBaseSession.getHistoryContainer().addHistoryElement(afterHistoryEvent);
         } finally {
             logger.exit("afterNodeLeft");
@@ -44,7 +44,7 @@ public class ProcessHandlerListener extends DefaultProcessEventListener {
         logger.entry("afterProcessCompleted", event);
         try {
             DroolsProcessInstanceObject droolsProcessInstanceObject = ruleBaseSession.getDroolsProcessInstanceObject(event.getProcessInstance());
-            ProcessEndHistoryEvent processStart = new ProcessEndHistoryEvent(droolsProcessInstanceObject);
+            ProcessEndHistoryEvent processStart = new ProcessEndHistoryEvent(this.ruleBaseSession.getNextEventCounter(),droolsProcessInstanceObject);
             ruleBaseSession.getHistoryContainer().addHistoryElement(processStart);
         } finally {
             logger.exit("afterProcessCompleted");
@@ -56,7 +56,7 @@ public class ProcessHandlerListener extends DefaultProcessEventListener {
         logger.entry("afterProcessStarted", event);
         try {
             DroolsProcessInstanceObject droolsProcessInstanceObject = ruleBaseSession.getDroolsProcessInstanceObject(event.getProcessInstance());
-            ProcessStartHistoryEvent processStart = new ProcessStartHistoryEvent(droolsProcessInstanceObject);
+            ProcessStartHistoryEvent processStart = new ProcessStartHistoryEvent(this.ruleBaseSession.getNextEventCounter(),droolsProcessInstanceObject);
             ruleBaseSession.getHistoryContainer().addHistoryElement(processStart);
         } finally {
             logger.exit("afterProcessStarted");
@@ -68,7 +68,7 @@ public class ProcessHandlerListener extends DefaultProcessEventListener {
         logger.entry("beforeNodeTriggered", event);
         try {
             DroolsNodeInstanceObject droolsNodeInstanceObject = ruleBaseSession.getDroolsNodeInstanceObject(event.getNodeInstance());
-            NodeInstanceAfterHistoryEvent afterHistoryEvent = new NodeInstanceAfterHistoryEvent(droolsNodeInstanceObject);
+            NodeInstanceAfterHistoryEvent afterHistoryEvent = new NodeInstanceAfterHistoryEvent(this.ruleBaseSession.getNextEventCounter(),droolsNodeInstanceObject);
             ruleBaseSession.getHistoryContainer().addHistoryElement(afterHistoryEvent);
         } finally {
             logger.exit("beforeNodeTriggered");

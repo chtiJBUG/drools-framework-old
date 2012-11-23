@@ -32,6 +32,14 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
     /** The rule fire limit */
     private int maxNumberRuleToExecute;
 
+   /** IfMaxNumberRulewasReached */
+   private boolean maxNumerExecutedRulesReached=false;
+
+    public boolean isMaxNumerExecutedRulesReached() {
+        return maxNumerExecutedRulesReached;
+    }
+
+
     public RuleHandlerListener(RuleBaseStatefulSession ruleBaseSession) {
         this.ruleBaseSession = ruleBaseSession;
         this.maxNumberRuleToExecute = ruleBaseSession.getMaxNumberRuleToExecute();
@@ -46,7 +54,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             //____ Getting the Rule object summary from the session
             DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(activation.getRule());
             //____ Creating the specific History event for history managment
-            BeforeRuleFiredHistoryEvent newBeforeRuleEvent = new BeforeRuleFiredHistoryEvent(droolsRuleObject);
+            BeforeRuleFiredHistoryEvent newBeforeRuleEvent = new BeforeRuleFiredHistoryEvent(this.ruleBaseSession.getNextEventCounter(),droolsRuleObject);
             //____ Adding all objects info contained in the Activation object into the history Events
             for (FactHandle h : listFact) {
                 DroolsFactObject sourceFactObject = ruleBaseSession.getLastFactObjectVersionFromFactHandle(h);
@@ -67,7 +75,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             //____ Getting the Rule Object Summary from the session
             DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(activation.getRule());
             //____ Creating the specific "After Rule Fired" History Event
-            AfterRuleFiredHistoryEvent newAfterRuleEvent = new AfterRuleFiredHistoryEvent(droolsRuleObject);
+            AfterRuleFiredHistoryEvent newAfterRuleEvent = new AfterRuleFiredHistoryEvent(this.ruleBaseSession.getNextEventCounter(),droolsRuleObject);
             ruleBaseSession.getHistoryContainer().addHistoryElement(newAfterRuleEvent);
             //____ Increment the global rule fired count
             nbRuleFired++;
@@ -76,6 +84,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
                 logger.warn(String.format("%d rules have been fired. This is the limit.", maxNumberRuleToExecute));
                 logger.warn("The session execution will be stop");
                 KnowledgeRuntime runTime = event.getKnowledgeRuntime();
+                this.maxNumerExecutedRulesReached=true;
                 runTime.halt();
             }
             logger.debug("nbre RDG Fired ==> ", nbRuleFired);

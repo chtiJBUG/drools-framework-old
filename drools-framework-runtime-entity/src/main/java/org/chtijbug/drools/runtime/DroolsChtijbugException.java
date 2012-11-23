@@ -7,6 +7,13 @@ package org.chtijbug.drools.runtime;
  * To change this template use File | Settings | File Templates.
  */
 public class DroolsChtijbugException extends  Exception{
+    public static String insertByReflection="insertByReflection";
+    public static String MaxNumberRuleExecutionReached = "MaxNumberRuleExecutionReached";
+    public static String fireAllRules="fireAllRules";
+    public static String  KbaseAcquire="KbaseAcquire";
+    public static String KbaseNotInitialised="KbaseNotInitialised" ;
+    public static String ErrorToLoadAgent="ErrorToLoadAgent" ;
+    public static String ErrorRegisteringMBeans="";
     private String key;
     private String Description;
     private Exception originException;

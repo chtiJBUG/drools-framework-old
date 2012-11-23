@@ -16,7 +16,7 @@ public class HistoryEvent implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -6640538290066213804L;
-
+    private int eventID;
 	public enum TypeEvent {
 		Fact, Rule, BPMN
 	};
@@ -27,10 +27,11 @@ public class HistoryEvent implements Serializable {
 	/**
 	 * Mandatory for GWT Serialization
 	 */
-	public HistoryEvent() {
+	public HistoryEvent(){
 	}
 
-	public HistoryEvent(Date dateEvent, TypeEvent typeEvent) {
+	public HistoryEvent(int eventID,Date dateEvent, TypeEvent typeEvent) {
+        this.eventID = eventID;
 		this.dateEvent = dateEvent;
 		this.typeEvent = typeEvent;
 	}
@@ -43,10 +44,20 @@ public class HistoryEvent implements Serializable {
 		return typeEvent;
 	}
 
-	@Override
-	public String toString() {
-		return "HistoryEvent{" + "dateEvent=" + dateEvent + ", typeEvent=" + typeEvent + '}';
-	}
+    public int getEventID() {
+        return eventID;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer();
+        sb.append("HistoryEvent");
+        sb.append("{eventID=").append(eventID);
+        sb.append(", dateEvent=").append(dateEvent);
+        sb.append(", typeEvent=").append(typeEvent);
+        sb.append('}');
+        return sb.toString();
+    }
 
 	@Override
 	public boolean equals(Object obj) {

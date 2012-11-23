@@ -55,4 +55,6 @@ public interface RuleBaseSession {
 
     public Collection<DroolsRuleObject> listRules();
 
+    public int getNumberRulesExecuted();
+
 }

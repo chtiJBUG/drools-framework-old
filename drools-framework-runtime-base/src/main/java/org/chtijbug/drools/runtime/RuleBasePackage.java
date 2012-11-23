@@ -17,8 +17,12 @@ public interface RuleBasePackage {
 	 * 
 	 * @return 
 	 */
-    public RuleBaseSession createRuleBaseSession()  throws Exception;
-
+    public RuleBaseSession createRuleBaseSession()  throws DroolsChtijbugException;
+    /**
+      *
+    	 * @return
+    	 */
+    public RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute)  throws DroolsChtijbugException;
     /**
      * 
      * Add a drools resource for generate kbase
@@ -30,6 +34,6 @@ public interface RuleBasePackage {
 	/**
 	 * Create KnowledgeBase and load all drools resources 
 	 */
-	public void createKBase();
-    
+	public void createKBase() throws DroolsChtijbugException;
+
 }

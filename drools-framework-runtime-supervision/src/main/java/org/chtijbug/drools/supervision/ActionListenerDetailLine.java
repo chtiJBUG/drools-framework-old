@@ -24,7 +24,7 @@ public class ActionListenerDetailLine implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Integer i = Integer.valueOf(listRulesJtableMouseListener.getSelectedRow()) ;
         if (i!= null)  {
-            ResultStructure toDisplay = this.data.get(i);
+            ResultStructure toDisplay = this.data.get(i+1);
             if (toDisplay!= null){
                  DisplayHistoryEventDialog displayHistoryEventDialog = new DisplayHistoryEventDialog(toDisplay);
                 displayHistoryEventDialog.pack();

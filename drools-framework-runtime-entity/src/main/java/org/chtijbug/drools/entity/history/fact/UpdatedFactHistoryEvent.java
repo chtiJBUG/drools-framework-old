@@ -26,8 +26,8 @@ public class UpdatedFactHistoryEvent extends FactHistoryEvent {
     public UpdatedFactHistoryEvent() {
     }
 
-    public UpdatedFactHistoryEvent(DroolsFactObject objectOldValue, DroolsFactObject objectNewValue) {
-        super(new Date());
+    public UpdatedFactHistoryEvent(int eventID,DroolsFactObject objectOldValue, DroolsFactObject objectNewValue) {
+        super(eventID,new Date());
         this.objectOldValue = objectOldValue;
         this.objectNewValue = objectNewValue;
 
@@ -52,6 +52,7 @@ public class UpdatedFactHistoryEvent extends FactHistoryEvent {
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer();
+        sb.append(super.toString() + "\n");
         sb.append("UpdatedFactHistoryEvent");
         sb.append("Update Object : " + objectNewValue.getFullClassName() + "\n");
         sb.append("{objectOldValue=").append("\n");

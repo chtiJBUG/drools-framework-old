@@ -1,6 +1,6 @@
 package org.chtijbug.drools.entity.history.rule;
 
-import org.chtijbug.drools.entity.DroolsRuleObject;
+import org.chtijbug.drools.entity.DroolsRuleFlowGroupObject;
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,20 +8,11 @@ import org.chtijbug.drools.entity.DroolsRuleObject;
  * Time: 20:54
  * To change this template use File | Settings | File Templates.
  */
-public class AfterRuleFlowDeactivatedHistoryEvent extends RuleHistoryEvent {
-    private String ruleFlowGroupName;
+public class AfterRuleFlowDeactivatedHistoryEvent extends RuleFlowHistoryEvent {
     public AfterRuleFlowDeactivatedHistoryEvent() {
     }
 
-    public AfterRuleFlowDeactivatedHistoryEvent(int eventID,DroolsRuleObject rule) {
-        super(eventID,rule);
-    }
-
-    public String getRuleFlowGroupName() {
-        return ruleFlowGroupName;
-    }
-
-    public void setRuleFlowGroupName(String ruleFlowGroupName) {
-        this.ruleFlowGroupName = ruleFlowGroupName;
+    public AfterRuleFlowDeactivatedHistoryEvent(int eventID,DroolsRuleFlowGroupObject droolsRuleFlowGroupObject) {
+        super(eventID,droolsRuleFlowGroupObject);
     }
 }

@@ -22,9 +22,9 @@ public class AfterRuleFiredHistoryEvent extends RuleHistoryEvent {
     public AfterRuleFiredHistoryEvent() {
     }
 
-    public AfterRuleFiredHistoryEvent(int eventID,DroolsRuleObject rule) {
+    public AfterRuleFiredHistoryEvent(int eventID,int ruleInstanceID,DroolsRuleObject rule) {
 
-        super(eventID,rule);
+        super(eventID,ruleInstanceID,rule);
     }
 
 

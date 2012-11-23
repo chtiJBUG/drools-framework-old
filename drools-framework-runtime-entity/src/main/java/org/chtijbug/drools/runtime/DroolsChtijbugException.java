@@ -13,6 +13,7 @@ public class DroolsChtijbugException extends  Exception{
     public static String  KbaseAcquire="KbaseAcquire";
     public static String KbaseNotInitialised="KbaseNotInitialised" ;
     public static String ErrorToLoadAgent="ErrorToLoadAgent" ;
+    public static String UnknowFileExtension="UnknowFileExtension";
     public static String ErrorRegisteringMBeans="";
     private String key;
     private String Description;

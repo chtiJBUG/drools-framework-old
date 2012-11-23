@@ -17,7 +17,7 @@ import org.junit.*;
  * Time: 14:31
  * To change this template use File | Settings | File Templates.
  */
-public class InsertTest {
+public class FactHandlerListernerTestTest {
     static RuleBaseSession session;
     static RuleBasePackage ruleBasePackage;
 

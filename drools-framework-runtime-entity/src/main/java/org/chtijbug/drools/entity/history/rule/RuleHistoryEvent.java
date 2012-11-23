@@ -17,16 +17,17 @@ public class RuleHistoryEvent extends HistoryEvent {
 
 	private static final long serialVersionUID = 7433690026159716847L;
 	protected DroolsRuleObject rule;
-
+    private int ruleInstanceId;
 	/**
 	 * 
 	 */
 	public RuleHistoryEvent() {
 	}
 
-	public RuleHistoryEvent(int eventID,DroolsRuleObject rule) {
+	public RuleHistoryEvent(int eventID,int ruleInstanceId,DroolsRuleObject rule) {
 
 		super(eventID, new Date(), HistoryEvent.TypeEvent.Rule);
+        this.ruleInstanceId = ruleInstanceId;
 		this.rule = rule;
 	}
 

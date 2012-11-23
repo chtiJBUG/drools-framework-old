@@ -70,7 +70,7 @@ public class RuleHandlerListenerTest {
         try {
             session.fireAllRules();
         } catch (DroolsChtijbugException e) {
-            Assert.assertEquals(session.getNumberRulesExecuted(), 11);
+            Assert.assertEquals(session.getNumberRulesExecuted(), 10);
             Assert.assertEquals(e.getKey(), DroolsChtijbugException.MaxNumberRuleExecutionReached);
         }
     }
@@ -105,8 +105,21 @@ public class RuleHandlerListenerTest {
         Assert.assertEquals(event3 instanceof AfterRuleFiredHistoryEvent, true);
         AfterRuleFiredHistoryEvent afterRuleFiredHistoryEvent = (AfterRuleFiredHistoryEvent) event3;
         Assert.assertEquals(afterRuleFiredHistoryEvent.getRule().getRuleName(),"rule1" );
-
-
-
     }
+
+
+    @Test
+     public void RuleFLowgroup1() throws Exception {
+         ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("ruleflow1.drl", "RuleFlowProcess1.bpmn2");
+
+         session = ruleBasePackage.createRuleBaseSession();
+
+         Fibonacci newObject = new Fibonacci(0);
+         session.insertObject(newObject);
+        session.startProcess("P1");
+        session.fireAllRules();
+        Assert.assertEquals(session.getNumberRulesExecuted(), 10);
+
+     }
+
 }

@@ -2,13 +2,15 @@ package org.chtijbug.drools.runtime.mbeans;
 
 import org.chtijbug.drools.entity.history.HistoryContainer;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * Date: 28/09/12
  * Time: 11:50
  * To change this template use File | Settings | File Templates.
  */
-public class ResultStructure {
+public class ResultStructure implements Serializable {
     private HistoryContainer historyContainer;
     private long averageTimeExecution;
     private long minTimeExecution = 1000000;
@@ -24,6 +26,9 @@ public class ResultStructure {
     private double minRuleThroughout = 1000000;
     private double maxRuleThroughout = 0;
     private boolean generateXMLHistoryContainer = false;
+
+    public ResultStructure() {
+    }
 
     public HistoryContainer getHistoryContainer() {
         return historyContainer;

@@ -56,6 +56,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
     private int sessionCounter = 0;
 
     public RuleBaseSingleton() throws DroolsChtijbugException {
+        this.ruleBaseID = addRuleBase();
         initMBeans();
     }
 

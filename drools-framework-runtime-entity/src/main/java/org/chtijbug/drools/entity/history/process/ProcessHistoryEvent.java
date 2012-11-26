@@ -4,9 +4,9 @@
  */
 package org.chtijbug.drools.entity.history.process;
 
-import java.util.Date;
-
 import org.chtijbug.drools.entity.history.HistoryEvent;
+
+import java.util.Date;
 
 /**
  * 
@@ -20,7 +20,14 @@ public class ProcessHistoryEvent extends HistoryEvent {
 	private static final long serialVersionUID = -6446477978109706201L;
 
 	public ProcessHistoryEvent() {
-		super(new Date(), TypeEvent.BPMN);
+
 	}
+    public ProcessHistoryEvent(int eventID) {
+    		super(eventID,new Date(), TypeEvent.BPMN);
+    	}
+    @Override
+      public String toString() {
+          return super.toString();
+      }
 
 }

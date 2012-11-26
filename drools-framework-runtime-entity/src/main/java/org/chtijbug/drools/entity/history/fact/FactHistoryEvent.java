@@ -25,9 +25,9 @@ public abstract class FactHistoryEvent extends HistoryEvent {
 
     }
 
-    public FactHistoryEvent(Date dateEvent) {
+    public FactHistoryEvent(int eventID,Date dateEvent) {
 
-        super(dateEvent, TypeEvent.Fact);
+        super(eventID,dateEvent, TypeEvent.Fact);
     }
 
     /*

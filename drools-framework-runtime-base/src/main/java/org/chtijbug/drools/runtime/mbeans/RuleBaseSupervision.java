@@ -4,11 +4,13 @@
  */
 package org.chtijbug.drools.runtime.mbeans;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.management.NotificationBroadcasterSupport;
+import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
+
+import javax.management.NotificationBroadcasterSupport;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -17,11 +19,11 @@ import org.chtijbug.drools.runtime.resource.DroolsResource;
 
 public class RuleBaseSupervision extends NotificationBroadcasterSupport implements RuleBaseSupervisionMBean{
 
-    private RuleBaseSingleton ruleBaseSession;
+    private RuleBaseSingleton ruleBaseSingleton;
 
-    public RuleBaseSupervision(RuleBaseSingleton ruleBaseSession) {
+    public RuleBaseSupervision(RuleBaseSingleton ruleBaseSingleton) {
         super();
-        this.ruleBaseSession = ruleBaseSession;
+        this.ruleBaseSingleton = ruleBaseSingleton;
         
     }
     
@@ -29,7 +31,7 @@ public class RuleBaseSupervision extends NotificationBroadcasterSupport implemen
     @Override
     public List<String> getDroolsRessource() {
         List<String> ll = new ArrayList<String>();
-        for (DroolsResource d :ruleBaseSession.getListDroolsRessources() ){
+        for (DroolsResource d : ruleBaseSingleton.getListDroolsRessources() ){
             ll.add(d.toString());
         }
         return ll;
@@ -37,15 +39,18 @@ public class RuleBaseSupervision extends NotificationBroadcasterSupport implemen
 
     @Override
     public boolean isKbaseLoaded() {
-        return ruleBaseSession.isKbaseLoaded();
+        return ruleBaseSingleton.isKbaseLoaded();
     }
 
     @Override
-    public void reLoadRuleBase() {
-        ruleBaseSession.createKBase();
+    public void reLoadRuleBase() throws DroolsChtijbugException{
+        ruleBaseSingleton.createKBase();
     }
 
-    
+    @Override
+    public int getRuleBaseID() {
+        return this.ruleBaseSingleton.getRuleBaseID();
+    }
 
-    
+
 }

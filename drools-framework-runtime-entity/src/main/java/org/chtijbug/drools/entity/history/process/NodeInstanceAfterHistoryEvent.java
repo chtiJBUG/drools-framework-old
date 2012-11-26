@@ -20,7 +20,8 @@ public class NodeInstanceAfterHistoryEvent extends ProcessHistoryEvent {
     public NodeInstanceAfterHistoryEvent() {
     }
 
-    public NodeInstanceAfterHistoryEvent(DroolsNodeInstanceObject nodeInstance) {
+    public NodeInstanceAfterHistoryEvent(int eventID,DroolsNodeInstanceObject nodeInstance) {
+        super(eventID);
         this.nodeInstance = nodeInstance;
     }
 
@@ -31,6 +32,7 @@ public class NodeInstanceAfterHistoryEvent extends ProcessHistoryEvent {
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer();
+        sb.append(super.toString() + "\n");
         sb.append("NodeInstanceAfterHistoryEvent");
         sb.append("{nodeInstance=").append(nodeInstance);
         sb.append('}');

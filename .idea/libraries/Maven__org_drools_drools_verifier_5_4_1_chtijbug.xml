@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.drools:drools-verifier:5.4.1.chtijbug">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/drools/drools-verifier/5.4.1.chtijbug/drools-verifier-5.4.1.chtijbug.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/drools/drools-verifier/5.4.1.chtijbug/drools-verifier-5.4.1.chtijbug-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/drools/drools-verifier/5.4.1.chtijbug/drools-verifier-5.4.1.chtijbug-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

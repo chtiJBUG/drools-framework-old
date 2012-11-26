@@ -13,26 +13,25 @@ import java.io.File;
  * @author Bertrand Gressier
  * @date 9 déc. 2011
  */
-public class DrlDroolsResource implements DroolsResource {
+public class DrlDroolsRessource implements DroolsResource {
 
     private final Resource resource;
 
-    public DrlDroolsResource(Resource resource) {
+    public DrlDroolsRessource(Resource resource) {
         this.resource = resource;
     }
 
-    public static DrlDroolsResource createClassPathResource(String path) {
-
-        return new DrlDroolsResource(ResourceFactory.newClassPathResource(path));
+    public static DrlDroolsRessource createClassPathResource(String path) {
+        return new DrlDroolsRessource(ResourceFactory.newClassPathResource(path));
 
     }
 
-    public static DrlDroolsResource createFileResource(File f) {
-        return new DrlDroolsResource(ResourceFactory.newFileResource(f));
+    public static DrlDroolsRessource createFileResource(File f) {
+        return new DrlDroolsRessource(ResourceFactory.newFileResource(f));
     }
 
-    public static DrlDroolsResource createUrlResource(String url) {
-        return new DrlDroolsResource(ResourceFactory.newUrlResource(url));
+    public static DrlDroolsRessource createUrlResource(String url) {
+        return new DrlDroolsRessource(ResourceFactory.newUrlResource(url));
     }
 
     /*

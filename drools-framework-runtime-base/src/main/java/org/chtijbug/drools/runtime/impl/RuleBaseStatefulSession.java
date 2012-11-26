@@ -45,14 +45,16 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     private StatefulSessionSupervision mbeanStatefulSessionSupervision;
 
     private XStream xstream = new XStream(new JettisonMappedXmlDriver());
-
-    public RuleBaseStatefulSession(StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefulSessionSupervision mbeanStatefulSessionSupervision) {
+    private int sessionId;
+    private int eventCounter;
+    public RuleBaseStatefulSession(int sessionId,StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefulSessionSupervision mbeanStatefulSessionSupervision) {
+        this.sessionId = sessionId;
         this.knowledgeSession = knowledgeSession;
         this.maxNumberRuleToExecute = maxNumberRuleToExecute;
         this.factListener = new FactHandlerListener(this);
         this.ruleHandlerListener = new RuleHandlerListener(this);
         this.processHandlerListener = new ProcessHandlerListener(this);
-        this.historyContainer = new HistoryContainer();
+        this.historyContainer = new HistoryContainer(sessionId);
         this.listFactObjects = new HashMap<Object, List<DroolsFactObject>>();
         this.listFact = new HashMap<Object, FactHandle>();
         this.listObject = new HashMap<FactHandle, Object>();
@@ -262,7 +264,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     }
 
     @Override
-    public void insertByReflection(Object newObject) {
+    public void insertByReflection(Object newObject) throws DroolsChtijbugException{
         // Avoid inserting java.* classes
         if(newObject.getClass().getPackage().getName().startsWith("java.")) {
             return;
@@ -279,8 +281,8 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             try {
                 getterValue = method.invoke(newObject, (Object[]) null);
             } catch (Exception e) {
-                //TODO
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                DroolsChtijbugException ee  = new DroolsChtijbugException(DroolsChtijbugException.insertByReflection,"getterValue = method.invoke(newObject, (Object[]) null);",e);
+                throw ee;
             }
             if (getterValue == null)
                 continue;
@@ -320,12 +322,17 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         try{
             this.knowledgeSession.fireAllRules();
         }catch (Exception e){
-            throw new DroolsChtijbugException("fireAllRules","",e);
+            throw new DroolsChtijbugException(DroolsChtijbugException.fireAllRules,"",e);
         }
 
         long stopTime = System.currentTimeMillis();
         long afterNumberRules = ruleHandlerListener.getNbRuleFired();
         mbeanStatefulSessionSupervision.fireAllRulesExecuted(stopTime - startTime, afterNumberRules - beforeNumberRules, historyContainer);
+        if (ruleHandlerListener.isMaxNumerExecutedRulesReached()==true){
+            StringBuffer stringBuffer = new StringBuffer();
+            stringBuffer.append("nbRulesExecuted").append(afterNumberRules).append(" and MaxNumberRules for the session is set to ").append(maxNumberRuleToExecute);
+            throw   new DroolsChtijbugException(DroolsChtijbugException.MaxNumberRuleExecutionReached,stringBuffer.toString(),null);
+        }
     }
 
     @Override
@@ -336,5 +343,19 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     @Override
     public Collection<DroolsRuleObject> listRules() {
         return listRules.values();
+    }
+
+    @Override
+    public int getNumberRulesExecuted() {
+        int result= 0;
+        if (this.ruleHandlerListener != null){
+            result = this.ruleHandlerListener.getNbRuleFired();
+        }
+        return result;
+    }
+
+    public int getNextEventCounter() {
+        this.eventCounter ++;
+        return this.eventCounter;
     }
 }

@@ -17,15 +17,25 @@ public class HistoryContainer implements Serializable {
 	public static String nameRuleBaseObjectName = "org.chtijbug.drools.runtime:type=RuleBaseSupervision";
 	public static String nameSessionObjectName = "org.chtijbug.drools.runtime:type=StateFullSessionSupervision";
 	private static final long serialVersionUID = 5645452451089006572L;
+    private int sessionID;
 	protected List<HistoryEvent> listHistoryEvent = new LinkedList<HistoryEvent>();
 
 	/**
 	 * 
 	 */
-	public HistoryContainer() {
+	public HistoryContainer(int sessionID) {
+        this.sessionID = sessionID;
 	}
 
-	public List<HistoryEvent> getListHistoryEvent() {
+    public int getSessionID() {
+        return sessionID;
+    }
+
+    public void setSessionID(int sessionID) {
+        this.sessionID = sessionID;
+    }
+
+    public List<HistoryEvent> getListHistoryEvent() {
 		return listHistoryEvent;
 	}
 

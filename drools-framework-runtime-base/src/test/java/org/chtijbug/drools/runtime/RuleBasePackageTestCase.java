@@ -4,6 +4,7 @@ import com.thoughtworks.xstream.XStream;
 import org.junit.Assert;
 import org.junit.Test;
 
+
 import java.io.*;
 
 import static org.junit.Assert.assertNotNull;
@@ -19,16 +20,19 @@ public class RuleBasePackageTestCase {
 
     @Test
     public void testXStreamSerialization() {
-        XStream xstream = new XStream();
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("fibonacci.drl") ;
-        String pkgXML = xstream.toXML(ruleBasePackage);
+
         try {
+            XStream xstream = new XStream();
+            RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("fibonacci.drl") ;
+            String pkgXML = xstream.toXML(ruleBasePackage);
             FileWriter fstream = new FileWriter("/tmp/chtijbug-rule-cache");
             BufferedWriter out = new BufferedWriter(fstream);
             out.write(pkgXML);
             out.close();
         } catch (IOException ex) {
             Assert.fail(ex.getMessage() );
+        } catch (DroolsChtijbugException e) {
+            Assert.fail(e.getMessage());
         }
     }
 

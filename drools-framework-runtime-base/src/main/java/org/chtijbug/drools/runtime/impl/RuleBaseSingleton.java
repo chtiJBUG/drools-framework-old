@@ -7,6 +7,7 @@ package org.chtijbug.drools.runtime.impl;
 import org.chtijbug.drools.common.log.Logger;
 import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.entity.history.HistoryContainer;
+import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.mbeans.RuleBaseSupervision;
@@ -26,34 +27,63 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 /**
- *
  * @author Bertrand Gressier
  */
 public class RuleBaseSingleton implements RuleBasePackage {
-    /** Class Logger */
+    /**
+     * Class Logger
+     */
     static final Logger LOGGER = LoggerFactory.getLogger(RuleBaseSingleton.class);
-    /** KnwoledgeBase reference */
+    /**
+     * unique indentifier of the RuleBase in the JVM
+     */
+    private static int ruleBaseCounter = 0;
+    /**
+     * Rule Base ID
+     */
+    private int ruleBaseID;
+    /**
+     * KnwoledgeBase reference
+     */
     private KnowledgeBase kbase = null;
-    private final List<DroolsResource> listResouces;
+    private final List<DroolsResource> listResouces=new ArrayList<DroolsResource>();
     private RuleBaseSupervision mbsRuleBase;
     private StatefulSessionSupervision mbsSession;
     private int maxNumberRuleToExecute = 2000;
+    public static int defaultNumberRulesToExecute = 2000;
     private Semaphore lockKbase = new Semaphore(1);
-    MBeanServer server=null;
+    private transient MBeanServer server = null;
+    private int sessionCounter = 0;
 
     public RuleBaseSingleton() {
-        listResouces = new ArrayList<DroolsResource>();
+
     }
 
-    public RuleBaseSingleton(int maxNumberRulesToExecute) {
-        listResouces = new ArrayList<DroolsResource>();
+    public RuleBaseSingleton(int maxNumberRulesToExecute) throws DroolsChtijbugException{
+        this.ruleBaseID = addRuleBase();
         this.maxNumberRuleToExecute = maxNumberRulesToExecute;
+        initMBeans();
+    }
+
+    private void initMBeans() throws DroolsChtijbugException {
+
+        server = ManagementFactory.getPlatformMBeanServer();
+        try {
+            ObjectName nameRuleBase = new ObjectName(HistoryContainer.nameRuleBaseObjectName+"ruleBaseID "+this.ruleBaseID);
+            ObjectName nameSession = new ObjectName(HistoryContainer.nameSessionObjectName+"ruleBaseID "+this.ruleBaseID);
+            mbsRuleBase = new RuleBaseSupervision(this);
+            mbsSession = new StatefulSessionSupervision();
+            server.registerMBean(mbsRuleBase, nameRuleBase);
+            server.registerMBean(mbsSession, nameSession);
+        } catch (Exception e) {
+            throw new DroolsChtijbugException(DroolsChtijbugException.ErrorRegisteringMBeans, "", e);
+        }
     }
 
     public boolean isKbaseLoaded() {
         if (kbase == null) {
             return false;
-        };
+        }
         return true;
     }
 
@@ -62,16 +92,28 @@ public class RuleBaseSingleton implements RuleBasePackage {
     }
 
     @Override
-    public RuleBaseSession createRuleBaseSession() throws Exception {
+    public RuleBaseSession createRuleBaseSession() throws DroolsChtijbugException {
+        RuleBaseSession newRuleBaseSession = null;
+        newRuleBaseSession = this.createRuleBaseSession(this.maxNumberRuleToExecute);
+        return newRuleBaseSession;
+    }
+
+    @Override
+    public RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute) throws DroolsChtijbugException {
+
         RuleBaseSession newRuleBaseSession = null;
         if (kbase != null) {
-
-            lockKbase.acquire();
+            try {
+                lockKbase.acquire();
+            } catch (Exception e) {
+                throw new DroolsChtijbugException(DroolsChtijbugException.KbaseAcquire, "", e);
+            }
             StatefulKnowledgeSession newDroolsSession = kbase.newStatefulKnowledgeSession();
-            newRuleBaseSession = new RuleBaseStatefulSession(newDroolsSession, maxNumberRuleToExecute, mbsSession);
+            this.sessionCounter++;
+            newRuleBaseSession = new RuleBaseStatefulSession(this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, mbsSession);
             lockKbase.release();
         } else {
-            throw new UnsupportedOperationException("Kbase not initialized");
+            throw new DroolsChtijbugException(DroolsChtijbugException.KbaseNotInitialised, "", null);
         }
         return newRuleBaseSession;
     }
@@ -94,7 +136,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
      * @see org.chtijbug.drools.runtime.RuleBasePackage#createKBase()
      */
     @Override
-    public synchronized void createKBase() {
+    public synchronized void createKBase() throws DroolsChtijbugException {
 
         if (kbase != null) {
             // TODO dispose all elements
@@ -112,18 +154,18 @@ public class RuleBaseSingleton implements RuleBasePackage {
             lockKbase.acquire();
             kbase = newkbase;
             lockKbase.release();
-            server = ManagementFactory.getPlatformMBeanServer();
-
-            ObjectName nameRuleBase = new ObjectName(HistoryContainer.nameRuleBaseObjectName);
-            ObjectName nameSession = new ObjectName(HistoryContainer.nameSessionObjectName);
-            mbsRuleBase = new RuleBaseSupervision(this);
-            mbsSession = new StatefulSessionSupervision();
-            server.registerMBean(mbsRuleBase, nameRuleBase);
-            server.registerMBean(mbsSession, nameSession);
-
-
         } catch (Exception e) {
             LOGGER.error("error to load Agent", e);
+            throw new DroolsChtijbugException(DroolsChtijbugException.ErrorToLoadAgent, "", e);
         }
+    }
+
+    private static int addRuleBase() {
+        ruleBaseCounter++;
+        return ruleBaseCounter;
+    }
+
+    public int getRuleBaseID() {
+        return ruleBaseID;
     }
 }

@@ -7,14 +7,18 @@ package org.chtijbug.drools.runtime;
 import org.chtijbug.drools.common.log.Logger;
 import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
-import org.chtijbug.drools.runtime.resource.DrlDroolsResource;
+import org.chtijbug.drools.runtime.resource.Bpmn2DroolsRessource;
+import org.chtijbug.drools.runtime.resource.DrlDroolsRessource;
+import org.chtijbug.drools.runtime.resource.DroolsResource;
 import org.chtijbug.drools.runtime.resource.GuvnorDroolsResource;
 
 /**
  * @author nheron
  */
 public class RuleBaseBuilder {
-    /** Class Logger */
+    /**
+     * Class Logger
+     */
     private static Logger logger = LoggerFactory.getLogger(RuleBaseBuilder.class);
 
     /**
@@ -27,9 +31,9 @@ public class RuleBaseBuilder {
      * @return
      */
     public static RuleBasePackage createGuvnorRuleBasePackage(String guvnor_url, String guvnor_appName, String guvnor_packageName, String guvnor_packageVersion,
-                                                              String guvnor_username, String guvnor_password) {
-        logger.entry("createGuvnorRuleBasePackage", guvnor_url, guvnor_appName, guvnor_packageName,guvnor_packageVersion, guvnor_username, guvnor_password);
-        RuleBasePackage newRuleBasePackage = new RuleBaseSingleton();
+                                                              String guvnor_username, String guvnor_password) throws DroolsChtijbugException {
+        logger.entry("createGuvnorRuleBasePackage", guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion, guvnor_username, guvnor_password);
+        RuleBasePackage newRuleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.defaultNumberRulesToExecute);
         try {
             GuvnorDroolsResource gdr = new GuvnorDroolsResource(guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion, guvnor_username, guvnor_password);
             newRuleBasePackage.addDroolsResouce(gdr);
@@ -41,13 +45,23 @@ public class RuleBaseBuilder {
         }
     }
 
-    public static RuleBasePackage createPackageBasePackage(String ... filenames) {
+    public static RuleBasePackage createPackageBasePackage(String... filenames) throws DroolsChtijbugException {
         logger.entry("createPackageBasePackage");
-        RuleBasePackage ruleBasePackage = new RuleBaseSingleton();
+        RuleBasePackage ruleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.defaultNumberRulesToExecute);
         try {
-            for (String filename : filenames){
-                DrlDroolsResource resource = DrlDroolsResource.createClassPathResource(filename);
-                ruleBasePackage.addDroolsResouce(resource);
+            for (String filename : filenames) {
+                String extensionName = getFileExtension(filename);
+                DroolsResource resource=null;
+                if ("DRL".equals(extensionName)){
+                    resource= DrlDroolsRessource.createClassPathResource(filename);
+                }else if ("BPMN2".equals(extensionName)){
+                    resource= Bpmn2DroolsRessource.createClassPathResource(filename);
+                }
+                if (resource!= null){
+                    ruleBasePackage.addDroolsResouce(resource);
+                }else {
+                    throw new DroolsChtijbugException(DroolsChtijbugException.UnknowFileExtension,filename,null) ;
+                }
             }
             ruleBasePackage.createKBase();
             //_____ Returning the result
@@ -55,6 +69,13 @@ public class RuleBaseBuilder {
         } finally {
             logger.exit("createPackageBasePackage", ruleBasePackage);
         }
+    }
+
+    private static String getFileExtension(String ressourceName) {
+        int mid = ressourceName.lastIndexOf(".");
+        String fileName = ressourceName.substring(0, mid);
+        String ext = ressourceName.substring(mid + 1, ressourceName.length()).toUpperCase();
+        return ext;
     }
 
 }

@@ -2,7 +2,7 @@ package org.chtijbug.drools.runtime;
 
 public class Main {
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws Exception{
         RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("fibonacci.drl") ;
         try {
             for (int i = 0; i < 100000; i++) {

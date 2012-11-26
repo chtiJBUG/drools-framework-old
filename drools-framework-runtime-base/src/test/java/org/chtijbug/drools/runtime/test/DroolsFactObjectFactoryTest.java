@@ -4,25 +4,21 @@
  */
 package org.chtijbug.drools.runtime.test;
 
-import static org.junit.Assert.assertTrue;
+import org.chtijbug.drools.entity.DroolsFactObject;
+import org.chtijbug.drools.runtime.DroolsFactObjectFactory;
+import org.junit.*;
 
 import java.math.BigDecimal;
 
-import org.chtijbug.drools.entity.DroolsFactObject;
-import org.chtijbug.drools.runtime.DroolsFactObjectFactory;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 /**
  * 
  * @author nheron
  */
-public class FactObjectTest {
+public class DroolsFactObjectFactoryTest {
 
-	public FactObjectTest() {
+	public DroolsFactObjectFactoryTest() {
 	}
 
 	@BeforeClass

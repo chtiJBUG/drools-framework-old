@@ -22,8 +22,8 @@ public class InsertedFactHistoryEvent extends FactHistoryEvent {
     public InsertedFactHistoryEvent() {
     }
 
-    public InsertedFactHistoryEvent(DroolsFactObject insertedObject) {
-        super(new Date());
+    public InsertedFactHistoryEvent(int eventID,DroolsFactObject insertedObject) {
+        super(eventID,new Date());
         this.insertedObject = insertedObject;
     }
 

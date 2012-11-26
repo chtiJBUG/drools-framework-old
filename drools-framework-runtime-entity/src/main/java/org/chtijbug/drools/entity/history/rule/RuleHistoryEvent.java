@@ -4,10 +4,10 @@
  */
 package org.chtijbug.drools.entity.history.rule;
 
-import java.util.Date;
-
 import org.chtijbug.drools.entity.DroolsRuleObject;
 import org.chtijbug.drools.entity.history.HistoryEvent;
+
+import java.util.Date;
 
 /**
  * 
@@ -17,24 +17,33 @@ public class RuleHistoryEvent extends HistoryEvent {
 
 	private static final long serialVersionUID = 7433690026159716847L;
 	protected DroolsRuleObject rule;
-
+    private int ruleInstanceId;
 	/**
 	 * 
 	 */
 	public RuleHistoryEvent() {
 	}
 
-	public RuleHistoryEvent(DroolsRuleObject rule) {
+	public RuleHistoryEvent(int eventID,int ruleInstanceId,DroolsRuleObject rule) {
 
-		super(new Date(), HistoryEvent.TypeEvent.Rule);
+		super(eventID, new Date(), HistoryEvent.TypeEvent.Rule);
+        this.ruleInstanceId = ruleInstanceId;
 		this.rule = rule;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.chtijbug.drools.entity.history.HistoryEvent#toString()
-	 */
+    public DroolsRuleObject getRule() {
+        return rule;
+    }
+
+    public void setRule(DroolsRuleObject rule) {
+        this.rule = rule;
+    }
+
+    /*
+      * (non-Javadoc)
+      *
+      * @see org.chtijbug.drools.entity.history.HistoryEvent#toString()
+      */
 	@Override
 	public String toString() {
 

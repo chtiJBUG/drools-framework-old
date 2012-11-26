@@ -26,7 +26,7 @@ public interface RuleBaseSession {
      * No deep insertion(using relfection) is done
      * @param newObject
      */
-    public void insertByReflection(Object newObject);
+    public void insertByReflection(Object newObject) throws DroolsChtijbugException;
 
     /**
      * This method helps for introducing a global object into the RuleBaseSession
@@ -54,5 +54,7 @@ public interface RuleBaseSession {
     public String listLastVersionObjectsXML();
 
     public Collection<DroolsRuleObject> listRules();
+
+    public int getNumberRulesExecuted();
 
 }

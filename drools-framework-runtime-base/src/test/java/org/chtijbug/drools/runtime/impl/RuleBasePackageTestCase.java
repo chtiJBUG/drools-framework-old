@@ -1,13 +1,16 @@
-package org.chtijbug.drools.runtime;
+package org.chtijbug.drools.runtime.impl;
 
 import com.thoughtworks.xstream.XStream;
+import org.chtijbug.drools.runtime.DroolsChtijbugException;
+import org.chtijbug.drools.runtime.RuleBaseBuilder;
+import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.junit.Assert;
 import org.junit.Test;
-
 
 import java.io.*;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,14 +26,14 @@ public class RuleBasePackageTestCase {
 
         try {
             XStream xstream = new XStream();
-            RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("fibonacci.drl") ;
+            RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("fibonacci.drl");
             String pkgXML = xstream.toXML(ruleBasePackage);
             FileWriter fstream = new FileWriter("/tmp/chtijbug-rule-cache");
             BufferedWriter out = new BufferedWriter(fstream);
             out.write(pkgXML);
             out.close();
         } catch (IOException ex) {
-            Assert.fail(ex.getMessage() );
+            Assert.fail(ex.getMessage());
         } catch (DroolsChtijbugException e) {
             Assert.fail(e.getMessage());
         }
@@ -41,11 +44,15 @@ public class RuleBasePackageTestCase {
         String ruleBaseXML = null;
         try {
             ruleBaseXML = readFileAsString("/tmp/chtijbug-rule-cache");
+            if (ruleBaseXML == null)
+                fail();
             XStream xStream = new XStream();
-            RuleBasePackage ruleBasePackage = (RuleBasePackage) xStream.fromXML(ruleBaseXML);
+            RuleBaseSingleton ruleBasePackage = (RuleBaseSingleton) xStream.fromXML(ruleBaseXML);
             assertNotNull(ruleBasePackage);
+            assertNotNull(ruleBasePackage.getMBeanServer());
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            fail();
         }
 
     }

@@ -58,7 +58,7 @@ public class WebApplicationBuilderLocalTestCase {
             e.printStackTrace();
             fail();
         } finally {
-            //FileUtils.deleteDirectory(workspaceFolder);
+            FileUtils.deleteDirectory(workspaceFolder);
         }
     }
 }

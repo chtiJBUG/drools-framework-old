@@ -55,14 +55,15 @@ public class RuleBaseSingleton implements RuleBasePackage {
     private transient MBeanServer server = null;
     private int sessionCounter = 0;
 
-    public RuleBaseSingleton() {
-
+    public RuleBaseSingleton() throws DroolsChtijbugException {
+        initMBeans();
     }
 
-    public RuleBaseSingleton(int maxNumberRulesToExecute) throws DroolsChtijbugException{
+    public RuleBaseSingleton(int maxNumberRulesToExecute) throws DroolsChtijbugException {
+        this();
         this.ruleBaseID = addRuleBase();
         this.maxNumberRuleToExecute = maxNumberRulesToExecute;
-        initMBeans();
+
     }
 
     private void initMBeans() throws DroolsChtijbugException {
@@ -167,5 +168,19 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     public int getRuleBaseID() {
         return ruleBaseID;
+    }
+
+    /**
+     * This method is a helper one. It will be called automatically after XStream unmarshaling execution
+     * @return this object including all transient fileds
+     * @throws DroolsChtijbugException
+     */
+    private Object readResolve() throws DroolsChtijbugException {
+        initMBeans();
+        return this;
+    }
+
+    protected final MBeanServer getMBeanServer() {
+        return this.server;
     }
 }

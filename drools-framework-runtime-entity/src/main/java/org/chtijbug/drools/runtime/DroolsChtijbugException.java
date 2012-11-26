@@ -1,12 +1,14 @@
 package org.chtijbug.drools.runtime;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * Date: 24/04/12
  * Time: 18:11
  * To change this template use File | Settings | File Templates.
  */
-public class DroolsChtijbugException extends  Exception{
+public class DroolsChtijbugException extends  Exception implements Serializable {
     public static String insertByReflection="insertByReflection";
     public static String MaxNumberRuleExecutionReached = "MaxNumberRuleExecutionReached";
     public static String fireAllRules="fireAllRules";

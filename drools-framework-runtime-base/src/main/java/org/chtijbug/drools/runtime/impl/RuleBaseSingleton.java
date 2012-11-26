@@ -46,23 +46,21 @@ public class RuleBaseSingleton implements RuleBasePackage {
      * KnwoledgeBase reference
      */
     private KnowledgeBase kbase = null;
-    private final List<DroolsResource> listResouces;
+    private final List<DroolsResource> listResouces=new ArrayList<DroolsResource>();
     private RuleBaseSupervision mbsRuleBase;
     private StatefulSessionSupervision mbsSession;
     private int maxNumberRuleToExecute = 2000;
+    public static int defaultNumberRulesToExecute = 2000;
     private Semaphore lockKbase = new Semaphore(1);
     MBeanServer server = null;
     private int sessionCounter = 0;
 
-    public RuleBaseSingleton() throws DroolsChtijbugException{
-        this.ruleBaseID = addRuleBase();
-        listResouces = new ArrayList<DroolsResource>();
-        initMBeans();
+    public RuleBaseSingleton() {
+
     }
 
     public RuleBaseSingleton(int maxNumberRulesToExecute) throws DroolsChtijbugException{
         this.ruleBaseID = addRuleBase();
-        listResouces = new ArrayList<DroolsResource>();
         this.maxNumberRuleToExecute = maxNumberRulesToExecute;
         initMBeans();
     }

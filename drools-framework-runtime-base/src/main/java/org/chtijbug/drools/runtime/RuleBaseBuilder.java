@@ -33,7 +33,7 @@ public class RuleBaseBuilder {
     public static RuleBasePackage createGuvnorRuleBasePackage(String guvnor_url, String guvnor_appName, String guvnor_packageName, String guvnor_packageVersion,
                                                               String guvnor_username, String guvnor_password) throws DroolsChtijbugException {
         logger.entry("createGuvnorRuleBasePackage", guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion, guvnor_username, guvnor_password);
-        RuleBasePackage newRuleBasePackage = new RuleBaseSingleton();
+        RuleBasePackage newRuleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.defaultNumberRulesToExecute);
         try {
             GuvnorDroolsResource gdr = new GuvnorDroolsResource(guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion, guvnor_username, guvnor_password);
             newRuleBasePackage.addDroolsResouce(gdr);
@@ -47,7 +47,7 @@ public class RuleBaseBuilder {
 
     public static RuleBasePackage createPackageBasePackage(String... filenames) throws DroolsChtijbugException {
         logger.entry("createPackageBasePackage");
-        RuleBasePackage ruleBasePackage = new RuleBaseSingleton();
+        RuleBasePackage ruleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.defaultNumberRulesToExecute);
         try {
             for (String filename : filenames) {
                 String extensionName = getFileExtension(filename);

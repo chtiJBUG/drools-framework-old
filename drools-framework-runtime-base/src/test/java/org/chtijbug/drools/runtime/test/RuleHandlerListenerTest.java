@@ -12,6 +12,8 @@ import org.junit.*;
 
 import java.util.List;
 
+import static org.junit.Assert.fail;
+
 /**
  * Created by IntelliJ IDEA.
  * Date: 23/11/12
@@ -53,6 +55,7 @@ public class RuleHandlerListenerTest {
         session.insertObject(newObject);
         try {
             session.fireAllRules();
+            fail();
         } catch (DroolsChtijbugException e) {
             Assert.assertEquals(e.getKey(), DroolsChtijbugException.MaxNumberRuleExecutionReached);
         }
@@ -69,6 +72,7 @@ public class RuleHandlerListenerTest {
         session.insertObject(newObject);
         try {
             session.fireAllRules();
+            fail();
         } catch (DroolsChtijbugException e) {
             Assert.assertEquals(session.getNumberRulesExecuted(), 10);
             Assert.assertEquals(e.getKey(), DroolsChtijbugException.MaxNumberRuleExecutionReached);

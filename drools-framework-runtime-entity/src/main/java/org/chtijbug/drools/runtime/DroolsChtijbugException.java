@@ -25,6 +25,7 @@ public class DroolsChtijbugException extends  Exception implements Serializable 
 
     }
     public DroolsChtijbugException(String key, String description, Exception originException) {
+        super(key + description, originException);
         this.key = key;
         Description = description;
         this.originException = originException;

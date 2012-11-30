@@ -78,7 +78,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
             server.registerMBean(mbsRuleBase, nameRuleBase);
             server.registerMBean(mbsSession, nameSession);
         } catch (Exception e) {
-            throw new DroolsChtijbugException(DroolsChtijbugException.ErrorRegisteringMBeans, "", e);
+            LOGGER.warn("Error registering MBeans", e);
         }
     }
 

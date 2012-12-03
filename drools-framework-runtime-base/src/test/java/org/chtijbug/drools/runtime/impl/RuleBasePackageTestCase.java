@@ -49,7 +49,6 @@ public class RuleBasePackageTestCase {
             XStream xStream = new XStream();
             RuleBaseSingleton ruleBasePackage = (RuleBaseSingleton) xStream.fromXML(ruleBaseXML);
             assertNotNull(ruleBasePackage);
-            assertNotNull(ruleBasePackage.getMBeanServer());
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             fail();

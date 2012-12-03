@@ -47,6 +47,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     private XStream xstream = new XStream(new JettisonMappedXmlDriver());
     private int sessionId;
     private int eventCounter;
+
     public RuleBaseStatefulSession(int sessionId,StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefulSessionSupervision mbeanStatefulSessionSupervision) {
         this.sessionId = sessionId;
         this.knowledgeSession = knowledgeSession;

@@ -19,8 +19,7 @@ import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
+import javax.management.*;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,53 +32,135 @@ public class RuleBaseSingleton implements RuleBasePackage {
     /**
      * Class Logger
      */
-    static final Logger LOGGER = LoggerFactory.getLogger(RuleBaseSingleton.class);
+    private static Logger logger = LoggerFactory.getLogger(RuleBaseSingleton.class);
+    /**
+     * default rule threshold
+     */
+    public static int DEFAULT_RULE_THRESHOLD = 2000;
+    /**
+     * static part of the RuleBase Object Name *
+     */
+    private static String RULE_BASE_OBJECT_NAME = HistoryContainer.nameRuleBaseObjectName + "ruleBaseID ";
+    /**
+     * static part of the RuleBase Object Name *
+     */
+    private static String RULE_SESSION_OBJECT_NAME = HistoryContainer.nameSessionObjectName + "ruleBaseID ";
     /**
      * unique indentifier of the RuleBase in the JVM
      */
-    private static int ruleBaseCounter = 0;
+    protected static int ruleBaseCounter = 0;
     /**
      * Rule Base ID
      */
     private int ruleBaseID;
     /**
-     * KnwoledgeBase reference
+     * KnowledgeBase reference
      */
     private KnowledgeBase kbase = null;
-    private final List<DroolsResource> listResouces=new ArrayList<DroolsResource>();
+    /**
+     * All Drools resources inserted into the RuleBase
+     */
+    private final List<DroolsResource> listResouces = new ArrayList<DroolsResource>();
+    /**
+     * MBean JMX to enable Dynamics rule base operation
+     */
     private RuleBaseSupervision mbsRuleBase;
+    /**
+     * MBean JMX To enable RuleSession statistics collect
+     */
     private StatefulSessionSupervision mbsSession;
-    private int maxNumberRuleToExecute = 2000;
-    public static int defaultNumberRulesToExecute = 2000;
+    /**
+     * Max rule to be fired threshold.
+     */
+    private int maxNumberRuleToExecute = DEFAULT_RULE_THRESHOLD;
+    /**
+     * Semaphore used to void concurrent access to the singleton
+     */
     private Semaphore lockKbase = new Semaphore(1);
-    private transient MBeanServer server = null;
+    //private transient MBeanServer server = null;
     private int sessionCounter = 0;
 
     public RuleBaseSingleton() throws DroolsChtijbugException {
+        //____ Remove Existing MBean from the MBeanServer
+        try {
+            if (ruleBaseCounter != 0)
+                clearMBeans();
+        } catch (MalformedObjectNameException e) {
+            logger.warn("Error occured while clearing MBeanServer", e);
+        }
+        //____ Increment the ruleBaseID
         this.ruleBaseID = addRuleBase();
         initMBeans();
     }
 
     public RuleBaseSingleton(int maxNumberRulesToExecute) throws DroolsChtijbugException {
         this();
-        this.ruleBaseID = addRuleBase();
         this.maxNumberRuleToExecute = maxNumberRulesToExecute;
-
     }
 
-    private void initMBeans() throws DroolsChtijbugException {
-
-        server = ManagementFactory.getPlatformMBeanServer();
+    /**
+     * This methods unregisters all existing MBean from the MBean Server.
+     * All statistics data will be erased !!
+     *
+     * @throws MalformedObjectNameException
+     */
+    private void clearMBeans() throws MalformedObjectNameException {
+        logger.entry("clearMBeans");
         try {
-            ObjectName nameRuleBase = new ObjectName(HistoryContainer.nameRuleBaseObjectName+"ruleBaseID "+this.ruleBaseID);
-            ObjectName nameSession = new ObjectName(HistoryContainer.nameSessionObjectName+"ruleBaseID "+this.ruleBaseID);
+            MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+            ObjectName[] mBeans = new ObjectName[]{
+                    new ObjectName(RULE_BASE_OBJECT_NAME + ruleBaseCounter),
+                    new ObjectName(RULE_SESSION_OBJECT_NAME + ruleBaseCounter)
+            };
+            for (ObjectName objectName : mBeans) {
+                try {
+                    server.unregisterMBean(objectName);
+                } catch (InstanceNotFoundException e) {
+                    logger.info("MBean not found while unregistering it");
+                } catch (MBeanRegistrationException e) {
+                    logger.warn(String.format("Error append while unregistering MBean with name %s. Continue unregister process execution", objectName));
+                }
+            }
+        } finally {
+            logger.exit("clearMBeans");
+        }
+    }
+
+    /**
+     * This method creates and registers MBean Object into the MBeanServer.
+     *
+     * @throws DroolsChtijbugException
+     */
+    private void initMBeans() throws DroolsChtijbugException {
+        //____ Get the MBeanServer from the platform
+        MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+        try {
+            //____ Instanciate all expected MBeans Object
             mbsRuleBase = new RuleBaseSupervision(this);
             mbsSession = new StatefulSessionSupervision();
-            server.registerMBean(mbsRuleBase, nameRuleBase);
-            server.registerMBean(mbsSession, nameSession);
+            //____ Register them to the MBeanServer
+            server.registerMBean(mbsRuleBase, getRuleBaseObjectName());
+            server.registerMBean(mbsSession, getRuleSessionObjectName());
         } catch (Exception e) {
-            LOGGER.warn("Error registering MBeans", e);
+            logger.warn("Error registering MBeans", e);
+            logger.warn("All JMX Features are not available till the issue is not fixed.");
         }
+    }
+
+    /**
+     * @return The ObjectName related to the Rulebase Object inside the MBeanServer
+     * @throws MalformedObjectNameException
+     */
+    protected ObjectName getRuleBaseObjectName() throws MalformedObjectNameException {
+        return new ObjectName(RULE_BASE_OBJECT_NAME + this.ruleBaseID);
+    }
+
+    /**
+     * @return The ObjectName related to the RuleSession Object inside the MBeanServer
+     * @throws MalformedObjectNameException
+     */
+    protected ObjectName getRuleSessionObjectName() throws MalformedObjectNameException {
+        return new ObjectName(RULE_SESSION_OBJECT_NAME + this.ruleBaseID);
     }
 
     public boolean isKbaseLoaded() {
@@ -95,29 +176,45 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     @Override
     public RuleBaseSession createRuleBaseSession() throws DroolsChtijbugException {
-        RuleBaseSession newRuleBaseSession = null;
-        newRuleBaseSession = this.createRuleBaseSession(this.maxNumberRuleToExecute);
-        return newRuleBaseSession;
+        logger.entry("createRuleBaseSession");
+        try {
+            //____ Creating new Rule Base Session using default rule threshold
+            RuleBaseSession newRuleBaseSession = this.createRuleBaseSession(this.maxNumberRuleToExecute);
+            //____ Returning it
+            return newRuleBaseSession;
+        } finally {
+            logger.exit("createRuleBaseSession");
+        }
     }
 
     @Override
     public RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute) throws DroolsChtijbugException {
-
+        logger.entry("createRuleBaseSession", maxNumberRulesToExecute);
         RuleBaseSession newRuleBaseSession = null;
-        if (kbase != null) {
-            try {
-                lockKbase.acquire();
-            } catch (Exception e) {
-                throw new DroolsChtijbugException(DroolsChtijbugException.KbaseAcquire, "", e);
+        try {
+            if (kbase != null) {
+                //____ Acquire semaphore
+                try {
+                    lockKbase.acquire();
+                } catch (Exception e) {
+                    throw new DroolsChtijbugException(DroolsChtijbugException.KbaseAcquire, "", e);
+                }
+                //_____ Now we can create a new stateful session using KnowledgeBase
+                StatefulKnowledgeSession newDroolsSession = kbase.newStatefulKnowledgeSession();
+                //_____ Increment session counter
+                this.sessionCounter++;
+                //_____ Wrapping the knowledge Session
+                newRuleBaseSession = new RuleBaseStatefulSession(this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, mbsSession);
+                //_____ Release semaphore
+                lockKbase.release();
+            } else {
+                throw new DroolsChtijbugException(DroolsChtijbugException.KbaseNotInitialised, "", null);
             }
-            StatefulKnowledgeSession newDroolsSession = kbase.newStatefulKnowledgeSession();
-            this.sessionCounter++;
-            newRuleBaseSession = new RuleBaseStatefulSession(this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, mbsSession);
-            lockKbase.release();
-        } else {
-            throw new DroolsChtijbugException(DroolsChtijbugException.KbaseNotInitialised, "", null);
+            //____ return the wrapped KnowledgeSession
+            return newRuleBaseSession;
+        } finally {
+            logger.exit("createRuleBaseSession", newRuleBaseSession);
         }
-        return newRuleBaseSession;
     }
 
     /*
@@ -157,7 +254,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
             kbase = newkbase;
             lockKbase.release();
         } catch (Exception e) {
-            LOGGER.error("error to load Agent", e);
+            logger.error("error to load Agent", e);
             throw new DroolsChtijbugException(DroolsChtijbugException.ErrorToLoadAgent, "", e);
         }
     }
@@ -173,6 +270,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     /**
      * This method is a helper one. It will be called automatically after XStream unmarshaling execution
+     *
      * @return this object including all transient fileds
      * @throws DroolsChtijbugException
      */
@@ -181,7 +279,12 @@ public class RuleBaseSingleton implements RuleBasePackage {
         return this;
     }
 
-    protected final MBeanServer getMBeanServer() {
-        return this.server;
+    /**
+     * On object disposable, ensure that all MBeans have been removed from the MBeanServer
+     * @throws Throwable
+     */
+    @Override
+    protected void finalize() throws Throwable {
+        clearMBeans();
     }
 }

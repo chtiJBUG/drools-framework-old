@@ -1,46 +1,23 @@
 package org.chtijbug.drools.runtime.test;
 
-import org.chtijbug.drools.runtime.RuleBasePackage;
-import org.chtijbug.drools.runtime.RuleBaseSession;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
+import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervision;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-/**
- * Created by IntelliJ IDEA.
- * Date: 23/11/12
- * Time: 11:01
- * To change this template use File | Settings | File Templates.
- */
+import static org.powermock.api.mockito.PowerMockito.whenNew;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(RuleBaseSingleton.class)
+@PowerMockIgnore("javax.management.*")
 public class RuleBaseSingletonTest {
-    RuleBaseSession session;
-     static RuleBasePackage ruleBasePackage;
 
-     /**
-      * @throws java.lang.Exception
-      */
-     @BeforeClass
-     public static void setUpBeforeClass() throws Exception {
-
-     }
-
-     /**
-      * @throws java.lang.Exception
-      */
-     @Before
-     public void setUp() throws Exception {
-     }
-
-     /**
-      * @throws java.lang.Exception
-      */
-     @After
-     public void tearDown() throws Exception {
-
-     }
-
-     @Test
-     public void DefaultMaxNumberRUleExecuted() throws Exception {
-     }
+    @Test
+    public void should_not_fail_on_mbean_error() throws Exception {
+        whenNew(StatefulSessionSupervision.class).withNoArguments().thenThrow(IllegalArgumentException.class);
+        new RuleBaseSingleton();
+    }
 }

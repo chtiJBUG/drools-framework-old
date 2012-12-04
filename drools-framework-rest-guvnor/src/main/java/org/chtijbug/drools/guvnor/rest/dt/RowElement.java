@@ -44,33 +44,30 @@ public class RowElement {
                 try {
                     setValuedtCell(this.value);
                 } catch (Exception e) {
-                    ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException();
+                    ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException(e);
                     chtijbugDroolsRestException.setClassName("RowElement");
                     chtijbugDroolsRestException.setAttribute(this.columnDefinition.toString());
                     chtijbugDroolsRestException.setValue(this.value);
-                    chtijbugDroolsRestException.setOriginalException(e);
                     throw chtijbugDroolsRestException;
                 }
             } else if (this.columnDefinition.getColumnDefinition() == ColumnType.condition) {
                 try {
                     setValuedtCell(this.value);
                 } catch (Exception e) {
-                    ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException();
+                    ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException(e);
                     chtijbugDroolsRestException.setClassName("RowElement");
                     chtijbugDroolsRestException.setAttribute(this.columnDefinition.toString());
                     chtijbugDroolsRestException.setValue(this.value);
-                    chtijbugDroolsRestException.setOriginalException(e);
                     throw chtijbugDroolsRestException;
                 }
             } else if (this.columnDefinition.getColumnDefinition() == ColumnType.action) {
                 try {
                     setValuedtCell(this.value);
                 } catch (Exception e) {
-                    ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException();
+                    ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException(e);
                     chtijbugDroolsRestException.setClassName("RowElement");
                     chtijbugDroolsRestException.setAttribute(this.columnDefinition.toString());
                     chtijbugDroolsRestException.setValue(this.value);
-                    chtijbugDroolsRestException.setOriginalException(e);
                     throw chtijbugDroolsRestException;
                 }
             }

@@ -6,12 +6,6 @@ import org.drools.ide.common.client.modeldriven.dt52.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * Date: 26/04/12
- * Time: 14:17
- * To change this template use File | Settings | File Templates.
- */
 public class DecisionTable {
     private String name;
     private GuidedDecisionTable52 guidedDecisionTable52;
@@ -53,8 +47,7 @@ public class DecisionTable {
                 //Row newRow = fillRow(line);
                 rows.add(newRow);
             } catch (ChtijbugDroolsRestException e) {
-                ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException();
-                chtijbugDroolsRestException.setOriginalException(e);
+                ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException(e);
                 e.setClassName("DecisionTable.Constructor");
                 e.setAttribute("Data");
                 e.setValue(line.toString());

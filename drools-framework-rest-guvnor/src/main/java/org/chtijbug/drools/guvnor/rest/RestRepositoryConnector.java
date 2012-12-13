@@ -1,16 +1,12 @@
 package org.chtijbug.drools.guvnor.rest;
 
-/**
- * Created by IntelliJ IDEA.
- * Date: 25/04/12
- * Time: 10:12
- * To change this template use File | Settings | File Templates.
- */
 
 import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
 import org.drools.ide.common.client.modeldriven.dt52.GuidedDecisionTable52;
 
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
 public interface RestRepositoryConnector {
 
@@ -28,5 +24,17 @@ public interface RestRepositoryConnector {
 
     InputStream getPojoModel();
 
+    /**
+     * Loads the table from a template rule
+     * @return Key : the column name.
+     */
+    Map<String,List<String>> getTemplateTable(String templateRuleName);
+
+    /**
+     * Overrides the template rule table
+     * Map size must match attended columns from the template table.
+     * Every Map entry must have the same size (number of rows).
+     */
+    void putTemplateTable(String templateRuleName, Map<String, List<String>> table) throws ChtijbugDroolsRestException;
 }
 

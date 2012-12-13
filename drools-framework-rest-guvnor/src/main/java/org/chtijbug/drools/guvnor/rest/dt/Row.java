@@ -6,12 +6,6 @@ import org.drools.ide.common.client.modeldriven.dt52.DTCellValue52;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * Date: 26/04/12
- * Time: 14:30
- * To change this template use File | Settings | File Templates.
- */
 public class Row {
     private DecisionTable decisionTable;
     private List<RowElement> rowElements = new ArrayList<RowElement>();
@@ -29,11 +23,10 @@ public class Row {
                     String newString =  String.valueOf(rowNumber);
                     newRowElement.setValue(newString);
                 } catch (Exception e) {
-                    ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException();
+                    ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException(e);
                     chtijbugDroolsRestException.setClassName("Row");
                     chtijbugDroolsRestException.setValue(decisionTable.toString());
                     chtijbugDroolsRestException.setAttribute("protected Row(DecisionTable decisionTable,int rowNumber) throws ChtijbugDroolsRestException");
-                    chtijbugDroolsRestException.setOriginalException(e);
                     throw chtijbugDroolsRestException;
                 }
             }
@@ -57,10 +50,9 @@ public class Row {
         try {
             rowNumberElement.setValue(String.valueOf(newRowNumber));
         } catch (Exception e){
-            ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException();
+            ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException(e);
             chtijbugDroolsRestException.setAttribute("protected void updateRowNumber(int newRowNumber) throws ChtijbugDroolsRestExceptio");
             chtijbugDroolsRestException.setClassName("Row");
-            chtijbugDroolsRestException.setOriginalException(e);
             throw chtijbugDroolsRestException;
         }
     }

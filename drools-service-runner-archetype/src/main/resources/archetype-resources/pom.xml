@@ -123,13 +123,13 @@
         <finalName>${warFilename}</finalName>
         <plugins>
             <plugin>
-            <groupId>org.chtijbug</groupId>
+            <groupId>org.chtijbug.drools</groupId>
             <artifactId>maven-guvnor-install-pojo-plugin</artifactId>
             <version>${chtijbug.version}</version>
             <executions>
                 <execution>
                     <id>install-model</id>
-                    <phase>process-sources</phase>
+                    <phase>clean</phase>
                     <goals>
                         <goal>install-file</goal>
                     </goals>

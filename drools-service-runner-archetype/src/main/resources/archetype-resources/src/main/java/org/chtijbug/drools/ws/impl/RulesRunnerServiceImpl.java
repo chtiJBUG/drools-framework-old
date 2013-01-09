@@ -1,7 +1,7 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
-package com.chtijbug.drools.ws.impl;
+package org.chtijbug.drools.ws.impl;
 
 import org.chtijbug.drools.common.log.Logger;
 import org.chtijbug.drools.common.log.LoggerFactory;
@@ -22,7 +22,7 @@ import javax.jws.WebService;
  * Date: 14/09/12
  * Time: 08:52
  */
-@WebService(endpointInterface = "com.chtijbug.drools.ws.RulesRunnerService")
+@WebService(endpointInterface = "org.chtijbug.drools.ws.RulesRunnerService")
 @Service(value = "ruleRunnerService")
 public class RulesRunnerServiceImpl implements RulesRunnerService, InitializingBean {
     /** Class Logger */

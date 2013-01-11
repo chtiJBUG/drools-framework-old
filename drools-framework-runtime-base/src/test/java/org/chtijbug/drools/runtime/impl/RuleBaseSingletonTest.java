@@ -1,7 +1,6 @@
 package org.chtijbug.drools.runtime.impl;
 
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
-import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
 import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervision;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,15 +9,15 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import javax.management.InstanceNotFoundException;
+import javax.management.IntrospectionException;
 import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
-import javax.management.ObjectInstance;
-
+import javax.management.ObjectName;
+import javax.management.ReflectionException;
 import java.lang.management.ManagementFactory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static junit.framework.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
@@ -33,48 +32,52 @@ public class RuleBaseSingletonTest {
     }
 
     @Test
-    public void ensureMBeanUnregistering() {
+    public void should_register_and_unregister_mbeans() throws DroolsChtijbugException, MalformedObjectNameException, InstanceNotFoundException {
         //___ First create RuleBaseSingleton to initialize counter
+        MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+        int initialMbeanCount = server.getMBeanCount();
+        int expectedMaxCount = initialMbeanCount + 2;
+        int initialRuleId = RuleBaseSingleton.ruleBaseCounter;
+
+        //____ 1rst assertion set
+        RuleBaseSingleton singleton = new RuleBaseSingleton();
+        assertEquals(initialRuleId + 1, singleton.getRuleBaseID());
+        assertMbeansAreRegistered(server, singleton);
+        assertTrue(server.getMBeanCount() <= expectedMaxCount);
+
+        //____ 2ns set. --> MBean count should stay the same...
+        singleton = new RuleBaseSingleton();
+        assertEquals(initialRuleId + 2, singleton.getRuleBaseID());
+        assertMbeansAreRegistered(server, singleton);
+        assertTrue(server.getMBeanCount() <= expectedMaxCount);
+    }
+
+    private void assertMbeansAreRegistered(MBeanServer server, RuleBaseSingleton singleton) throws InstanceNotFoundException, MalformedObjectNameException {
+        assertNotNull(server.getObjectInstance(singleton.getRuleBaseObjectName()));
+        assertNotNull(server.getObjectInstance(singleton.getRuleSessionObjectName()));
+    }
+
+    @Test
+    public void should_unregister_mbeans_ond_demand() throws Exception {
+        MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+
+        RuleBaseSingleton singleton = new RuleBaseSingleton();
+        assertNotNull(server.getMBeanInfo(singleton.getRuleBaseObjectName()));
+        assertNotNull(server.getMBeanInfo(singleton.getRuleSessionObjectName()));
+
+        singleton.cleanup();
+        assertInstanceNotFound(server, singleton.getRuleBaseObjectName());
+        assertInstanceNotFound(server, singleton.getRuleSessionObjectName());
+    }
+
+    private void assertInstanceNotFound(MBeanServer server, ObjectName ruleBaseObjectName) throws IntrospectionException, ReflectionException {
         try {
-
-            MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-
-            Integer mBeanInstancesCount = server.getMBeanCount();
-            Integer expectedCount = mBeanInstancesCount+2;
-            int expectedId = RuleBaseSingleton.ruleBaseCounter;
-
-            //____ 1rst assertion set
-            RuleBaseSingleton singleton = new RuleBaseSingleton();
-            assertEquals(expectedId+1,singleton.getRuleBaseID());
-
-            ObjectInstance objectInstance = server.getObjectInstance(singleton.getRuleBaseObjectName());
-            assertNotNull(objectInstance);
-
-            objectInstance = server.getObjectInstance(singleton.getRuleSessionObjectName());
-            assertNotNull(objectInstance);
-
-            assertEquals(expectedCount, server.getMBeanCount());
-
-            //____ 2ns set. --> MBean count should stay the same...
-            RuleBaseSingleton secondInstance = new RuleBaseSingleton();
-            assertEquals(expectedId+2,secondInstance.getRuleBaseID());
-
-            objectInstance = server.getObjectInstance(secondInstance.getRuleBaseObjectName());
-            assertNotNull(objectInstance);
-
-            objectInstance = server.getObjectInstance(secondInstance.getRuleSessionObjectName());
-            assertNotNull(objectInstance);
-
-            assertEquals(expectedCount, server.getMBeanCount());
-
-
-
-        } catch (DroolsChtijbugException e) {
-            fail();
-        } catch (MalformedObjectNameException e) {
-            fail();
+            server.getMBeanInfo(ruleBaseObjectName);
+            fail("Expected an exception");
         } catch (InstanceNotFoundException e) {
-            fail();
+            // as expected
         }
+
     }
 }
+

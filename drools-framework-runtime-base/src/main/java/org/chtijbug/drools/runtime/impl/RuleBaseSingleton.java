@@ -82,12 +82,8 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     public RuleBaseSingleton() throws DroolsChtijbugException {
         //____ Remove Existing MBean from the MBeanServer
-        try {
-            if (ruleBaseCounter != 0)
-                clearMBeans();
-        } catch (MalformedObjectNameException e) {
-            logger.warn("Error occured while clearing MBeanServer", e);
-        }
+        if (ruleBaseCounter != 0)
+            clearPreviousInstanceMBeans();
         //____ Increment the ruleBaseID
         this.ruleBaseID = addRuleBase();
         initMBeans();
@@ -101,28 +97,28 @@ public class RuleBaseSingleton implements RuleBasePackage {
     /**
      * This methods unregisters all existing MBean from the MBean Server.
      * All statistics data will be erased !!
-     *
-     * @throws MalformedObjectNameException
      */
-    private void clearMBeans() throws MalformedObjectNameException {
-        logger.entry("clearMBeans");
+    private static void clearPreviousInstanceMBeans()  {
+        logger.entry("clearPreviousInstanceMBeans");
+        logger.debug("ruleBaseCounter : {}", ruleBaseCounter);
         try {
             MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-            ObjectName[] mBeans = new ObjectName[]{
-                    new ObjectName(RULE_BASE_OBJECT_NAME + ruleBaseCounter),
-                    new ObjectName(RULE_SESSION_OBJECT_NAME + ruleBaseCounter)
-            };
-            for (ObjectName objectName : mBeans) {
-                try {
-                    server.unregisterMBean(objectName);
-                } catch (InstanceNotFoundException e) {
-                    logger.info("MBean not found while unregistering it");
-                } catch (MBeanRegistrationException e) {
-                    logger.warn(String.format("Error append while unregistering MBean with name %s. Continue unregister process execution", objectName));
-                }
-            }
+            unregisterMBean(server, new ObjectName(RULE_BASE_OBJECT_NAME + ruleBaseCounter));
+            unregisterMBean(server, new ObjectName(RULE_SESSION_OBJECT_NAME + ruleBaseCounter));
+        } catch (MalformedObjectNameException e) {
+            logger.warn("Oups, wrong object name", e);
         } finally {
-            logger.exit("clearMBeans");
+            logger.exit("clearPreviousInstanceMBeans");
+        }
+    }
+
+    private static void unregisterMBean(MBeanServer server, ObjectName objectName) {
+        try {
+            server.unregisterMBean(objectName);
+        } catch (InstanceNotFoundException e) {
+            logger.info("MBean not found while unregistering it {}", objectName);
+        } catch (MBeanRegistrationException e) {
+            logger.warn("Error append while unregistering MBean with name {}. Continue unregister process execution", objectName);
         }
     }
 
@@ -139,7 +135,12 @@ public class RuleBaseSingleton implements RuleBasePackage {
             mbsRuleBase = new RuleBaseSupervision(this);
             mbsSession = new StatefulSessionSupervision();
             //____ Register them to the MBeanServer
-            server.registerMBean(mbsRuleBase, getRuleBaseObjectName());
+            ObjectName objectName = getRuleBaseObjectName();
+            logger.info("Registering MBean with name {}", objectName );
+            server.registerMBean(mbsRuleBase, objectName);
+
+            objectName = getRuleSessionObjectName();
+            logger.info("Registering MBean with name {}", objectName);
             server.registerMBean(mbsSession, getRuleSessionObjectName());
         } catch (Exception e) {
             logger.warn("Error registering MBeans", e);
@@ -217,23 +218,11 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.chtijbug.drools.runtime.RuleBasePackage#addDroolsResouce(org.chtijbug
-     * .drools.runtime.resource.DroolsResource)
-     */
     @Override
     public void addDroolsResouce(DroolsResource res) {
         listResouces.add(res);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.chtijbug.drools.runtime.RuleBasePackage#createKBase()
-     */
     @Override
     public synchronized void createKBase() throws DroolsChtijbugException {
 
@@ -261,6 +250,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     private static int addRuleBase() {
         ruleBaseCounter++;
+        logger.info("New rule base ID : " + ruleBaseCounter);
         return ruleBaseCounter;
     }
 
@@ -279,12 +269,19 @@ public class RuleBaseSingleton implements RuleBasePackage {
         return this;
     }
 
-    /**
-     * On object disposable, ensure that all MBeans have been removed from the MBeanServer
-     * @throws Throwable
-     */
     @Override
-    protected void finalize() throws Throwable {
-        clearMBeans();
+    public void cleanup() {
+        clearInstanceMBeans();
+    }
+
+    private void clearInstanceMBeans() {
+        MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+        try {
+            unregisterMBean(server, getRuleBaseObjectName());
+            unregisterMBean(server, getRuleSessionObjectName());
+        } catch (MalformedObjectNameException e) {
+            logger.error("Error clearing instance MBeans", e);
+        }
+
     }
 }

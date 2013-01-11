@@ -13,27 +13,22 @@ import org.chtijbug.drools.runtime.resource.DroolsResource;
 public interface RuleBasePackage {
     
 	
-	/**
-	 * 
-	 * @return 
-	 */
-    public RuleBaseSession createRuleBaseSession()  throws DroolsChtijbugException;
-    /**
-      *
-    	 * @return
-    	 */
-    public RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute)  throws DroolsChtijbugException;
+    RuleBaseSession createRuleBaseSession()  throws DroolsChtijbugException;
+
+    RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute)  throws DroolsChtijbugException;
     /**
      * 
      * Add a drools resource for generate kbase
      * 
      * @param res Drools resource
      */
-	public void addDroolsResouce(DroolsResource res);
+	void addDroolsResouce(DroolsResource res);
     
 	/**
 	 * Create KnowledgeBase and load all drools resources 
 	 */
 	public void createKBase() throws DroolsChtijbugException;
+
+    void cleanup();
 
 }

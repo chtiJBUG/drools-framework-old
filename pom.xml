@@ -14,8 +14,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <drools.version>5.4.1.chtijbug</drools.version>
-        <jbpm.version>5.3.1.chtijbug</jbpm.version>
+        <drools.version>5.5.1.chtijbug</drools.version>
+        <jbpm.version>5.4.1.chtijbug</jbpm.version>
         <powermock.version>1.4.12</powermock.version>
     </properties>
 

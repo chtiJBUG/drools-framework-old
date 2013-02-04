@@ -1,6 +1,14 @@
 package org.chtijbug.drools.guvnor.rest;
 
+import ch.lambdaj.function.convert.Converter;
+import ch.lambdaj.function.convert.StringConverter;
 import com.google.common.collect.Iterables;
+import static ch.lambdaj.Lambda.*;
+import org.apache.abdera.Abdera;
+import org.apache.abdera.model.Document;
+import org.apache.abdera.model.Element;
+import org.apache.abdera.model.Entry;
+import org.apache.abdera.model.Feed;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.transport.http.HTTPConduit;
@@ -15,6 +23,9 @@ import org.drools.ide.common.client.modeldriven.brl.templates.TemplateModel;
 import org.drools.ide.common.client.modeldriven.dt52.GuidedDecisionTable52;
 import org.drools.ide.common.server.util.BRXMLPersistence;
 import org.drools.ide.common.server.util.GuidedDTXMLPersistence;
+import org.hamcrest.Matcher;
+import org.hamcrest.number.IsGreaterThan;
+import org.springframework.util.CollectionUtils;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -31,6 +42,11 @@ import static java.lang.String.format;
 public class GuvnorRepositoryConnector implements RestRepositoryConnector{
     /** Class logger */
     private static Logger logger = LoggerFactory.getLogger(GuvnorRepositoryConnector.class);
+    /**  */
+    private static final String ASSET_SOURCE = "source";
+    /**  */
+    private static final String ASSET_VERSION = "versions";
+
     /** Guvnor Web application connexion data */
     private final GuvnorConnexionConfiguration configuration;
 
@@ -46,7 +62,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector{
 
     @Override
     public DecisionTable getGuidedDecisionTable(String dtName) throws ChtijbugDroolsRestException{
-        String content = webClient().path(assetPath(dtName)).accept("text/plain").get(String.class);
+        String content = webClient().path(assetBinaryPath(dtName)).accept("text/plain").get(String.class);
         GuidedDecisionTable52 guidedDecisionTable52 = GuidedDTXMLPersistence.getInstance().unmarshal(content);
         return new DecisionTable(guidedDecisionTable52);
     }
@@ -57,7 +73,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector{
         String newContent = GuidedDTXMLPersistence.getInstance().marshal(guidedDecisionTable52.getGuidedDecisionTable52());
         WebClient client = webClient();
         noTimeout(client);
-        client.path(assetPath(dtName)).accept("application/xml").put(newContent);
+        client.path(assetBinaryPath(dtName)).accept("application/xml").put(newContent);
     }
 
 
@@ -84,7 +100,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector{
         updateTableContent(newTable, templateModel);
         String xmlContent = BRXMLPersistence.getInstance().marshal(templateModel);
         webClient()
-                .path(assetPath(templateRuleName))
+                .path(assetBinaryPath(templateRuleName))
                 .type("application/xml")
                 .put(xmlContent);
 
@@ -121,17 +137,41 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector{
         return columnNames;
     }
 
+    public Integer getAssetVersion(String assetName) {
+        InputStream inputStream = webClient()
+                .path(assetVersionPath(assetName))
+                .accept(MediaType.APPLICATION_ATOM_XML)
+                .get(InputStream.class);
+
+        Document<Element> atomDocument = Abdera.getInstance().getParser().parse(inputStream);
+        Feed feed = (Feed) atomDocument.getRoot();
+        List<Integer> allVersions = convert(feed.getEntries(), new Converter<Entry, Integer>() {
+            public Integer convert(Entry from) {
+                return Integer.valueOf(from.getTitle());
+            }
+        });
+        return selectMax(allVersions, on(Integer.class).intValue());
+    }
+
     private TemplateModel getTemplateModel(String templateRuleName) {
         String content = webClient()
-                .path(assetPath(templateRuleName))
+                .path(assetBinaryPath(templateRuleName))
                 .accept("text/plain")
                 .get(String.class);
         RuleModel ruleModel = BRXMLPersistence.getInstance().unmarshal(content);
         return (TemplateModel) ruleModel;
     }
 
-    private String assetPath(String ruleName) {
-        return format("%s/rest/packages/%s/assets/%s/source", configuration.getWebappName(), configuration.getPackageName(), ruleName);
+    private String assetBinaryPath(String ruleName) {
+        return getPathFor(ruleName, "source");
+    }
+
+    private String getPathFor(String assetName, String pathType) {
+        return format("%s/rest/packages/%s/assets/%s/%s", configuration.getWebappName(), configuration.getPackageName(), assetName, pathType);
+    }
+
+    private String assetVersionPath(String assertName) {
+        return getPathFor(assertName, "versions");
     }
 
     private WebClient webClient() {

@@ -14,6 +14,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,15 @@ public class GuvnorRepositoryConnectorTest {
     @Before
     public void setUp() throws Exception {
         mockWebClient = mockWebClient();
+    }
+
+    @Test
+    public void should_get_latest_asset_version() throws Exception {
+        Integer latestAssetVersion = guvnorRepositoryConnector.getAssetVersion("AssetWithVersions");
+
+        assertThat(latestAssetVersion).isNotNull();
+        assertThat(latestAssetVersion).isEqualTo(71);
+
     }
 
     @Test
@@ -87,10 +97,12 @@ public class GuvnorRepositoryConnectorTest {
             mockStatic(WebClient.class);
             WebClient mock = mock(WebClient.class);//, withSettings().verboseLogging());
             when(mock.get(String.class)).thenReturn(readResource("/MyTemplateRule.xml"));
+            when(mock.get(InputStream.class)).thenReturn(IOUtils.toInputStream(readResource("/asset-atom.xml")));
             when(mock.accept(anyString())).thenReturn(mock);
             when(mock.type(anyString())).thenReturn(mock);
             when(WebClient.create(configuration.getHostname())).thenReturn(mock);
             when(mock.path("drools-guvnor/rest/packages/test/assets/MyTemplateRule/source")).thenReturn(mock);
+            when(mock.path("drools-guvnor/rest/packages/test/assets/AssetWithVersions/versions")).thenReturn(mock);
             return mock;
         } catch (IOException e) {
             throw propagate(e);

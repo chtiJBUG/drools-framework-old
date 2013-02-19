@@ -3,9 +3,12 @@
  */
 package org.chtijbug.drools.runtime.resource;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.chtijbug.drools.common.log.Logger;
 import org.chtijbug.drools.common.log.LoggerFactory;
 import org.drools.builder.ResourceType;
+import org.drools.core.util.IoUtils;
 import org.drools.io.Resource;
 import org.drools.io.ResourceFactory;
 
@@ -62,19 +65,9 @@ public class GuvnorDroolsResource implements DroolsResource {
             if (resource != null) {
                 return resource;
             }
-            StringWriter writer = new StringWriter();
-
-            writer.write("<change-set xmlns='http://drools.org/drools-5.0/change-set' ");
-            writer.write("xmlns:xs='http://www.w3.org/2001/XMLSchema-instance'>");
-            writer.write("<add><resource source='");
-            writer.write(getWebResourceUrl());
-            writer.write("' type='PKG' basicAuthentication='enabled' username='");
-            writer.write(username);
-            writer.write("' password='");
-            writer.write(password);
-            writer.write("' /></add></change-set>");
-
-            resource = ResourceFactory.newByteArrayResource(writer.toString().getBytes());
+            String changeset = IOUtils.toString(this.getClass().getResourceAsStream("/changeset-template.xml"));
+            changeset = String.format(changeset, getWebResourceUrl(), this.username, this.password);
+            resource = ResourceFactory.newByteArrayResource(changeset.getBytes());
             return resource;
         } finally {
             logger.exit("getResource", resource);

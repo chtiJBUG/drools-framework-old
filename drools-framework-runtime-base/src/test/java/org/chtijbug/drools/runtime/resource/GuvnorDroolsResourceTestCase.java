@@ -1,6 +1,7 @@
 package org.chtijbug.drools.runtime.resource;
 
 import org.drools.io.Resource;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.xml.transform.OutputKeys;
@@ -47,12 +48,19 @@ public class GuvnorDroolsResourceTestCase {
     public void testGetResource() {
         GuvnorDroolsResource toTest = new GuvnorDroolsResource("http://localhost:8080/", "drools-guvnor", "amag/", "LATEST", "tomcat", "tomcat");
 
-
-        final String expectedChangeSet = "<change-set xmlns='http://drools.org/drools-5.0/change-set' xmlns:xs='http://www.w3.org/2001/XMLSchema-instance'>" +
-                "<add>" +
-                "<resource source='http://localhost:8080/drools-guvnor/org.drools.guvnor.Guvnor/package/amag/LATEST' type='PKG' " +
-                "basicAuthentication='enabled' username='tomcat' password='tomcat' />" +
-                "</add>" +
+        final String expectedChangeSet = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                "<change-set xmlns=\"http://drools.org/drools-5.0/change-set\"" +
+                "            xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" +
+                "            xsi:schemaLocation=\"http://drools.org/drools-5.0/change-set changeset-1.0.0.xsd\">" +
+                "    <add>" +
+                "        <resource" +
+                "                type=\"PKG\"" +
+                "                source=\"http://localhost:8080/drools-guvnor/org.drools.guvnor.Guvnor/package/amag/LATEST\"" +
+                "                basicAuthentication=\"enabled\"" +
+                "                username=\"tomcat\"" +
+                "                password=\"tomcat\">" +
+                "        </resource>" +
+                "    </add>" +
                 "</change-set>";
         try {
             Resource toEval = toTest.getResource();

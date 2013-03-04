@@ -2,6 +2,7 @@ package org.chtijbug.drools.guvnor.rest;
 
 
 import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
+import org.chtijbug.drools.guvnor.rest.model.Asset;
 import org.drools.ide.common.client.modeldriven.dt52.GuidedDecisionTable52;
 
 import java.io.InputStream;
@@ -36,5 +37,10 @@ public interface RestRepositoryConnector {
      * Every Map entry must have the same size (number of rows).
      */
     void putTemplateTable(String templateRuleName, Map<String, List<String>> table) throws ChtijbugDroolsRestException;
+
+    /**
+     * This method returns all business Assets from the Guvnor Repository
+     */
+    List<Asset> getAllBusinessAssets();
 }
 

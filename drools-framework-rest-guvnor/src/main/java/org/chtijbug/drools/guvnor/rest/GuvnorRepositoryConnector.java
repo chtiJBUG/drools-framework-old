@@ -1,14 +1,17 @@
 package org.chtijbug.drools.guvnor.rest;
 
 import ch.lambdaj.function.convert.Converter;
-import ch.lambdaj.function.convert.StringConverter;
 import com.google.common.collect.Iterables;
+
 import static ch.lambdaj.Lambda.*;
+
 import org.apache.abdera.Abdera;
 import org.apache.abdera.model.Document;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
+import org.apache.abdera.parser.stax.FOMExtensibleElement;
+import org.apache.cxf.helpers.XPathUtils;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.transport.http.HTTPConduit;
@@ -17,19 +20,29 @@ import org.chtijbug.drools.common.log.Logger;
 import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
 import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
+import org.chtijbug.drools.guvnor.rest.model.Asset;
 import org.drools.ide.common.client.modeldriven.brl.RuleModel;
 import org.drools.ide.common.client.modeldriven.brl.templates.InterpolationVariable;
 import org.drools.ide.common.client.modeldriven.brl.templates.TemplateModel;
 import org.drools.ide.common.client.modeldriven.dt52.GuidedDecisionTable52;
 import org.drools.ide.common.server.util.BRXMLPersistence;
 import org.drools.ide.common.server.util.GuidedDTXMLPersistence;
-import org.hamcrest.Matcher;
-import org.hamcrest.number.IsGreaterThan;
-import org.springframework.util.CollectionUtils;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -39,15 +52,19 @@ import java.util.Set;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.String.format;
 
-public class GuvnorRepositoryConnector implements RestRepositoryConnector{
-    /** Class logger */
+public class GuvnorRepositoryConnector implements RestRepositoryConnector {
+    /**
+     * Class logger
+     */
     private static Logger logger = LoggerFactory.getLogger(GuvnorRepositoryConnector.class);
     /**  */
     private static final String ASSET_SOURCE = "source";
     /**  */
     private static final String ASSET_VERSION = "versions";
 
-    /** Guvnor Web application connexion data */
+    /**
+     * Guvnor Web application connexion data
+     */
     private final GuvnorConnexionConfiguration configuration;
 
 
@@ -56,12 +73,12 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector{
         this.configuration = configuration;
     }
 
-    public GuvnorRepositoryConnector(String guvnorUrl,String guvnorAppName,String packageName,String guvnorUserName,String guvnorPassword) {
-        this(new GuvnorConnexionConfiguration(guvnorUrl, guvnorAppName,packageName, guvnorUserName, guvnorPassword));
+    public GuvnorRepositoryConnector(String guvnorUrl, String guvnorAppName, String packageName, String guvnorUserName, String guvnorPassword) {
+        this(new GuvnorConnexionConfiguration(guvnorUrl, guvnorAppName, packageName, guvnorUserName, guvnorPassword));
     }
 
     @Override
-    public DecisionTable getGuidedDecisionTable(String dtName) throws ChtijbugDroolsRestException{
+    public DecisionTable getGuidedDecisionTable(String dtName) throws ChtijbugDroolsRestException {
         String content = webClient().path(assetBinaryPath(dtName)).accept("text/plain").get(String.class);
         GuidedDecisionTable52 guidedDecisionTable52 = GuidedDTXMLPersistence.getInstance().unmarshal(content);
         return new DecisionTable(guidedDecisionTable52);
@@ -79,7 +96,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector{
 
     @Override
     public InputStream getPojoModel() {
-        String path = this.configuration.getWebappName() + "/org.drools.guvnor.Guvnor/package/" +this.configuration.getPackageName() +"/LATEST/MODEL";
+        String path = this.configuration.getWebappName() + "/org.drools.guvnor.Guvnor/package/" + this.configuration.getPackageName() + "/LATEST/MODEL";
         WebClient client = webClient();
         Response stream = client.path(path).accept(MediaType.APPLICATION_OCTET_STREAM_TYPE).get();
         InputStream inputStream = (InputStream) stream.getEntity();
@@ -111,7 +128,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector{
         int rowCount = Iterables.get(newTable.values(), 1).size();
         List<String> columnNames = orderedColumnNames(templateModel);
         checkColumnNames(columnNames, newTable);
-        for (int rowIndex=0; rowIndex < rowCount; rowIndex++) {
+        for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
             List<String> row = newArrayList();
             for (String columnName : columnNames) {
                 row.add(newTable.get(columnName).get(rowIndex));
@@ -153,6 +170,38 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector{
         return selectMax(allVersions, on(Integer.class).intValue());
     }
 
+    @Override
+    public List<Asset> getAllBusinessAssets() {
+        List<Asset> result;
+        InputStream inputStream = webClient()
+                .path(format("%s/rest/packages/%s/assets", configuration.getWebappName(), configuration.getPackageName()))
+                .accept(MediaType.APPLICATION_ATOM_XML)
+                .get(InputStream.class);
+        Document<Element> atomDocument = Abdera.getInstance().getParser().parse(inputStream);
+        Feed feed = (Feed) atomDocument.getRoot();
+        final XPath xPath = XPathFactory.newInstance().newXPath();
+
+        result = convert(feed.getEntries(), new Converter<Entry, Asset>() {
+            @Override
+            public Asset convert(Entry entry) {
+                String assetName = entry.getTitle();
+                Element metadata = entry.getExtension(QName.valueOf("metadata"));
+
+                String metadataContent = ((FOMExtensibleElement) metadata).toFormattedString();
+                String format = null;
+                String status = null;
+                try {
+                    format = xPath.evaluate("/metadata/format/value", new InputSource(new StringReader(metadataContent)));
+                    status = xPath.evaluate("/metadata/state/value", new InputSource(new StringReader(metadataContent))) ;
+                } catch (XPathExpressionException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+                return new Asset(configuration.getPackageName(), assetName, status, format);
+            }
+        });
+        return result;
+    }
+
     private TemplateModel getTemplateModel(String templateRuleName) {
         String content = webClient()
                 .path(assetBinaryPath(templateRuleName))
@@ -182,7 +231,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector{
 
     private void noTimeout(WebClient client) {
         ClientConfiguration config = WebClient.getConfig(client);
-        HTTPConduit http = (HTTPConduit)config.getConduit();
+        HTTPConduit http = (HTTPConduit) config.getConduit();
         HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
         /* connection timeout for requesting the rule package binaries */
         long connectionTimeout = 0L;

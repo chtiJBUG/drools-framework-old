@@ -110,6 +110,6 @@ public class GuvnorRepositoryConnectorTest {
     }
 
     private String readResource(String resource) throws IOException {
-        return IOUtils.toString(this.getClass().getResource(resource));
+        return IOUtils.toString(this.getClass().getResource(resource).openStream());
     }
 }

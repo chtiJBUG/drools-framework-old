@@ -2,16 +2,13 @@ package org.chtijbug.drools.guvnor.rest;
 
 import ch.lambdaj.function.convert.Converter;
 import com.google.common.collect.Iterables;
-
-import static ch.lambdaj.Lambda.*;
-
 import org.apache.abdera.Abdera;
 import org.apache.abdera.model.Document;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.parser.stax.FOMExtensibleElement;
-import org.apache.cxf.helpers.XPathUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.transport.http.HTTPConduit;
@@ -27,28 +24,27 @@ import org.drools.ide.common.client.modeldriven.brl.templates.TemplateModel;
 import org.drools.ide.common.client.modeldriven.dt52.GuidedDecisionTable52;
 import org.drools.ide.common.server.util.BRXMLPersistence;
 import org.drools.ide.common.server.util.GuidedDTXMLPersistence;
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.StringWriter;
+import java.util.*;
 
+import static ch.lambdaj.Lambda.*;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.String.format;
 
@@ -57,10 +53,6 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
      * Class logger
      */
     private static Logger logger = LoggerFactory.getLogger(GuvnorRepositoryConnector.class);
-    /**  */
-    private static final String ASSET_SOURCE = "source";
-    /**  */
-    private static final String ASSET_VERSION = "versions";
 
     /**
      * Guvnor Web application connexion data
@@ -123,6 +115,85 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
 
     }
 
+    @Override
+    public List<Asset> getAllBusinessAssets() {
+        List<Asset> result;
+        InputStream inputStream = webClient()
+                .path(format("%s/rest/packages/%s/assets", configuration.getWebappName(), configuration.getPackageName()))
+                .accept(MediaType.APPLICATION_ATOM_XML)
+                .get(InputStream.class);
+        Document<Element> atomDocument = Abdera.getInstance().getParser().parse(inputStream);
+        Feed feed = (Feed) atomDocument.getRoot();
+        final XPath xPath = XPathFactory.newInstance().newXPath();
+        result = convert(feed.getEntries(), new Converter<Entry, Asset>() {
+            @Override
+            public Asset convert(Entry entry) {
+                String assetName = entry.getTitle();
+                Element metadata = entry.getExtension(QName.valueOf("metadata"));
+
+                String metadataContent = ((FOMExtensibleElement) metadata).toFormattedString();
+                String format = null;
+                String status = null;
+                try {
+                    format = xPath.evaluate("/metadata/format/value", new InputSource(new StringReader(metadataContent)));
+                    status = xPath.evaluate("/metadata/state/value", new InputSource(new StringReader(metadataContent))) ;
+                } catch (XPathExpressionException e) {
+                    //____ Let the null value by default
+                }
+                return new Asset(configuration.getPackageName(), assetName, status, format);
+            }
+        });
+        return result;
+    }
+
+    @Override
+    public void changeAssetPropertyValue(String assetName, String propertyName, String propertyValue) {
+        //___ Currently, only support state changing
+        if(!"state".equals(propertyName)) {
+            return;
+        }
+        String assetPath = format("%s/rest/packages/%s/assets/%s", configuration.getWebappName(), configuration.getPackageName(), assetName);
+        //_____ Extract the current version of the asset
+        InputStream inputStream = webClient()
+                .path(assetPath)
+                .accept(MediaType.APPLICATION_ATOM_XML)
+                .get(InputStream.class);
+        //_____ Replace the property value
+        String newAssetVersion =  replacePropertyValueFromAtomXml(inputStream, propertyName, propertyValue);
+        if (newAssetVersion == null) {
+            return;
+        }
+        //____ Put the new version of the Asset
+        webClient()
+                .path(assetPath)
+                .type(MediaType.APPLICATION_ATOM_XML)
+                .put(newAssetVersion);
+
+    }
+
+    private String replacePropertyValueFromAtomXml(InputStream inputStream, String propertyName, String propertyValue) {
+        try {
+            String xmlContent = IOUtils.toString(inputStream);
+            org.w3c.dom.Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(xmlContent)));
+
+            XPath xpath = XPathFactory.newInstance().newXPath();
+            Node statusNode = (Node) xpath.evaluate("//metadata/"+propertyName+"/value[text()]", doc, XPathConstants.NODE);
+            if (statusNode != null)
+                statusNode.setTextContent(propertyValue);
+            //___ Avoid updating categories --> setting it to blank (REST API does not support embedded categories)
+            Node categoriesNode = (Node) xpath.evaluate("//metadata/categories", doc, XPathConstants.NODE);
+            if(categoriesNode != null)
+                categoriesNode.getParentNode().removeChild(categoriesNode);
+            StringWriter writer = new StringWriter();
+            Transformer xformer = TransformerFactory.newInstance().newTransformer();
+            xformer.transform(new DOMSource(doc), new StreamResult(writer));
+            return writer.toString();
+        } catch (Exception e) {
+            //____ if an exception occurs, return an empty String (No support at the moment)
+            return null;
+        }
+    }
+
     private void updateTableContent(Map<String, List<String>> newTable, TemplateModel templateModel) throws ChtijbugDroolsRestException {
         templateModel.clearRows();
         int rowCount = Iterables.get(newTable.values(), 1).size();
@@ -168,38 +239,6 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
             }
         });
         return selectMax(allVersions, on(Integer.class).intValue());
-    }
-
-    @Override
-    public List<Asset> getAllBusinessAssets() {
-        List<Asset> result;
-        InputStream inputStream = webClient()
-                .path(format("%s/rest/packages/%s/assets", configuration.getWebappName(), configuration.getPackageName()))
-                .accept(MediaType.APPLICATION_ATOM_XML)
-                .get(InputStream.class);
-        Document<Element> atomDocument = Abdera.getInstance().getParser().parse(inputStream);
-        Feed feed = (Feed) atomDocument.getRoot();
-        final XPath xPath = XPathFactory.newInstance().newXPath();
-
-        result = convert(feed.getEntries(), new Converter<Entry, Asset>() {
-            @Override
-            public Asset convert(Entry entry) {
-                String assetName = entry.getTitle();
-                Element metadata = entry.getExtension(QName.valueOf("metadata"));
-
-                String metadataContent = ((FOMExtensibleElement) metadata).toFormattedString();
-                String format = null;
-                String status = null;
-                try {
-                    format = xPath.evaluate("/metadata/format/value", new InputSource(new StringReader(metadataContent)));
-                    status = xPath.evaluate("/metadata/state/value", new InputSource(new StringReader(metadataContent))) ;
-                } catch (XPathExpressionException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
-                return new Asset(configuration.getPackageName(), assetName, status, format);
-            }
-        });
-        return result;
     }
 
     private TemplateModel getTemplateModel(String templateRuleName) {

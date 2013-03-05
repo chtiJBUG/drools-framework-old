@@ -42,5 +42,7 @@ public interface RestRepositoryConnector {
      * This method returns all business Assets from the Guvnor Repository
      */
     List<Asset> getAllBusinessAssets();
+
+    void changeAssetPropertyValue(String assetName, String propertyName, String propertyValue);
 }
 

@@ -17,7 +17,7 @@
         GuvnorRepositoryConnector guvnorRepositoryConnector;
         @Before
         public void setUp() throws Exception {
-            guvnorRepositoryConnector = new GuvnorRepositoryConnector("http://localhost:8080/","drools-guvnor/","test","tomcat","tomcat");
+            guvnorRepositoryConnector = new GuvnorRepositoryConnector("http://localhost:8080/","drools-guvnor/","mortgages","tomcat","tomcat");
         }
 
         @Test
@@ -27,7 +27,7 @@
         }
 
         @Test
-        public void testGetModel() throws Exception {
+          public void testGetModel() throws Exception {
             InputStream inputStream = guvnorRepositoryConnector.getPojoModel();
 
             FileOutputStream outputStream = new FileOutputStream("/tmp/chtijbug/model.jar") ;
@@ -38,5 +38,12 @@
             }
             outputStream.close();
             inputStream.close();
+        }
+
+
+        @Test
+        public void testUpdateAsset() throws Exception {
+            guvnorRepositoryConnector.changeAssetPropertyValue("Underage", "state", "ESSAI");
+
         }
     }

@@ -18,6 +18,7 @@ import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
 import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
 import org.chtijbug.drools.guvnor.rest.model.Asset;
+import org.chtijbug.drools.guvnor.rest.model.AssetPropertyType;
 import org.drools.ide.common.client.modeldriven.brl.RuleModel;
 import org.drools.ide.common.client.modeldriven.brl.templates.InterpolationVariable;
 import org.drools.ide.common.client.modeldriven.brl.templates.TemplateModel;
@@ -147,11 +148,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
     }
 
     @Override
-    public void changeAssetPropertyValue(String assetName, String propertyName, String propertyValue) {
-        //___ Currently, only support state changing
-        if(!"state".equals(propertyName)) {
-            return;
-        }
+    public void changeAssetPropertyValue(String assetName, AssetPropertyType assetPropertyType, String propertyValue) {
         String assetPath = format("%s/rest/packages/%s/assets/%s", configuration.getWebappName(), configuration.getPackageName(), assetName);
         //_____ Extract the current version of the asset
         InputStream inputStream = webClient()
@@ -159,7 +156,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
                 .accept(MediaType.APPLICATION_ATOM_XML)
                 .get(InputStream.class);
         //_____ Replace the property value
-        String newAssetVersion =  replacePropertyValueFromAtomXml(inputStream, propertyName, propertyValue);
+        String newAssetVersion =  replacePropertyValueFromAtomXml(inputStream, assetPropertyType.name().toLowerCase(), propertyValue);
         if (newAssetVersion == null) {
             return;
         }

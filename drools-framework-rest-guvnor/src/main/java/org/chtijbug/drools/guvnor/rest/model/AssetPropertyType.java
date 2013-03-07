@@ -12,6 +12,6 @@ package org.chtijbug.drools.guvnor.rest.model;
  * _____________________________________________
  * TODO Add specific JAVADOC for
  */
-public enum AssertPropertyType {
+public enum AssetPropertyType {
     STATE
 }

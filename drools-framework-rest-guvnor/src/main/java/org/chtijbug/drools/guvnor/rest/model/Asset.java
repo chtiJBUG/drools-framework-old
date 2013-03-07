@@ -12,7 +12,7 @@ package org.chtijbug.drools.guvnor.rest.model;
  * _____________________________________________
  * TODO Add specific JAVADOC for
  */
-public final class Asset {
+public class Asset {
     /** Busines Package name where this asset is located */
     private String packageName;
     /** Business Asset Name */
@@ -63,5 +63,17 @@ public final class Asset {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Asset");
+        sb.append("{packageName='").append(packageName).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", status='").append(status).append('\'');
+        sb.append(", type='").append(type).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

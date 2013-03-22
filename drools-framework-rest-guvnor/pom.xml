@@ -49,6 +49,10 @@
             <groupId>org.drools</groupId>
             <artifactId>droolsjbpm-ide-common</artifactId>
         </dependency>
+      <dependency>
+          <groupId>org.drools</groupId>
+          <artifactId>guvnor-jaxb-entities</artifactId>
+      </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

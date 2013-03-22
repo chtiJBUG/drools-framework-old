@@ -8,7 +8,6 @@ import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.parser.stax.FOMExtensibleElement;
-import org.apache.commons.io.IOUtils;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.transport.http.HTTPConduit;
@@ -25,19 +24,15 @@ import org.drools.ide.common.client.modeldriven.brl.templates.TemplateModel;
 import org.drools.ide.common.client.modeldriven.dt52.GuidedDecisionTable52;
 import org.drools.ide.common.server.util.BRXMLPersistence;
 import org.drools.ide.common.server.util.GuidedDTXMLPersistence;
-import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.InputStream;
@@ -137,7 +132,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
                 String status = null;
                 try {
                     format = xPath.evaluate("/metadata/format/value", new InputSource(new StringReader(metadataContent)));
-                    status = xPath.evaluate("/metadata/state/value", new InputSource(new StringReader(metadataContent))) ;
+                    status = xPath.evaluate("/metadata/state/value", new InputSource(new StringReader(metadataContent)));
                 } catch (XPathExpressionException e) {
                     //____ Let the null value by default
                 }
@@ -153,43 +148,40 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
         //_____ Extract the current version of the asset
         InputStream inputStream = webClient()
                 .path(assetPath)
-                .accept(MediaType.APPLICATION_ATOM_XML)
+                .accept(MediaType.APPLICATION_XML)
                 .get(InputStream.class);
         //_____ Replace the property value
-        String newAssetVersion =  replacePropertyValueFromAtomXml(inputStream, assetPropertyType.name().toLowerCase(), propertyValue);
+        String newAssetVersion=null;
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(org.drools.guvnor.server.jaxrs.jaxb.Asset.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            org.drools.guvnor.server.jaxrs.jaxb.Asset asset = (org.drools.guvnor.server.jaxrs.jaxb.Asset) unmarshaller.unmarshal(inputStream);
+
+            org.drools.guvnor.server.jaxrs.jaxb.AssetMetadata assetMetadata = asset.getMetadata();
+            if (assetMetadata != null) {
+                if (AssetPropertyType.STATE.toString().equals(assetPropertyType.toString())) {
+                    assetMetadata.setState(propertyValue);
+                }
+            }
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            StringWriter stringWriter = new StringWriter();
+            marshaller.marshal(asset, stringWriter);
+            newAssetVersion = stringWriter.toString();
+        } catch (Exception e) {
+            //____ if an exception occurs, return an empty String (No support at the moment)
+            newAssetVersion=null;
+        }
         if (newAssetVersion == null) {
             return;
         }
         //____ Put the new version of the Asset
         webClient()
                 .path(assetPath)
-                .type(MediaType.APPLICATION_ATOM_XML)
+                .type(MediaType.APPLICATION_XML)
                 .put(newAssetVersion);
 
     }
 
-    private String replacePropertyValueFromAtomXml(InputStream inputStream, String propertyName, String propertyValue) {
-        try {
-            String xmlContent = IOUtils.toString(inputStream);
-            org.w3c.dom.Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(xmlContent)));
-
-            XPath xpath = XPathFactory.newInstance().newXPath();
-            Node statusNode = (Node) xpath.evaluate("//metadata/"+propertyName+"/value[text()]", doc, XPathConstants.NODE);
-            if (statusNode != null)
-                statusNode.setTextContent(propertyValue);
-            //___ Avoid updating categories --> setting it to blank (REST API does not support embedded categories)
-            Node categoriesNode = (Node) xpath.evaluate("//metadata/categories", doc, XPathConstants.NODE);
-            if(categoriesNode != null)
-                categoriesNode.getParentNode().removeChild(categoriesNode);
-            StringWriter writer = new StringWriter();
-            Transformer xformer = TransformerFactory.newInstance().newTransformer();
-            xformer.transform(new DOMSource(doc), new StreamResult(writer));
-            return writer.toString();
-        } catch (Exception e) {
-            //____ if an exception occurs, return an empty String (No support at the moment)
-            return null;
-        }
-    }
 
     private void updateTableContent(Map<String, List<String>> newTable, TemplateModel templateModel) throws ChtijbugDroolsRestException {
         templateModel.clearRows();

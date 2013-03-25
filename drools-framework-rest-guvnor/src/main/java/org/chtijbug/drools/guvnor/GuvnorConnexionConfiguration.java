@@ -2,6 +2,12 @@ package org.chtijbug.drools.guvnor;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.cxf.common.util.Base64Utility;
+import org.apache.cxf.jaxrs.client.ClientConfiguration;
+import org.apache.cxf.jaxrs.client.WebClient;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
+
+import static java.lang.String.format;
 
 /**
  * Created with IntelliJ IDEA.
@@ -56,6 +62,39 @@ public class GuvnorConnexionConfiguration {
     public String createAuthenticationHeader() {
         return "Basic " + Base64Utility.encode((username + ":" + password).getBytes());
     }
+
+    public WebClient webClient() {
+        WebClient client = WebClient.create(this.getHostname());
+        client.header("Authorization", this.createAuthenticationHeader());
+        return client;
+    }
+
+    public String assetBinaryPath(String ruleName) {
+         return getPathFor(ruleName, "source");
+     }
+
+     public String getPathFor(String assetName, String pathType) {
+         return format("%s/rest/packages/%s/assets/%s/%s", this.getWebappName(), this.getPackageName(), assetName, pathType);
+     }
+
+     public String assetVersionPath(String assertName) {
+         return getPathFor(assertName, "versions");
+     }
+
+    public void noTimeout(WebClient client) {
+        ClientConfiguration config = WebClient.getConfig(client);
+        HTTPConduit http = (HTTPConduit) config.getConduit();
+        HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
+        /* connection timeout for requesting the rule package binaries */
+        long connectionTimeout = 0L;
+        httpClientPolicy.setConnectionTimeout(connectionTimeout);
+        /* Reception timeout */
+        long receivedTimeout = 0L;
+        httpClientPolicy.setReceiveTimeout(receivedTimeout);
+
+        http.setClient(httpClientPolicy);
+    }
+
 
     @Override
     public String toString() {

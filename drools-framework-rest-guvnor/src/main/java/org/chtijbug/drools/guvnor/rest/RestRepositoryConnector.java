@@ -4,6 +4,7 @@ package org.chtijbug.drools.guvnor.rest;
 import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
 import org.chtijbug.drools.guvnor.rest.model.Asset;
 import org.chtijbug.drools.guvnor.rest.model.AssetPropertyType;
+import org.chtijbug.drools.guvnor.rest.model.AssetType;
 import org.drools.ide.common.client.modeldriven.dt52.GuidedDecisionTable52;
 
 import java.io.InputStream;
@@ -22,7 +23,7 @@ public interface RestRepositoryConnector {
      */
     DecisionTable getGuidedDecisionTable(String dtName) throws GuvnorConnexionFailedException, ChtijbugDroolsRestException;
 
-    void commitChanges(DecisionTable guidedDecisionTable52) throws GuvnorConnexionFailedException;
+    void commitChanges(DecisionTable guidedDecisionTable52) throws GuvnorConnexionFailedException,ChtijbugDroolsRestException;
 
     InputStream getPojoModel();
 
@@ -30,7 +31,7 @@ public interface RestRepositoryConnector {
      * Loads the table from a template rule
      * @return Key : the column name.
      */
-    Map<String,List<String>> getTemplateTable(String templateRuleName);
+    Map<String,List<String>> getTemplateTable(String templateRuleName) throws ChtijbugDroolsRestException;
 
     /**
      * Overrides the template rule table
@@ -45,5 +46,8 @@ public interface RestRepositoryConnector {
     List<Asset> getAllBusinessAssets();
 
     void changeAssetPropertyValue(String assetName, AssetPropertyType assetPropertyType, String propertyValue);
+
+    void createAsset(Asset asset, AssetType assetType,String assetSource) throws ChtijbugDroolsRestException;
+
 }
 

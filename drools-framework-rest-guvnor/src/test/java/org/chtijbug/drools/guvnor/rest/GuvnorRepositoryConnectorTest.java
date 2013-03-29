@@ -31,7 +31,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 @PrepareForTest(WebClient.class)
 public class GuvnorRepositoryConnectorTest {
 
-    GuvnorConnexionConfiguration configuration = new GuvnorConnexionConfiguration("http://mock-server","drools-guvnor","test","tomcat","tomcat");;
+    GuvnorConnexionConfiguration configuration = new GuvnorConnexionConfiguration("http://mock-server","drools-guvnor","test","tomcat","tomcat");
     GuvnorRepositoryConnector guvnorRepositoryConnector = new GuvnorRepositoryConnector(configuration);
     private WebClient mockWebClient;
 

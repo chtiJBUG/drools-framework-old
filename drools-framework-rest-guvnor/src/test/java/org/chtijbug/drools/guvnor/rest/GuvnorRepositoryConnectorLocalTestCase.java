@@ -52,10 +52,10 @@ public class GuvnorRepositoryConnectorLocalTestCase {
     @Ignore
     public void testUpdateAsset() throws Exception {
         guvnorRepositoryConnector.changeAssetPropertyValue("Underage", AssetPropertyType.STATE, "ESSAI");
-
     }
+
     @Test
-   // @Ignore
+    @Ignore
     public void testcreateAsset() throws Exception {
         Asset newAsset = new Asset();
         newAsset.setName("FirstRule");
@@ -67,6 +67,7 @@ public class GuvnorRepositoryConnectorLocalTestCase {
 
         guvnorRepositoryConnector.createAsset(newAsset, AssetType.GuidedRule,"no source");
 
-
     }
+
+
 }

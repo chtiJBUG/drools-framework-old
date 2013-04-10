@@ -1,7 +1,9 @@
 package org.chtijbug.drools.guvnor.rest;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.cxf.jaxrs.client.ClientConfiguration;
 import org.apache.cxf.jaxrs.client.WebClient;
+import org.apache.cxf.transport.http.HTTPConduit;
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
@@ -32,7 +34,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 @PrepareForTest(WebClient.class)
 public class GuvnorRepositoryConnectorTest {
 
-    GuvnorConnexionConfiguration configuration = new GuvnorConnexionConfiguration("http://mock-server","drools-guvnor","test","tomcat","tomcat");;
+    GuvnorConnexionConfiguration configuration = new GuvnorConnexionConfiguration("http://mock-server","drools-guvnor","test","tomcat","tomcat");
     GuvnorRepositoryConnector guvnorRepositoryConnector = new GuvnorRepositoryConnector(configuration);
     private WebClient mockWebClient;
 
@@ -106,6 +108,9 @@ public class GuvnorRepositoryConnectorTest {
             when(mock.accept(anyString())).thenReturn(mock);
             when(mock.type(anyString())).thenReturn(mock);
             when(WebClient.create(configuration.getHostname())).thenReturn(mock);
+            ClientConfiguration mockedConfig = mock(ClientConfiguration.class);
+            when(mockedConfig.getConduit()).thenReturn(mock(HTTPConduit.class));
+            when(WebClient.getConfig(mock)).thenReturn(mockedConfig);
             when(mock.path("drools-guvnor/rest/packages/test/assets/MyTemplateRule/source")).thenReturn(mock);
             when(mock.path("drools-guvnor/rest/packages/test/assets/AssetWithVersions/versions")).thenReturn(mock);
             configuration.noTimeout(mock);

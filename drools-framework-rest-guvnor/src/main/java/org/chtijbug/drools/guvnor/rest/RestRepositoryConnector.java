@@ -49,5 +49,7 @@ public interface RestRepositoryConnector {
 
     void createAsset(Asset asset, AssetType assetType,String assetSource) throws ChtijbugDroolsRestException;
 
+    void buildRulePackageByStatus(String snapshotName, String filter) throws ChtijbugDroolsRestException;
+
 }
 

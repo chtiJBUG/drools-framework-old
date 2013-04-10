@@ -52,8 +52,8 @@ public class GuvnorRepositoryConnectorLocalTestCase {
     @Ignore
     public void testUpdateAsset() throws Exception {
         guvnorRepositoryConnector.changeAssetPropertyValue("Underage", AssetPropertyType.STATE, "ESSAI");
-
     }
+
     @Test
     @Ignore
     public void testcreateAsset() throws Exception {
@@ -67,6 +67,7 @@ public class GuvnorRepositoryConnectorLocalTestCase {
 
         guvnorRepositoryConnector.createAsset(newAsset, AssetType.GuidedRule,"no source");
 
-
     }
+
+
 }

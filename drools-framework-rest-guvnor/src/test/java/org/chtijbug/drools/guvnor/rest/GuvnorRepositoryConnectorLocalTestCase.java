@@ -55,7 +55,7 @@ public class GuvnorRepositoryConnectorLocalTestCase {
 
     }
     @Test
-   // @Ignore
+    @Ignore
     public void testcreateAsset() throws Exception {
         Asset newAsset = new Asset();
         newAsset.setName("FirstRule");

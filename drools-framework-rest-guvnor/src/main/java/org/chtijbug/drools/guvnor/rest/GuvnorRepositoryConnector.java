@@ -1,7 +1,5 @@
 package org.chtijbug.drools.guvnor.rest;
 
-import org.apache.cxf.jaxrs.client.WebClient;
-import org.chtijbug.drools.common.jaxb.JAXBContextUtils;
 import org.chtijbug.drools.common.log.Logger;
 import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
@@ -9,10 +7,8 @@ import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
 import org.chtijbug.drools.guvnor.rest.model.Asset;
 import org.chtijbug.drools.guvnor.rest.model.AssetPropertyType;
 import org.chtijbug.drools.guvnor.rest.model.AssetType;
-import org.drools.guvnor.server.jaxrs.jaxb.SnapshotCreationData;
+import org.chtijbug.drools.guvnor.rest.model.Snapshot;
 
-import javax.ws.rs.core.MediaType;
-import javax.xml.bind.JAXBException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -36,12 +32,15 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
 
     private DecisionTableManager decisionTableManager = null;
 
+    private RulePackageManager rulePackageManager=null;
+
     public GuvnorRepositoryConnector(GuvnorConnexionConfiguration configuration) {
         logger.debug(format("Creating new GuvnorRepositoryConnector with args : %s", configuration.toString()));
         this.configuration = configuration;
         this.assetManager = new AssetManager(configuration);
         this.ruleTemplateManager = new RuleTemplateManager(configuration, this.assetManager);
         this.decisionTableManager = new DecisionTableManager(configuration, this.assetManager);
+        this.rulePackageManager = new RulePackageManager(configuration);
     }
 
     public GuvnorRepositoryConnector(String guvnorUrl, String guvnorAppName, String packageName, String guvnorUserName, String guvnorPassword) {
@@ -97,24 +96,11 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
 
     @Override
     public void buildRulePackageByStatus(String snapshotName, String filter) throws ChtijbugDroolsRestException {
-        SnapshotCreationData snapshotCreationData = new SnapshotCreationData();
-        snapshotCreationData.setBuildMode("BuiltInSelector");
-        snapshotCreationData.setEnableStatusSelector(true);
-        snapshotCreationData.setStatusOperator("=");
-        snapshotCreationData.setStatusDescriptionValue(filter);
-        try {
-            String path = format("%s/rest/packages/%s/snapshot/%s", this.configuration.getWebappName(), this.configuration.getPackageName(), snapshotName);
+        this.rulePackageManager.buildRulePackageByStatus(snapshotName,filter);
+    }
 
-            String xmlObject = JAXBContextUtils.marshallObjectAsString(SnapshotCreationData.class, snapshotCreationData);
-            WebClient webClient = this.configuration.webClient();
-            this.configuration.noTimeout(webClient);
-            webClient.path(path)
-                    .type(MediaType.APPLICATION_XML_TYPE)
-                    .post(xmlObject);
-        } catch (JAXBException e) {
-            throw new ChtijbugDroolsRestException(e);
-        }
-
-
+    @Override
+    public  List<Snapshot> getListSnapshots() throws ChtijbugDroolsRestException{
+        return this.rulePackageManager.getListSnaphots();
     }
 }

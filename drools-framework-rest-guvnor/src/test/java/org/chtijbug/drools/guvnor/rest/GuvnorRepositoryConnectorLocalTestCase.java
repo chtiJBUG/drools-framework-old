@@ -1,16 +1,14 @@
 package org.chtijbug.drools.guvnor.rest;
 
 import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
-import org.chtijbug.drools.guvnor.rest.model.Asset;
-import org.chtijbug.drools.guvnor.rest.model.AssetCategory;
-import org.chtijbug.drools.guvnor.rest.model.AssetPropertyType;
-import org.chtijbug.drools.guvnor.rest.model.AssetType;
+import org.chtijbug.drools.guvnor.rest.model.*;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -58,14 +56,24 @@ public class GuvnorRepositoryConnectorLocalTestCase {
     @Ignore
     public void testcreateAsset() throws Exception {
         Asset newAsset = new Asset();
-        newAsset.setName("FirstRule");
+        newAsset.setName("FirstRule2");
         newAsset.setSumary("First Rule via Rest");
-        AssetCategory newCategoryOne = new AssetCategory("Home Mortgage/Technical");
+        AssetCategory newCategoryOne = new AssetCategory("amag");
         newAsset.getCategories().add(newCategoryOne) ;
-        AssetCategory newCategorytwo = new AssetCategory("Home Mortgage/Pricing rules");
+        AssetCategory newCategorytwo = new AssetCategory("amag");
         newAsset.getCategories().add(newCategorytwo);
 
         guvnorRepositoryConnector.createAsset(newAsset, AssetType.GuidedRule,"no source");
+
+    }
+
+    @Test
+    @Ignore
+    public void testListSnapshots() throws Exception {
+
+
+        List<Snapshot> theList = guvnorRepositoryConnector.getListSnapshots();
+        System.out.println(theList.toString());
 
     }
 

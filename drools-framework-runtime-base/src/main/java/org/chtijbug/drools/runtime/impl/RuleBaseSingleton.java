@@ -10,6 +10,7 @@ import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
+import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.chtijbug.drools.runtime.mbeans.RuleBaseSupervision;
 import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervision;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
@@ -79,6 +80,10 @@ public class RuleBaseSingleton implements RuleBasePackage {
     private Semaphore lockKbase = new Semaphore(1);
     //private transient MBeanServer server = null;
     private int sessionCounter = 0;
+    /**
+     * History Listener
+     */
+    private HistoryListener historyListener=  null;
 
     public RuleBaseSingleton() throws DroolsChtijbugException {
         //____ Remove Existing MBean from the MBeanServer
@@ -94,11 +99,21 @@ public class RuleBaseSingleton implements RuleBasePackage {
         this.maxNumberRuleToExecute = maxNumberRulesToExecute;
     }
 
+    public RuleBaseSingleton(int maxNumberRulesToExecute, HistoryListener historyListener) throws DroolsChtijbugException {
+        this(maxNumberRulesToExecute);
+        this.historyListener = historyListener;
+    }
+
+    public RuleBaseSingleton(HistoryListener historyListener) throws DroolsChtijbugException {
+        this();
+        this.historyListener = historyListener;
+    }
+
     /**
      * This methods unregisters all existing MBean from the MBean Server.
      * All statistics data will be erased !!
      */
-    private static void clearPreviousInstanceMBeans()  {
+    private static void clearPreviousInstanceMBeans() {
         logger.entry("clearPreviousInstanceMBeans");
         logger.debug("ruleBaseCounter : {}", ruleBaseCounter);
         try {
@@ -136,7 +151,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
             mbsSession = new StatefulSessionSupervision();
             //____ Register them to the MBeanServer
             ObjectName objectName = getRuleBaseObjectName();
-            logger.info("Registering MBean with name {}", objectName );
+            logger.info("Registering MBean with name {}", objectName);
             server.registerMBean(mbsRuleBase, objectName);
 
             objectName = getRuleSessionObjectName();
@@ -205,7 +220,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
                 //_____ Increment session counter
                 this.sessionCounter++;
                 //_____ Wrapping the knowledge Session
-                newRuleBaseSession = new RuleBaseStatefulSession(this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, mbsSession);
+                newRuleBaseSession = new RuleBaseStatefulSession(this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, mbsSession,this.historyListener);
                 //_____ Release semaphore
                 lockKbase.release();
             } else {
@@ -246,6 +261,11 @@ public class RuleBaseSingleton implements RuleBasePackage {
             logger.error("error to load Agent", e);
             throw new DroolsChtijbugException(DroolsChtijbugException.ErrorToLoadAgent, "", e);
         }
+    }
+
+    @Override
+    public HistoryListener getHistoryListener() {
+        return historyListener;
     }
 
     private static int addRuleBase() {

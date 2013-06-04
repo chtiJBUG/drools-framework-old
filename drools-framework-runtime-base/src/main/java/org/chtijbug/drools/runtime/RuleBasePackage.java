@@ -4,6 +4,7 @@
  */
 package org.chtijbug.drools.runtime;
 
+import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
 
 /**
@@ -28,6 +29,8 @@ public interface RuleBasePackage {
 	 * Create KnowledgeBase and load all drools resources 
 	 */
 	public void createKBase() throws DroolsChtijbugException;
+
+    public HistoryListener getHistoryListener();
 
     void cleanup();
 

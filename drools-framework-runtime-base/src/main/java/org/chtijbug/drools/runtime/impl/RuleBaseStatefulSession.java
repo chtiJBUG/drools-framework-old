@@ -9,6 +9,7 @@ import org.chtijbug.drools.entity.*;
 import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBaseSession;
+import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervision;
 import org.drools.definition.rule.Rule;
 import org.drools.runtime.StatefulKnowledgeSession;
@@ -24,16 +25,24 @@ import java.util.*;
  * @author nheron
  */
 public class RuleBaseStatefulSession implements RuleBaseSession {
-    /** Class Logger */
+    /**
+     * Class Logger
+     */
     private static Logger LOGGER = LoggerFactory.getLogger(RuleBaseStatefulSession.class);
-    /** The wrapped Drools KnowledgeSession */
+    /**
+     * The wrapped Drools KnowledgeSession
+     */
     private StatefulKnowledgeSession knowledgeSession = null;
-    /** All objects inserted into the session as fact */
+    /**
+     * All objects inserted into the session as fact
+     */
     private final Map<FactHandle, Object> listObject;
     private final Map<Object, FactHandle> listFact;
     private final Map<Object, List<DroolsFactObject>> listFactObjects;
     private final HistoryContainer historyContainer;
-    /** All the  */
+    /**
+     * All the
+     */
     private final Map<String, DroolsRuleObject> listRules;
     private final Map<String, DroolsProcessObject> processList;
     private final Map<String, DroolsProcessInstanceObject> processInstanceList;
@@ -48,7 +57,9 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     private int sessionId;
     private int eventCounter;
 
-    public RuleBaseStatefulSession(int sessionId,StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefulSessionSupervision mbeanStatefulSessionSupervision) {
+    private HistoryListener historyListener;
+
+    public RuleBaseStatefulSession(int sessionId, StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefulSessionSupervision mbeanStatefulSessionSupervision, HistoryListener historyListener) {
         this.sessionId = sessionId;
         this.knowledgeSession = knowledgeSession;
         this.maxNumberRuleToExecute = maxNumberRuleToExecute;
@@ -66,6 +77,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         knowledgeSession.addEventListener(factListener);
         knowledgeSession.addEventListener(ruleHandlerListener);
         knowledgeSession.addEventListener(processHandlerListener);
+        this.historyListener = historyListener;
     }
 
     public int getMaxNumberRuleToExecute() {
@@ -261,13 +273,13 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     @Override
     public void insertObject(Object newObject) {
         FactHandle newFactHandle = this.knowledgeSession.insert(newObject);
-        listFact.put(newObject,newFactHandle);
+        listFact.put(newObject, newFactHandle);
     }
 
     @Override
-    public void insertByReflection(Object newObject) throws DroolsChtijbugException{
+    public void insertByReflection(Object newObject) throws DroolsChtijbugException {
         // Avoid inserting java.* classes
-        if(newObject.getClass().getPackage().getName().startsWith("java.")) {
+        if (newObject.getClass().getPackage().getName().startsWith("java.")) {
             return;
         }
         //____ First insert the root object
@@ -282,16 +294,16 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             try {
                 getterValue = method.invoke(newObject, (Object[]) null);
             } catch (Exception e) {
-                DroolsChtijbugException ee  = new DroolsChtijbugException(DroolsChtijbugException.insertByReflection,"getterValue = method.invoke(newObject, (Object[]) null);",e);
+                DroolsChtijbugException ee = new DroolsChtijbugException(DroolsChtijbugException.insertByReflection, "getterValue = method.invoke(newObject, (Object[]) null);", e);
                 throw ee;
             }
             if (getterValue == null)
                 continue;
             //____ If returned value is not a collection, insert it in the ksession
-            if(!(getterValue instanceof Iterable)) {
+            if (!(getterValue instanceof Iterable)) {
                 this.insertByReflection(getterValue);
             } else {
-                Iterable<?> iterable = (Iterable)getterValue;
+                Iterable<?> iterable = (Iterable) getterValue;
                 for (Object item : iterable) {
                     this.insertByReflection(item);
                 }
@@ -320,19 +332,19 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     public void fireAllRules() throws DroolsChtijbugException {
         long startTime = System.currentTimeMillis();
         long beforeNumberRules = ruleHandlerListener.getNbRuleFired();
-        try{
+        try {
             this.knowledgeSession.fireAllRules();
-        }catch (Exception e){
-            throw new DroolsChtijbugException(DroolsChtijbugException.fireAllRules,"",e);
+        } catch (Exception e) {
+            throw new DroolsChtijbugException(DroolsChtijbugException.fireAllRules, "", e);
         }
 
         long stopTime = System.currentTimeMillis();
         long afterNumberRules = ruleHandlerListener.getNbRuleFired();
         mbeanStatefulSessionSupervision.fireAllRulesExecuted(stopTime - startTime, afterNumberRules - beforeNumberRules, historyContainer);
-        if (ruleHandlerListener.isMaxNumerExecutedRulesReached()==true){
+        if (ruleHandlerListener.isMaxNumerExecutedRulesReached() == true) {
             StringBuffer stringBuffer = new StringBuffer();
             stringBuffer.append("nbRulesExecuted").append(afterNumberRules).append(" and MaxNumberRules for the session is set to ").append(maxNumberRuleToExecute);
-            throw   new DroolsChtijbugException(DroolsChtijbugException.MaxNumberRuleExecutionReached,stringBuffer.toString(),null);
+            throw new DroolsChtijbugException(DroolsChtijbugException.MaxNumberRuleExecutionReached, stringBuffer.toString(), null);
         }
     }
 
@@ -348,15 +360,15 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
     @Override
     public int getNumberRulesExecuted() {
-        int result= 0;
-        if (this.ruleHandlerListener != null){
+        int result = 0;
+        if (this.ruleHandlerListener != null) {
             result = this.ruleHandlerListener.getNbRuleFired();
         }
         return result;
     }
 
     public int getNextEventCounter() {
-        this.eventCounter ++;
+        this.eventCounter++;
         return this.eventCounter;
     }
 }

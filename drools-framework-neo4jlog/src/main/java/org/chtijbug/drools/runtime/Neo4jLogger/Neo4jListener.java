@@ -28,6 +28,6 @@ public class Neo4jListener implements HistoryListener{
     @Override
     public void fireEvent(HistoryEvent newHistoryEvent) throws DroolsChtijbugException{
         neo4jPersistenceService.save(newHistoryEvent);
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 }

@@ -66,7 +66,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         this.factListener = new FactHandlerListener(this);
         this.ruleHandlerListener = new RuleHandlerListener(this);
         this.processHandlerListener = new ProcessHandlerListener(this);
-        this.historyContainer = new HistoryContainer(sessionId);
+        this.historyContainer = new HistoryContainer(sessionId,historyListener);
         this.listFactObjects = new HashMap<Object, List<DroolsFactObject>>();
         this.listFact = new HashMap<Object, FactHandle>();
         this.listObject = new HashMap<FactHandle, Object>();
@@ -78,6 +78,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         knowledgeSession.addEventListener(ruleHandlerListener);
         knowledgeSession.addEventListener(processHandlerListener);
         this.historyListener = historyListener;
+
     }
 
     public int getMaxNumberRuleToExecute() {

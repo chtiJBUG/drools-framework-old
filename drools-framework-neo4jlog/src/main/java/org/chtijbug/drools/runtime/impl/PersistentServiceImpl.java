@@ -15,6 +15,8 @@ import org.chtijbug.drools.entity.history.rule.BeforeRuleFiredHistoryEvent;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.Neo4jPersistenceService;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,9 +24,10 @@ import org.neo4j.graphdb.GraphDatabaseService;
  * Time: 10:22
  * To change this template use File | Settings | File Templates.
  */
-public class PersistentServiceImpl implements Neo4jPersistenceService{
+public class PersistentServiceImpl implements Neo4jPersistenceService {
+    private static Logger logger = LoggerFactory.getLogger(PersistentServiceImpl.class);
 
-    private GraphDatabaseService graphDb=null;
+    private GraphDatabaseService graphDb = null;
 
     public PersistentServiceImpl(GraphDatabaseService graphDb) {
         this.graphDb = graphDb;
@@ -32,8 +35,30 @@ public class PersistentServiceImpl implements Neo4jPersistenceService{
 
     @Override
     public void save(HistoryEvent historyEvent) throws DroolsChtijbugException {
+        if (historyEvent instanceof InsertedFactHistoryEvent) {
+            this.save((InsertedFactHistoryEvent) historyEvent);
+        } else if (historyEvent instanceof UpdatedFactHistoryEvent) {
+            this.save((UpdatedFactHistoryEvent) historyEvent);
+        } else if (historyEvent instanceof DeletedFactHistoryEvent) {
+            this.save((DeletedFactHistoryEvent) historyEvent);
+        } else if (historyEvent instanceof NodeInstanceAfterHistoryEvent) {
+            this.save((NodeInstanceAfterHistoryEvent) historyEvent);
+        } else if (historyEvent instanceof NodeInstanceBeforeHistoryEvent) {
+            this.save((NodeInstanceBeforeHistoryEvent) historyEvent);
+        } else if (historyEvent instanceof ProcessEndHistoryEvent) {
+            this.save((ProcessEndHistoryEvent) historyEvent);
+        } else if (historyEvent instanceof ProcessStartHistoryEvent) {
+            this.save((ProcessStartHistoryEvent) historyEvent);
+        } else if (historyEvent instanceof AfterRuleFiredHistoryEvent) {
+            this.save((AfterRuleFiredHistoryEvent) historyEvent);
+        } else if (historyEvent instanceof AfterRuleFlowActivatedHistoryEvent) {
+            this.save((AfterRuleFlowActivatedHistoryEvent) historyEvent);
+        } else if (historyEvent instanceof AfterRuleFlowDeactivatedHistoryEvent) {
+            this.save((AfterRuleFlowDeactivatedHistoryEvent) historyEvent);
+        } else if (historyEvent instanceof BeforeRuleFiredHistoryEvent) {
+            this.save((BeforeRuleFiredHistoryEvent) historyEvent);
+        }
 
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -43,12 +68,12 @@ public class PersistentServiceImpl implements Neo4jPersistenceService{
 
     @Override
     public void save(InsertedFactHistoryEvent insertedFactHistoryEvent) throws DroolsChtijbugException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        InsertFactHandler.execute(insertedFactHistoryEvent, this.graphDb);
     }
 
     @Override
     public void save(UpdatedFactHistoryEvent updatedFactHistoryEvent) throws DroolsChtijbugException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        UpdateFactHandler.execute(updatedFactHistoryEvent, this.graphDb);
     }
 
     @Override

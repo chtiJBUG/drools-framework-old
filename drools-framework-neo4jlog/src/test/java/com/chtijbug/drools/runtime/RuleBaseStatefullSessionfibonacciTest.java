@@ -10,6 +10,7 @@ import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.junit.*;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
+import org.neo4j.graphdb.factory.GraphDatabaseSettings;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class RuleBaseStatefullSessionfibonacciTest {
 
     RuleBaseSession session;
     static RuleBasePackage ruleBasePackage;
-
+     static GraphDatabaseService graphDb=null;
     /**
      * @throws Exception
      */
@@ -32,9 +33,14 @@ public class RuleBaseStatefullSessionfibonacciTest {
         config.put( "neostore.nodestore.db.mapped_memory", "10M" );
         config.put( "string_block_size", "60" );
         config.put( "array_block_size", "300" );
-        GraphDatabaseService graphDb = new GraphDatabaseFactory()
+
+        graphDb = new GraphDatabaseFactory()
             .newEmbeddedDatabaseBuilder("target/database/location")
-            .setConfig(config)
+            .setConfig(config).
+            setConfig( GraphDatabaseSettings.node_keys_indexable, "nodeProp1,nodeProp2" ).
+            setConfig( GraphDatabaseSettings.relationship_keys_indexable, "relProp1,relProp2" ).
+            setConfig( GraphDatabaseSettings.node_auto_indexing, "true" ).
+            setConfig( GraphDatabaseSettings.relationship_auto_indexing, "true" )
             .newGraphDatabase();
 
         ruleBasePackage = NeojLoggerRuleBaseBuilder.createPackageBasePackage(graphDb,"fibonacci.drl");
@@ -65,6 +71,7 @@ public class RuleBaseStatefullSessionfibonacciTest {
         session1.insertObject(fibonacci);
         session1.fireAllRules();
         Assert.assertEquals(3, session1.listRules().size());
+
         session1.dispose();
         //Thread.sleep(2000);
         //}

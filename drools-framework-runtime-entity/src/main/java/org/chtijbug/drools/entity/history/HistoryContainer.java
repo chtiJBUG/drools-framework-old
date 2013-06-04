@@ -25,8 +25,9 @@ public class HistoryContainer implements Serializable {
     /**
      *
      */
-    public HistoryContainer(int sessionID) {
+    public HistoryContainer(int sessionID,HistoryListener historylistener) {
         this.sessionID = sessionID;
+        this.historylistener = historylistener;
     }
 
     public int getSessionID() {

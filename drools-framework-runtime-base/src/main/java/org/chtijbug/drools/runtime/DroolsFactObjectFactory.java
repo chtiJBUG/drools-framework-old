@@ -4,10 +4,10 @@
 package org.chtijbug.drools.runtime;
 
 import org.apache.commons.beanutils.BeanMap;
-import org.chtijbug.drools.common.log.Logger;
-import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.DroolsFactObjectAttribute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Bertrand Gressier
@@ -15,7 +15,7 @@ import org.chtijbug.drools.entity.DroolsFactObjectAttribute;
  */
 public class DroolsFactObjectFactory {
 
-    private static transient Logger logger = LoggerFactory.getLogger(DroolsFactObjectFactory.class);
+    private static Logger logger = LoggerFactory.getLogger(DroolsFactObjectFactory.class);
 
     protected DroolsFactObjectFactory() {
 
@@ -26,7 +26,7 @@ public class DroolsFactObjectFactory {
     }
 
     public static DroolsFactObject createFactObject(Object o, int version) {
-        logger.entry("createFactObject", o, version);
+        logger.debug(">>createFactObject", o, version);
         DroolsFactObject createFactObject = null;
         try {
             if (o != null) {
@@ -52,7 +52,7 @@ public class DroolsFactObjectFactory {
         } catch (Exception e) {
             logger.error("Not possible to introspect {} for reason {}", o, e);
         } finally {
-            logger.entry("createFactObject", createFactObject);
+            logger.debug("<<createFactObject", createFactObject);
             return createFactObject;
         }
     }

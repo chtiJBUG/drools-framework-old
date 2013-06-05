@@ -5,19 +5,15 @@ import org.apache.commons.io.IOUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.repository.internal.MavenRepositorySystemSession;
-import org.chtijbug.drools.common.log.Logger;
-import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.guvnor.rest.GuvnorRepositoryConnector;
 import org.chtijbug.drools.guvnor.rest.RestRepositoryConnector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonatype.aether.RepositorySystem;
 import org.sonatype.aether.RepositorySystemSession;
 import org.sonatype.aether.artifact.Artifact;
-import org.sonatype.aether.impl.internal.DefaultRepositorySystem;
 import org.sonatype.aether.installation.InstallRequest;
 import org.sonatype.aether.installation.InstallationException;
-import org.sonatype.aether.repository.LocalRepository;
-import org.sonatype.aether.util.DefaultRepositorySystemSession;
 import org.sonatype.aether.util.artifact.DefaultArtifact;
 
 import java.io.File;
@@ -93,7 +89,7 @@ public class GuvnorPojoModelInstaller extends AbstractMojo {
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        logger.entry("execute");
+        logger.debug(" >> execute");
         try {
             RestRepositoryConnector repositoryConnector = new GuvnorRepositoryConnector(host, app, pkg, username, password);
             //____ Download the POJO Model from Guvnor instance
@@ -116,7 +112,7 @@ public class GuvnorPojoModelInstaller extends AbstractMojo {
         } catch (InstallationException e) {
             logger.error("Error occurred while creating he file from the Pojo Model", e);
         } finally {
-            logger.exit("execute");
+            logger.debug(">> execute");
         }
     }
 

@@ -6,6 +6,8 @@ import org.drools.ide.common.client.modeldriven.brl.RuleModel;
 import org.drools.ide.common.client.modeldriven.brl.templates.InterpolationVariable;
 import org.drools.ide.common.client.modeldriven.brl.templates.TemplateModel;
 import org.drools.ide.common.server.util.BRXMLPersistence;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -18,7 +20,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * To change this template use File | Settings | File Templates.
  */
 class RuleTemplateManager {
-
+    private static Logger logger = LoggerFactory.getLogger(RuleTemplateManager.class);
 
     private GuvnorConnexionConfiguration configuration = null;
 

@@ -4,9 +4,11 @@
  */
 package org.chtijbug.drools.runtime.impl;
 
-import org.chtijbug.drools.common.log.Logger;
-import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.entity.history.HistoryContainer;
+import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseCreateSessionEvent;
+import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseCreatedEvent;
+import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseInitialLoadEvent;
+import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseReloadedEvent;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
@@ -19,10 +21,13 @@ import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.management.*;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
@@ -85,6 +90,8 @@ public class RuleBaseSingleton implements RuleBasePackage {
      */
     private HistoryListener historyListener=  null;
 
+    private int eventCounter;
+
     public RuleBaseSingleton() throws DroolsChtijbugException {
         //____ Remove Existing MBean from the MBeanServer
         if (ruleBaseCounter != 0)
@@ -107,6 +114,10 @@ public class RuleBaseSingleton implements RuleBasePackage {
     public RuleBaseSingleton(HistoryListener historyListener) throws DroolsChtijbugException {
         this();
         this.historyListener = historyListener;
+        if (this.historyListener != null){
+            KnowledgeBaseCreatedEvent knowledgeBaseCreatedEvent = new KnowledgeBaseCreatedEvent(this.getNextEventCounter(), new Date(),  ruleBaseCounter);
+            this.historyListener.fireEvent(knowledgeBaseCreatedEvent);
+        }
     }
 
     /**
@@ -114,7 +125,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
      * All statistics data will be erased !!
      */
     private static void clearPreviousInstanceMBeans() {
-        logger.entry("clearPreviousInstanceMBeans");
+        logger.debug(">>clearPreviousInstanceMBeans");
         logger.debug("ruleBaseCounter : {}", ruleBaseCounter);
         try {
             MBeanServer server = ManagementFactory.getPlatformMBeanServer();
@@ -123,7 +134,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
         } catch (MalformedObjectNameException e) {
             logger.warn("Oups, wrong object name", e);
         } finally {
-            logger.exit("clearPreviousInstanceMBeans");
+            logger.debug("<<clearPreviousInstanceMBeans");
         }
     }
 
@@ -192,21 +203,25 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     @Override
     public RuleBaseSession createRuleBaseSession() throws DroolsChtijbugException {
-        logger.entry("createRuleBaseSession");
+        logger.debug(">>createRuleBaseSession");
         try {
             //____ Creating new Rule Base Session using default rule threshold
             RuleBaseSession newRuleBaseSession = this.createRuleBaseSession(this.maxNumberRuleToExecute);
             //____ Returning it
             return newRuleBaseSession;
         } finally {
-            logger.exit("createRuleBaseSession");
+            logger.debug("<<createRuleBaseSession");
         }
     }
 
     @Override
     public RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute) throws DroolsChtijbugException {
-        logger.entry("createRuleBaseSession", maxNumberRulesToExecute);
+        logger.debug(">>createRuleBaseSession", maxNumberRulesToExecute);
         RuleBaseSession newRuleBaseSession = null;
+        if (this.historyListener != null){
+            KnowledgeBaseCreateSessionEvent knowledgeBaseCreateSessionEvent = new KnowledgeBaseCreateSessionEvent(this.getNextEventCounter(), new Date(),  this.ruleBaseID);
+            this.historyListener.fireEvent(knowledgeBaseCreateSessionEvent);
+        }
         try {
             if (kbase != null) {
                 //____ Acquire semaphore
@@ -229,7 +244,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
             //____ return the wrapped KnowledgeSession
             return newRuleBaseSession;
         } finally {
-            logger.exit("createRuleBaseSession", newRuleBaseSession);
+            logger.debug("<<createRuleBaseSession", newRuleBaseSession);
         }
     }
 
@@ -242,7 +257,16 @@ public class RuleBaseSingleton implements RuleBasePackage {
     public synchronized void createKBase() throws DroolsChtijbugException {
 
         if (kbase != null) {
+            if (this.historyListener != null) {
+                KnowledgeBaseReloadedEvent knowledgeBaseReloadLoadEvent = new KnowledgeBaseReloadedEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID);
+                this.historyListener.fireEvent(knowledgeBaseReloadLoadEvent);
+            }
             // TODO dispose all elements
+        } else {
+            if (this.historyListener != null) {
+                KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = new KnowledgeBaseInitialLoadEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID);
+                this.historyListener.fireEvent(knowledgeBaseInitialLoadEvent);
+            }
         }
 
         try {
@@ -303,5 +327,9 @@ public class RuleBaseSingleton implements RuleBasePackage {
             logger.error("Error clearing instance MBeans", e);
         }
 
+    }
+    public int getNextEventCounter() {
+        this.eventCounter++;
+        return this.eventCounter;
     }
 }

@@ -14,10 +14,11 @@ public class InsertedFactHistoryEventMapper {
 
     public static Node map(InsertedFactHistoryEvent insertedFactHistoryEvent,GraphDatabaseService graphDb){
         Node fact = graphDb.createNode();
-        fact.setProperty("date", DateHelper.getDate(insertedFactHistoryEvent.getDateEvent()));
-        fact.setProperty("type","history");
-        fact.setProperty("EventType",insertedFactHistoryEvent.getTypeEvent().toString());
-        fact.setProperty("eventID",insertedFactHistoryEvent.getEventID());
+        fact.setProperty(MapperVariables.EVENT_DATE, DateHelper.getDate(insertedFactHistoryEvent.getDateEvent()));
+        fact.setProperty(MapperVariables.EVENT_DATE_LONG, insertedFactHistoryEvent.getDateEvent().getTime());
+        fact.setProperty(MapperVariables.NODE_TYPE,"history");
+        fact.setProperty(MapperVariables.EVENT_TYPE,insertedFactHistoryEvent.getTypeEvent().toString());
+        fact.setProperty(MapperVariables.EVENT_ID,insertedFactHistoryEvent.getEventID());
         return fact;
     }
 }

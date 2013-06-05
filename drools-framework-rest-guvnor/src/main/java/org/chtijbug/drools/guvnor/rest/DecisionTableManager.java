@@ -4,6 +4,8 @@ import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
 import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
 import org.drools.ide.common.client.modeldriven.dt52.GuidedDecisionTable52;
 import org.drools.ide.common.server.util.GuidedDTXMLPersistence;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,6 +14,9 @@ import org.drools.ide.common.server.util.GuidedDTXMLPersistence;
  * To change this template use File | Settings | File Templates.
  */
 class DecisionTableManager {
+
+    private static Logger logger = LoggerFactory.getLogger(DecisionTableManager.class);
+
     private GuvnorConnexionConfiguration configuration=null;
 
     private AssetManager assetManager=null;

@@ -2,11 +2,11 @@ package org.chtijbug.drools.runtime.impl;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
-import org.chtijbug.drools.common.log.Logger;
-import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.common.reflection.ReflectionUtils;
 import org.chtijbug.drools.entity.*;
 import org.chtijbug.drools.entity.history.HistoryContainer;
+import org.chtijbug.drools.entity.history.session.SessionCreatedEvent;
+import org.chtijbug.drools.entity.history.session.SessionDisposedEvent;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
@@ -17,6 +17,8 @@ import org.drools.runtime.process.NodeInstance;
 import org.drools.runtime.process.ProcessInstance;
 import org.drools.runtime.rule.FactHandle;
 import org.jbpm.workflow.instance.node.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -28,7 +30,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     /**
      * Class Logger
      */
-    private static Logger LOGGER = LoggerFactory.getLogger(RuleBaseStatefulSession.class);
+    private static Logger logger = LoggerFactory.getLogger(RuleBaseStatefulSession.class);
     /**
      * The wrapped Drools KnowledgeSession
      */
@@ -59,7 +61,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
     private HistoryListener historyListener;
 
-    public RuleBaseStatefulSession(int sessionId, StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefulSessionSupervision mbeanStatefulSessionSupervision, HistoryListener historyListener) {
+    public RuleBaseStatefulSession(int sessionId, StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefulSessionSupervision mbeanStatefulSessionSupervision, HistoryListener historyListener) throws DroolsChtijbugException {
         this.sessionId = sessionId;
         this.knowledgeSession = knowledgeSession;
         this.maxNumberRuleToExecute = maxNumberRuleToExecute;
@@ -78,6 +80,10 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         knowledgeSession.addEventListener(ruleHandlerListener);
         knowledgeSession.addEventListener(processHandlerListener);
         this.historyListener = historyListener;
+        if (this.historyListener != null){
+            SessionCreatedEvent sessionCreatedEvent = new SessionCreatedEvent(this.getNextEventCounter(), new Date(),  this.sessionId);
+            this.historyListener.fireEvent(sessionCreatedEvent);
+        }
 
     }
 
@@ -175,7 +181,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         List<DroolsFactObject> facto = listFactObjects.get(searchObject);
 
         if (facto == null) {
-            LOGGER.error("List of FactObject can not be null for FactHandle {}", factToFind);
+            logger.error("List of FactObject can not be null for FactHandle {}", factToFind);
             return null;
         }
 
@@ -268,7 +274,17 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         processHandlerListener = null;
         knowledgeSession.dispose();
         knowledgeSession = null;
+        if (this.historyListener != null){
 
+            try{
+                SessionDisposedEvent sessionDisposedEvent = new SessionDisposedEvent(this.getNextEventCounter(), new Date(),  this.sessionId);
+                this.historyListener.fireEvent(sessionDisposedEvent);
+            }  catch (Exception e){
+                logger.error("Exception in calling historyEvent",e);
+
+            }
+
+        }
     }
 
     @Override

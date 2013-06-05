@@ -14,10 +14,11 @@ import org.neo4j.graphdb.Node;
 public class UpdatedFactHistoryEventMapper {
     public static Node map(UpdatedFactHistoryEvent updatedFactHistoryEvent,GraphDatabaseService graphDb){
             Node fact = graphDb.createNode();
-            fact.setProperty("date", DateHelper.getDate(updatedFactHistoryEvent.getDateEvent()));
-            fact.setProperty("type","history");
-            fact.setProperty("EventType",updatedFactHistoryEvent.getTypeEvent().toString());
-            fact.setProperty("eventID",updatedFactHistoryEvent.getEventID());
+            fact.setProperty(MapperVariables.EVENT_DATE, DateHelper.getDate(updatedFactHistoryEvent.getDateEvent()));
+            fact.setProperty(MapperVariables.EVENT_DATE_LONG, updatedFactHistoryEvent.getDateEvent().getTime());
+            fact.setProperty(MapperVariables.NODE_TYPE,"history");
+            fact.setProperty(MapperVariables.EVENT_TYPE,updatedFactHistoryEvent.getTypeEvent().toString());
+            fact.setProperty(MapperVariables.EVENT_ID,updatedFactHistoryEvent.getEventID());
             return fact;
         }
 }

@@ -16,7 +16,7 @@ public class DroolsFactObjectMapper {
 
     public static Node map(DroolsFactObject droolsFactObject, GraphDatabaseService graphDb) {
         Node fact = graphDb.createNode();
-        fact.setProperty("type", "DroolsFactObjet");
+        fact.setProperty(MapperVariables.NODE_TYPE, "DroolsFactObjet");
         fact.setProperty("fullClassName", droolsFactObject.getFullClassName());
         fact.setProperty("version", droolsFactObject.getObjectVersion());
         fact.setProperty("hashcode", droolsFactObject.getHashCode());

@@ -6,6 +6,8 @@ import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
 import org.chtijbug.drools.guvnor.rest.model.Snapshot;
 import org.drools.guvnor.server.jaxrs.jaxb.SnapshotCreationData;
 import org.drools.guvnor.server.jaxrs.jaxb.Snapshots;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
@@ -21,6 +23,8 @@ import static java.lang.String.format;
  * To change this template use File | Settings | File Templates.
  */
 public class RulePackageManager {
+
+    private static Logger logger = LoggerFactory.getLogger(RulePackageManager.class);
 
     private GuvnorConnexionConfiguration configuration = null;
 

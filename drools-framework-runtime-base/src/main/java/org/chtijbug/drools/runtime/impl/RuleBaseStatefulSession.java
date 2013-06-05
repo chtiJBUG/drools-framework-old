@@ -5,8 +5,7 @@ import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 import org.chtijbug.drools.common.reflection.ReflectionUtils;
 import org.chtijbug.drools.entity.*;
 import org.chtijbug.drools.entity.history.HistoryContainer;
-import org.chtijbug.drools.entity.history.session.SessionCreatedEvent;
-import org.chtijbug.drools.entity.history.session.SessionDisposedEvent;
+import org.chtijbug.drools.entity.history.session.*;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
@@ -68,7 +67,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         this.factListener = new FactHandlerListener(this);
         this.ruleHandlerListener = new RuleHandlerListener(this);
         this.processHandlerListener = new ProcessHandlerListener(this);
-        this.historyContainer = new HistoryContainer(sessionId,historyListener);
+        this.historyContainer = new HistoryContainer(sessionId, historyListener);
         this.listFactObjects = new HashMap<Object, List<DroolsFactObject>>();
         this.listFact = new HashMap<Object, FactHandle>();
         this.listObject = new HashMap<FactHandle, Object>();
@@ -80,8 +79,8 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         knowledgeSession.addEventListener(ruleHandlerListener);
         knowledgeSession.addEventListener(processHandlerListener);
         this.historyListener = historyListener;
-        if (this.historyListener != null){
-            SessionCreatedEvent sessionCreatedEvent = new SessionCreatedEvent(this.getNextEventCounter(), new Date(),  this.sessionId);
+        if (this.historyListener != null) {
+            SessionCreatedEvent sessionCreatedEvent = new SessionCreatedEvent(this.getNextEventCounter(), new Date(), this.sessionId);
             this.historyListener.fireEvent(sessionCreatedEvent);
         }
 
@@ -274,13 +273,13 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         processHandlerListener = null;
         knowledgeSession.dispose();
         knowledgeSession = null;
-        if (this.historyListener != null){
+        if (this.historyListener != null) {
 
-            try{
-                SessionDisposedEvent sessionDisposedEvent = new SessionDisposedEvent(this.getNextEventCounter(), new Date(),  this.sessionId);
+            try {
+                SessionDisposedEvent sessionDisposedEvent = new SessionDisposedEvent(this.getNextEventCounter(), new Date(), this.sessionId);
                 this.historyListener.fireEvent(sessionDisposedEvent);
-            }  catch (Exception e){
-                logger.error("Exception in calling historyEvent",e);
+            } catch (Exception e) {
+                logger.error("Exception in calling historyEvent", e);
 
             }
 
@@ -347,6 +346,10 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
     @Override
     public void fireAllRules() throws DroolsChtijbugException {
+        if (this.historyListener != null) {
+            SessionFireAllRulesBeginEvent sessionFireAllRulesBeginEvent = new SessionFireAllRulesBeginEvent(this.getNextEventCounter(), new Date(), this.sessionId);
+            this.historyListener.fireEvent(sessionFireAllRulesBeginEvent);
+        }
         long startTime = System.currentTimeMillis();
         long beforeNumberRules = ruleHandlerListener.getNbRuleFired();
         try {
@@ -361,13 +364,41 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         if (ruleHandlerListener.isMaxNumerExecutedRulesReached() == true) {
             StringBuffer stringBuffer = new StringBuffer();
             stringBuffer.append("nbRulesExecuted").append(afterNumberRules).append(" and MaxNumberRules for the session is set to ").append(maxNumberRuleToExecute);
+            if (this.historyListener != null) {
+                SessionFireAllRulesMaxNumberReachedEvent sessionFireAllRulesMaxNumberReachedEvent = new SessionFireAllRulesMaxNumberReachedEvent(this.getNextEventCounter(), new Date(), this.sessionId, ruleHandlerListener.getNbRuleFired(), maxNumberRuleToExecute);
+                this.historyListener.fireEvent(sessionFireAllRulesMaxNumberReachedEvent);
+            }
             throw new DroolsChtijbugException(DroolsChtijbugException.MaxNumberRuleExecutionReached, stringBuffer.toString(), null);
+        }
+        if (this.historyListener != null) {
+            SessionFireAllRulesEndEvent sessionFireAllRulesEndEvent = new SessionFireAllRulesEndEvent(this.getNextEventCounter(), new Date(), this.sessionId);
+            this.historyListener.fireEvent(sessionFireAllRulesEndEvent);
         }
     }
 
     @Override
     public void startProcess(String processName) {
+        if (this.historyListener != null) {
+            try {
+                SessionStartProcessBeginEvent sessionStartProcessBeginEvent = new SessionStartProcessBeginEvent(this.getNextEventCounter(), new Date(), this.sessionId, processName);
+                this.historyListener.fireEvent(sessionStartProcessBeginEvent);
+            } catch (Exception e) {
+                logger.error("Exception in calling historyEvent", e);
+
+            }
+
+        }
         this.knowledgeSession.startProcess(processName);
+        if (this.historyListener != null) {
+            try {
+                SessionStartProcessEndEvent sessionStartProcessEndEvent = new SessionStartProcessEndEvent(this.getNextEventCounter(), new Date(), this.sessionId, processName);
+                this.historyListener.fireEvent(sessionStartProcessEndEvent);
+            } catch (Exception e) {
+                logger.error("Exception in calling historyEvent", e);
+
+            }
+
+        }
     }
 
     @Override

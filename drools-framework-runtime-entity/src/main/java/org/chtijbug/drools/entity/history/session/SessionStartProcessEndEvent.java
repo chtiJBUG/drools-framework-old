@@ -9,7 +9,27 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class SessionStartProcessEndEvent extends SessionEvent {
-    public SessionStartProcessEndEvent(int eventID, Date dateEvent,  int sessionId) {
-        super(eventID, dateEvent,  sessionId);
+    private String processName;
+
+    public SessionStartProcessEndEvent(int eventID, Date dateEvent, int sessionId, String processName) {
+        super(eventID, dateEvent, sessionId);
+        this.processName = processName;
+    }
+
+    public String getProcessName() {
+        return processName;
+    }
+
+    public void setProcessName(String processName) {
+        this.processName = processName;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer();
+        sb.append("SessionStartProcessEndEvent");
+        sb.append("{processName='").append(processName).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

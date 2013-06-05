@@ -4,6 +4,10 @@ import org.chtijbug.drools.entity.history.HistoryEvent;
 import org.chtijbug.drools.entity.history.fact.DeletedFactHistoryEvent;
 import org.chtijbug.drools.entity.history.fact.InsertedFactHistoryEvent;
 import org.chtijbug.drools.entity.history.fact.UpdatedFactHistoryEvent;
+import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseCreateSessionEvent;
+import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseCreatedEvent;
+import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseInitialLoadEvent;
+import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseReloadedEvent;
 import org.chtijbug.drools.entity.history.process.NodeInstanceAfterHistoryEvent;
 import org.chtijbug.drools.entity.history.process.NodeInstanceBeforeHistoryEvent;
 import org.chtijbug.drools.entity.history.process.ProcessEndHistoryEvent;
@@ -12,6 +16,7 @@ import org.chtijbug.drools.entity.history.rule.AfterRuleFiredHistoryEvent;
 import org.chtijbug.drools.entity.history.rule.AfterRuleFlowActivatedHistoryEvent;
 import org.chtijbug.drools.entity.history.rule.AfterRuleFlowDeactivatedHistoryEvent;
 import org.chtijbug.drools.entity.history.rule.BeforeRuleFiredHistoryEvent;
+import org.chtijbug.drools.entity.history.session.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -44,5 +49,27 @@ public interface Neo4jPersistenceService {
     public void save (AfterRuleFlowDeactivatedHistoryEvent afterRuleFlowDeactivatedHistoryEvent) throws DroolsChtijbugException;
 
     public void save (BeforeRuleFiredHistoryEvent beforeRuleFiredHistoryEvent) throws DroolsChtijbugException;
+
+    public void save (KnowledgeBaseCreatedEvent knowledgeBaseCreatedEvent) throws DroolsChtijbugException;
+
+    public void save (KnowledgeBaseCreateSessionEvent knowledgeBaseCreateSessionEvent) throws DroolsChtijbugException;
+
+    public void save (KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent) throws DroolsChtijbugException;
+
+    public void save (KnowledgeBaseReloadedEvent knowledgeBaseReloadedEvent) throws DroolsChtijbugException;
+
+    public void save (SessionCreatedEvent sessionCreatedEvent) throws DroolsChtijbugException;
+
+    public void save (SessionDisposedEvent sessionDisposedEvent) throws DroolsChtijbugException;
+
+    public void save (SessionFireAllRulesBeginEvent sessionFireAllRulesBeginEvent) throws DroolsChtijbugException;
+
+    public void save (SessionFireAllRulesEndEvent sessionFireAllRulesEndEvent) throws DroolsChtijbugException;
+
+    public void save (SessionFireAllRulesMaxNumberReachedEvent sessionFireAllRulesMaxNumberReachedEvent) throws DroolsChtijbugException;
+
+    public void save (SessionStartProcessBeginEvent sessionStartProcessBeginEvent) throws DroolsChtijbugException;
+
+    public void save (SessionStartProcessEndEvent sessionStartProcessEndEvent) throws DroolsChtijbugException;
 
 }

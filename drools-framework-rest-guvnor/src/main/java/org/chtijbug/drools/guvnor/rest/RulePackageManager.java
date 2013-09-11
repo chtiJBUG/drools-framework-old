@@ -35,13 +35,13 @@ public class RulePackageManager {
         snapshotCreationData.setStatusOperator("=");
         snapshotCreationData.setStatusDescriptionValue(filter);
         try {
-            String path = format("%s/rest/packages/%s/snapshot/%s", this.configuration.getWebappName(), this.configuration.getPackageName(), snapshotName);
+            String path = format("%s/rest/packages/%s/snapshot/%s/param", this.configuration.getWebappName(), this.configuration.getPackageName(), snapshotName);
 
             String xmlObject = JAXBContextUtils.marshallObjectAsString(SnapshotCreationData.class, snapshotCreationData);
             WebClient webClient = this.configuration.webClient();
             this.configuration.noTimeout(webClient);
             webClient.path(path)
-                    .type(MediaType.APPLICATION_XML_TYPE)
+                    .type(MediaType.APPLICATION_JSON_TYPE)
                     .post(xmlObject);
         } catch (JAXBException e) {
             throw new ChtijbugDroolsRestException(e);

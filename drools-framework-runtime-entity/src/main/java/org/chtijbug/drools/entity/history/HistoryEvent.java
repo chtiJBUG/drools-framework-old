@@ -18,7 +18,7 @@ public class HistoryEvent implements Serializable {
 	private static final long serialVersionUID = -6640538290066213804L;
     private int eventID;
 	public enum TypeEvent {
-		Fact, Rule, BPMN ,RuleFlowGroup
+		Fact, Rule, BPMN ,RuleFlowGroup,KnowledgeBaseSingleton,Session
 	};
 
 	protected Date dateEvent;

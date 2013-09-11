@@ -3,16 +3,12 @@
  */
 package org.chtijbug.drools.runtime.resource;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.chtijbug.drools.common.log.Logger;
-import org.chtijbug.drools.common.log.LoggerFactory;
 import org.drools.builder.ResourceType;
-import org.drools.core.util.IoUtils;
 import org.drools.io.Resource;
 import org.drools.io.ResourceFactory;
-
-import java.io.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Bertrand Gressier
@@ -60,7 +56,7 @@ public class GuvnorDroolsResource implements DroolsResource {
       */
     @Override
     public Resource getResource() throws Exception {
-        logger.entry("getResource");
+        logger.debug(">>getResource");
         try {
             if (resource != null) {
                 return resource;
@@ -70,7 +66,7 @@ public class GuvnorDroolsResource implements DroolsResource {
             resource = ResourceFactory.newByteArrayResource(changeset.getBytes());
             return resource;
         } finally {
-            logger.exit("getResource", resource);
+            logger.debug("<<getResource", resource);
         }
     }
 
@@ -86,7 +82,7 @@ public class GuvnorDroolsResource implements DroolsResource {
     }
 
     protected String getWebResourceUrl() {
-        logger.entry("getWebResourceUrl");
+        logger.debug(">>getWebResourceUrl");
         StringBuffer stringBuffer = new StringBuffer();
         try {
             stringBuffer.append(removeTrailingSlash(baseUrl)).append("/");
@@ -96,7 +92,7 @@ public class GuvnorDroolsResource implements DroolsResource {
             stringBuffer.append(packageVersion);
             return stringBuffer.toString();
         } finally {
-            logger.exit("getWebResourceUrl", stringBuffer);
+            logger.debug("<<getWebResourceUrl", stringBuffer);
         }
     }
 

@@ -13,6 +13,8 @@ import org.chtijbug.drools.guvnor.rest.model.Asset;
 import org.chtijbug.drools.guvnor.rest.model.AssetCategory;
 import org.chtijbug.drools.guvnor.rest.model.AssetPropertyType;
 import org.chtijbug.drools.guvnor.rest.model.AssetType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
 import javax.ws.rs.core.MediaType;
@@ -40,6 +42,8 @@ import static java.lang.String.format;
  * To change this template use File | Settings | File Templates.
  */
 class AssetManager {
+
+    private static Logger logger = LoggerFactory.getLogger(AssetManager.class);
 
     private  GuvnorConnexionConfiguration configuration=null;
 

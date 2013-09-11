@@ -4,8 +4,6 @@
  */
 package org.chtijbug.drools.runtime.impl;
 
-import org.chtijbug.drools.common.log.Logger;
-import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.DroolsRuleFlowGroupObject;
 import org.chtijbug.drools.entity.DroolsRuleObject;
@@ -17,6 +15,8 @@ import org.drools.event.rule.*;
 import org.drools.runtime.KnowledgeRuntime;
 import org.drools.runtime.rule.Activation;
 import org.drools.runtime.rule.FactHandle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -62,7 +62,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
 
     @Override
     public void beforeActivationFired(BeforeActivationFiredEvent event) {
-        logger.entry("beforeActivationFired", event);
+        logger.debug(">>beforeActivationFired", event);
         try {
             Activation activation = event.getActivation();
             List<? extends FactHandle> listFact = activation.getFactHandles();
@@ -78,13 +78,13 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             //_____ Add Event into the History Container
             ruleBaseSession.getHistoryContainer().addHistoryElement(newBeforeRuleEvent);
         } finally {
-            logger.exit("beforeActivationFired");
+            logger.debug("<<beforeActivationFired");
         }
     }
 
     @Override
     public void afterActivationFired(AfterActivationFiredEvent event) {
-        logger.entry("afterActivationFired", event);
+        logger.debug(">>afterActivationFired", event);
         try {
             //____ Increment the global rule fired count
             nbRuleFired++;
@@ -104,13 +104,13 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             }
             logger.debug("nbre RDG Fired ==> ", nbRuleFired);
         } finally {
-            logger.exit("afterActivationFired");
+            logger.debug("<<afterActivationFired");
         }
     }
 
     @Override
     public void afterRuleFlowGroupActivated(RuleFlowGroupActivatedEvent ruleFlowGroupActivatedEvent) {
-        logger.entry("afterRuleFlowGroupActivated", ruleFlowGroupActivatedEvent);
+        logger.debug(">>afterRuleFlowGroupActivated", ruleFlowGroupActivatedEvent);
         try {
             String ruleFlowGroupName = null;
             //____ Filling the event with the rule flow group name activated
@@ -123,13 +123,13 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             //____ Adding into the History container
             ruleBaseSession.getHistoryContainer().addHistoryElement(afterRuleFlowActivatedHistoryEvent);
         } finally {
-            logger.exit("afterRuleFlowGroupActivated");
+            logger.debug("<<afterRuleFlowGroupActivated");
         }
     }
 
     @Override
     public void afterRuleFlowGroupDeactivated(RuleFlowGroupDeactivatedEvent ruleFlowGroupDeactivatedEvent) {
-        logger.entry("afterRuleFlowGroupDeactivated", ruleFlowGroupDeactivatedEvent);
+        logger.debug(">>afterRuleFlowGroupDeactivated", ruleFlowGroupDeactivatedEvent);
         try {
             String ruleFlowGroupName = null;
             if (ruleFlowGroupDeactivatedEvent.getRuleFlowGroup() != null && ruleFlowGroupDeactivatedEvent.getRuleFlowGroup().getName() != null) {
@@ -142,7 +142,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             //_____ Adding the event to the History container
             ruleBaseSession.getHistoryContainer().addHistoryElement(afterRuleFlowGroupDeactivated);
         } finally {
-            logger.exit("afterRuleFlowGroupDeactivated");
+            logger.debug("<<afterRuleFlowGroupDeactivated");
         }
     }
 

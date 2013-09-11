@@ -4,6 +4,8 @@
  */
 package org.chtijbug.drools.entity.history;
 
+import org.chtijbug.drools.runtime.DroolsChtijbugException;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,6 +19,7 @@ public class HistoryEvent implements Serializable {
 	 */
 	private static final long serialVersionUID = -6640538290066213804L;
     private int eventID;
+    private DroolsChtijbugException droolsChtijbugException;
 	public enum TypeEvent {
 		Fact, Rule, BPMN ,RuleFlowGroup,KnowledgeBaseSingleton,Session
 	};
@@ -35,8 +38,16 @@ public class HistoryEvent implements Serializable {
 		this.dateEvent = dateEvent;
 		this.typeEvent = typeEvent;
 	}
-	
-	public Date getDateEvent() {
+
+    public DroolsChtijbugException getDroolsChtijbugException() {
+        return droolsChtijbugException;
+    }
+
+    public void setDroolsChtijbugException(DroolsChtijbugException droolsChtijbugException) {
+        this.droolsChtijbugException = droolsChtijbugException;
+    }
+
+    public Date getDateEvent() {
 		return dateEvent;
 	}
 	
@@ -50,9 +61,9 @@ public class HistoryEvent implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer();
-        sb.append("HistoryEvent");
-        sb.append("{eventID=").append(eventID);
+        final StringBuffer sb = new StringBuffer("HistoryEvent{");
+        sb.append("eventID=").append(eventID);
+        sb.append(", droolsChtijbugException=").append(droolsChtijbugException);
         sb.append(", dateEvent=").append(dateEvent);
         sb.append(", typeEvent=").append(typeEvent);
         sb.append('}');

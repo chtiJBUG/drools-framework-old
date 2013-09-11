@@ -4,13 +4,13 @@
  */
 package org.chtijbug.drools.runtime;
 
-import org.chtijbug.drools.common.log.Logger;
-import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
 import org.chtijbug.drools.runtime.resource.Bpmn2DroolsRessource;
 import org.chtijbug.drools.runtime.resource.DrlDroolsRessource;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
 import org.chtijbug.drools.runtime.resource.GuvnorDroolsResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author nheron
@@ -32,7 +32,7 @@ public class RuleBaseBuilder {
      */
     public static RuleBasePackage createGuvnorRuleBasePackage(String guvnor_url, String guvnor_appName, String guvnor_packageName, String guvnor_packageVersion,
                                                               String guvnor_username, String guvnor_password) throws DroolsChtijbugException {
-        logger.entry("createGuvnorRuleBasePackage", guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion, guvnor_username, guvnor_password);
+        logger.debug(">>createGuvnorRuleBasePackage", guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion, guvnor_username, guvnor_password);
         RuleBasePackage newRuleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD);
         try {
             GuvnorDroolsResource gdr = new GuvnorDroolsResource(guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion, guvnor_username, guvnor_password);
@@ -41,12 +41,12 @@ public class RuleBaseBuilder {
             //_____ Returning the result
             return newRuleBasePackage;
         } finally {
-            logger.exit("createGuvnorRuleBasePackage", newRuleBasePackage);
+            logger.debug("<<createGuvnorRuleBasePackage", newRuleBasePackage);
         }
     }
 
     public static RuleBasePackage createPackageBasePackage(String... filenames) throws DroolsChtijbugException {
-        logger.entry("createPackageBasePackage");
+        logger.debug(">>createPackageBasePackage");
         RuleBasePackage ruleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD);
         try {
             for (String filename : filenames) {
@@ -67,7 +67,7 @@ public class RuleBaseBuilder {
             //_____ Returning the result
             return ruleBasePackage;
         } finally {
-            logger.exit("createPackageBasePackage", ruleBasePackage);
+            logger.debug("<<createPackageBasePackage", ruleBasePackage);
         }
     }
 

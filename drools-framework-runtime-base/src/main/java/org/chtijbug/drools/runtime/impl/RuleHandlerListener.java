@@ -76,7 +76,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
                 newBeforeRuleEvent.getWhenObjects().add(sourceFactObject);
             }
             //_____ Add Event into the History Container
-            ruleBaseSession.getHistoryContainer().addHistoryElement(newBeforeRuleEvent);
+            ruleBaseSession.addHistoryElement(newBeforeRuleEvent);
         } finally {
             logger.debug("<<beforeActivationFired");
         }
@@ -93,7 +93,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(activation.getRule());
             //____ Creating the specific "After Rule Fired" History Event
             AfterRuleFiredHistoryEvent newAfterRuleEvent = new AfterRuleFiredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), this.nbRuleFired, droolsRuleObject);
-            ruleBaseSession.getHistoryContainer().addHistoryElement(newAfterRuleEvent);
+            ruleBaseSession.addHistoryElement(newAfterRuleEvent);
             //____ If the max number rule able to be executed threshold is raised, stop the session execution
             if (nbRuleFired >= maxNumberRuleToExecute) {
                 logger.warn(String.format("%d rules have been fired. This is the limit.", maxNumberRuleToExecute));
@@ -121,7 +121,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             //____ Creating history event
             AfterRuleFlowActivatedHistoryEvent afterRuleFlowActivatedHistoryEvent = new AfterRuleFlowActivatedHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsRuleFlowGroupObject);
             //____ Adding into the History container
-            ruleBaseSession.getHistoryContainer().addHistoryElement(afterRuleFlowActivatedHistoryEvent);
+            ruleBaseSession.addHistoryElement(afterRuleFlowActivatedHistoryEvent);
         } finally {
             logger.debug("<<afterRuleFlowGroupActivated");
         }
@@ -140,7 +140,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             //____ Creating history event
             AfterRuleFlowDeactivatedHistoryEvent afterRuleFlowGroupDeactivated = new AfterRuleFlowDeactivatedHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsRuleFlowGroupObject);
             //_____ Adding the event to the History container
-            ruleBaseSession.getHistoryContainer().addHistoryElement(afterRuleFlowGroupDeactivated);
+            ruleBaseSession.addHistoryElement(afterRuleFlowGroupDeactivated);
         } finally {
             logger.debug("<<afterRuleFlowGroupDeactivated");
         }

@@ -33,7 +33,7 @@ public class ProcessHandlerListener extends DefaultProcessEventListener {
         try {
             DroolsNodeInstanceObject droolsNodeInstanceObject = ruleBaseSession.getDroolsNodeInstanceObject(event.getNodeInstance());
             NodeInstanceAfterHistoryEvent afterHistoryEvent = new NodeInstanceAfterHistoryEvent(this.ruleBaseSession.getNextEventCounter(),droolsNodeInstanceObject);
-            ruleBaseSession.getHistoryContainer().addHistoryElement(afterHistoryEvent);
+            ruleBaseSession.addHistoryElement(afterHistoryEvent);
         } finally {
             logger.debug("<<afterNodeLeft");
         }
@@ -45,7 +45,7 @@ public class ProcessHandlerListener extends DefaultProcessEventListener {
         try {
             DroolsProcessInstanceObject droolsProcessInstanceObject = ruleBaseSession.getDroolsProcessInstanceObject(event.getProcessInstance());
             ProcessEndHistoryEvent processStart = new ProcessEndHistoryEvent(this.ruleBaseSession.getNextEventCounter(),droolsProcessInstanceObject);
-            ruleBaseSession.getHistoryContainer().addHistoryElement(processStart);
+            ruleBaseSession.addHistoryElement(processStart);
         } finally {
             logger.debug("<<afterProcessCompleted");
         }
@@ -57,7 +57,7 @@ public class ProcessHandlerListener extends DefaultProcessEventListener {
         try {
             DroolsProcessInstanceObject droolsProcessInstanceObject = ruleBaseSession.getDroolsProcessInstanceObject(event.getProcessInstance());
             ProcessStartHistoryEvent processStart = new ProcessStartHistoryEvent(this.ruleBaseSession.getNextEventCounter(),droolsProcessInstanceObject);
-            ruleBaseSession.getHistoryContainer().addHistoryElement(processStart);
+            ruleBaseSession.addHistoryElement(processStart);
         } finally {
             logger.debug("<<afterProcessStarted");
         }
@@ -69,7 +69,7 @@ public class ProcessHandlerListener extends DefaultProcessEventListener {
         try {
             DroolsNodeInstanceObject droolsNodeInstanceObject = ruleBaseSession.getDroolsNodeInstanceObject(event.getNodeInstance());
             NodeInstanceAfterHistoryEvent afterHistoryEvent = new NodeInstanceAfterHistoryEvent(this.ruleBaseSession.getNextEventCounter(),droolsNodeInstanceObject);
-            ruleBaseSession.getHistoryContainer().addHistoryElement(afterHistoryEvent);
+            ruleBaseSession.addHistoryElement(afterHistoryEvent);
         } finally {
             logger.debug("<<beforeNodeTriggered");
         }

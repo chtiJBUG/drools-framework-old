@@ -235,7 +235,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
                 //_____ Increment session counter
                 this.sessionCounter++;
                 //_____ Wrapping the knowledge Session
-                newRuleBaseSession = new RuleBaseStatefulSession(this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, mbsSession,this.historyListener);
+                newRuleBaseSession = new RuleBaseStatefulSession(this.ruleBaseID,this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, mbsSession,this.historyListener);
                 //_____ Release semaphore
                 lockKbase.release();
             } else {

@@ -19,6 +19,8 @@ public class HistoryEvent implements Serializable {
 	 */
 	private static final long serialVersionUID = -6640538290066213804L;
     private int eventID;
+    private int ruleBaseID;
+    private int sessionId;
     private DroolsChtijbugException droolsChtijbugException;
 	public enum TypeEvent {
 		Fact, Rule, BPMN ,RuleFlowGroup,KnowledgeBaseSingleton,Session
@@ -33,11 +35,13 @@ public class HistoryEvent implements Serializable {
 	public HistoryEvent(){
 	}
 
-	public HistoryEvent(int eventID,Date dateEvent, TypeEvent typeEvent) {
-        this.eventID = eventID;
-		this.dateEvent = dateEvent;
-		this.typeEvent = typeEvent;
-	}
+
+    public HistoryEvent(int eventID, Date dateEvent, TypeEvent typeEvent) {
+
+            this.eventID = eventID;
+            this.dateEvent = dateEvent;
+            this.typeEvent = typeEvent;
+        }
 
     public DroolsChtijbugException getDroolsChtijbugException() {
         return droolsChtijbugException;
@@ -57,6 +61,22 @@ public class HistoryEvent implements Serializable {
 
     public int getEventID() {
         return eventID;
+    }
+
+    public int getRuleBaseID() {
+        return ruleBaseID;
+    }
+
+    public void setRuleBaseID(int ruleBaseID) {
+        this.ruleBaseID = ruleBaseID;
+    }
+
+    public int getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(int sessionId) {
+        this.sessionId = sessionId;
     }
 
     @Override

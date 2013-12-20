@@ -59,6 +59,7 @@
     <module>drools-framework-rest-guvnor</module>
     <module>drools-service-runner-archetype</module>
     <module>maven-guvnor-install-pojo-plugin</module>
+    <module>drools-runner-generator</module>
     <!--module>drools-framework-neo4jlog</module-->
   </modules>
 

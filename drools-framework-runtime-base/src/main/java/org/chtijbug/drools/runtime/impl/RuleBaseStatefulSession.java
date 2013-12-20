@@ -5,6 +5,7 @@ import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 import org.chtijbug.drools.common.reflection.ReflectionUtils;
 import org.chtijbug.drools.entity.*;
 import org.chtijbug.drools.entity.history.HistoryContainer;
+import org.chtijbug.drools.entity.history.HistoryEvent;
 import org.chtijbug.drools.entity.history.session.*;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBaseSession;
@@ -55,12 +56,14 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     private StatefulSessionSupervision mbeanStatefulSessionSupervision;
 
     private XStream xstream = new XStream(new JettisonMappedXmlDriver());
+    private int ruleBaseID;
     private int sessionId;
     private int eventCounter;
 
     private HistoryListener historyListener;
 
-    public RuleBaseStatefulSession(int sessionId, StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefulSessionSupervision mbeanStatefulSessionSupervision, HistoryListener historyListener) throws DroolsChtijbugException {
+    public RuleBaseStatefulSession(int ruleBaseID, int sessionId, StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefulSessionSupervision mbeanStatefulSessionSupervision, HistoryListener historyListener) throws DroolsChtijbugException {
+        this.ruleBaseID = ruleBaseID;
         this.sessionId = sessionId;
         this.knowledgeSession = knowledgeSession;
         this.maxNumberRuleToExecute = maxNumberRuleToExecute;
@@ -418,5 +421,9 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     public int getNextEventCounter() {
         this.eventCounter++;
         return this.eventCounter;
+    }
+
+    public void addHistoryElement(HistoryEvent newHistoryElement) {
+        this.historyContainer.addHistoryElement(this.ruleBaseID, this.sessionId, newHistoryElement);
     }
 }

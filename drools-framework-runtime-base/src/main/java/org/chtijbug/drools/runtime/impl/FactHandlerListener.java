@@ -40,7 +40,7 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
             ruleBaseSession.setData(f, newObject, ff);
             //____ Adding the Insert Event from the History Container
             InsertedFactHistoryEvent insertFactHistoryEvent = new InsertedFactHistoryEvent(this.ruleBaseSession.getNextEventCounter(), ff);
-            this.ruleBaseSession.getHistoryContainer().addHistoryElement(insertFactHistoryEvent);
+            this.ruleBaseSession.addHistoryElement(insertFactHistoryEvent);
         } finally {
             logger.debug("<<objectInserted");
         }
@@ -59,7 +59,7 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
             ruleBaseSession.setData(f, newValue, factNewValue);
             //____ Adding the Update Event from the History Container
             UpdatedFactHistoryEvent updatedFactHistoryEvent = new UpdatedFactHistoryEvent(this.ruleBaseSession.getNextEventCounter(), factOldValue, factNewValue);
-            this.ruleBaseSession.getHistoryContainer().addHistoryElement(updatedFactHistoryEvent);
+            this.ruleBaseSession.addHistoryElement(updatedFactHistoryEvent);
         } finally {
             logger.debug("<<objectUpdated");
         }
@@ -76,7 +76,7 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
             ruleBaseSession.unsetData(f, newObject);
             //____ Adding a Delete Event from the HistoryContainer
             DeletedFactHistoryEvent deleteFactEvent = new DeletedFactHistoryEvent(this.ruleBaseSession.getNextEventCounter(), deletedFact);
-            this.ruleBaseSession.getHistoryContainer().addHistoryElement(deleteFactEvent);
+            this.ruleBaseSession.addHistoryElement(deleteFactEvent);
 
         } finally {
             logger.debug("<<objectRetracted");

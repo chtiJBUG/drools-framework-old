@@ -1,7 +1,5 @@
 package org.chtijbug.drools.entity.history.session;
 
-import java.util.Date;
-
 /**
  * Created by IntelliJ IDEA.
  * Date: 05/06/13
@@ -12,10 +10,13 @@ public class SessionFireAllRulesMaxNumberReachedEvent extends SessionEvent {
     private int numberOfRulesExecuted=0;
     private int maxNumberOfRulesForSession=0;
 
-    public SessionFireAllRulesMaxNumberReachedEvent(int eventID, Date dateEvent, int sessionId, int numberOfRulesExecuted, int maxNumberOfRulesForSession) {
-        super(eventID, dateEvent, sessionId);
+    public SessionFireAllRulesMaxNumberReachedEvent(int eventID, int numberOfRulesExecuted, int maxNumberOfRulesForSession) {
+        super(eventID);
         this.numberOfRulesExecuted = numberOfRulesExecuted;
         this.maxNumberOfRulesForSession = maxNumberOfRulesForSession;
+    }
+
+    public SessionFireAllRulesMaxNumberReachedEvent() {
     }
 
     public int getNumberOfRulesExecuted() {

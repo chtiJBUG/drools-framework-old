@@ -48,10 +48,10 @@ public class HistoryContainer implements Serializable {
 
     public void addHistoryElement(int ruleBaseID, int sessionID,HistoryEvent newHistoryElement) {
         DroolsChtijbugException error = null;
+        newHistoryElement.setRuleBaseID(ruleBaseID);
+        newHistoryElement.setSessionId(sessionID);
         try {
             if (historylistener != null) {
-                newHistoryElement.setRuleBaseID(ruleBaseID);
-                newHistoryElement.setSessionId(sessionID);
                 historylistener.fireEvent(newHistoryElement);
             }
         }catch (DroolsChtijbugException e){

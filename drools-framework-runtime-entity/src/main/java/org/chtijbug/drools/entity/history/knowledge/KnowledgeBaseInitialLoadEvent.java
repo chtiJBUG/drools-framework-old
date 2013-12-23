@@ -12,4 +12,8 @@ public class KnowledgeBaseInitialLoadEvent extends KnowledgeBaseEvent {
     public KnowledgeBaseInitialLoadEvent(int eventID, Date dateEvent,  int ruleBaseID) {
         super(eventID, dateEvent,  ruleBaseID);
     }
+
+    public KnowledgeBaseInitialLoadEvent() {
+        super();
+    }
 }

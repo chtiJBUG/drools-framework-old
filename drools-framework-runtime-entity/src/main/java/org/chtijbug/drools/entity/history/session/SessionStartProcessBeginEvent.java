@@ -1,7 +1,5 @@
 package org.chtijbug.drools.entity.history.session;
 
-import java.util.Date;
-
 /**
  * Created by IntelliJ IDEA.
  * Date: 05/06/13
@@ -11,9 +9,12 @@ import java.util.Date;
 public class SessionStartProcessBeginEvent extends SessionEvent {
     private String processName;
 
-    public SessionStartProcessBeginEvent(int eventID, Date dateEvent, int sessionId, String processName) {
-        super(eventID, dateEvent, sessionId);
+    public SessionStartProcessBeginEvent(int eventID, String processName) {
+        super(eventID);
         this.processName = processName;
+    }
+
+    public SessionStartProcessBeginEvent() {
     }
 
     public String getProcessName() {

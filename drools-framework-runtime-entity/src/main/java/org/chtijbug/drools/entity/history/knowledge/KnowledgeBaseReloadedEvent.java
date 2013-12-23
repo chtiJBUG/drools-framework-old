@@ -12,4 +12,7 @@ public class KnowledgeBaseReloadedEvent extends  KnowledgeBaseEvent {
     public KnowledgeBaseReloadedEvent(int eventID, Date dateEvent,  int ruleBaseID) {
         super(eventID, dateEvent, ruleBaseID);
     }
+
+    public KnowledgeBaseReloadedEvent() {
+    }
 }

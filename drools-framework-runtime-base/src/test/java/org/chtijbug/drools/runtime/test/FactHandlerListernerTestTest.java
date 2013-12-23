@@ -55,6 +55,8 @@ public class FactHandlerListernerTestTest {
         HistoryEvent event = session.getHistoryContainer().getListHistoryEvent().get(0);
         if (event instanceof InsertedFactHistoryEvent) {
             Assert.assertEquals(1, 1);
+            Assert.assertEquals(session.getRuleBaseID(),event.getRuleBaseID());
+            Assert.assertEquals(session.getSessionId(),event.getSessionId());
             InsertedFactHistoryEvent insertedFactHistoryEvent = (InsertedFactHistoryEvent) event;
             DroolsFactObject droolsFactObject = insertedFactHistoryEvent.getInsertedObject();
             for (DroolsFactObjectAttribute droolsFactObjectAttribute : droolsFactObject.getListfactObjectAttributes()) {
@@ -79,6 +81,8 @@ public class FactHandlerListernerTestTest {
         HistoryEvent event = session.getHistoryContainer().getListHistoryEvent().get(1);
         if (event instanceof UpdatedFactHistoryEvent) {
             Assert.assertEquals(1, 1);
+            Assert.assertEquals(session.getRuleBaseID(),event.getRuleBaseID());
+            Assert.assertEquals(session.getSessionId(),event.getSessionId());
             UpdatedFactHistoryEvent updatedFactHistoryEvent = (UpdatedFactHistoryEvent) event;
             DroolsFactObject droolsFactObject = updatedFactHistoryEvent.getObjectOldValue();
             for (DroolsFactObjectAttribute droolsFactObjectAttribute : droolsFactObject.getListfactObjectAttributes()) {
@@ -111,6 +115,8 @@ public class FactHandlerListernerTestTest {
         HistoryEvent event = session.getHistoryContainer().getListHistoryEvent().get(1);
         if (event instanceof DeletedFactHistoryEvent) {
             Assert.assertEquals(1, 1);
+            Assert.assertEquals(session.getRuleBaseID(),event.getRuleBaseID());
+            Assert.assertEquals(session.getSessionId(),event.getSessionId());
             DeletedFactHistoryEvent deletedFactHistoryEvent = (DeletedFactHistoryEvent) event;
             DroolsFactObject droolsFactObject = deletedFactHistoryEvent.getDeletedObject();
             for (DroolsFactObjectAttribute droolsFactObjectAttribute : droolsFactObject.getListfactObjectAttributes()) {

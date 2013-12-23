@@ -11,6 +11,7 @@ import org.chtijbug.drools.entity.history.rule.AfterRuleFiredHistoryEvent;
 import org.chtijbug.drools.entity.history.rule.AfterRuleFlowActivatedHistoryEvent;
 import org.chtijbug.drools.entity.history.rule.AfterRuleFlowDeactivatedHistoryEvent;
 import org.chtijbug.drools.entity.history.rule.BeforeRuleFiredHistoryEvent;
+import org.chtijbug.drools.entity.history.session.SessionFireAllRulesMaxNumberReachedEvent;
 import org.drools.event.rule.*;
 import org.drools.runtime.KnowledgeRuntime;
 import org.drools.runtime.rule.Activation;
@@ -100,6 +101,9 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
                 logger.warn("The session execution will be stop");
                 KnowledgeRuntime runTime = event.getKnowledgeRuntime();
                 this.maxNumerExecutedRulesReached = true;
+                //(int eventID, int sessionId, int numberOfRulesExecuted, int maxNumberOfRulesForSession)
+                SessionFireAllRulesMaxNumberReachedEvent sessionFireAllRulesMaxNumberReachedEvent = new SessionFireAllRulesMaxNumberReachedEvent(this.ruleBaseSession.getNextEventCounter(),nbRuleFired,maxNumberRuleToExecute);
+                ruleBaseSession.addHistoryElement(sessionFireAllRulesMaxNumberReachedEvent);
                 runTime.halt();
             }
             logger.debug("nbre RDG Fired ==> ", nbRuleFired);

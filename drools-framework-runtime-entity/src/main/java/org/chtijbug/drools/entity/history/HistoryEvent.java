@@ -10,24 +10,21 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 
  * @author nheron
  */
 public class HistoryEvent implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6640538290066213804L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -6640538290066213804L;
     private int eventID;
     private int ruleBaseID;
     private int sessionId;
     private DroolsChtijbugException droolsChtijbugException;
-	public enum TypeEvent {
-		Fact, Rule, BPMN ,RuleFlowGroup,KnowledgeBaseSingleton,Session
-	};
 
-	protected Date dateEvent;
-	protected TypeEvent typeEvent;
+    public enum TypeEvent {
+        Fact, Rule, BPMN, RuleFlowGroup, KnowledgeBaseSingleton, Session
+    }
 
 	/**
 	 * Mandatory for GWT Serialization
@@ -35,6 +32,8 @@ public class HistoryEvent implements Serializable {
 	public HistoryEvent(){
 	}
 
+    protected Date dateEvent;
+    protected TypeEvent typeEvent;
 
     public HistoryEvent(int eventID, Date dateEvent, TypeEvent typeEvent) {
 
@@ -52,12 +51,12 @@ public class HistoryEvent implements Serializable {
     }
 
     public Date getDateEvent() {
-		return dateEvent;
-	}
-	
-	public TypeEvent getTypeEvent() {
-		return typeEvent;
-	}
+        return dateEvent;
+    }
+
+    public TypeEvent getTypeEvent() {
+        return typeEvent;
+    }
 
     public int getEventID() {
         return eventID;
@@ -90,30 +89,30 @@ public class HistoryEvent implements Serializable {
         return sb.toString();
     }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final HistoryEvent other = (HistoryEvent) obj;
-		if (this.dateEvent != other.dateEvent && (this.dateEvent == null || !this.dateEvent.equals(other.dateEvent))) {
-			return false;
-		}
-		if (this.typeEvent != other.typeEvent) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final HistoryEvent other = (HistoryEvent) obj;
+        if (this.dateEvent != other.dateEvent && (this.dateEvent == null || !this.dateEvent.equals(other.dateEvent))) {
+            return false;
+        }
+        if (this.typeEvent != other.typeEvent) {
+            return false;
+        }
+        return true;
+    }
 
-	@Override
-	public int hashCode() {
-		int hash = 7;
-		hash = 89 * hash + (this.dateEvent != null ? this.dateEvent.hashCode() : 0);
-		hash = 89 * hash + (this.typeEvent != null ? this.typeEvent.hashCode() : 0);
-		return hash;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 89 * hash + (this.dateEvent != null ? this.dateEvent.hashCode() : 0);
+        hash = 89 * hash + (this.typeEvent != null ? this.typeEvent.hashCode() : 0);
+        return hash;
+    }
 
 }

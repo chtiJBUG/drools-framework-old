@@ -12,4 +12,7 @@ public class KnowledgeBaseCreateSessionEvent extends KnowledgeBaseEvent {
     public KnowledgeBaseCreateSessionEvent(int eventID, Date dateEvent,  int ruleBaseID) {
         super(eventID, dateEvent, ruleBaseID);
     }
+
+    public KnowledgeBaseCreateSessionEvent() {
+    }
 }

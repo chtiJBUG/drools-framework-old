@@ -19,6 +19,9 @@ public class KnowledgeBaseEvent extends HistoryEvent {
         this.ruleBaseID = ruleBaseID;
     }
 
+    public KnowledgeBaseEvent() {
+    }
+
     public int getRuleBaseID() {
         return ruleBaseID;
     }

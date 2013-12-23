@@ -57,4 +57,8 @@ public interface RuleBaseSession {
 
     public int getNumberRulesExecuted();
 
+    public int getSessionId();
+
+    public int getRuleBaseID() ;
+
 }

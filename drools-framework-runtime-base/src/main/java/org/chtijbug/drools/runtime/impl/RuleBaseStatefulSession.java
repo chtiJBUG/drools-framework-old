@@ -83,9 +83,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         knowledgeSession.addEventListener(processHandlerListener);
         this.historyListener = historyListener;
         if (this.historyListener != null) {
-            SessionCreatedEvent sessionCreatedEvent = new SessionCreatedEvent(this.getNextEventCounter());
-            sessionCreatedEvent.setSessionId(this.sessionId);
-            sessionCreatedEvent.setRuleBaseID(this.ruleBaseID);
+            SessionCreatedEvent sessionCreatedEvent = new SessionCreatedEvent(this.getNextEventCounter(),this.ruleBaseID,this.sessionId);
             this.addHistoryElement(sessionCreatedEvent);
         }
 
@@ -281,7 +279,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         if (this.historyListener != null) {
 
             try {
-                SessionDisposedEvent sessionDisposedEvent = new SessionDisposedEvent(this.getNextEventCounter());
+                SessionDisposedEvent sessionDisposedEvent = new SessionDisposedEvent(this.getNextEventCounter(),this.ruleBaseID,this.sessionId);
                 this.addHistoryElement(sessionDisposedEvent);
             } catch (Exception e) {
                 logger.error("Exception in calling historyEvent", e);
@@ -352,7 +350,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     @Override
     public void fireAllRules() throws DroolsChtijbugException {
         if (this.historyListener != null) {
-            SessionFireAllRulesBeginEvent sessionFireAllRulesBeginEvent = new SessionFireAllRulesBeginEvent(this.getNextEventCounter());
+            SessionFireAllRulesBeginEvent sessionFireAllRulesBeginEvent = new SessionFireAllRulesBeginEvent(this.getNextEventCounter(),this.ruleBaseID,this.sessionId);
             this.addHistoryElement(sessionFireAllRulesBeginEvent);
         }
         long startTime = System.currentTimeMillis();
@@ -370,13 +368,13 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             StringBuffer stringBuffer = new StringBuffer();
             stringBuffer.append("nbRulesExecuted").append(afterNumberRules).append(" and MaxNumberRules for the session is set to ").append(maxNumberRuleToExecute);
             if (this.historyListener != null) {
-                SessionFireAllRulesMaxNumberReachedEvent sessionFireAllRulesMaxNumberReachedEvent = new SessionFireAllRulesMaxNumberReachedEvent(this.getNextEventCounter(),ruleHandlerListener.getNbRuleFired(), maxNumberRuleToExecute);
+                SessionFireAllRulesMaxNumberReachedEvent sessionFireAllRulesMaxNumberReachedEvent = new SessionFireAllRulesMaxNumberReachedEvent(this.getNextEventCounter(),ruleHandlerListener.getNbRuleFired(), maxNumberRuleToExecute,this.ruleBaseID,this.sessionId);
                 this.addHistoryElement(sessionFireAllRulesMaxNumberReachedEvent);
             }
             throw new DroolsChtijbugException(DroolsChtijbugException.MaxNumberRuleExecutionReached, stringBuffer.toString(), null);
         }
         if (this.historyListener != null) {
-            SessionFireAllRulesEndEvent sessionFireAllRulesEndEvent = new SessionFireAllRulesEndEvent(this.getNextEventCounter());
+            SessionFireAllRulesEndEvent sessionFireAllRulesEndEvent = new SessionFireAllRulesEndEvent(this.getNextEventCounter(),this.ruleBaseID,this.sessionId);
             this.addHistoryElement(sessionFireAllRulesEndEvent);
         }
     }
@@ -385,7 +383,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     public void startProcess(String processName) {
         if (this.historyListener != null) {
             try {
-                SessionStartProcessBeginEvent sessionStartProcessBeginEvent = new SessionStartProcessBeginEvent(this.getNextEventCounter(), processName);
+                SessionStartProcessBeginEvent sessionStartProcessBeginEvent = new SessionStartProcessBeginEvent(this.getNextEventCounter(), processName,this.ruleBaseID,this.sessionId);
                 this.addHistoryElement(sessionStartProcessBeginEvent);
             } catch (Exception e) {
                 logger.error("Exception in calling historyEvent", e);
@@ -396,7 +394,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         this.knowledgeSession.startProcess(processName);
         if (this.historyListener != null) {
             try {
-                SessionStartProcessEndEvent sessionStartProcessEndEvent = new SessionStartProcessEndEvent(this.getNextEventCounter(), processName);
+                SessionStartProcessEndEvent sessionStartProcessEndEvent = new SessionStartProcessEndEvent(this.getNextEventCounter(), processName,this.ruleBaseID,this.sessionId);
                 this.addHistoryElement(sessionStartProcessEndEvent);
             } catch (Exception e) {
                 logger.error("Exception in calling historyEvent", e);

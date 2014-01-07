@@ -22,8 +22,10 @@ public class ProcessHistoryEvent extends HistoryEvent {
 	public ProcessHistoryEvent() {
 
 	}
-    public ProcessHistoryEvent(int eventID) {
+    public ProcessHistoryEvent(int eventID,int ruleBaseId,int sessionId) {
     		super(eventID,new Date(), TypeEvent.BPMN);
+        this.setRuleBaseID(ruleBaseId);
+        this.setSessionId(sessionId);
     	}
     @Override
       public String toString() {

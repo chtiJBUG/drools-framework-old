@@ -7,8 +7,8 @@ package org.chtijbug.drools.entity.history.session;
  * To change this template use File | Settings | File Templates.
  */
 public class SessionFireAllRulesEndEvent extends SessionEvent {
-    public SessionFireAllRulesEndEvent(int eventID) {
-        super(eventID);
+    public SessionFireAllRulesEndEvent(int eventID,int ruleBaseId,int sessionId) {
+        super(eventID,ruleBaseId,sessionId);
     }
 
     public SessionFireAllRulesEndEvent() {

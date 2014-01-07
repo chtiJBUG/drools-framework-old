@@ -7,8 +7,8 @@ package org.chtijbug.drools.entity.history.session;
  * To change this template use File | Settings | File Templates.
  */
 public class SessionDisposedEvent extends SessionEvent {
-    public SessionDisposedEvent(int eventID) {
-        super(eventID);
+    public SessionDisposedEvent(int eventID,int ruleBaseId,int sessionId) {
+        super(eventID,ruleBaseId,sessionId);
     }
 
     public SessionDisposedEvent() {

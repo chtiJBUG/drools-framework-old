@@ -70,7 +70,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             //____ Getting the Rule object summary from the session
             DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(activation.getRule());
             //____ Creating the specific History event for history managment
-            BeforeRuleFiredHistoryEvent newBeforeRuleEvent = new BeforeRuleFiredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), this.nbRuleFired + 1, droolsRuleObject);
+            BeforeRuleFiredHistoryEvent newBeforeRuleEvent = new BeforeRuleFiredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), this.nbRuleFired + 1, droolsRuleObject,this.ruleBaseSession.getRuleBaseID(),this.ruleBaseSession.getSessionId());
             //____ Adding all objects info contained in the Activation object into the history Events
             for (FactHandle h : listFact) {
                 DroolsFactObject sourceFactObject = ruleBaseSession.getLastFactObjectVersionFromFactHandle(h);
@@ -93,7 +93,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             //____ Getting the Rule Object Summary from the session
             DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(activation.getRule());
             //____ Creating the specific "After Rule Fired" History Event
-            AfterRuleFiredHistoryEvent newAfterRuleEvent = new AfterRuleFiredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), this.nbRuleFired, droolsRuleObject);
+            AfterRuleFiredHistoryEvent newAfterRuleEvent = new AfterRuleFiredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), this.nbRuleFired, droolsRuleObject,this.ruleBaseSession.getRuleBaseID(),this.ruleBaseSession.getSessionId());
             ruleBaseSession.addHistoryElement(newAfterRuleEvent);
             //____ If the max number rule able to be executed threshold is raised, stop the session execution
             if (nbRuleFired >= maxNumberRuleToExecute) {
@@ -102,7 +102,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
                 KnowledgeRuntime runTime = event.getKnowledgeRuntime();
                 this.maxNumerExecutedRulesReached = true;
                 //(int eventID, int sessionId, int numberOfRulesExecuted, int maxNumberOfRulesForSession)
-                SessionFireAllRulesMaxNumberReachedEvent sessionFireAllRulesMaxNumberReachedEvent = new SessionFireAllRulesMaxNumberReachedEvent(this.ruleBaseSession.getNextEventCounter(),nbRuleFired,maxNumberRuleToExecute);
+                SessionFireAllRulesMaxNumberReachedEvent sessionFireAllRulesMaxNumberReachedEvent = new SessionFireAllRulesMaxNumberReachedEvent(this.ruleBaseSession.getNextEventCounter(),nbRuleFired,maxNumberRuleToExecute,this.ruleBaseSession.getRuleBaseID(),this.ruleBaseSession.getSessionId());
                 ruleBaseSession.addHistoryElement(sessionFireAllRulesMaxNumberReachedEvent);
                 runTime.halt();
             }
@@ -123,7 +123,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             }
             DroolsRuleFlowGroupObject droolsRuleFlowGroupObject = new DroolsRuleFlowGroupObject(this.nbRuleFlowGroupUsed + 1, ruleFlowGroupName);
             //____ Creating history event
-            AfterRuleFlowActivatedHistoryEvent afterRuleFlowActivatedHistoryEvent = new AfterRuleFlowActivatedHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsRuleFlowGroupObject);
+            AfterRuleFlowActivatedHistoryEvent afterRuleFlowActivatedHistoryEvent = new AfterRuleFlowActivatedHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsRuleFlowGroupObject,this.ruleBaseSession.getRuleBaseID(),this.ruleBaseSession.getSessionId());
             //____ Adding into the History container
             ruleBaseSession.addHistoryElement(afterRuleFlowActivatedHistoryEvent);
         } finally {
@@ -142,7 +142,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             this.nbRuleFlowGroupUsed++;
             DroolsRuleFlowGroupObject droolsRuleFlowGroupObject = new DroolsRuleFlowGroupObject(this.nbRuleFlowGroupUsed, ruleFlowGroupName);
             //____ Creating history event
-            AfterRuleFlowDeactivatedHistoryEvent afterRuleFlowGroupDeactivated = new AfterRuleFlowDeactivatedHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsRuleFlowGroupObject);
+            AfterRuleFlowDeactivatedHistoryEvent afterRuleFlowGroupDeactivated = new AfterRuleFlowDeactivatedHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsRuleFlowGroupObject,this.ruleBaseSession.getRuleBaseID(),this.ruleBaseSession.getSessionId());
             //_____ Adding the event to the History container
             ruleBaseSession.addHistoryElement(afterRuleFlowGroupDeactivated);
         } finally {

@@ -19,11 +19,13 @@ public class RuleFlowHistoryEvent extends HistoryEvent {
     	public RuleFlowHistoryEvent() {
     	}
 
-    	public RuleFlowHistoryEvent(int eventID,DroolsRuleFlowGroupObject droolsRuleFlowGroupObject) {
+    	public RuleFlowHistoryEvent(int eventID,DroolsRuleFlowGroupObject droolsRuleFlowGroupObject,int ruleBaseId,int sessionId) {
 
 
     		super(eventID, new Date(), HistoryEvent.TypeEvent.RuleFlowGroup);
             this.droolsRuleFlowGroupObject =droolsRuleFlowGroupObject;
+            this.setRuleBaseID(ruleBaseId);
+            this.setSessionId(sessionId);
 
     	}
 

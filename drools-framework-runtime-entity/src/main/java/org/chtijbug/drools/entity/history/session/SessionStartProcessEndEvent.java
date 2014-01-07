@@ -9,8 +9,8 @@ package org.chtijbug.drools.entity.history.session;
 public class SessionStartProcessEndEvent extends SessionEvent {
     private String processName;
 
-    public SessionStartProcessEndEvent(int eventID, String processName) {
-        super(eventID);
+    public SessionStartProcessEndEvent(int eventID, String processName,int ruleBaseId,int sessionId) {
+        super(eventID,ruleBaseId,sessionId);
         this.processName = processName;
     }
 

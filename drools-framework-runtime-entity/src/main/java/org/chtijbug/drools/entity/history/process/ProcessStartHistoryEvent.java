@@ -20,8 +20,8 @@ public class ProcessStartHistoryEvent extends ProcessHistoryEvent {
     public ProcessStartHistoryEvent() {
     }
 
-    public ProcessStartHistoryEvent(int eventID,DroolsProcessInstanceObject processInstance) {
-        super(eventID);
+    public ProcessStartHistoryEvent(int eventID,DroolsProcessInstanceObject processInstance,int ruleBaseId,int sessionId) {
+        super(eventID,ruleBaseId,sessionId);
         this.processInstance = processInstance;
     }
 

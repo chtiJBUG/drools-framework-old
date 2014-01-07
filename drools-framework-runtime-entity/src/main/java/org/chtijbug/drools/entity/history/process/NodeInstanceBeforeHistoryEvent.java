@@ -22,8 +22,8 @@ public class NodeInstanceBeforeHistoryEvent extends ProcessHistoryEvent {
     public NodeInstanceBeforeHistoryEvent() {
     }
 
-    public NodeInstanceBeforeHistoryEvent(int eventID,DroolsNodeInstanceObject nodeInstance) {
-        super(eventID);
+    public NodeInstanceBeforeHistoryEvent(int eventID,DroolsNodeInstanceObject nodeInstance,int ruleBaseId,int sessionId) {
+        super(eventID,ruleBaseId,sessionId);
         this.nodeInstance = nodeInstance;
     }
 

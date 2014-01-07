@@ -25,9 +25,11 @@ public abstract class FactHistoryEvent extends HistoryEvent {
 
     }
 
-    public FactHistoryEvent(int eventID,Date dateEvent) {
+    public FactHistoryEvent(int eventID,Date dateEvent,int ruleBaseId,int sessionId) {
 
         super(eventID,dateEvent, TypeEvent.Fact);
+        this.setRuleBaseID(ruleBaseId);
+        this.setSessionId(sessionId);
     }
 
     /*

@@ -24,11 +24,13 @@ public class RuleHistoryEvent extends HistoryEvent {
 	public RuleHistoryEvent() {
 	}
 
-	public RuleHistoryEvent(int eventID,int ruleInstanceId,DroolsRuleObject rule) {
+	public RuleHistoryEvent(int eventID,int ruleInstanceId,DroolsRuleObject rule,int ruleBaseId,int sessionId) {
 
 		super(eventID, new Date(), HistoryEvent.TypeEvent.Rule);
         this.ruleInstanceId = ruleInstanceId;
 		this.rule = rule;
+        this.setRuleBaseID(ruleBaseId);
+        this.setSessionId(sessionId);
 	}
 
     public DroolsRuleObject getRule() {

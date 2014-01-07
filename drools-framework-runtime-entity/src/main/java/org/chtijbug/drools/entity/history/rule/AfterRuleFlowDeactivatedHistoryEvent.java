@@ -12,7 +12,7 @@ public class AfterRuleFlowDeactivatedHistoryEvent extends RuleFlowHistoryEvent {
     public AfterRuleFlowDeactivatedHistoryEvent() {
     }
 
-    public AfterRuleFlowDeactivatedHistoryEvent(int eventID,DroolsRuleFlowGroupObject droolsRuleFlowGroupObject) {
-        super(eventID,droolsRuleFlowGroupObject);
+    public AfterRuleFlowDeactivatedHistoryEvent(int eventID,DroolsRuleFlowGroupObject droolsRuleFlowGroupObject,int ruleBaseId,int sessionId) {
+        super(eventID,droolsRuleFlowGroupObject,ruleBaseId,sessionId);
     }
 }

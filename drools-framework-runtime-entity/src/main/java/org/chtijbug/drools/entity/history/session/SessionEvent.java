@@ -12,9 +12,11 @@ import java.util.Date;
  */
 public class SessionEvent extends HistoryEvent {
 
-    public SessionEvent(int eventID) {
+    public SessionEvent(int eventID,int ruleBaseId,int sessionId) {
 
         super(eventID, new Date(), TypeEvent.Session);
+        this.setRuleBaseID(ruleBaseId);
+        this.setSessionId(sessionId);
 
     }
 

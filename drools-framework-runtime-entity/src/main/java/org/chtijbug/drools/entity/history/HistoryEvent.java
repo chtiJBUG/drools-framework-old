@@ -22,6 +22,7 @@ public class HistoryEvent implements Serializable {
     private int sessionId;
     private DroolsChtijbugException droolsChtijbugException;
 
+
     public enum TypeEvent {
         Fact, Rule, BPMN, RuleFlowGroup, KnowledgeBaseSingleton, Session
     }

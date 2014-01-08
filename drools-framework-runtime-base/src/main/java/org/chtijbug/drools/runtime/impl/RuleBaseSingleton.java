@@ -86,9 +86,20 @@ public class RuleBaseSingleton implements RuleBasePackage {
     //private transient MBeanServer server = null;
     private int sessionCounter = 0;
     /**
+     * Guvnor Connection
+     */
+    private String guvnor_url;
+    private String guvnor_appName;
+    private String guvnor_packageName;
+    private String guvnor_packageVersion;
+    private String guvnor_username;
+    private String guvnor_password;
+
+
+    /**
      * History Listener
      */
-    private HistoryListener historyListener=  null;
+    private HistoryListener historyListener = null;
 
     private int eventCounter;
 
@@ -99,6 +110,19 @@ public class RuleBaseSingleton implements RuleBasePackage {
         //____ Increment the ruleBaseID
         this.ruleBaseID = addRuleBase();
         initMBeans();
+    }
+
+
+    public RuleBaseSingleton(int maxNumberRulesToExecute, String guvnor_url, String guvnor_appName, String guvnor_packageName,
+                             String guvnor_packageVersion, String guvnor_username, String guvnor_password) throws DroolsChtijbugException {
+        this(maxNumberRulesToExecute);
+        this.maxNumberRuleToExecute = maxNumberRulesToExecute;
+        this.guvnor_url = guvnor_url;
+        this.guvnor_appName = guvnor_appName;
+        this.guvnor_packageName = guvnor_packageName;
+        this.guvnor_packageVersion = guvnor_packageVersion;
+        this.guvnor_username = guvnor_username;
+        this.guvnor_password = guvnor_password;
     }
 
     public RuleBaseSingleton(int maxNumberRulesToExecute) throws DroolsChtijbugException {
@@ -114,8 +138,8 @@ public class RuleBaseSingleton implements RuleBasePackage {
     public RuleBaseSingleton(HistoryListener historyListener) throws DroolsChtijbugException {
         this();
         this.historyListener = historyListener;
-        if (this.historyListener != null){
-            KnowledgeBaseCreatedEvent knowledgeBaseCreatedEvent = new KnowledgeBaseCreatedEvent(this.getNextEventCounter(), new Date(),  ruleBaseCounter);
+        if (this.historyListener != null) {
+            KnowledgeBaseCreatedEvent knowledgeBaseCreatedEvent = new KnowledgeBaseCreatedEvent(this.getNextEventCounter(), new Date(), ruleBaseCounter);
             this.historyListener.fireEvent(knowledgeBaseCreatedEvent);
         }
     }
@@ -218,8 +242,8 @@ public class RuleBaseSingleton implements RuleBasePackage {
     public RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute) throws DroolsChtijbugException {
         logger.debug(">>createRuleBaseSession", maxNumberRulesToExecute);
         RuleBaseSession newRuleBaseSession = null;
-        if (this.historyListener != null){
-            KnowledgeBaseCreateSessionEvent knowledgeBaseCreateSessionEvent = new KnowledgeBaseCreateSessionEvent(this.getNextEventCounter(), new Date(),  this.ruleBaseID);
+        if (this.historyListener != null) {
+            KnowledgeBaseCreateSessionEvent knowledgeBaseCreateSessionEvent = new KnowledgeBaseCreateSessionEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID);
             this.historyListener.fireEvent(knowledgeBaseCreateSessionEvent);
         }
         try {
@@ -235,7 +259,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
                 //_____ Increment session counter
                 this.sessionCounter++;
                 //_____ Wrapping the knowledge Session
-                newRuleBaseSession = new RuleBaseStatefulSession(this.ruleBaseID,this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, mbsSession,this.historyListener);
+                newRuleBaseSession = new RuleBaseStatefulSession(this.ruleBaseID, this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, mbsSession, this.historyListener);
                 //_____ Release semaphore
                 lockKbase.release();
             } else {
@@ -328,8 +352,33 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
 
     }
+
     public int getNextEventCounter() {
         this.eventCounter++;
         return this.eventCounter;
+    }
+
+    public String getGuvnor_url() {
+        return guvnor_url;
+    }
+
+    public String getGuvnor_appName() {
+        return guvnor_appName;
+    }
+
+    public String getGuvnor_packageName() {
+        return guvnor_packageName;
+    }
+
+    public String getGuvnor_packageVersion() {
+        return guvnor_packageVersion;
+    }
+
+    public String getGuvnor_username() {
+        return guvnor_username;
+    }
+
+    public String getGuvnor_password() {
+        return guvnor_password;
     }
 }

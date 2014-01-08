@@ -11,30 +11,23 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class KnowledgeBaseEvent extends HistoryEvent {
-    private int ruleBaseID;
 
 
     public KnowledgeBaseEvent(int eventID, Date dateEvent, int ruleBaseID) {
         super(eventID, dateEvent, TypeEvent.KnowledgeBaseSingleton);
-        this.ruleBaseID = ruleBaseID;
+        this.setRuleBaseID(ruleBaseID);
     }
 
     public KnowledgeBaseEvent() {
     }
 
-    public int getRuleBaseID() {
-        return ruleBaseID;
-    }
 
-    public void setRuleBaseID(int ruleBaseID) {
-        this.ruleBaseID = ruleBaseID;
-    }
 
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer();
         sb.append("KnowledgeBaseEvent");
-        sb.append("{ruleBaseID=").append(ruleBaseID);
+        sb.append("{ruleBaseID=").append(this.getRuleBaseID());
         sb.append('}');
         return sb.toString();
     }

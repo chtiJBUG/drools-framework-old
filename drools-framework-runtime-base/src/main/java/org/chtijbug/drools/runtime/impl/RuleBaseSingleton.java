@@ -5,10 +5,7 @@
 package org.chtijbug.drools.runtime.impl;
 
 import org.chtijbug.drools.entity.history.HistoryContainer;
-import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseCreateSessionEvent;
-import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseCreatedEvent;
-import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseInitialLoadEvent;
-import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseReloadedEvent;
+import org.chtijbug.drools.entity.history.knowledge.*;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
@@ -112,7 +109,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
         this.ruleBaseID = addRuleBase();
         initMBeans();
     }
-
 
 
     public RuleBaseSingleton(int maxNumberRulesToExecute) throws DroolsChtijbugException {
@@ -263,15 +259,20 @@ public class RuleBaseSingleton implements RuleBasePackage {
     }
 
     @Override
-    public void addDroolsResouce(DroolsResource res) {
-        if (res instanceof GuvnorDroolsResource){
-            GuvnorDroolsResource guvnorDroolsResource = (GuvnorDroolsResource)res;
+    public void addDroolsResouce(DroolsResource res) throws DroolsChtijbugException {
+        if (res instanceof GuvnorDroolsResource) {
+            GuvnorDroolsResource guvnorDroolsResource = (GuvnorDroolsResource) res;
             this.guvnor_url = guvnorDroolsResource.getBaseUrl();
-            this.guvnor_appName=guvnorDroolsResource.getWebappName();
+            this.guvnor_appName = guvnorDroolsResource.getWebappName();
             this.guvnor_packageName = guvnorDroolsResource.getPackageName();
-            this.guvnor_packageVersion=guvnorDroolsResource.getPackageVersion();
+            this.guvnor_packageVersion = guvnorDroolsResource.getPackageVersion();
             this.guvnor_username = guvnorDroolsResource.getUsername();
             this.guvnor_password = guvnorDroolsResource.getPassword();
+            if (this.historyListener != null) {
+                KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent = new KnowledgeBaseAddRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url, this.guvnor_appName, this.guvnor_packageName, this.guvnor_packageVersion);
+                this.historyListener.fireEvent(knowledgeBaseAddRessourceEvent);
+            }
+
         }
         listResouces.add(res);
     }
@@ -281,13 +282,13 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
         if (kbase != null) {
             if (this.historyListener != null) {
-                KnowledgeBaseReloadedEvent knowledgeBaseReloadLoadEvent = new KnowledgeBaseReloadedEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID);
+                KnowledgeBaseReloadedEvent knowledgeBaseReloadLoadEvent = new KnowledgeBaseReloadedEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url, this.guvnor_appName, this.guvnor_packageName, this.guvnor_packageVersion);
                 this.historyListener.fireEvent(knowledgeBaseReloadLoadEvent);
             }
             // TODO dispose all elements
         } else {
             if (this.historyListener != null) {
-                KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = new KnowledgeBaseInitialLoadEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID);
+                KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = new KnowledgeBaseInitialLoadEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url, this.guvnor_appName, this.guvnor_packageName, this.guvnor_packageVersion);
                 this.historyListener.fireEvent(knowledgeBaseInitialLoadEvent);
             }
         }

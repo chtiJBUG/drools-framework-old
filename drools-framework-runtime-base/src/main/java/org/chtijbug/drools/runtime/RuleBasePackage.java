@@ -23,7 +23,7 @@ public interface RuleBasePackage {
      * 
      * @param res Drools resource
      */
-	void addDroolsResouce(DroolsResource res);
+	void addDroolsResouce(DroolsResource res) throws DroolsChtijbugException;
     
 	/**
 	 * Create KnowledgeBase and load all drools resources 

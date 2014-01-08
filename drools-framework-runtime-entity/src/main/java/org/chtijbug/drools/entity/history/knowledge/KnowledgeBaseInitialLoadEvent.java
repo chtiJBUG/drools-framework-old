@@ -9,8 +9,17 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class KnowledgeBaseInitialLoadEvent extends KnowledgeBaseEvent {
-    public KnowledgeBaseInitialLoadEvent(int eventID, Date dateEvent,  int ruleBaseID) {
-        super(eventID, dateEvent,  ruleBaseID);
+    public KnowledgeBaseInitialLoadEvent(int eventID, Date dateEvent, int ruleBaseID) {
+        super(eventID, dateEvent, ruleBaseID);
+    }
+
+    public KnowledgeBaseInitialLoadEvent(int eventID, Date dateEvent, int ruleBaseID, String baseUrl, String webappName,
+                                         String packageName, String packageVersion) {
+        super(eventID, dateEvent, ruleBaseID);
+        this.setGuvnor_url(baseUrl);
+        this.setGuvnor_appName(webappName);
+        this.setGuvnor_packageName(packageName);
+        this.setGuvnor_packageVersion(packageVersion);
     }
 
     public KnowledgeBaseInitialLoadEvent() {

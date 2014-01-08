@@ -103,4 +103,27 @@ public class GuvnorDroolsResource implements DroolsResource {
         return toCheck;
     }
 
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public String getWebappName() {
+        return webappName;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public String getPackageVersion() {
+        return packageVersion;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

@@ -16,6 +16,7 @@ import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.chtijbug.drools.runtime.mbeans.RuleBaseSupervision;
 import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervision;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
+import org.chtijbug.drools.runtime.resource.GuvnorDroolsResource;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
@@ -113,17 +114,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
     }
 
 
-    public RuleBaseSingleton(int maxNumberRulesToExecute, String guvnor_url, String guvnor_appName, String guvnor_packageName,
-                             String guvnor_packageVersion, String guvnor_username, String guvnor_password) throws DroolsChtijbugException {
-        this(maxNumberRulesToExecute);
-        this.maxNumberRuleToExecute = maxNumberRulesToExecute;
-        this.guvnor_url = guvnor_url;
-        this.guvnor_appName = guvnor_appName;
-        this.guvnor_packageName = guvnor_packageName;
-        this.guvnor_packageVersion = guvnor_packageVersion;
-        this.guvnor_username = guvnor_username;
-        this.guvnor_password = guvnor_password;
-    }
 
     public RuleBaseSingleton(int maxNumberRulesToExecute) throws DroolsChtijbugException {
         this();
@@ -274,6 +264,15 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     @Override
     public void addDroolsResouce(DroolsResource res) {
+        if (res instanceof GuvnorDroolsResource){
+            GuvnorDroolsResource guvnorDroolsResource = (GuvnorDroolsResource)res;
+            this.guvnor_url = guvnorDroolsResource.getBaseUrl();
+            this.guvnor_appName=guvnorDroolsResource.getWebappName();
+            this.guvnor_packageName = guvnorDroolsResource.getPackageName();
+            this.guvnor_packageVersion=guvnorDroolsResource.getPackageVersion();
+            this.guvnor_username = guvnorDroolsResource.getUsername();
+            this.guvnor_password = guvnorDroolsResource.getPassword();
+        }
         listResouces.add(res);
     }
 

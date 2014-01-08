@@ -17,6 +17,10 @@ public class HistoryEvent implements Serializable {
      *
      */
     private static final long serialVersionUID = -6640538290066213804L;
+    private String guvnor_url;
+    private String guvnor_appName;
+    private String guvnor_packageName;
+    private String guvnor_packageVersion;
     private int eventID;
     private int ruleBaseID;
     private int sessionId;
@@ -80,9 +84,50 @@ public class HistoryEvent implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HistoryEvent that = (HistoryEvent) o;
+
+        if (eventID != that.eventID) return false;
+        if (ruleBaseID != that.ruleBaseID) return false;
+        if (sessionId != that.sessionId) return false;
+        if (dateEvent != null ? !dateEvent.equals(that.dateEvent) : that.dateEvent != null) return false;
+        if (guvnor_appName != null ? !guvnor_appName.equals(that.guvnor_appName) : that.guvnor_appName != null)
+            return false;
+        if (guvnor_packageName != null ? !guvnor_packageName.equals(that.guvnor_packageName) : that.guvnor_packageName != null)
+            return false;
+        if (guvnor_packageVersion != null ? !guvnor_packageVersion.equals(that.guvnor_packageVersion) : that.guvnor_packageVersion != null)
+            return false;
+        if (guvnor_url != null ? !guvnor_url.equals(that.guvnor_url) : that.guvnor_url != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = guvnor_url != null ? guvnor_url.hashCode() : 0;
+        result = 31 * result + (guvnor_appName != null ? guvnor_appName.hashCode() : 0);
+        result = 31 * result + (guvnor_packageName != null ? guvnor_packageName.hashCode() : 0);
+        result = 31 * result + (guvnor_packageVersion != null ? guvnor_packageVersion.hashCode() : 0);
+        result = 31 * result + eventID;
+        result = 31 * result + ruleBaseID;
+        result = 31 * result + sessionId;
+        result = 31 * result + (dateEvent != null ? dateEvent.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("HistoryEvent{");
-        sb.append("eventID=").append(eventID);
+        sb.append("guvnor_url='").append(guvnor_url).append('\'');
+        sb.append(", guvnor_appName='").append(guvnor_appName).append('\'');
+        sb.append(", guvnor_packageName='").append(guvnor_packageName).append('\'');
+        sb.append(", guvnor_packageVersion='").append(guvnor_packageVersion).append('\'');
+        sb.append(", eventID=").append(eventID);
+        sb.append(", ruleBaseID=").append(ruleBaseID);
+        sb.append(", sessionId=").append(sessionId);
         sb.append(", droolsChtijbugException=").append(droolsChtijbugException);
         sb.append(", dateEvent=").append(dateEvent);
         sb.append(", typeEvent=").append(typeEvent);
@@ -90,30 +135,39 @@ public class HistoryEvent implements Serializable {
         return sb.toString();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final HistoryEvent other = (HistoryEvent) obj;
-        if (this.dateEvent != other.dateEvent && (this.dateEvent == null || !this.dateEvent.equals(other.dateEvent))) {
-            return false;
-        }
-        if (this.typeEvent != other.typeEvent) {
-            return false;
-        }
-        return true;
+    public String getGuvnor_url() {
+        return guvnor_url;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 89 * hash + (this.dateEvent != null ? this.dateEvent.hashCode() : 0);
-        hash = 89 * hash + (this.typeEvent != null ? this.typeEvent.hashCode() : 0);
-        return hash;
+    public void setGuvnor_url(String guvnor_url) {
+        this.guvnor_url = guvnor_url;
     }
 
+    public String getGuvnor_appName() {
+        return guvnor_appName;
+    }
+
+    public void setGuvnor_appName(String guvnor_appName) {
+        this.guvnor_appName = guvnor_appName;
+    }
+
+    public String getGuvnor_packageName() {
+        return guvnor_packageName;
+    }
+
+    public void setGuvnor_packageName(String guvnor_packageName) {
+        this.guvnor_packageName = guvnor_packageName;
+    }
+
+    public String getGuvnor_packageVersion() {
+        return guvnor_packageVersion;
+    }
+
+    public void setGuvnor_packageVersion(String guvnor_packageVersion) {
+        this.guvnor_packageVersion = guvnor_packageVersion;
+    }
+
+    public void setEventID(int eventID) {
+        this.eventID = eventID;
+    }
 }

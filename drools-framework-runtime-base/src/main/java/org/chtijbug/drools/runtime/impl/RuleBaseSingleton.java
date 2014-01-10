@@ -381,4 +381,12 @@ public class RuleBaseSingleton implements RuleBasePackage {
     public String getGuvnor_password() {
         return guvnor_password;
     }
+
+    public StatefulSessionSupervision getMbsSession() {
+        return mbsSession;
+    }
+
+    public RuleBaseSupervision getMbsRuleBase() {
+        return mbsRuleBase;
+    }
 }

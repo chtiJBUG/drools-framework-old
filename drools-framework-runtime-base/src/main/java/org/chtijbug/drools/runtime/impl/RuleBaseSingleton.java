@@ -15,7 +15,6 @@ import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervision;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
 import org.chtijbug.drools.runtime.resource.GuvnorDroolsResource;
 import org.drools.KnowledgeBase;
-import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
@@ -299,9 +298,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
             for (DroolsResource res : listResouces) {
                 kbuilder.add(res.getResource(), res.getResourceType());
             }
-
-            KnowledgeBase newkbase = KnowledgeBaseFactory.newKnowledgeBase();
-            newkbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
+            KnowledgeBase newkbase = kbuilder.newKnowledgeBase();
             lockKbase.acquire();
             kbase = newkbase;
             lockKbase.release();

@@ -374,7 +374,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             throw new DroolsChtijbugException(DroolsChtijbugException.MaxNumberRuleExecutionReached, stringBuffer.toString(), null);
         }
         if (this.historyListener != null) {
-            SessionFireAllRulesEndEvent sessionFireAllRulesEndEvent = new SessionFireAllRulesEndEvent(this.getNextEventCounter(),this.ruleBaseID,this.sessionId);
+            SessionFireAllRulesEndEvent sessionFireAllRulesEndEvent = new SessionFireAllRulesEndEvent(this.getNextEventCounter(),this.ruleBaseID,this.sessionId,stopTime - startTime, afterNumberRules - beforeNumberRules);
             this.addHistoryElement(sessionFireAllRulesEndEvent);
         }
     }

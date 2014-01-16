@@ -7,10 +7,22 @@ package org.chtijbug.drools.entity.history.session;
  * To change this template use File | Settings | File Templates.
  */
 public class SessionFireAllRulesEndEvent extends SessionEvent {
-    public SessionFireAllRulesEndEvent(int eventID,int ruleBaseId,int sessionId) {
+    private long executionTime;
+    private long numberRulesExecuted ;
+    public SessionFireAllRulesEndEvent(int eventID,int ruleBaseId,int sessionId,long executionTime,long numberRulesExecuted) {
         super(eventID,ruleBaseId,sessionId);
+        this.executionTime = executionTime;
+        this.numberRulesExecuted = numberRulesExecuted;
     }
 
     public SessionFireAllRulesEndEvent() {
+    }
+
+    public long getExecutionTime() {
+        return executionTime;
+    }
+
+    public long getNumberRulesExecuted() {
+        return numberRulesExecuted;
     }
 }

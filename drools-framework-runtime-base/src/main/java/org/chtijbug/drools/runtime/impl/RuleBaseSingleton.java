@@ -118,6 +118,10 @@ public class RuleBaseSingleton implements RuleBasePackage {
     public RuleBaseSingleton(int maxNumberRulesToExecute, HistoryListener historyListener) throws DroolsChtijbugException {
         this(maxNumberRulesToExecute);
         this.historyListener = historyListener;
+        if (this.historyListener != null) {
+            KnowledgeBaseCreatedEvent knowledgeBaseCreatedEvent = new KnowledgeBaseCreatedEvent(this.getNextEventCounter(), new Date(), ruleBaseCounter);
+            this.historyListener.fireEvent(knowledgeBaseCreatedEvent);
+        }
     }
 
     public RuleBaseSingleton(HistoryListener historyListener) throws DroolsChtijbugException {

@@ -280,7 +280,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }  else if (res instanceof DrlDroolsRessource) {
             DrlDroolsRessource drlDroolsRessource = (DrlDroolsRessource)res;
             if (this.historyListener != null) {
-                KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent = new KnowledgeBaseAddRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url, this.guvnor_appName, this.guvnor_packageName, this.guvnor_packageVersion);
+                KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent = new KnowledgeBaseAddRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID,drlDroolsRessource.getFileName(),drlDroolsRessource.getFileContent());
                 this.historyListener.fireEvent(knowledgeBaseAddRessourceEvent);
             }
 

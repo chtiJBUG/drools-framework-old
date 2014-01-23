@@ -12,6 +12,7 @@ import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.chtijbug.drools.runtime.mbeans.RuleBaseSupervision;
 import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervision;
+import org.chtijbug.drools.runtime.resource.DrlDroolsRessource;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
 import org.chtijbug.drools.runtime.resource.GuvnorDroolsResource;
 import org.drools.KnowledgeBase;
@@ -271,6 +272,13 @@ public class RuleBaseSingleton implements RuleBasePackage {
             this.guvnor_packageVersion = guvnorDroolsResource.getPackageVersion();
             this.guvnor_username = guvnorDroolsResource.getUsername();
             this.guvnor_password = guvnorDroolsResource.getPassword();
+            if (this.historyListener != null) {
+                KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent = new KnowledgeBaseAddRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url, this.guvnor_appName, this.guvnor_packageName, this.guvnor_packageVersion);
+                this.historyListener.fireEvent(knowledgeBaseAddRessourceEvent);
+            }
+
+        }  else if (res instanceof DrlDroolsRessource) {
+            DrlDroolsRessource drlDroolsRessource = (DrlDroolsRessource)res;
             if (this.historyListener != null) {
                 KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent = new KnowledgeBaseAddRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url, this.guvnor_appName, this.guvnor_packageName, this.guvnor_packageVersion);
                 this.historyListener.fireEvent(knowledgeBaseAddRessourceEvent);

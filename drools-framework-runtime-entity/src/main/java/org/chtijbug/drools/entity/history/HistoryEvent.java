@@ -7,6 +7,7 @@ package org.chtijbug.drools.entity.history;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -25,7 +26,7 @@ public class HistoryEvent implements Serializable {
     private int ruleBaseID;
     private int sessionId;
     private DroolsChtijbugException droolsChtijbugException;
-
+    private ArrayList<DrlRessourceFile> drlRessourceFiles = new ArrayList<DrlRessourceFile>();
 
     public enum TypeEvent {
         Fact, Rule, BPMN, RuleFlowGroup, KnowledgeBaseSingleton, Session
@@ -46,6 +47,10 @@ public class HistoryEvent implements Serializable {
             this.dateEvent = dateEvent;
             this.typeEvent = typeEvent;
         }
+
+    public ArrayList<DrlRessourceFile> getDrlRessourceFiles() {
+        return drlRessourceFiles;
+    }
 
     public DroolsChtijbugException getDroolsChtijbugException() {
         return droolsChtijbugException;

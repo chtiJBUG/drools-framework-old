@@ -48,6 +48,10 @@ public class HistoryEvent implements Serializable {
             this.typeEvent = typeEvent;
         }
 
+    public void setDrlRessourceFiles(ArrayList<DrlRessourceFile> drlRessourceFiles) {
+        this.drlRessourceFiles = drlRessourceFiles;
+    }
+
     public ArrayList<DrlRessourceFile> getDrlRessourceFiles() {
         return drlRessourceFiles;
     }

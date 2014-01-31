@@ -3,12 +3,11 @@
     <parent>
         <artifactId>drools-framework-parent</artifactId>
         <groupId>org.chtijbug.drools</groupId>
-        <version>1.1.0.17</version>
+        <version>1.1.0.17-1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>maven-guvnor-install-pojo-plugin</artifactId>
-    <version>1.1.0.17</version>
     <packaging>maven-plugin</packaging>
 
     <properties>

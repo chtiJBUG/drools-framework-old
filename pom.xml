@@ -43,7 +43,6 @@
         <connection>scm:git:git@github.com:chtiJBUG/drools-framework.git</connection>
         <url>scm:git:git@github.com:chtiJBUG/drools-framework.git</url>
         <developerConnection>scm:git:git@github.com:chtiJBUG/drools-framework.git</developerConnection>
-        <tag>1.1.0.17</tag>
     </scm>
     <issueManagement>
         <system>Jira</system>

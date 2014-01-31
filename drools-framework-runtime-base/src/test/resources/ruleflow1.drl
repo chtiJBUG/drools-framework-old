@@ -2,11 +2,6 @@ package org.chtijbug.drools.runtime.test
 
 import org.chtijbug.drools.runtime.test.Fibonacci;
 
-#declare any global variables here
-
-
-
-
 rule "Account group1"
     ruleflow-group "Group1"
 	 when

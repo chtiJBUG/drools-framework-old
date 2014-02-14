@@ -5,6 +5,7 @@
 package org.chtijbug.drools.runtime;
 
 import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
+import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.chtijbug.drools.runtime.resource.Bpmn2DroolsRessource;
 import org.chtijbug.drools.runtime.resource.DrlDroolsRessource;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
@@ -30,10 +31,17 @@ public class RuleBaseBuilder {
      * @param guvnor_password
      * @return
      */
+
     public static RuleBasePackage createGuvnorRuleBasePackage(String guvnor_url, String guvnor_appName, String guvnor_packageName, String guvnor_packageVersion,
                                                               String guvnor_username, String guvnor_password) throws DroolsChtijbugException {
+        return RuleBaseBuilder.createGuvnorRuleBasePackageWithListener(null, guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion,
+                guvnor_username, guvnor_password);
+    }
+
+    public static RuleBasePackage createGuvnorRuleBasePackageWithListener(HistoryListener historyListener, String guvnor_url, String guvnor_appName, String guvnor_packageName, String guvnor_packageVersion,
+                                                                          String guvnor_username, String guvnor_password) throws DroolsChtijbugException {
         logger.debug(">>createGuvnorRuleBasePackage", guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion, guvnor_username, guvnor_password);
-        RuleBasePackage newRuleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD);
+        RuleBasePackage newRuleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener);
         try {
             GuvnorDroolsResource gdr = new GuvnorDroolsResource(guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion, guvnor_username, guvnor_password);
             newRuleBasePackage.addDroolsResouce(gdr);
@@ -46,21 +54,25 @@ public class RuleBaseBuilder {
     }
 
     public static RuleBasePackage createPackageBasePackage(String... filenames) throws DroolsChtijbugException {
+        return RuleBaseBuilder.createPackageBasePackageWithListener(null, filenames);
+    }
+
+    public static RuleBasePackage createPackageBasePackageWithListener(HistoryListener historyListener, String... filenames) throws DroolsChtijbugException {
         logger.debug(">>createPackageBasePackage");
-        RuleBasePackage ruleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD);
+        RuleBasePackage ruleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener);
         try {
             for (String filename : filenames) {
                 String extensionName = getFileExtension(filename);
-                DroolsResource resource=null;
-                if ("DRL".equals(extensionName)){
-                    resource= DrlDroolsRessource.createClassPathResource(filename);
-                }else if ("BPMN2".equals(extensionName)){
-                    resource= Bpmn2DroolsRessource.createClassPathResource(filename);
+                DroolsResource resource = null;
+                if ("DRL".equals(extensionName)) {
+                    resource = DrlDroolsRessource.createClassPathResource(filename);
+                } else if ("BPMN2".equals(extensionName)) {
+                    resource = Bpmn2DroolsRessource.createClassPathResource(filename);
                 }
-                if (resource!= null){
+                if (resource != null) {
                     ruleBasePackage.addDroolsResouce(resource);
-                }else {
-                    throw new DroolsChtijbugException(DroolsChtijbugException.UnknowFileExtension,filename,null) ;
+                } else {
+                    throw new DroolsChtijbugException(DroolsChtijbugException.UnknowFileExtension, filename, null);
                 }
             }
             ruleBasePackage.createKBase();

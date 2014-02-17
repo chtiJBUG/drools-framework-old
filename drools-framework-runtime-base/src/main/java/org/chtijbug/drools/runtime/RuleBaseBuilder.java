@@ -13,6 +13,9 @@ import org.chtijbug.drools.runtime.resource.GuvnorDroolsResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author nheron
  */
@@ -44,8 +47,7 @@ public class RuleBaseBuilder {
         RuleBasePackage newRuleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener);
         try {
             GuvnorDroolsResource gdr = new GuvnorDroolsResource(guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion, guvnor_username, guvnor_password);
-            newRuleBasePackage.addDroolsResouce(gdr);
-            newRuleBasePackage.createKBase();
+            newRuleBasePackage.createKBase(gdr);
             //_____ Returning the result
             return newRuleBasePackage;
         } finally {
@@ -61,6 +63,7 @@ public class RuleBaseBuilder {
         logger.debug(">>createPackageBasePackage");
         RuleBasePackage ruleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener);
         try {
+            List<DroolsResource> droolsResources = new ArrayList<DroolsResource>();
             for (String filename : filenames) {
                 String extensionName = getFileExtension(filename);
                 DroolsResource resource = null;
@@ -70,12 +73,13 @@ public class RuleBaseBuilder {
                     resource = Bpmn2DroolsRessource.createClassPathResource(filename);
                 }
                 if (resource != null) {
-                    ruleBasePackage.addDroolsResouce(resource);
+                    droolsResources.add(resource);
                 } else {
                     throw new DroolsChtijbugException(DroolsChtijbugException.UnknowFileExtension, filename, null);
                 }
             }
-            ruleBasePackage.createKBase();
+
+            ruleBasePackage.createKBase(droolsResources);
             //_____ Returning the result
             return ruleBasePackage;
         } finally {

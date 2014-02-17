@@ -232,11 +232,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
     public RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute) throws DroolsChtijbugException {
         logger.debug(">>createRuleBaseSession", maxNumberRulesToExecute);
         RuleBaseSession newRuleBaseSession = null;
-        if (this.historyListener != null) {
-            KnowledgeBaseCreateSessionEvent knowledgeBaseCreateSessionEvent = new KnowledgeBaseCreateSessionEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID);
-            this.historyListener.fireEvent(knowledgeBaseCreateSessionEvent);
-        }
-        try {
+          try {
             if (kbase != null) {
                 //____ Acquire semaphore
                 try {
@@ -248,6 +244,12 @@ public class RuleBaseSingleton implements RuleBasePackage {
                 StatefulKnowledgeSession newDroolsSession = kbase.newStatefulKnowledgeSession();
                 //_____ Increment session counter
                 this.sessionCounter++;
+                if (this.historyListener != null) {
+                      KnowledgeBaseCreateSessionEvent knowledgeBaseCreateSessionEvent = new KnowledgeBaseCreateSessionEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID);
+                      knowledgeBaseCreateSessionEvent.setSessionId(this.sessionCounter);
+                      this.historyListener.fireEvent(knowledgeBaseCreateSessionEvent);
+                  }
+
                 //_____ Wrapping the knowledge Session
                 newRuleBaseSession = new RuleBaseStatefulSession(this.ruleBaseID, this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, mbsSession, this.historyListener);
                 //_____ Release semaphore
@@ -262,8 +264,12 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
     }
 
-    @Override
-    public void addDroolsResouce(DroolsResource res) throws DroolsChtijbugException {
+
+    private void addDroolsResource(DroolsResource res) throws DroolsChtijbugException {
+        if (this.listResouces.contains(res) == true) {
+            DroolsChtijbugException droolsChtijbugException = new DroolsChtijbugException(DroolsChtijbugException.RessourceAlreadyAdded, res.toString(), null);
+            throw droolsChtijbugException;
+        }
         if (res instanceof GuvnorDroolsResource) {
             GuvnorDroolsResource guvnorDroolsResource = (GuvnorDroolsResource) res;
             this.guvnor_url = guvnorDroolsResource.getBaseUrl();
@@ -277,19 +283,17 @@ public class RuleBaseSingleton implements RuleBasePackage {
                 this.historyListener.fireEvent(knowledgeBaseAddRessourceEvent);
             }
 
-        }  else if (res instanceof DrlDroolsRessource) {
-            DrlDroolsRessource drlDroolsRessource = (DrlDroolsRessource)res;
+        } else if (res instanceof DrlDroolsRessource) {
+            DrlDroolsRessource drlDroolsRessource = (DrlDroolsRessource) res;
             if (this.historyListener != null) {
-                KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent = new KnowledgeBaseAddRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID,drlDroolsRessource.getFileName(),drlDroolsRessource.getFileContent());
+                KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent = new KnowledgeBaseAddRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, drlDroolsRessource.getFileName(), drlDroolsRessource.getFileContent());
                 this.historyListener.fireEvent(knowledgeBaseAddRessourceEvent);
             }
 
         }
         listResouces.add(res);
     }
-
-    @Override
-    public synchronized void createKBase() throws DroolsChtijbugException {
+    private synchronized void createKBase() throws DroolsChtijbugException {
 
         if (kbase != null) {
             if (this.historyListener != null) {
@@ -318,6 +322,42 @@ public class RuleBaseSingleton implements RuleBasePackage {
             logger.error("error to load Agent", e);
             throw new DroolsChtijbugException(DroolsChtijbugException.ErrorToLoadAgent, "", e);
         }
+    }
+
+    @Override
+    public void createKBase(DroolsResource... res) throws DroolsChtijbugException {
+        this.listResouces.clear();
+        for (DroolsResource droolsResource : res) {
+            this.addDroolsResource(droolsResource);
+        }
+        this.createKBase();
+    }
+
+    @Override
+    public void createKBase(List<DroolsResource> res) throws DroolsChtijbugException {
+        this.listResouces.clear();
+        for (DroolsResource droolsResource : res) {
+            this.addDroolsResource(droolsResource);
+        }
+        this.createKBase();
+    }
+
+    @Override
+    public void RecreateKBaseWithNewRessources(DroolsResource... res) throws DroolsChtijbugException {
+        this.listResouces.clear();
+        for (DroolsResource droolsResource : res) {
+            this.addDroolsResource(droolsResource);
+        }
+        this.createKBase();
+    }
+
+    @Override
+    public void RecreateKBaseWithNewRessources(List<DroolsResource> res) throws DroolsChtijbugException {
+        this.listResouces.clear();
+        for (DroolsResource droolsResource : res) {
+            this.addDroolsResource(droolsResource);
+        }
+        this.createKBase();
     }
 
     @Override

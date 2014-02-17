@@ -17,6 +17,7 @@ public class DroolsChtijbugException extends  Exception implements Serializable 
     public static String ErrorToLoadAgent="ErrorToLoadAgent" ;
     public static String UnknowFileExtension="UnknowFileExtension";
     public static String ErrorRegisteringMBeans="";
+    public static String RessourceAlreadyAdded="RessourceAlreadyAdded";
     private String key;
     private String Description;
     private Exception originException;

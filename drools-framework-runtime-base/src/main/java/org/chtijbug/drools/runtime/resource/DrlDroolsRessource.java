@@ -82,4 +82,21 @@ public class DrlDroolsRessource implements DroolsResource {
     public String getFileContent() {
         return fileContent;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DrlDroolsRessource that = (DrlDroolsRessource) o;
+
+        if (!fileName.equals(that.fileName)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return fileName.hashCode();
+    }
 }

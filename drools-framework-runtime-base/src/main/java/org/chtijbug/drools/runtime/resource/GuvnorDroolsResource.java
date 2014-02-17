@@ -126,4 +126,28 @@ public class GuvnorDroolsResource implements DroolsResource {
     public String getPassword() {
         return password;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GuvnorDroolsResource)) return false;
+
+        GuvnorDroolsResource that = (GuvnorDroolsResource) o;
+
+        if (!baseUrl.equals(that.baseUrl)) return false;
+        if (!packageName.equals(that.packageName)) return false;
+        if (!packageVersion.equals(that.packageVersion)) return false;
+        if (!webappName.equals(that.webappName)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = baseUrl.hashCode();
+        result = 31 * result + webappName.hashCode();
+        result = 31 * result + packageName.hashCode();
+        result = 31 * result + packageVersion.hashCode();
+        return result;
+    }
 }

@@ -4,6 +4,8 @@ import org.chtijbug.drools.entity.history.HistoryEvent;
 import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseCreateSessionEvent;
 import org.chtijbug.drools.entity.history.session.SessionCreatedEvent;
 import org.chtijbug.drools.entity.history.session.SessionDisposedEvent;
+import org.chtijbug.drools.entity.history.session.SessionFireAllRulesBeginEvent;
+import org.chtijbug.drools.entity.history.session.SessionFireAllRulesEndEvent;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBaseBuilder;
 import org.chtijbug.drools.runtime.RuleBasePackage;
@@ -120,5 +122,37 @@ public class KnowledgeBaseHistoryEventTest {
         Assert.assertEquals(sessionDisposedEvent2.getTypeEvent(), HistoryEvent.TypeEvent.Session);
     }
 
+    @Test
+    public void KnowledgeBaseFireAllRules() throws DroolsChtijbugException {
 
+        final List<HistoryEvent> historyEvents = new ArrayList<HistoryEvent>();
+        HistoryListener historyListener = new HistoryListener() {
+            @Override
+            public void fireEvent(HistoryEvent newHistoryEvent) throws DroolsChtijbugException {
+                historyEvents.add(newHistoryEvent);
+            }
+        };
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackageWithListener(historyListener, "fibonacci.drl");
+        int rulePackageID = ruleBasePackage.getRuleBaseID();
+
+        RuleBaseSession ruleBaseSession1 = ruleBasePackage.createRuleBaseSession();
+        Fibonacci fibonacci = new Fibonacci(1);
+        ruleBaseSession1.insertObject(fibonacci);
+        ruleBaseSession1.fireAllRules();
+        Assert.assertTrue(historyEvents.size() == 11);
+        Assert.assertTrue(historyEvents.get(6) instanceof SessionFireAllRulesBeginEvent);
+        SessionFireAllRulesBeginEvent sessionFireAllRulesBeginEvent = (SessionFireAllRulesBeginEvent) historyEvents.get(6);
+        Assert.assertEquals(sessionFireAllRulesBeginEvent.getRuleBaseID(), rulePackageID);
+        Assert.assertEquals(sessionFireAllRulesBeginEvent.getEventID(), 3l);
+        Assert.assertEquals(sessionFireAllRulesBeginEvent.getSessionId(), 1l);
+        Assert.assertEquals(sessionFireAllRulesBeginEvent.getTypeEvent(), HistoryEvent.TypeEvent.Session);
+        Assert.assertTrue(historyEvents.get(10) instanceof SessionFireAllRulesEndEvent);
+        SessionFireAllRulesEndEvent sessionFireAllRulesEndEvent = (SessionFireAllRulesEndEvent) historyEvents.get(10);
+        Assert.assertEquals(sessionFireAllRulesEndEvent.getRuleBaseID(), rulePackageID);
+        Assert.assertEquals(sessionFireAllRulesEndEvent.getEventID(), 7l);
+        Assert.assertEquals(sessionFireAllRulesEndEvent.getSessionId(), 1l);
+        Assert.assertEquals(sessionFireAllRulesEndEvent.getNumberRulesExecuted(), 1l);
+        Assert.assertTrue(sessionFireAllRulesEndEvent.getExecutionTime()> 0l);
+        Assert.assertEquals(sessionFireAllRulesEndEvent.getTypeEvent(), HistoryEvent.TypeEvent.Session);
+    }
 }

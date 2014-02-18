@@ -24,7 +24,7 @@ public class DroolsProcessObject implements Serializable {
     public DroolsProcessObject() {
     }
 
-    protected DroolsProcessObject(String id, String name, String packageName, String type, String version) {
+    public DroolsProcessObject(String id, String name, String packageName, String type, String version) {
         this.id = id;
         this.name = name;
         this.packageName = packageName;

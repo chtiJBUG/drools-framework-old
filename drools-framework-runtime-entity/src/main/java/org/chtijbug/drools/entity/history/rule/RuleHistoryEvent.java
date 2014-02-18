@@ -17,6 +17,10 @@ public class RuleHistoryEvent extends HistoryEvent {
 
 	private static final long serialVersionUID = 7433690026159716847L;
 	protected DroolsRuleObject rule;
+    /**
+     * ruleInstanceID
+     * Each rule that is executed in a sessoin gets a ruleInstanceID
+     */
     private int ruleInstanceId;
 	/**
 	 * 
@@ -41,14 +45,16 @@ public class RuleHistoryEvent extends HistoryEvent {
         this.rule = rule;
     }
 
-    /*
-      * (non-Javadoc)
-      *
-      * @see org.chtijbug.drools.entity.history.HistoryEvent#toString()
-      */
-	@Override
-	public String toString() {
+    public int getRuleInstanceId() {
+        return ruleInstanceId;
+    }
 
-		return super.toString() + "\n" + rule;
-	}
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("RuleHistoryEvent{");
+        sb.append("rule=").append(rule);
+        sb.append(", ruleInstanceId=").append(ruleInstanceId);
+        sb.append('}');
+        return sb.toString();
+    }
 }

@@ -9,7 +9,7 @@ import org.chtijbug.drools.entity.DroolsNodeInstanceObject;
 /**
  * @author nheron
  */
-public class NodeInstanceAfterHistoryEvent extends ProcessHistoryEvent {
+public class BeforeNodeLeftHistoryEvent extends ProcessHistoryEvent {
 
     private static final long serialVersionUID = 1117121703139545755L;
     protected DroolsNodeInstanceObject nodeInstance;
@@ -17,10 +17,10 @@ public class NodeInstanceAfterHistoryEvent extends ProcessHistoryEvent {
     /**
      *
      */
-    public NodeInstanceAfterHistoryEvent() {
+    public BeforeNodeLeftHistoryEvent() {
     }
 
-    public NodeInstanceAfterHistoryEvent(int eventID,DroolsNodeInstanceObject nodeInstance,int ruleBaseId,int sessionId) {
+    public BeforeNodeLeftHistoryEvent(int eventID, DroolsNodeInstanceObject nodeInstance, int ruleBaseId, int sessionId) {
         super(eventID,ruleBaseId,sessionId);
         this.nodeInstance = nodeInstance;
     }

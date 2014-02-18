@@ -9,18 +9,18 @@ import org.chtijbug.drools.entity.DroolsProcessInstanceObject;
 /**
  * @author nheron
  */
-public class ProcessStartHistoryEvent extends ProcessHistoryEvent {
+public class BeforeProcessStartHistoryEvent extends ProcessHistoryEvent {
 
-    private static final long serialVersionUID = -9002244608850950935L;
+
     protected DroolsProcessInstanceObject processInstance;
 
     /**
      *
      */
-    public ProcessStartHistoryEvent() {
+    public BeforeProcessStartHistoryEvent() {
     }
 
-    public ProcessStartHistoryEvent(int eventID,DroolsProcessInstanceObject processInstance,int ruleBaseId,int sessionId) {
+    public BeforeProcessStartHistoryEvent(int eventID, DroolsProcessInstanceObject processInstance, int ruleBaseId, int sessionId) {
         super(eventID,ruleBaseId,sessionId);
         this.processInstance = processInstance;
     }
@@ -31,9 +31,8 @@ public class ProcessStartHistoryEvent extends ProcessHistoryEvent {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer();
-        sb.append("ProcessStartHistoryEvent");
-        sb.append("{processInstance=").append(processInstance.toString());
+        final StringBuffer sb = new StringBuffer("BeforeProcessStartHistoryEvent{");
+        sb.append("processInstance=").append(processInstance);
         sb.append('}');
         return sb.toString();
     }

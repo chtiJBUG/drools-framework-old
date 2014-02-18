@@ -9,20 +9,18 @@ import org.chtijbug.drools.entity.DroolsNodeInstanceObject;
 /**
  * @author nheron
  */
-public class NodeInstanceBeforeHistoryEvent extends ProcessHistoryEvent {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 7909713944850159592L;
+public class AfterNodeLeftHistoryEvent extends ProcessHistoryEvent {
+
+    private static final long serialVersionUID = 1117121703139545755L;
     protected DroolsNodeInstanceObject nodeInstance;
 
     /**
      *
      */
-    public NodeInstanceBeforeHistoryEvent() {
+    public AfterNodeLeftHistoryEvent() {
     }
 
-    public NodeInstanceBeforeHistoryEvent(int eventID,DroolsNodeInstanceObject nodeInstance,int ruleBaseId,int sessionId) {
+    public AfterNodeLeftHistoryEvent(int eventID, DroolsNodeInstanceObject nodeInstance, int ruleBaseId, int sessionId) {
         super(eventID,ruleBaseId,sessionId);
         this.nodeInstance = nodeInstance;
     }
@@ -35,7 +33,7 @@ public class NodeInstanceBeforeHistoryEvent extends ProcessHistoryEvent {
     public String toString() {
         final StringBuffer sb = new StringBuffer();
         sb.append(super.toString() + "\n");
-        sb.append("NodeInstanceBeforeHistoryEvent");
+        sb.append("NodeInstanceAfterHistoryEvent");
         sb.append("{nodeInstance=").append(nodeInstance);
         sb.append('}');
         return sb.toString();

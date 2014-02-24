@@ -19,7 +19,11 @@ public class RuleFlowHistoryEvent extends HistoryEvent {
     	public RuleFlowHistoryEvent() {
     	}
 
-    	public RuleFlowHistoryEvent(int eventID,DroolsRuleFlowGroupObject droolsRuleFlowGroupObject,int ruleBaseId,int sessionId) {
+    public DroolsRuleFlowGroupObject getDroolsRuleFlowGroupObject() {
+        return droolsRuleFlowGroupObject;
+    }
+
+    public RuleFlowHistoryEvent(int eventID,DroolsRuleFlowGroupObject droolsRuleFlowGroupObject,int ruleBaseId,int sessionId) {
 
 
     		super(eventID, new Date(), HistoryEvent.TypeEvent.RuleFlowGroup);

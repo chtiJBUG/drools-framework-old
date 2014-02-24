@@ -4,7 +4,12 @@
  */
 package org.chtijbug.drools.entity;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +27,7 @@ public class DroolsFactObject implements Serializable {
     protected int version;
     private List<DroolsFactObjectAttribute> listfactObjectAttributes = new ArrayList<DroolsFactObjectAttribute>();
     private final transient Object realObject;
+    private String realObject_JSON;
 
     /**
      *
@@ -30,11 +36,18 @@ public class DroolsFactObject implements Serializable {
         realObject = null;
     }
 
-    public DroolsFactObject(Object realObject, int version) {
+    public DroolsFactObject(Object realObject, int version) throws IOException {
         this.realObject = realObject;
         this.version = version;
+        ObjectMapper mapper = new ObjectMapper();
+        Writer strWriter = new StringWriter();
+        mapper.writeValue(strWriter, realObject);
+        this.realObject_JSON = strWriter.toString();
     }
 
+    public String getRealObject_JSON() {
+        return realObject_JSON;
+    }
 
     @Override
     public String toString() {

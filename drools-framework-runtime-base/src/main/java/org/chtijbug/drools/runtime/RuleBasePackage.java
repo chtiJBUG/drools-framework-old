@@ -33,6 +33,7 @@ public interface RuleBasePackage {
 
     public int getRuleBaseID();
 
+    public void dispose();
 
     void cleanup();
 

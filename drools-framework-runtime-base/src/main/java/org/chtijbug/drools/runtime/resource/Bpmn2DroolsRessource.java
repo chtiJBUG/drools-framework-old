@@ -1,10 +1,11 @@
 package org.chtijbug.drools.runtime.resource;
 
+import org.chtijbug.drools.common.file.FileHelper;
 import org.drools.builder.ResourceType;
 import org.drools.io.Resource;
 import org.drools.io.ResourceFactory;
 
-import java.io.File;
+import java.io.InputStream;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,47 +13,48 @@ import java.io.File;
  * Time: 16:15
  * To change this template use File | Settings | File Templates.
  */
-public class Bpmn2DroolsRessource  implements DroolsResource {
+public class Bpmn2DroolsRessource implements DroolsResource {
 
     private final Resource resource;
+    private String fileName;
+    private String fileContent;
 
-        public Bpmn2DroolsRessource(Resource resource) {
-            this.resource = resource;
-        }
+    public Bpmn2DroolsRessource(Resource resource, String fileName, String fileContent) {
+        this.resource = resource;
+        this.fileName = fileName;
+        this.fileContent = fileContent;
+    }
 
-        public static Bpmn2DroolsRessource createClassPathResource(String path) {
 
-            return new Bpmn2DroolsRessource(ResourceFactory.newClassPathResource(path));
+    public static Bpmn2DroolsRessource createClassPathResource(String path) {
+        InputStream inputStream = DrlDroolsRessource.class.getResourceAsStream("/"+path);
+        String fileContent = FileHelper.getFileContent(inputStream) ;
+        return new Bpmn2DroolsRessource(ResourceFactory.newClassPathResource(path), path, fileContent);
 
-        }
+    }
 
-        public static Bpmn2DroolsRessource createFileResource(File f) {
-            return new Bpmn2DroolsRessource(ResourceFactory.newFileResource(f));
-        }
+    public String getFileName() {
+        return fileName;
+    }
 
-        public static Bpmn2DroolsRessource createUrlResource(String url) {
-            return new Bpmn2DroolsRessource(ResourceFactory.newUrlResource(url));
-        }
+    public String getFileContent() {
+        return fileContent;
+    }
 
-        /*
-          * (non-Javadoc)
-          *
-          * @see org.chtijbug.drools.runtime.resource.DroolsResource#getResource()
-          */
-        @Override
-        public Resource getResource() throws Exception {
+    @Override
+    public Resource getResource() throws Exception {
 
-            return resource;
-        }
+        return resource;
+    }
 
-        /*
-          * (non-Javadoc)
-          *
-          * @see
-          * org.chtijbug.drools.runtime.resource.DroolsResource#getResourceType()
-          */
-        @Override
-        public ResourceType getResourceType() {
-            return ResourceType.BPMN2;
-        }
+    /*
+      * (non-Javadoc)
+      *
+      * @see
+      * org.chtijbug.drools.runtime.resource.DroolsResource#getResourceType()
+      */
+    @Override
+    public ResourceType getResourceType() {
+        return ResourceType.BPMN2;
+    }
 }

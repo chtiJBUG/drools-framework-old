@@ -4,6 +4,7 @@
  */
 package org.chtijbug.drools.runtime.impl;
 
+import com.google.common.base.Throwables;
 import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.chtijbug.drools.entity.history.knowledge.*;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
@@ -12,6 +13,7 @@ import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.chtijbug.drools.runtime.mbeans.RuleBaseSupervision;
 import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervision;
+import org.chtijbug.drools.runtime.resource.Bpmn2DroolsRessource;
 import org.chtijbug.drools.runtime.resource.DrlDroolsRessource;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
 import org.chtijbug.drools.runtime.resource.GuvnorDroolsResource;
@@ -232,7 +234,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
     public RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute) throws DroolsChtijbugException {
         logger.debug(">>createRuleBaseSession", maxNumberRulesToExecute);
         RuleBaseSession newRuleBaseSession = null;
-          try {
+        try {
             if (kbase != null) {
                 //____ Acquire semaphore
                 try {
@@ -245,10 +247,10 @@ public class RuleBaseSingleton implements RuleBasePackage {
                 //_____ Increment session counter
                 this.sessionCounter++;
                 if (this.historyListener != null) {
-                      KnowledgeBaseCreateSessionEvent knowledgeBaseCreateSessionEvent = new KnowledgeBaseCreateSessionEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID);
-                      knowledgeBaseCreateSessionEvent.setSessionId(this.sessionCounter);
-                      this.historyListener.fireEvent(knowledgeBaseCreateSessionEvent);
-                  }
+                    KnowledgeBaseCreateSessionEvent knowledgeBaseCreateSessionEvent = new KnowledgeBaseCreateSessionEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID);
+                    knowledgeBaseCreateSessionEvent.setSessionId(this.sessionCounter);
+                    this.historyListener.fireEvent(knowledgeBaseCreateSessionEvent);
+                }
 
                 //_____ Wrapping the knowledge Session
                 newRuleBaseSession = new RuleBaseStatefulSession(this.ruleBaseID, this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, mbsSession, this.historyListener);
@@ -290,9 +292,17 @@ public class RuleBaseSingleton implements RuleBasePackage {
                 this.historyListener.fireEvent(knowledgeBaseAddRessourceEvent);
             }
 
+        } else if (res instanceof Bpmn2DroolsRessource) {
+            Bpmn2DroolsRessource bpmn2DroolsRessource = (Bpmn2DroolsRessource) res;
+            if (this.historyListener != null) {
+                KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent = new KnowledgeBaseAddRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, bpmn2DroolsRessource.getFileName(), bpmn2DroolsRessource.getFileContent());
+                this.historyListener.fireEvent(knowledgeBaseAddRessourceEvent);
+            }
+
         }
         listResouces.add(res);
     }
+
     private synchronized void createKBase() throws DroolsChtijbugException {
 
         if (kbase != null) {
@@ -384,6 +394,20 @@ public class RuleBaseSingleton implements RuleBasePackage {
     private Object readResolve() throws DroolsChtijbugException {
         initMBeans();
         return this;
+    }
+
+    @Override
+    public void dispose() {
+        this.cleanup();
+        this.kbase = null;
+        if (this.historyListener != null) {
+            KnowledgeBaseDisposeEvent knowledgeBaseDisposeEvent = new KnowledgeBaseDisposeEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID);
+            try {
+                this.historyListener.fireEvent(knowledgeBaseDisposeEvent);
+            } catch (DroolsChtijbugException e) {
+                throw Throwables.propagate(e);
+            }
+        }
     }
 
     @Override

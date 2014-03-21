@@ -52,6 +52,8 @@ public interface RestRepositoryConnector {
 
     void buildRulePackageByStatus(String snapshotName, String filter) throws ChtijbugDroolsRestException;
 
+    void deletePackageSnapshot(String snapshotName) throws ChtijbugDroolsRestException;
+
     List<Snapshot> getListSnapshots() throws ChtijbugDroolsRestException;
 
 }

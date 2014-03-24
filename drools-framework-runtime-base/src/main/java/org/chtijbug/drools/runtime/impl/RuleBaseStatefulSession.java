@@ -447,4 +447,8 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     public int getRuleBaseID() {
         return ruleBaseID;
     }
+
+    public StatefulSessionSupervision getMbeanStatefulSessionSupervision() {
+        return mbeanStatefulSessionSupervision;
+    }
 }

@@ -1,5 +1,6 @@
 package org.chtijbug.drools.guvnor.rest;
 
+import com.google.common.collect.Lists;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.chtijbug.drools.common.jaxb.JAXBContextUtils;
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
@@ -61,8 +62,10 @@ public class RulePackageManager {
             Snapshots list = webClient.path(path)
                     .type(MediaType.APPLICATION_ATOM_XML)
                     .get(Snapshots.class);
-            for (int i=0;i< list.getListNames().length;i++){
-                Snapshot snapshot = new Snapshot(this.configuration.getPackageName(),list.getListNames()[i]);
+            if (list == null)
+                return Lists.newArrayList();
+            for (int i = 0; i < list.getListNames().length; i++) {
+                Snapshot snapshot = new Snapshot(this.configuration.getPackageName(), list.getListNames()[i]);
                 result.add(snapshot);
             }
         } catch (Exception e) {
@@ -71,4 +74,13 @@ public class RulePackageManager {
         return result;
     }
 
+
+    public void deletePackageSnapshot(String snapshotName) {
+        String path = format("%s/rest/packages/%s/snapshots", this.configuration.getWebappName(), this.configuration.getPackageName());
+        WebClient webClient = this.configuration.webClient();
+        this.configuration.noTimeout(webClient);
+        webClient.path(path)
+                .type(MediaType.APPLICATION_ATOM_XML)
+                .delete();
+    }
 }

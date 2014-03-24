@@ -18,7 +18,7 @@
         <drools.version>5.6.0.Final</drools.version>
         <jbpm.version>5.5.0.Final</jbpm.version>
         <powermock.version>1.4.12</powermock.version>
-         <jackson.version>2.2.0</jackson.version>
+        <jackson.version>2.2.0</jackson.version>
     </properties>
 
     <licenses>
@@ -257,54 +257,54 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>1.7.2</version>
             </dependency>
-          <dependency>
-             <groupId>com.fasterxml.jackson.core</groupId>
-             <artifactId>jackson-core</artifactId>
-             <version>${jackson.version}</version>
-           </dependency>
-          <!-- Just the annotations; use this dependency if you want to attach annotations
-                to classes without connecting them to the code. -->
-           <dependency>
-             <groupId>com.fasterxml.jackson.core</groupId>
-             <artifactId>jackson-annotations</artifactId>
-             <version>${jackson.version}</version>
-          </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <!-- Just the annotations; use this dependency if you want to attach annotations
+                  to classes without connecting them to the code. -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
 
-          <!-- databinding; ObjectMapper, JsonNode and related classes are here -->
-          <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-          </dependency>
+            <!-- databinding; ObjectMapper, JsonNode and related classes are here -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
 
-          <!-- smile (binary JSON). Other artifacts in this group do other formats. -->
-          <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-smile</artifactId>
-            <version>${jackson.version}</version>
-          </dependency>
-          <!-- JAX-RS provider -->
-          <dependency>
-             <groupId>com.fasterxml.jackson.jaxrs</groupId>
-             <artifactId>jackson-jaxrs-json-provider</artifactId>
-            <version>${jackson.version}</version>
-          </dependency>
-          <!-- Support for JAX-B annotations as additional configuration -->
-          <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-jaxb-annotations</artifactId>
-            <version>${jackson.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>15.0</version>
-          </dependency>
-          <dependency>
-              <groupId>commons-io</groupId>
-              <artifactId>commons-io</artifactId>
-              <version>2.4</version>
-          </dependency>
+            <!-- smile (binary JSON). Other artifacts in this group do other formats. -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-smile</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <!-- JAX-RS provider -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.jaxrs</groupId>
+                <artifactId>jackson-jaxrs-json-provider</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <!-- Support for JAX-B annotations as additional configuration -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-jaxb-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>15.0</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.4</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

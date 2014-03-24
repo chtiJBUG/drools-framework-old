@@ -100,6 +100,11 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
     }
 
     @Override
+    public void deletePackageSnapshot(String snapshotName) throws ChtijbugDroolsRestException {
+        this.rulePackageManager.deletePackageSnapshot(snapshotName);
+    }
+
+    @Override
     public  List<Snapshot> getListSnapshots() throws ChtijbugDroolsRestException{
         return this.rulePackageManager.getListSnaphots();
     }

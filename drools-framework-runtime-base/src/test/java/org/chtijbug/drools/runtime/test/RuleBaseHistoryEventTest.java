@@ -56,20 +56,20 @@ public class RuleBaseHistoryEventTest {
         Assert.assertEquals(knowledgeBaseInitialLoadEvent.getEventID(), 3l);
         Assert.assertEquals(knowledgeBaseInitialLoadEvent.getTypeEvent(), HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
         ruleBasePackage.RecreateKBaseWithNewRessources(DrlDroolsRessource.createClassPathResource("fibonacciBis.drl"));
-        Assert.assertTrue(historyEvents.size() == 5);
-        Assert.assertTrue(historyEvents.get(3) instanceof KnowledgeBaseAddRessourceEvent);
-        KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent2 = (KnowledgeBaseAddRessourceEvent) historyEvents.get(3);
-        Assert.assertEquals(knowledgeBaseAddRessourceEvent2.getEventID(), 4l);
+        Assert.assertTrue(historyEvents.size() == 6);
+        Assert.assertTrue(historyEvents.get(4) instanceof KnowledgeBaseAddRessourceEvent);
+        KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent2 = (KnowledgeBaseAddRessourceEvent) historyEvents.get(4);
+        Assert.assertEquals(knowledgeBaseAddRessourceEvent2.getEventID(), 5l);
         Assert.assertEquals(knowledgeBaseAddRessourceEvent2.getTypeEvent(), HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
         Assert.assertTrue(knowledgeBaseAddRessourceEvent2.getDrlRessourceFiles().size() == 1);
         DrlRessourceFile drlRessourceFile2 = knowledgeBaseAddRessourceEvent2.getDrlRessourceFiles().get(0);
         Assert.assertTrue(drlRessourceFile2.getFileName().equals("fibonacciBis.drl"));
 
 
-        Assert.assertTrue(historyEvents.get(4) instanceof KnowledgeBaseReloadedEvent);
-        KnowledgeBaseReloadedEvent knowledgeBaseReloadedEvent = (KnowledgeBaseReloadedEvent) historyEvents.get(4);
+        Assert.assertTrue(historyEvents.get(5) instanceof KnowledgeBaseReloadedEvent);
+        KnowledgeBaseReloadedEvent knowledgeBaseReloadedEvent = (KnowledgeBaseReloadedEvent) historyEvents.get(5);
         Assert.assertEquals(knowledgeBaseReloadedEvent.getRuleBaseID(), rulePackageID);
-        Assert.assertEquals(knowledgeBaseReloadedEvent.getEventID(), 5l);
+        Assert.assertEquals(knowledgeBaseReloadedEvent.getEventID(), 6l);
         Assert.assertEquals(knowledgeBaseReloadedEvent.getSessionId(), 0l);
         Assert.assertEquals(knowledgeBaseReloadedEvent.getTypeEvent(), HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
 

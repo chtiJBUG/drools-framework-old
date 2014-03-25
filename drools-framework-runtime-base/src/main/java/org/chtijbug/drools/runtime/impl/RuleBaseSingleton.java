@@ -302,6 +302,40 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
         listResouces.add(res);
     }
+    private void deleteAllDroolsResources() throws DroolsChtijbugException {
+        for (DroolsResource droolsResource : this.listResouces) {
+            this.deleteDroolsResource(droolsResource);
+        }
+        this.listResouces.clear();
+
+    }
+
+    private void deleteDroolsResource(DroolsResource res) throws DroolsChtijbugException {
+        if (this.listResouces.contains(res) == false) {
+            DroolsChtijbugException droolsChtijbugException = new DroolsChtijbugException(DroolsChtijbugException.RessourceDoesNotExist, res.toString(), null);
+            throw droolsChtijbugException;
+        }
+        if (this.historyListener != null) {
+            if (res instanceof GuvnorDroolsResource) {
+                KnowledgeBaseDelRessourceEvent knowledgeBaseDelRessourceEvent = new KnowledgeBaseDelRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url, this.guvnor_appName, this.guvnor_packageName, this.guvnor_packageVersion);
+                this.historyListener.fireEvent(knowledgeBaseDelRessourceEvent);
+            } else if (res instanceof DrlDroolsRessource) {
+                DrlDroolsRessource drlDroolsRessource = (DrlDroolsRessource) res;
+                if (this.historyListener != null) {
+                    KnowledgeBaseDelRessourceEvent knowledgeBaseDelRessourceEvent = new KnowledgeBaseDelRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, drlDroolsRessource.getFileName(), drlDroolsRessource.getFileContent());
+                    this.historyListener.fireEvent(knowledgeBaseDelRessourceEvent);
+                }
+
+            } else if (res instanceof Bpmn2DroolsRessource) {
+                Bpmn2DroolsRessource bpmn2DroolsRessource = (Bpmn2DroolsRessource) res;
+                if (this.historyListener != null) {
+                    KnowledgeBaseDelRessourceEvent knowledgeBaseDelRessourceEvent = new KnowledgeBaseDelRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, bpmn2DroolsRessource.getFileName(), bpmn2DroolsRessource.getFileContent());
+                    this.historyListener.fireEvent(knowledgeBaseDelRessourceEvent);
+                }
+
+            }
+        }
+    }
 
     private synchronized void createKBase() throws DroolsChtijbugException {
 
@@ -336,7 +370,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     @Override
     public void createKBase(DroolsResource... res) throws DroolsChtijbugException {
-        this.listResouces.clear();
+       this.deleteAllDroolsResources();
         for (DroolsResource droolsResource : res) {
             this.addDroolsResource(droolsResource);
         }
@@ -345,7 +379,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     @Override
     public void createKBase(List<DroolsResource> res) throws DroolsChtijbugException {
-        this.listResouces.clear();
+        this.deleteAllDroolsResources();
         for (DroolsResource droolsResource : res) {
             this.addDroolsResource(droolsResource);
         }
@@ -354,7 +388,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     @Override
     public void RecreateKBaseWithNewRessources(DroolsResource... res) throws DroolsChtijbugException {
-        this.listResouces.clear();
+        this.deleteAllDroolsResources();
         for (DroolsResource droolsResource : res) {
             this.addDroolsResource(droolsResource);
         }
@@ -363,7 +397,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     @Override
     public void RecreateKBaseWithNewRessources(List<DroolsResource> res) throws DroolsChtijbugException {
-        this.listResouces.clear();
+        this.deleteAllDroolsResources();
         for (DroolsResource droolsResource : res) {
             this.addDroolsResource(droolsResource);
         }

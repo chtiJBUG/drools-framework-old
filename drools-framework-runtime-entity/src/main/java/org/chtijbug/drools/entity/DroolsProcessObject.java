@@ -84,9 +84,9 @@ public class DroolsProcessObject implements Serializable {
         return hash;
     }
 
-    public static DroolsProcessObject createDroolsProcessObject(String id, String name, String packageName, String type, String version) {
+    public static DroolsProcessObject createDroolsProcessObject(String id, String processInstanceID, String packageName, String type, String version) {
 
-        return new DroolsProcessObject(id, name, packageName, type, version);
+        return new DroolsProcessObject(id, processInstanceID, packageName, type, version);
     }
 
     @Override

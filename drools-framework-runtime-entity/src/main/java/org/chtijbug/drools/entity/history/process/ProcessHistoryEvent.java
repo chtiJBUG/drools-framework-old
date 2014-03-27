@@ -14,10 +14,6 @@ import java.util.Date;
  */
 public class ProcessHistoryEvent extends HistoryEvent {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6446477978109706201L;
 
 	public ProcessHistoryEvent() {
 

@@ -109,7 +109,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
             if (droolsProcessObject == null) {
                 droolsProcessObject = DroolsProcessObject.createDroolsProcessObject(processInstance.getProcess().getId(),
-                        processInstance.getProcessId(),
+                        processInstance.getProcess().getName(),
                         processInstance.getProcess().getPackageName(), processInstance.getProcess().getType(), processInstance.getProcess().getVersion());
                 processList.put(processInstance.getProcess().getId(), droolsProcessObject);
             }
@@ -404,10 +404,11 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             }
 
         }
-        this.knowledgeSession.startProcess(processName);
+        ProcessInstance processInstance = this.knowledgeSession.startProcess(processName);
+
         if (this.historyListener != null) {
             try {
-                SessionStartProcessEndEvent sessionStartProcessEndEvent = new SessionStartProcessEndEvent(this.getNextEventCounter(), processName, this.ruleBaseID, this.sessionId);
+                SessionStartProcessEndEvent sessionStartProcessEndEvent = new SessionStartProcessEndEvent(this.getNextEventCounter(), processName, this.ruleBaseID, this.sessionId,processInstance.getProcessId());
                 this.addHistoryElement(sessionStartProcessEndEvent);
             } catch (Exception e) {
                 logger.error("Exception in calling historyEvent", e);

@@ -20,6 +20,7 @@ public class DroolsRuleObject implements Serializable {
 
 	protected String ruleName;
 	protected String rulePackageName;
+    protected String ruleFlowGroup;
 
 	/**
 	 * 
@@ -50,11 +51,20 @@ public class DroolsRuleObject implements Serializable {
 		return rulePackageName;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
+
+    public String getRuleFlowGroup() {
+        return ruleFlowGroup;
+    }
+
+    public void setRuleFlowGroup(String ruleFlowGroup) {
+        this.ruleFlowGroup = ruleFlowGroup;
+    }
+
+    /*
+         * (non-Javadoc)
+         *
+         * @see java.lang.Object#toString()
+         */
 	@Override
 	public String toString() {
 		return "Rule object with name :" + getRuleName();

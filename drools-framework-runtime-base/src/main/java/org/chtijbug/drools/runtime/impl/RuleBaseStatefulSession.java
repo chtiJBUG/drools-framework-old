@@ -154,9 +154,10 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
     public DroolsRuleObject getDroolsRuleObject(Rule rule) {
         DroolsRuleObject droolsRuleObject = listRules.get(rule.toString());
-
+        org.drools.rule.Rule ruleInstance =(org.drools.rule.Rule)rule;
         if (droolsRuleObject == null) {
             droolsRuleObject = DroolsRuleObject.createDroolRuleObject(rule.getName(), rule.getPackageName());
+            droolsRuleObject.setRuleFlowGroup(ruleInstance.getRuleFlowGroup());
             addDroolsRuleObject(droolsRuleObject);
         }
 

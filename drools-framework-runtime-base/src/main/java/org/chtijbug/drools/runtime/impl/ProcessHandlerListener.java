@@ -108,6 +108,7 @@ public class ProcessHandlerListener extends DefaultProcessEventListener {
     public void beforeNodeLeft(ProcessNodeLeftEvent event) {
         logger.debug(">>beforeNodeLeft", event);
         try {
+
             DroolsNodeInstanceObject droolsNodeInstanceObject = ruleBaseSession.getDroolsNodeInstanceObject(event.getNodeInstance());
             BeforeNodeLeftHistoryEvent afterHistoryEvent = new BeforeNodeLeftHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsNodeInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             ruleBaseSession.addHistoryElement(afterHistoryEvent);

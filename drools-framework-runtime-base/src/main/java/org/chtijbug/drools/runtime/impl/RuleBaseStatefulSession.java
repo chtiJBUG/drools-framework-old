@@ -19,6 +19,7 @@ import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.NodeInstance;
 import org.drools.runtime.process.ProcessInstance;
 import org.drools.runtime.rule.FactHandle;
+import org.jbpm.workflow.core.node.RuleSetNode;
 import org.jbpm.workflow.instance.node.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,19 +122,22 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     }
 
     public DroolsNodeInstanceObject getDroolsNodeInstanceObject(NodeInstance nodeInstance) {
-        String nodeType = "UNKNOWN";
+        DroolsNodeType nodeType = DroolsNodeType.Other;
+        String ruleFlowGroupName = null;
         if (nodeInstance instanceof StartNodeInstance) {
-            nodeType = StartNodeInstance.class.getCanonicalName();
+            nodeType = DroolsNodeType.StartNode;
         } else if (nodeInstance instanceof RuleSetNodeInstance) {
-            RuleSetNodeInstance aRuleSet = (RuleSetNodeInstance) nodeInstance;
-            //String ruleFlowName = aRuleSet.getRuleSetEventType();
-            nodeType = RuleSetNodeInstance.class.getCanonicalName();
+            nodeType = DroolsNodeType.RuleNode;
+            RuleSetNode ruleSetNode = this.getRuleSetNode(nodeInstance);
+            if (ruleSetNode != null) {
+                ruleFlowGroupName = ruleSetNode.getRuleFlowGroup();
+            }
         } else if (nodeInstance instanceof SplitInstance) {
-            nodeType = SplitInstance.class.getCanonicalName();
+            nodeType = DroolsNodeType.SplitNode;
         } else if (nodeInstance instanceof JoinInstance) {
-            nodeType = JoinInstance.class.getCanonicalName();
+            nodeType = DroolsNodeType.JoinNode;
         } else if (nodeInstance instanceof EndNodeInstance) {
-            nodeType = EndNodeInstance.class.getCanonicalName();
+            nodeType = DroolsNodeType.EndNode;
         }
         DroolsProcessInstanceObject droolsProcessInstanceObject = processInstanceList.get(Long.toString(nodeInstance.getProcessInstance().getId()));
         if (droolsProcessInstanceObject == null) {
@@ -144,6 +148,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         if (droolsNodeInstanceObject == null) {
             DroolsNodeObject droolsNodeObject = DroolsNodeObject.createDroolsNodeObject(String.valueOf(nodeInstance.getNode().getId()), nodeType);
             droolsProcessInstanceObject.getProcess().addDroolsNodeObject(droolsNodeObject);
+            droolsNodeObject.setRuleflowGroupName(ruleFlowGroupName);
             droolsNodeInstanceObject = DroolsNodeInstanceObject.createDroolsNodeInstanceObject(String.valueOf(nodeInstance.getId()), droolsNodeObject);
             droolsProcessInstanceObject.addDroolsNodeInstanceObject(droolsNodeInstanceObject);
         }
@@ -154,7 +159,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
     public DroolsRuleObject getDroolsRuleObject(Rule rule) {
         DroolsRuleObject droolsRuleObject = listRules.get(rule.toString());
-        org.drools.rule.Rule ruleInstance =(org.drools.rule.Rule)rule;
+        org.drools.rule.Rule ruleInstance = (org.drools.rule.Rule) rule;
         if (droolsRuleObject == null) {
             droolsRuleObject = DroolsRuleObject.createDroolRuleObject(rule.getName(), rule.getPackageName());
             droolsRuleObject.setRuleFlowGroup(ruleInstance.getRuleFlowGroup());
@@ -409,7 +414,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
         if (this.historyListener != null) {
             try {
-                SessionStartProcessEndEvent sessionStartProcessEndEvent = new SessionStartProcessEndEvent(this.getNextEventCounter(), processName, this.ruleBaseID, this.sessionId,processInstance.getProcessId());
+                SessionStartProcessEndEvent sessionStartProcessEndEvent = new SessionStartProcessEndEvent(this.getNextEventCounter(), processName, this.ruleBaseID, this.sessionId, processInstance.getProcessId());
                 this.addHistoryElement(sessionStartProcessEndEvent);
             } catch (Exception e) {
                 logger.error("Exception in calling historyEvent", e);
@@ -452,5 +457,17 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
     public StatefulSessionSupervision getMbeanStatefulSessionSupervision() {
         return mbeanStatefulSessionSupervision;
+    }
+
+    private RuleSetNode getRuleSetNode(NodeInstance nodeInstance) {
+        RuleSetNode ruleSetNode = null;
+        if (nodeInstance instanceof RuleSetNodeInstance) {
+            RuleSetNodeInstance ruleSetNodeInstance = (RuleSetNodeInstance) nodeInstance;
+            if (ruleSetNodeInstance.getNode() instanceof RuleSetNode) {
+                ruleSetNode = (RuleSetNode) ruleSetNodeInstance.getNode();
+
+            }
+        }
+        return ruleSetNode;
     }
 }

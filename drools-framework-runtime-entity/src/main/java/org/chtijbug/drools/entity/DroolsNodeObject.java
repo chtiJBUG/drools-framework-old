@@ -16,7 +16,7 @@ public class DroolsNodeObject implements Serializable {
      */
     private static final long serialVersionUID = 2149698078767524188L;
     protected String id;
-    private String nodeType;
+    private DroolsNodeType nodeType = DroolsNodeType.Other;
 
     private String ruleflowGroupName;
     /**
@@ -25,20 +25,25 @@ public class DroolsNodeObject implements Serializable {
     public DroolsNodeObject() {
     }
 
-    protected DroolsNodeObject(String id, String nodeType) {
+    public DroolsNodeObject(String id, DroolsNodeType nodeType) {
         this.id = id;
         this.nodeType = nodeType;
+    }
+
+    protected DroolsNodeObject(String id) {
+        this.id = id;
+        this.nodeType = DroolsNodeType.Other;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getNodeType() {
+    public DroolsNodeType getNodeType() {
         return nodeType;
     }
 
-    public void setNodeType(String nodeType) {
+    public void setNodeType(DroolsNodeType nodeType) {
         this.nodeType = nodeType;
     }
 
@@ -47,6 +52,7 @@ public class DroolsNodeObject implements Serializable {
     }
 
     public void setRuleflowGroupName(String ruleflowGroupName) {
+        this.nodeType = DroolsNodeType.RuleNode;
         this.ruleflowGroupName = ruleflowGroupName;
     }
 
@@ -72,7 +78,7 @@ public class DroolsNodeObject implements Serializable {
         return hash;
     }
 
-    public static DroolsNodeObject createDroolsNodeObject(String id, String nodeType) {
+    public static DroolsNodeObject createDroolsNodeObject(String id, DroolsNodeType nodeType) {
         return new DroolsNodeObject(id, nodeType);
     }
 

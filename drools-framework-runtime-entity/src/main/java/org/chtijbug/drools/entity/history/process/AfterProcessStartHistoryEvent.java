@@ -12,7 +12,6 @@ import org.chtijbug.drools.entity.DroolsProcessInstanceObject;
 public class AfterProcessStartHistoryEvent extends ProcessHistoryEvent {
 
 
-    protected DroolsProcessInstanceObject processInstance;
 
     /**
      *

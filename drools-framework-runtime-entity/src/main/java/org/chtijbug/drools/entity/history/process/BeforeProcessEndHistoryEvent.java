@@ -12,8 +12,6 @@ import org.chtijbug.drools.entity.DroolsProcessInstanceObject;
 public class BeforeProcessEndHistoryEvent extends ProcessHistoryEvent {
 
 
-    protected DroolsProcessInstanceObject processInstance;
-
     /**
      *
      */

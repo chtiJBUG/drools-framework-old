@@ -18,6 +18,7 @@ public class DroolsNodeObject implements Serializable {
     protected String id;
     private String nodeType;
 
+    private String ruleflowGroupName;
     /**
      *
      */
@@ -31,6 +32,22 @@ public class DroolsNodeObject implements Serializable {
 
     public String getId() {
         return id;
+    }
+
+    public String getNodeType() {
+        return nodeType;
+    }
+
+    public void setNodeType(String nodeType) {
+        this.nodeType = nodeType;
+    }
+
+    public String getRuleflowGroupName() {
+        return ruleflowGroupName;
+    }
+
+    public void setRuleflowGroupName(String ruleflowGroupName) {
+        this.ruleflowGroupName = ruleflowGroupName;
     }
 
     @Override

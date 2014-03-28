@@ -10,6 +10,9 @@ import org.chtijbug.drools.entity.DroolsProcessInstanceObject;
 import org.chtijbug.drools.entity.DroolsProcessObject;
 import org.chtijbug.drools.entity.history.process.*;
 import org.drools.event.process.*;
+import org.drools.runtime.process.NodeInstance;
+import org.jbpm.workflow.core.node.RuleSetNode;
+import org.jbpm.workflow.instance.node.RuleSetNodeInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,6 +88,10 @@ public class ProcessHandlerListener extends DefaultProcessEventListener {
         logger.debug(">>beforeNodeTriggered", event);
         try {
             DroolsNodeInstanceObject droolsNodeInstanceObject = ruleBaseSession.getDroolsNodeInstanceObject(event.getNodeInstance());
+            RuleSetNode ruleSetNode = this.getRuleSetNode(event.getNodeInstance());
+            if (ruleSetNode != null) {
+                droolsNodeInstanceObject.getNode().setRuleflowGroupName(ruleSetNode.getRuleFlowGroup());
+            }
             BeforeNodeInstanceTriggeredHistoryEvent beforeNodeInstanceTriggeredHistoryEvent = new BeforeNodeInstanceTriggeredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsNodeInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             ruleBaseSession.addHistoryElement(beforeNodeInstanceTriggeredHistoryEvent);
         } finally {
@@ -97,6 +104,10 @@ public class ProcessHandlerListener extends DefaultProcessEventListener {
         logger.debug(">>afterNodeTriggered", event);
         try {
             DroolsNodeInstanceObject droolsNodeInstanceObject = ruleBaseSession.getDroolsNodeInstanceObject(event.getNodeInstance());
+            RuleSetNode ruleSetNode = this.getRuleSetNode(event.getNodeInstance());
+            if (ruleSetNode != null) {
+                droolsNodeInstanceObject.getNode().setRuleflowGroupName(ruleSetNode.getRuleFlowGroup());
+            }
             AfterNodeInstanceTriggeredHistoryEvent afterNodeInstanceTriggeredHistoryEvent = new AfterNodeInstanceTriggeredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsNodeInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             ruleBaseSession.addHistoryElement(afterNodeInstanceTriggeredHistoryEvent);
         } finally {
@@ -110,6 +121,10 @@ public class ProcessHandlerListener extends DefaultProcessEventListener {
         try {
 
             DroolsNodeInstanceObject droolsNodeInstanceObject = ruleBaseSession.getDroolsNodeInstanceObject(event.getNodeInstance());
+            RuleSetNode ruleSetNode = this.getRuleSetNode(event.getNodeInstance());
+            if (ruleSetNode != null) {
+                droolsNodeInstanceObject.getNode().setRuleflowGroupName(ruleSetNode.getRuleFlowGroup());
+            }
             BeforeNodeLeftHistoryEvent afterHistoryEvent = new BeforeNodeLeftHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsNodeInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             ruleBaseSession.addHistoryElement(afterHistoryEvent);
         } finally {
@@ -121,7 +136,12 @@ public class ProcessHandlerListener extends DefaultProcessEventListener {
     public void afterNodeLeft(ProcessNodeLeftEvent event) {
         logger.debug(">>afterNodeLeft", event);
         try {
+
             DroolsNodeInstanceObject droolsNodeInstanceObject = ruleBaseSession.getDroolsNodeInstanceObject(event.getNodeInstance());
+            RuleSetNode ruleSetNode = this.getRuleSetNode(event.getNodeInstance());
+            if (ruleSetNode != null) {
+                droolsNodeInstanceObject.getNode().setRuleflowGroupName(ruleSetNode.getRuleFlowGroup());
+            }
             AfterNodeLeftHistoryEvent afterHistoryEvent = new AfterNodeLeftHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsNodeInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             ruleBaseSession.addHistoryElement(afterHistoryEvent);
         } finally {
@@ -134,9 +154,9 @@ public class ProcessHandlerListener extends DefaultProcessEventListener {
         logger.debug(">>beforeVariableChanged", event);
         try {
 
-            DroolsJbpmVariableObject oldValue = new DroolsJbpmVariableObject(event.getVariableId(),event.getVariableInstanceId(),event.getOldValue());
-            DroolsProcessObject droolsProcessObject = new DroolsProcessObject(String.valueOf(event.getProcessInstance().getId()),event.getProcessInstance().getProcessName(),event.getProcessInstance().getProcess().getPackageName(),event.getProcessInstance().getProcess().getType(), event.getProcessInstance().getProcess().getVersion());
-            BeforeVariableChangeChangedHistoryEvent beforeVariableChangeChangedHistoryEvent = new BeforeVariableChangeChangedHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsProcessObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId(),oldValue);
+            DroolsJbpmVariableObject oldValue = new DroolsJbpmVariableObject(event.getVariableId(), event.getVariableInstanceId(), event.getOldValue());
+            DroolsProcessObject droolsProcessObject = new DroolsProcessObject(String.valueOf(event.getProcessInstance().getId()), event.getProcessInstance().getProcessName(), event.getProcessInstance().getProcess().getPackageName(), event.getProcessInstance().getProcess().getType(), event.getProcessInstance().getProcess().getVersion());
+            BeforeVariableChangeChangedHistoryEvent beforeVariableChangeChangedHistoryEvent = new BeforeVariableChangeChangedHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsProcessObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId(), oldValue);
             ruleBaseSession.addHistoryElement(beforeVariableChangeChangedHistoryEvent);
         } finally {
             logger.debug("<<beforeVariableChanged");
@@ -148,14 +168,26 @@ public class ProcessHandlerListener extends DefaultProcessEventListener {
         logger.debug(">>afterVariableChanged", event);
         try {
 
-            DroolsJbpmVariableObject oldValue = new DroolsJbpmVariableObject(event.getVariableId(),event.getVariableInstanceId(),event.getOldValue());
-            DroolsJbpmVariableObject newValue = new DroolsJbpmVariableObject(event.getVariableId(),event.getVariableInstanceId(),event.getNewValue());
-            DroolsProcessObject droolsProcessObject = new DroolsProcessObject(String.valueOf(event.getProcessInstance().getId()),event.getProcessInstance().getProcessName(),event.getProcessInstance().getProcess().getPackageName(),event.getProcessInstance().getProcess().getType(), event.getProcessInstance().getProcess().getVersion());
-            AfterVariableChangeChangedHistoryEvent afterVariableChangeChangedHistoryEvent = new AfterVariableChangeChangedHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsProcessObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId(),oldValue,newValue);
+            DroolsJbpmVariableObject oldValue = new DroolsJbpmVariableObject(event.getVariableId(), event.getVariableInstanceId(), event.getOldValue());
+            DroolsJbpmVariableObject newValue = new DroolsJbpmVariableObject(event.getVariableId(), event.getVariableInstanceId(), event.getNewValue());
+            DroolsProcessObject droolsProcessObject = new DroolsProcessObject(String.valueOf(event.getProcessInstance().getId()), event.getProcessInstance().getProcessName(), event.getProcessInstance().getProcess().getPackageName(), event.getProcessInstance().getProcess().getType(), event.getProcessInstance().getProcess().getVersion());
+            AfterVariableChangeChangedHistoryEvent afterVariableChangeChangedHistoryEvent = new AfterVariableChangeChangedHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsProcessObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId(), oldValue, newValue);
             ruleBaseSession.addHistoryElement(afterVariableChangeChangedHistoryEvent);
         } finally {
             logger.debug("<<afterVariableChanged");
         }
+    }
+
+    private RuleSetNode getRuleSetNode(NodeInstance nodeInstance) {
+        RuleSetNode ruleSetNode = null;
+        if (nodeInstance instanceof RuleSetNodeInstance) {
+            RuleSetNodeInstance ruleSetNodeInstance = (RuleSetNodeInstance) nodeInstance;
+            if (ruleSetNodeInstance.getNode() instanceof RuleSetNode) {
+                ruleSetNode = (RuleSetNode) ruleSetNodeInstance.getNode();
+
+            }
+        }
+        return ruleSetNode;
     }
 
 

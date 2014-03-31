@@ -19,6 +19,7 @@ public class DroolsNodeObject implements Serializable {
     private DroolsNodeType nodeType = DroolsNodeType.Other;
 
     private String ruleflowGroupName;
+
     /**
      *
      */
@@ -52,7 +53,9 @@ public class DroolsNodeObject implements Serializable {
     }
 
     public void setRuleflowGroupName(String ruleflowGroupName) {
-        this.nodeType = DroolsNodeType.RuleNode;
+        if (ruleflowGroupName != null && ruleflowGroupName.length() > 0) {
+            this.nodeType = DroolsNodeType.RuleNode;
+        }
         this.ruleflowGroupName = ruleflowGroupName;
     }
 

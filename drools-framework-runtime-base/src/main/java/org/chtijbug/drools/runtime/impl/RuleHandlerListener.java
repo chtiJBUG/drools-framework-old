@@ -92,6 +92,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             Activation activation = event.getActivation();
             //____ Getting the Rule Object Summary from the session
             DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(activation.getRule());
+
             //____ Creating the specific "After Rule Fired" History Event
             AfterRuleFiredHistoryEvent newAfterRuleEvent = new AfterRuleFiredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), this.nbRuleFired, droolsRuleObject,this.ruleBaseSession.getRuleBaseID(),this.ruleBaseSession.getSessionId());
             ruleBaseSession.addHistoryElement(newAfterRuleEvent);

@@ -12,6 +12,7 @@ import org.chtijbug.drools.entity.history.rule.AfterRuleFlowActivatedHistoryEven
 import org.chtijbug.drools.entity.history.rule.AfterRuleFlowDeactivatedHistoryEvent;
 import org.chtijbug.drools.entity.history.rule.BeforeRuleFiredHistoryEvent;
 import org.chtijbug.drools.entity.history.session.SessionFireAllRulesMaxNumberReachedEvent;
+import org.drools.common.DefaultFactHandle;
 import org.drools.event.rule.*;
 import org.drools.runtime.KnowledgeRuntime;
 import org.drools.runtime.rule.Activation;
@@ -73,8 +74,17 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             BeforeRuleFiredHistoryEvent newBeforeRuleEvent = new BeforeRuleFiredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), this.nbRuleFired + 1, droolsRuleObject,this.ruleBaseSession.getRuleBaseID(),this.ruleBaseSession.getSessionId());
             //____ Adding all objects info contained in the Activation object into the history Events
             for (FactHandle h : listFact) {
-                DroolsFactObject sourceFactObject = ruleBaseSession.getLastFactObjectVersionFromFactHandle(h);
-                newBeforeRuleEvent.getWhenObjects().add(sourceFactObject);
+                 if (h instanceof DefaultFactHandle){
+                     DefaultFactHandle defaultFactHandle = (DefaultFactHandle)h;
+                     System.out.println(defaultFactHandle.toString());
+                     if (defaultFactHandle.getObject() instanceof org.drools.reteoo.InitialFactImpl){
+                        // org.drools.reteoo.InitialFactImpl initialFact = (org.drools.reteoo.InitialFactImpl)defaultFactHandle.getObject();
+                        //TODO in case of NOT, OR, etc..
+                     } else {
+                         DroolsFactObject sourceFactObject = ruleBaseSession.getLastFactObjectVersionFromFactHandle(h);
+                         newBeforeRuleEvent.getWhenObjects().add(sourceFactObject);
+                     }
+                 }
             }
             //_____ Add Event into the History Container
             ruleBaseSession.addHistoryElement(newBeforeRuleEvent);

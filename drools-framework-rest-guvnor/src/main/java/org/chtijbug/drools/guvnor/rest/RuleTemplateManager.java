@@ -31,22 +31,22 @@ class RuleTemplateManager {
         this.assetManager = assetManager;
     }
 
-    public Map<String, List<String>> getTemplateTable(String templateRuleName) throws ChtijbugDroolsRestException{
-        TemplateModel templateModel = getTemplateModel(templateRuleName);
+    public Map<String, List<String>> getTemplateTable(String packageName,String templateRuleName) throws ChtijbugDroolsRestException{
+        TemplateModel templateModel = getTemplateModel(packageName,templateRuleName);
         Map<String, List<String>> table = templateModel.getTable();
         table.remove(TemplateModel.ID_COLUMN_NAME);
         return table;
     }
 
-    public void putTemplateTable(String templateRuleName, Map<String, List<String>> newTable) throws ChtijbugDroolsRestException {
-        TemplateModel templateModel = getTemplateModel(templateRuleName);
+    public void putTemplateTable(String packageName,String templateRuleName, Map<String, List<String>> newTable) throws ChtijbugDroolsRestException {
+        TemplateModel templateModel = getTemplateModel(packageName,templateRuleName);
         updateTableContent(newTable, templateModel);
         String xmlContent = BRXMLPersistence.getInstance().marshal(templateModel);
-        this.assetManager.updateAssetCodeFromXML(templateRuleName,xmlContent);
+        this.assetManager.updateAssetCodeFromXML(packageName,templateRuleName,xmlContent);
      }
 
-    private TemplateModel getTemplateModel(String templateRuleName) throws ChtijbugDroolsRestException {
-        String content =this.assetManager.getAssetCodeInXML(templateRuleName);
+    private TemplateModel getTemplateModel(String packageName,String templateRuleName) throws ChtijbugDroolsRestException {
+        String content =this.assetManager.getAssetCodeInXML(packageName,templateRuleName);
         RuleModel ruleModel = BRXMLPersistence.getInstance().unmarshal(content);
         return (TemplateModel) ruleModel;
     }

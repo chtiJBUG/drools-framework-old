@@ -21,16 +21,17 @@ public class GuvnorConnexionConfiguration {
     /** Web application Name */
     private String webappName;
     /** The package name which contains all business assets */
-    private String packageName;
+    private String defaultPackageName;
     /** username for login*/
     private String username;
     /** password for login */
     private String password;
 
-    public GuvnorConnexionConfiguration(String hostname, String webappName, String packageName, String username, String password) {
+
+    public GuvnorConnexionConfiguration(String hostname, String webappName, String defaultPackageName, String username, String password) {
         this.hostname = hostname;
         this.webappName = webappName;
-        this.packageName = packageName;
+        this.defaultPackageName = defaultPackageName;
         this.username = username;
         this.password = password;
     }
@@ -43,8 +44,8 @@ public class GuvnorConnexionConfiguration {
         return webappName;
     }
 
-    public String getPackageName() {
-        return packageName;
+    public String getDefaultPackageName() {
+        return defaultPackageName;
     }
 
     public String getUsername() {
@@ -69,16 +70,16 @@ public class GuvnorConnexionConfiguration {
         return client;
     }
 
-    public String assetBinaryPath(String ruleName) {
-         return getPathFor(ruleName, "source");
+    public String assetBinaryPath(String packageName,String ruleName) {
+         return getPathFor(packageName,ruleName, "source");
      }
 
-     public String getPathFor(String assetName, String pathType) {
-         return format("%s/rest/packages/%s/assets/%s/%s", this.getWebappName(), this.getPackageName(), assetName, pathType);
+     public String getPathFor(String packageName,String assetName, String pathType) {
+         return format("%s/rest/packages/%s/assets/%s/%s", this.getWebappName(), packageName, assetName, pathType);
      }
 
-     public String assetVersionPath(String assertName) {
-         return getPathFor(assertName, "versions");
+     public String assetVersionPath(String packageName,String assertName) {
+         return getPathFor(packageName,assertName, "versions");
      }
 
     public void noTimeout(WebClient client) {

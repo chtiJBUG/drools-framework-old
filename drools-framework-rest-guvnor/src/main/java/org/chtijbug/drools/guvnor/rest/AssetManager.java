@@ -52,8 +52,8 @@ class AssetManager {
     }
 
 
-    public void changeAssetPropertyValue(String assetName, AssetPropertyType assetPropertyType, String propertyValue) {
-          String assetPath = format("%s/rest/packages/%s/assets/%s", configuration.getWebappName(), configuration.getPackageName(), assetName);
+    public void changeAssetPropertyValue(String packageName,String assetName, AssetPropertyType assetPropertyType, String propertyValue) {
+          String assetPath = format("%s/rest/packages/%s/assets/%s", configuration.getWebappName(), packageName, assetName);
           //_____ Extract the current version of the asset
           InputStream inputStream = configuration.webClient()
                   .path(assetPath)
@@ -91,8 +91,8 @@ class AssetManager {
 
       }
 
-    public  org.drools.guvnor.server.jaxrs.providers.atom.Entry createAsset(Asset asset, AssetType assetType) throws ChtijbugDroolsRestException{
-        String assetPath = format("%s/rest/packages/%s/assets", configuration.getWebappName(), configuration.getPackageName());
+    public  org.drools.guvnor.server.jaxrs.providers.atom.Entry createAsset(String packageName,Asset asset, AssetType assetType) throws ChtijbugDroolsRestException{
+        String assetPath = format("%s/rest/packages/%s/assets", configuration.getWebappName(), packageName);
                 org.drools.guvnor.server.jaxrs.providers.atom.Entry entry = new org.drools.guvnor.server.jaxrs.providers.atom.Entry();
                 entry.setTitle(asset.getName());
                 entry.setSummary(asset.getSumary());
@@ -127,10 +127,10 @@ class AssetManager {
                 }
     }
 
-    public List<Asset> getAllBusinessAssets() {
+    public List<Asset> getAllBusinessAssets(String packageName) {
          List<Asset> result;
          InputStream inputStream = configuration.webClient()
-                 .path(format("%s/rest/packages/%s/assets", configuration.getWebappName(), configuration.getPackageName()))
+                 .path(format("%s/rest/packages/%s/assets", configuration.getWebappName(),packageName))
                  .accept(MediaType.APPLICATION_ATOM_XML)
                  .get(InputStream.class);
          Document<Element> atomDocument = Abdera.getInstance().getParser().parse(inputStream);
@@ -151,15 +151,46 @@ class AssetManager {
                  } catch (XPathExpressionException e) {
                      //____ Let the null value by default
                  }
-                 return new Asset(configuration.getPackageName(), assetName, status, format);
+                 return new Asset(configuration.getDefaultPackageName(), assetName, status, format);
              }
          });
          return result;
      }
 
-    public Integer getAssetVersion(String assetName) {
+    public List<Asset> getAllPackagesInGuvnorRepo() {
+             List<Asset> result;
+             InputStream inputStream = configuration.webClient()
+                     .path(format("%s/rest/packages", configuration.getWebappName()))
+                     .accept(MediaType.APPLICATION_ATOM_XML)
+                     .get(InputStream.class);
+             Document<Element> atomDocument = Abdera.getInstance().getParser().parse(inputStream);
+             Feed feed = (Feed) atomDocument.getRoot();
+             final XPath xPath = XPathFactory.newInstance().newXPath();
+             result = convert(feed.getEntries(), new Converter<Entry, Asset>() {
+                 @Override
+                 public Asset convert(Entry entry) {
+                     String assetName = entry.getTitle();
+                     Element metadata = entry.getExtension(QName.valueOf("metadata"));
+
+                     String metadataContent = ((FOMExtensibleElement) metadata).toFormattedString();
+                     String format = null;
+                     String status = null;
+                     try {
+                         format = xPath.evaluate("/metadata/format/value", new InputSource(new StringReader(metadataContent)));
+                         status = xPath.evaluate("/metadata/state/value", new InputSource(new StringReader(metadataContent)));
+                     } catch (XPathExpressionException e) {
+                         //____ Let the null value by default
+                     }
+                     return new Asset(configuration.getDefaultPackageName(), assetName, status, format);
+                 }
+             });
+             return result;
+         }
+
+
+    public Integer getAssetVersion(String packageName,String assetName) {
         InputStream inputStream = configuration.webClient()
-                .path(configuration.assetVersionPath(assetName))
+                .path(configuration.assetVersionPath(packageName,assetName))
                 .accept(MediaType.APPLICATION_ATOM_XML)
                 .get(InputStream.class);
 
@@ -173,22 +204,22 @@ class AssetManager {
         return selectMax(allVersions, on(Integer.class).intValue());
     }
 
-    public InputStream getPojoModel() {
-        String path = this.configuration.getWebappName() + "/org.drools.guvnor.Guvnor/package/" + this.configuration.getPackageName() + "/LATEST/MODEL";
+    public InputStream getPojoModel(String packageName) {
+        String path = this.configuration.getWebappName() + "/org.drools.guvnor.Guvnor/package/" + packageName + "/LATEST/MODEL";
         WebClient client = configuration.webClient();
         Response stream = client.path(path).accept(MediaType.APPLICATION_OCTET_STREAM_TYPE).get();
         InputStream inputStream = (InputStream) stream.getEntity();
         return inputStream;
     }
 
-    public void updateAssetCodeFromXML(String assetName, String newCode) throws ChtijbugDroolsRestException {
+    public void updateAssetCodeFromXML(String packageName,String assetName, String newCode) throws ChtijbugDroolsRestException {
            WebClient client = configuration.webClient();
           configuration.noTimeout(client);
-          client.path(configuration.assetBinaryPath(assetName)).accept("application/xml").put(newCode);
+          client.path(configuration.assetBinaryPath(packageName,assetName)).accept("application/xml").put(newCode);
 
      }
-    public String getAssetCodeInXML(String dtName) throws ChtijbugDroolsRestException {
-         String content = configuration.webClient().path(configuration.assetBinaryPath(dtName)).accept("text/plain").get(String.class);
+    public String getAssetCodeInXML(String packageName,String dtName) throws ChtijbugDroolsRestException {
+         String content = configuration.webClient().path(configuration.assetBinaryPath(packageName,dtName)).accept("text/plain").get(String.class);
          return content;
      }
 }

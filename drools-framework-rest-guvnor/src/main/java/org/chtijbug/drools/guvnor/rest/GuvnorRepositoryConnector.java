@@ -24,7 +24,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
     /**
      * Guvnor Web application connexion data
      */
-    private final GuvnorConnexionConfiguration configuration;
+    private GuvnorConnexionConfiguration configuration;
 
     private AssetManager assetManager = null;
 
@@ -32,7 +32,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
 
     private DecisionTableManager decisionTableManager = null;
 
-    private RulePackageManager rulePackageManager=null;
+    private RulePackageManager rulePackageManager = null;
 
     public GuvnorRepositoryConnector(GuvnorConnexionConfiguration configuration) {
         logger.debug(format("Creating new GuvnorRepositoryConnector with args : %s", configuration.toString()));
@@ -47,65 +47,189 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
         this(new GuvnorConnexionConfiguration(guvnorUrl, guvnorAppName, packageName, guvnorUserName, guvnorPassword));
     }
 
+    public GuvnorRepositoryConnector(String guvnorUrl, String guvnorAppName, String guvnorUserName, String guvnorPassword) {
+        this(new GuvnorConnexionConfiguration(guvnorUrl, guvnorAppName, null, guvnorUserName, guvnorPassword));
+    }
+
+
     @Override
     public DecisionTable getGuidedDecisionTable(String dtName) throws ChtijbugDroolsRestException {
-        return this.decisionTableManager.getGuidedDecisionTable(dtName);
+        if (configuration.getDefaultPackageName() != null || configuration.getDefaultPackageName().length() == 0) {
+            ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException("No Default Package Name defined");
+            throw chtijbugDroolsRestException;
+        }
+        return this.decisionTableManager.getGuidedDecisionTable(configuration.getDefaultPackageName(), dtName);
+    }
+
+    @Override
+    public DecisionTable getGuidedDecisionTable(String packageName, String dtName) throws GuvnorConnexionFailedException, ChtijbugDroolsRestException {
+        return this.decisionTableManager.getGuidedDecisionTable(packageName, dtName);
     }
 
     @Override
     public void commitChanges(DecisionTable guidedDecisionTable52) throws ChtijbugDroolsRestException {
-        this.decisionTableManager.commitChanges(guidedDecisionTable52);
+        if (configuration.getDefaultPackageName() != null || configuration.getDefaultPackageName().length() == 0) {
+            ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException("No Default Package Name defined");
+            throw chtijbugDroolsRestException;
+        }
+        this.decisionTableManager.commitChanges(configuration.getDefaultPackageName(), guidedDecisionTable52);
+    }
+
+    @Override
+    public void commitChanges(String packageName, DecisionTable guidedDecisionTable52) throws GuvnorConnexionFailedException, ChtijbugDroolsRestException {
+        this.decisionTableManager.commitChanges(packageName, guidedDecisionTable52);
     }
 
 
     @Override
-    public InputStream getPojoModel() {
-        return this.assetManager.getPojoModel();
+    public InputStream getPojoModel() throws ChtijbugDroolsRestException {
+        if (configuration.getDefaultPackageName() != null || configuration.getDefaultPackageName().length() == 0) {
+            ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException("No Default Package Name defined");
+            throw chtijbugDroolsRestException;
+        }
+        return this.assetManager.getPojoModel(configuration.getDefaultPackageName());
+    }
+
+    @Override
+    public InputStream getPojoModel(String packageName) throws ChtijbugDroolsRestException {
+
+        return this.assetManager.getPojoModel(packageName);
     }
 
     @Override
     public Map<String, List<String>> getTemplateTable(String templateRuleName) throws ChtijbugDroolsRestException {
-        return this.ruleTemplateManager.getTemplateTable(templateRuleName);
+        if (configuration.getDefaultPackageName() != null || configuration.getDefaultPackageName().length() == 0) {
+            ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException("No Default Package Name defined");
+            throw chtijbugDroolsRestException;
+        }
+        return this.ruleTemplateManager.getTemplateTable(configuration.getDefaultPackageName(), templateRuleName);
+    }
+
+    @Override
+    public Map<String, List<String>> getTemplateTable(String packageName, String templateRuleName) throws ChtijbugDroolsRestException {
+        return this.ruleTemplateManager.getTemplateTable(packageName, templateRuleName);
     }
 
     @Override
     public void putTemplateTable(String templateRuleName, Map<String, List<String>> newTable) throws ChtijbugDroolsRestException {
-        this.ruleTemplateManager.putTemplateTable(templateRuleName, newTable);
+        if (configuration.getDefaultPackageName() != null || configuration.getDefaultPackageName().length() == 0) {
+            ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException("No Default Package Name defined");
+            throw chtijbugDroolsRestException;
+        }
+        this.ruleTemplateManager.putTemplateTable(configuration.getDefaultPackageName(), templateRuleName, newTable);
     }
 
     @Override
-    public List<Asset> getAllBusinessAssets() {
-        return this.assetManager.getAllBusinessAssets();
+    public void putTemplateTable(String packageName, String templateRuleName, Map<String, List<String>> table) throws ChtijbugDroolsRestException {
+        this.ruleTemplateManager.putTemplateTable(packageName, templateRuleName, table);
     }
 
     @Override
-    public void changeAssetPropertyValue(String assetName, AssetPropertyType assetPropertyType, String propertyValue) {
-        this.assetManager.changeAssetPropertyValue(assetName, assetPropertyType, propertyValue);
+    public List<Asset> getAllBusinessAssets() throws ChtijbugDroolsRestException {
+        if (configuration.getDefaultPackageName() != null || configuration.getDefaultPackageName().length() == 0) {
+            ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException("No Default Package Name defined");
+            throw chtijbugDroolsRestException;
+        }
+        return this.assetManager.getAllBusinessAssets(configuration.getDefaultPackageName());
+    }
 
+    @Override
+    public List<Asset> getAllBusinessAssets(String packageName) throws ChtijbugDroolsRestException {
+        return this.assetManager.getAllBusinessAssets(packageName);
+    }
+
+    @Override
+    public List<Asset> getAllPackagesInGuvnorRepo() {
+        return this.assetManager.getAllPackagesInGuvnorRepo();
+    }
+
+
+    @Override
+    public void changeAssetPropertyValue(String assetName, AssetPropertyType assetPropertyType, String propertyValue) throws ChtijbugDroolsRestException {
+        if (configuration.getDefaultPackageName() != null || configuration.getDefaultPackageName().length() == 0) {
+            ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException("No Default Package Name defined");
+            throw chtijbugDroolsRestException;
+        }
+        this.assetManager.changeAssetPropertyValue(configuration.getDefaultPackageName(), assetName, assetPropertyType, propertyValue);
+
+    }
+
+    @Override
+    public void changeAssetPropertyValue(String packageName, String assetName, AssetPropertyType assetPropertyType, String propertyValue) {
+        this.assetManager.changeAssetPropertyValue(packageName, assetName, assetPropertyType, propertyValue);
     }
 
     @Override
     public void createAsset(Asset asset, AssetType assetType, String assetSource) throws ChtijbugDroolsRestException {
-        org.drools.guvnor.server.jaxrs.providers.atom.Entry output = this.assetManager.createAsset(asset, assetType);
-        this.assetManager.updateAssetCodeFromXML(output.getTitle(), assetSource);
-    }
-
-    public Integer getAssetVersion(String assetName) {
-        return this.assetManager.getAssetVersion(assetName);
+        if (configuration.getDefaultPackageName() != null || configuration.getDefaultPackageName().length() == 0) {
+            ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException("No Default Package Name defined");
+            throw chtijbugDroolsRestException;
+        }
+        org.drools.guvnor.server.jaxrs.providers.atom.Entry output = this.assetManager.createAsset(configuration.getDefaultPackageName(), asset, assetType);
+        this.assetManager.updateAssetCodeFromXML(configuration.getDefaultPackageName(), output.getTitle(), assetSource);
     }
 
     @Override
+    public void createAsset(String packageName, Asset asset, AssetType assetType, String assetSource) throws ChtijbugDroolsRestException {
+        org.drools.guvnor.server.jaxrs.providers.atom.Entry output = this.assetManager.createAsset(packageName, asset, assetType);
+        this.assetManager.updateAssetCodeFromXML(packageName, output.getTitle(), assetSource);
+    }
+
+    public Integer getAssetVersion(String assetName) throws ChtijbugDroolsRestException {
+        if (configuration.getDefaultPackageName() != null || configuration.getDefaultPackageName().length() == 0) {
+            ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException("No Default Package Name defined");
+            throw chtijbugDroolsRestException;
+        }
+        return this.assetManager.getAssetVersion(configuration.getDefaultPackageName(), assetName);
+    }
+
+    public Integer getAssetVersion(String packageName,String assetName) throws ChtijbugDroolsRestException {
+
+           return this.assetManager.getAssetVersion(packageName, assetName);
+       }
+    @Override
     public void buildRulePackageByStatus(String snapshotName, String filter) throws ChtijbugDroolsRestException {
-        this.rulePackageManager.buildRulePackageByStatus(snapshotName,filter);
+        if (configuration.getDefaultPackageName() != null || configuration.getDefaultPackageName().length() == 0) {
+            ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException("No Default Package Name defined");
+            throw chtijbugDroolsRestException;
+        }
+        this.rulePackageManager.buildRulePackageByStatus(configuration.getDefaultPackageName(), snapshotName, filter);
+    }
+
+    @Override
+    public void buildRulePackageByStatus(String packageName, String snapshotName, String filter) throws ChtijbugDroolsRestException {
+        this.rulePackageManager.buildRulePackageByStatus(packageName, snapshotName, filter);
     }
 
     @Override
     public void deletePackageSnapshot(String snapshotName) throws ChtijbugDroolsRestException {
-        this.rulePackageManager.deletePackageSnapshot(snapshotName);
+        if (configuration.getDefaultPackageName() != null || configuration.getDefaultPackageName().length() == 0) {
+            ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException("No Default Package Name defined");
+            throw chtijbugDroolsRestException;
+        }
+        this.rulePackageManager.deletePackageSnapshot(configuration.getDefaultPackageName(), snapshotName);
     }
 
     @Override
-    public  List<Snapshot> getListSnapshots() throws ChtijbugDroolsRestException{
-        return this.rulePackageManager.getListSnaphots();
+    public void deletePackageSnapshot(String packageName, String snapshotName) throws ChtijbugDroolsRestException {
+        this.rulePackageManager.deletePackageSnapshot(packageName, snapshotName);
+    }
+
+    @Override
+    public List<Snapshot> getListSnapshots() throws ChtijbugDroolsRestException {
+        if (configuration.getDefaultPackageName() != null || configuration.getDefaultPackageName().length() == 0) {
+            ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException("No Default Package Name defined");
+            throw chtijbugDroolsRestException;
+        }
+        return this.rulePackageManager.getListSnaphots(configuration.getDefaultPackageName());
+    }
+
+    @Override
+    public List<Snapshot> getListSnapshots(String packageName) throws ChtijbugDroolsRestException {
+        return this.rulePackageManager.getListSnaphots(packageName);
+    }
+
+    public GuvnorConnexionConfiguration getConfiguration() {
+        return configuration;
     }
 }

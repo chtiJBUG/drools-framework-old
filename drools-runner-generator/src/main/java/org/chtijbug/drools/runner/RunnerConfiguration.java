@@ -33,7 +33,7 @@ public class RunnerConfiguration {
     }
 
     public String getPackageName() {
-        return this.configuration.getPackageName();
+        return this.configuration.getDefaultPackageName();
     }
 
     public String getInputClassName() {

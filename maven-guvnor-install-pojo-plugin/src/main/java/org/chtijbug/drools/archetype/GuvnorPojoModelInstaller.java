@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.chtijbug.drools.guvnor.rest.ChtijbugDroolsRestException;
 import org.chtijbug.drools.guvnor.rest.GuvnorRepositoryConnector;
 import org.chtijbug.drools.guvnor.rest.RestRepositoryConnector;
 import org.slf4j.Logger;
@@ -93,7 +94,12 @@ public class GuvnorPojoModelInstaller extends AbstractMojo {
         try {
             RestRepositoryConnector repositoryConnector = new GuvnorRepositoryConnector(host, app, pkg, username, password);
             //____ Download the POJO Model from Guvnor instance
-            InputStream inputStream = repositoryConnector.getPojoModel();
+            InputStream inputStream = null;
+            try {
+                inputStream = repositoryConnector.getPojoModel();
+            } catch (ChtijbugDroolsRestException e) {
+                logger.error("Error occurred while creating he file from the Pojo Model", e);
+            }
             //____ First create TEMP file with the downloaded content
             File tempFile = File.createTempFile(artifactId, ".jar");
             FileOutputStream outputStream = FileUtils.openOutputStream(tempFile);

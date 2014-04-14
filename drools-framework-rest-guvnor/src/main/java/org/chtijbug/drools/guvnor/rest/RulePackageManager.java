@@ -33,14 +33,14 @@ public class RulePackageManager {
         this.configuration = configuration;
     }
 
-    public void buildRulePackageByStatus(String snapshotName, String filter) throws ChtijbugDroolsRestException {
+    public void buildRulePackageByStatus(String packageName,String snapshotName, String filter) throws ChtijbugDroolsRestException {
         SnapshotCreationData snapshotCreationData = new SnapshotCreationData();
         snapshotCreationData.setBuildMode("BuiltInSelector");
         snapshotCreationData.setEnableStatusSelector(true);
         snapshotCreationData.setStatusOperator("=");
         snapshotCreationData.setStatusDescriptionValue(filter);
         try {
-            String path = format("%s/rest/packages/%s/snapshot/%s/param", this.configuration.getWebappName(), this.configuration.getPackageName(), snapshotName);
+            String path = format("%s/rest/packages/%s/snapshot/%s/param", this.configuration.getWebappName(), packageName, snapshotName);
 
             String xmlObject = JAXBContextUtils.marshallObjectAsString(SnapshotCreationData.class, snapshotCreationData);
             WebClient webClient = this.configuration.webClient();
@@ -53,10 +53,10 @@ public class RulePackageManager {
         }
     }
 
-    public List<Snapshot> getListSnaphots() throws ChtijbugDroolsRestException {
+    public List<Snapshot> getListSnaphots(String packageName) throws ChtijbugDroolsRestException {
         List<Snapshot> result = new ArrayList<Snapshot>();
         try {
-            String path = format("%s/rest/packages/%s/snapshots", this.configuration.getWebappName(), this.configuration.getPackageName());
+            String path = format("%s/rest/packages/%s/snapshots", this.configuration.getWebappName(), packageName);
             WebClient webClient = this.configuration.webClient();
             this.configuration.noTimeout(webClient);
             Snapshots list = webClient.path(path)
@@ -65,7 +65,7 @@ public class RulePackageManager {
             if (list == null)
                 return Lists.newArrayList();
             for (int i = 0; i < list.getListNames().length; i++) {
-                Snapshot snapshot = new Snapshot(this.configuration.getPackageName(), list.getListNames()[i]);
+                Snapshot snapshot = new Snapshot(packageName, list.getListNames()[i]);
                 result.add(snapshot);
             }
         } catch (Exception e) {
@@ -75,8 +75,8 @@ public class RulePackageManager {
     }
 
 
-    public void deletePackageSnapshot(String snapshotName) {
-        String path = format("%s/rest/packages/%s/snapshots", this.configuration.getWebappName(), this.configuration.getPackageName());
+    public void deletePackageSnapshot(String packageName,String snapshotName) {
+        String path = format("%s/rest/packages/%s/snapshots/%s", this.configuration.getWebappName(), packageName,snapshotName);
         WebClient webClient = this.configuration.webClient();
         this.configuration.noTimeout(webClient);
         webClient.path(path)

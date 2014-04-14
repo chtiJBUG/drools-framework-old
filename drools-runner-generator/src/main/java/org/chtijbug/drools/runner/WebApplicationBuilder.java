@@ -4,6 +4,7 @@ package org.chtijbug.drools.runner;
 import org.chtijbug.drools.common.log.Logger;
 import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
+import org.chtijbug.drools.guvnor.rest.ChtijbugDroolsRestException;
 import org.chtijbug.drools.guvnor.rest.GuvnorRepositoryConnector;
 import org.chtijbug.drools.guvnor.rest.RestRepositoryConnector;
 import org.chtijbug.drools.utils.FileUtils;
@@ -98,6 +99,8 @@ public class WebApplicationBuilder {
             // Return the InputStream from reading the tmp file
         } catch (IOException e) {
             throw new DroolsRunnerGenerationException("An error occurred while genereting the tmp Maven project", e);
+        } catch (ChtijbugDroolsRestException e) {
+            throw new DroolsRunnerGenerationException("An error occurred while genereting the tmp Maven project ", (IOException)e.getCause());
         }
     }
 

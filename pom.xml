@@ -19,6 +19,7 @@
         <jbpm.version>5.5.0.Final</jbpm.version>
         <powermock.version>1.4.12</powermock.version>
         <jackson.version>2.2.0</jackson.version>
+        <guvnor.version>5.6.1.chtijbug-SNAPSHOT</guvnor.version>
     </properties>
 
     <licenses>
@@ -155,7 +156,7 @@
             <dependency>
                 <groupId>org.drools</groupId>
                 <artifactId>guvnor-jaxb-entities</artifactId>
-                <version>${drools.version}</version>
+              <version>${guvnor.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.drools</groupId>

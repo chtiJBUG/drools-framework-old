@@ -24,15 +24,22 @@ public interface RestRepositoryConnector {
      */
     DecisionTable getGuidedDecisionTable(String dtName) throws GuvnorConnexionFailedException, ChtijbugDroolsRestException;
 
+    DecisionTable getGuidedDecisionTable(String packageName, String dtName) throws GuvnorConnexionFailedException, ChtijbugDroolsRestException;
+
     void commitChanges(DecisionTable guidedDecisionTable52) throws GuvnorConnexionFailedException,ChtijbugDroolsRestException;
 
-    InputStream getPojoModel();
+    void commitChanges(String packageName,DecisionTable guidedDecisionTable52) throws GuvnorConnexionFailedException,ChtijbugDroolsRestException;
+
+    InputStream getPojoModel() throws ChtijbugDroolsRestException;
+    InputStream getPojoModel(String packageName) throws ChtijbugDroolsRestException;
 
     /**
      * Loads the table from a template rule
      * @return Key : the column name.
      */
     Map<String,List<String>> getTemplateTable(String templateRuleName) throws ChtijbugDroolsRestException;
+
+    Map<String,List<String>> getTemplateTable(String packageName,String templateRuleName) throws ChtijbugDroolsRestException;
 
     /**
      * Overrides the template rule table
@@ -41,20 +48,41 @@ public interface RestRepositoryConnector {
      */
     void putTemplateTable(String templateRuleName, Map<String, List<String>> table) throws ChtijbugDroolsRestException;
 
+    void putTemplateTable(String packageName,String templateRuleName, Map<String, List<String>> table) throws ChtijbugDroolsRestException;
+
+
     /**
      * This method returns all business Assets from the Guvnor Repository
      */
-    List<Asset> getAllBusinessAssets();
+    List<Asset> getAllBusinessAssets() throws ChtijbugDroolsRestException;
+    List<Asset> getAllBusinessAssets(String packageName) throws ChtijbugDroolsRestException;
 
-    void changeAssetPropertyValue(String assetName, AssetPropertyType assetPropertyType, String propertyValue);
+    /**
+     *  returns all Package in a Guvnor Repository
+     * @return
+     */
+    List<Asset> getAllPackagesInGuvnorRepo();
+
+
+    void changeAssetPropertyValue(String assetName, AssetPropertyType assetPropertyType, String propertyValue) throws ChtijbugDroolsRestException;
+
+    void changeAssetPropertyValue(String packageName,String assetName, AssetPropertyType assetPropertyType, String propertyValue);
 
     void createAsset(Asset asset, AssetType assetType,String assetSource) throws ChtijbugDroolsRestException;
 
+    void createAsset(String packageName,Asset asset, AssetType assetType,String assetSource) throws ChtijbugDroolsRestException;
+
     void buildRulePackageByStatus(String snapshotName, String filter) throws ChtijbugDroolsRestException;
+
+    void buildRulePackageByStatus(String packageName,String snapshotName, String filter) throws ChtijbugDroolsRestException;
 
     void deletePackageSnapshot(String snapshotName) throws ChtijbugDroolsRestException;
 
+    void deletePackageSnapshot(String packageName,String snapshotName) throws ChtijbugDroolsRestException;
+
+
     List<Snapshot> getListSnapshots() throws ChtijbugDroolsRestException;
 
+    List<Snapshot> getListSnapshots(String packageName) throws ChtijbugDroolsRestException;
 }
 

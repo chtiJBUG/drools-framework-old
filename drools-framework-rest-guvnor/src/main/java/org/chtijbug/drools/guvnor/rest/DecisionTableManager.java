@@ -26,16 +26,16 @@ class DecisionTableManager {
          this.assetManager = assetManager;
      }
 
-    public DecisionTable getGuidedDecisionTable(String dtName) throws ChtijbugDroolsRestException {
-        String content = this.assetManager.getAssetCodeInXML(dtName) ;
+    public DecisionTable getGuidedDecisionTable(String packageName,String dtName) throws ChtijbugDroolsRestException {
+        String content = this.assetManager.getAssetCodeInXML(packageName,dtName) ;
         GuidedDecisionTable52 guidedDecisionTable52 = GuidedDTXMLPersistence.getInstance().unmarshal(content);
         return new DecisionTable(guidedDecisionTable52);
     }
 
-    public void commitChanges(DecisionTable guidedDecisionTable52)  throws ChtijbugDroolsRestException {
+    public void commitChanges(String packageName,DecisionTable guidedDecisionTable52)  throws ChtijbugDroolsRestException {
         String dtName = guidedDecisionTable52.getGuidedDecisionTable52().getTableName();
         String newContent = GuidedDTXMLPersistence.getInstance().marshal(guidedDecisionTable52.getGuidedDecisionTable52());
-        this.assetManager.updateAssetCodeFromXML(dtName,newContent);
+        this.assetManager.updateAssetCodeFromXML(packageName,dtName,newContent);
     }
 
 }

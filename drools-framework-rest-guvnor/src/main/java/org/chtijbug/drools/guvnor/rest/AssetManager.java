@@ -170,18 +170,8 @@ class AssetManager {
                  @Override
                  public Asset convert(Entry entry) {
                      String assetName = entry.getTitle();
-                     Element metadata = entry.getExtension(QName.valueOf("metadata"));
 
-                     String metadataContent = ((FOMExtensibleElement) metadata).toFormattedString();
-                     String format = null;
-                     String status = null;
-                     try {
-                         format = xPath.evaluate("/metadata/format/value", new InputSource(new StringReader(metadataContent)));
-                         status = xPath.evaluate("/metadata/state/value", new InputSource(new StringReader(metadataContent)));
-                     } catch (XPathExpressionException e) {
-                         //____ Let the null value by default
-                     }
-                     return new Asset(configuration.getDefaultPackageName(), assetName, status, format);
+                     return new Asset(assetName, assetName, "", "");
                  }
              });
              return result;

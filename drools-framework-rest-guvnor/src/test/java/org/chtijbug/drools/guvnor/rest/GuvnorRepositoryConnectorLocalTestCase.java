@@ -21,8 +21,15 @@ public class GuvnorRepositoryConnectorLocalTestCase {
 
     @Before
     public void setUp() throws Exception {
-        guvnorRepositoryConnector = new GuvnorRepositoryConnector("http://localhost:8080/", "/guvnor-5.5.2.chtijbug-tomcat-6.0", "mortgages", "tomcat", "tomcat");
+        guvnorRepositoryConnector = new GuvnorRepositoryConnector("http://localhost:8080/", "/drools-guvnor", "mortgages", "tomcat", "tomcat");
     }
+
+    @Test
+      //  @Ignore
+        public void testgetAllPackages() throws Exception {
+            List<Asset> toto = guvnorRepositoryConnector.getAllPackagesInGuvnorRepo();
+            System.out.println(toto.toString());
+        }
 
     @Test
     @Ignore

@@ -5,6 +5,7 @@ import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBaseBuilder;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.*;
@@ -22,6 +23,7 @@ import static org.junit.Assert.fail;
 public class RuleBasePackageTestCase {
 
     @Test
+    @Ignore
     public void testXStreamSerialization() {
 
         try {
@@ -40,6 +42,7 @@ public class RuleBasePackageTestCase {
     }
 
     @Test
+    @Ignore
     public void testXStreamDeserialization() {
         String ruleBaseXML = null;
         try {

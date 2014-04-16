@@ -29,6 +29,8 @@ public interface RuleBasePackage {
 
     public void RecreateKBaseWithNewRessources(List<DroolsResource> res) throws DroolsChtijbugException;
 
+    public void ReloadWithSameRessources() throws DroolsChtijbugException;
+
     public HistoryListener getHistoryListener();
 
     public int getRuleBaseID();

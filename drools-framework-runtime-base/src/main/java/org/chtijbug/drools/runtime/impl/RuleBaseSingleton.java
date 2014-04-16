@@ -405,6 +405,11 @@ public class RuleBaseSingleton implements RuleBasePackage {
     }
 
     @Override
+    public void ReloadWithSameRessources() throws DroolsChtijbugException {
+        this.createKBase();
+    }
+
+    @Override
     public HistoryListener getHistoryListener() {
         return historyListener;
     }

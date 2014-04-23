@@ -76,7 +76,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             for (FactHandle h : listFact) {
                  if (h instanceof DefaultFactHandle){
                      DefaultFactHandle defaultFactHandle = (DefaultFactHandle)h;
-                     System.out.println(defaultFactHandle.toString());
+                     //System.out.println(defaultFactHandle.toString());
                      if (defaultFactHandle.getObject() instanceof org.drools.reteoo.InitialFactImpl){
                         // org.drools.reteoo.InitialFactImpl initialFact = (org.drools.reteoo.InitialFactImpl)defaultFactHandle.getObject();
                         //TODO in case of NOT, OR, etc..

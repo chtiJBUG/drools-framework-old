@@ -191,7 +191,7 @@ class AssetManager {
                 return Integer.valueOf(from.getTitle());
             }
         });
-        return selectMax(allVersions, on(Integer.class).intValue());
+        return selectMax(allVersions, on(Integer.class));
     }
 
     public InputStream getPojoModel(String packageName) {

@@ -8,11 +8,11 @@ import java.io.Serializable;
  * Time: 15:40
  * To change this template use File | Settings | File Templates.
  */
-public class DrlRessourceFile implements Serializable {
+public class DrlResourceFile implements Serializable ,ResourceFile{
     private String fileName;
     private String content;
 
-    public DrlRessourceFile() {
+    public DrlResourceFile() {
     }
 
     public String getFileName() {

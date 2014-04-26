@@ -1,6 +1,6 @@
 package org.chtijbug.drools.runtime.test;
 
-import org.chtijbug.drools.entity.history.DrlRessourceFile;
+import org.chtijbug.drools.entity.history.DrlResourceFile;
 import org.chtijbug.drools.entity.history.HistoryEvent;
 import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseAddRessourceEvent;
 import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseCreatedEvent;
@@ -48,8 +48,9 @@ public class RuleBaseHistoryEventTest {
         KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent = (KnowledgeBaseAddRessourceEvent) historyEvents.get(1);
         Assert.assertEquals(knowledgeBaseAddRessourceEvent.getEventID(), 2l);
         Assert.assertEquals(knowledgeBaseAddRessourceEvent.getTypeEvent(), HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
-        Assert.assertTrue(knowledgeBaseAddRessourceEvent.getDrlRessourceFiles().size() == 1);
-        DrlRessourceFile drlRessourceFile = knowledgeBaseAddRessourceEvent.getDrlRessourceFiles().get(0);
+        Assert.assertTrue(knowledgeBaseAddRessourceEvent.getResourceFiles().size() == 1);
+        Assert.assertTrue(knowledgeBaseAddRessourceEvent.getResourceFiles().get(0) instanceof DrlResourceFile);
+        DrlResourceFile drlRessourceFile =(DrlResourceFile) knowledgeBaseAddRessourceEvent.getResourceFiles().get(0);
         Assert.assertTrue(drlRessourceFile.getFileName().equals("fibonacci.drl"));
         Assert.assertTrue(historyEvents.get(2) instanceof KnowledgeBaseInitialLoadEvent);
         KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = (KnowledgeBaseInitialLoadEvent) historyEvents.get(2);
@@ -61,8 +62,9 @@ public class RuleBaseHistoryEventTest {
         KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent2 = (KnowledgeBaseAddRessourceEvent) historyEvents.get(4);
         Assert.assertEquals(knowledgeBaseAddRessourceEvent2.getEventID(), 5l);
         Assert.assertEquals(knowledgeBaseAddRessourceEvent2.getTypeEvent(), HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
-        Assert.assertTrue(knowledgeBaseAddRessourceEvent2.getDrlRessourceFiles().size() == 1);
-        DrlRessourceFile drlRessourceFile2 = knowledgeBaseAddRessourceEvent2.getDrlRessourceFiles().get(0);
+        Assert.assertTrue(knowledgeBaseAddRessourceEvent2.getResourceFiles().size() == 1);
+        Assert.assertTrue(knowledgeBaseAddRessourceEvent2.getResourceFiles().get(0) instanceof DrlResourceFile);
+        DrlResourceFile drlRessourceFile2 = (DrlResourceFile)knowledgeBaseAddRessourceEvent2.getResourceFiles().get(0);
         Assert.assertTrue(drlRessourceFile2.getFileName().equals("fibonacciBis.drl"));
 
 

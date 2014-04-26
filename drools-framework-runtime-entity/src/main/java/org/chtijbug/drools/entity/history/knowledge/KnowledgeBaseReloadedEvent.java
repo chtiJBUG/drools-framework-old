@@ -1,5 +1,7 @@
 package org.chtijbug.drools.entity.history.knowledge;
 
+import org.chtijbug.drools.entity.history.GuvnorResourceFile;
+
 import java.util.Date;
 
 /**
@@ -16,10 +18,9 @@ public class KnowledgeBaseReloadedEvent extends KnowledgeBaseEvent {
     public KnowledgeBaseReloadedEvent(int eventID, Date dateEvent, int ruleBaseID, String baseUrl, String webappName,
                                       String packageName, String packageVersion) {
         super(eventID, dateEvent, ruleBaseID);
-        this.setGuvnor_url(baseUrl);
-        this.setGuvnor_appName(webappName);
-        this.setGuvnor_packageName(packageName);
-        this.setGuvnor_packageVersion(packageVersion);
+        GuvnorResourceFile guvnorResourceFile = new GuvnorResourceFile(baseUrl, webappName, packageName, packageVersion, null, null);
+            this.getResourceFiles().add(guvnorResourceFile);
+
     }
 
 

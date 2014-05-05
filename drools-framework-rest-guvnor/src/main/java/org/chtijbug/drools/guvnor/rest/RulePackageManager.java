@@ -62,7 +62,7 @@ public class RulePackageManager {
             Snapshots list = webClient.path(path)
                     .type(MediaType.APPLICATION_ATOM_XML)
                     .get(Snapshots.class);
-            if (list == null || list.getListNames() == null)
+            if (list == null || list.getListNames().length == 0)
                 return Lists.newArrayList();
             for (int i = 0; i < list.getListNames().length; i++) {
                 Snapshot snapshot = new Snapshot(packageName, list.getListNames()[i]);

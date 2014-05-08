@@ -40,7 +40,7 @@ public class RulePackageManager {
         snapshotCreationData.setStatusOperator("=");
         snapshotCreationData.setStatusDescriptionValue(filter);
         try {
-            String path = format("%s/rest/packages/%s/snapshot/%s/param", this.configuration.getWebappName(), packageName, snapshotName);
+            String path = format("%s/rest/packages/%s/snapshot/%s", this.configuration.getWebappName(), packageName, snapshotName);
 
             String xmlObject = JAXBContextUtils.marshallObjectAsString(SnapshotCreationData.class, snapshotCreationData);
             WebClient webClient = this.configuration.webClient();

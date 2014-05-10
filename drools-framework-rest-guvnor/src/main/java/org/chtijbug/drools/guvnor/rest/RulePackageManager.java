@@ -40,7 +40,7 @@ public class RulePackageManager {
         snapshotCreationData.setStatusOperator("=");
         snapshotCreationData.setStatusDescriptionValue(filter);
         try {
-            String path = format("%s/rest/packages/%s/snapshot/%s/param", this.configuration.getWebappName(), packageName, snapshotName);
+            String path = format("%s/rest/packages/%s/snapshot/%s", this.configuration.getWebappName(), packageName, snapshotName);
 
             String xmlObject = JAXBContextUtils.marshallObjectAsString(SnapshotCreationData.class, snapshotCreationData);
             WebClient webClient = this.configuration.webClient();
@@ -62,7 +62,7 @@ public class RulePackageManager {
             Snapshots list = webClient.path(path)
                     .type(MediaType.APPLICATION_ATOM_XML)
                     .get(Snapshots.class);
-            if (list == null || list.getListNames().length == 0)
+            if (list == null || list.getListNames() == null)
                 return Lists.newArrayList();
             for (int i = 0; i < list.getListNames().length; i++) {
                 Snapshot snapshot = new Snapshot(packageName, list.getListNames()[i]);
@@ -76,7 +76,7 @@ public class RulePackageManager {
 
 
     public void deletePackageSnapshot(String packageName,String snapshotName) {
-        String path = format("%s/rest/packages/%s/snapshots/%s", this.configuration.getWebappName(), packageName,snapshotName);
+        String path = format("%s/rest/packages/%s/snapshot/%s/delete", this.configuration.getWebappName(), packageName,snapshotName);
         WebClient webClient = this.configuration.webClient();
         this.configuration.noTimeout(webClient);
         webClient.path(path)

@@ -76,7 +76,7 @@ public class RulePackageManager {
 
 
     public void deletePackageSnapshot(String packageName,String snapshotName) {
-        String path = format("%s/rest/packages/%s/snapshots/%s", this.configuration.getWebappName(), packageName,snapshotName);
+        String path = format("%s/rest/packages/%s/snapshot/%s/delete", this.configuration.getWebappName(), packageName,snapshotName);
         WebClient webClient = this.configuration.webClient();
         this.configuration.noTimeout(webClient);
         webClient.path(path)

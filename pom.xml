@@ -318,38 +318,7 @@
     </dependencies>
 
 
-    <repositories>
-        <repository>
-            <id>jboss-Snapshot</id>
-            <name>jboss-Snapshot</name>
-            <url>https://repository.jboss.org/nexus/content/repositories/snapshots//</url>
-        </repository>
-        <repository>
-            <id>jboss-release</id>
-            <name>jboss-release</name>
-            <url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
-        </repository>
-        <repository>
-            <id>neo4j-snapshot</id>
-            <url>http://m2.neo4j.org/content/repositories/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>neo4j-release</id>
-            <url>http://m2.neo4j.org/content/repositories/releases/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+
 
     <!--distributionManagement>
       <repository>

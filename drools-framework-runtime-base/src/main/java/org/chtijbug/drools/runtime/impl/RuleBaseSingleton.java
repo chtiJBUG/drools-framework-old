@@ -19,6 +19,7 @@ import org.chtijbug.drools.runtime.resource.DroolsResource;
 import org.chtijbug.drools.runtime.resource.GuvnorDroolsResource;
 import org.drools.KnowledgeBase;
 import org.drools.builder.KnowledgeBuilder;
+import org.drools.builder.KnowledgeBuilderConfiguration;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.slf4j.Logger;
@@ -94,8 +95,10 @@ public class RuleBaseSingleton implements RuleBasePackage {
     private String guvnor_packageVersion;
     private String guvnor_username;
     private String guvnor_password;
-
-
+    /**
+     *  Java Dialect
+     */
+     private JavaDialect javaDialect=JavaDialect.ECLIPSE;
     /**
      * History Listener
      */
@@ -361,7 +364,9 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
 
         try {
-            KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+            KnowledgeBuilderConfiguration config = KnowledgeBuilderFactory.newKnowledgeBuilderConfiguration();
+            config.setProperty("drools.dialect.java.compiler", this.javaDialect.toString());
+            KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(config);
 
             for (DroolsResource res : listResouces) {
                 kbuilder.add(res.getResource(), res.getResourceType());
@@ -508,5 +513,13 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     public RuleBaseSupervision getMbsRuleBase() {
         return mbsRuleBase;
+    }
+
+    public JavaDialect getJavaDialect() {
+        return javaDialect;
+    }
+
+    public void setJavaDialect(JavaDialect javaDialect) {
+        this.javaDialect = javaDialect;
     }
 }

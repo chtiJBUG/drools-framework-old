@@ -450,16 +450,18 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     @Override
     public void dispose() {
-        this.cleanup();
-        this.kbase = null;
-        if (this.historyListener != null) {
+          if (this.historyListener != null) {
             KnowledgeBaseDisposeEvent knowledgeBaseDisposeEvent = new KnowledgeBaseDisposeEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID);
             try {
                 this.historyListener.fireEvent(knowledgeBaseDisposeEvent);
             } catch (DroolsChtijbugException e) {
                 throw Throwables.propagate(e);
             }
+
         }
+        this.cleanup();
+        this.kbase = null;
+
     }
 
     @Override

@@ -337,6 +337,14 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
     }
 
+    public void setGuvnor_username(String guvnor_username) {
+        this.guvnor_username = guvnor_username;
+    }
+
+    public void setGuvnor_password(String guvnor_password) {
+        this.guvnor_password = guvnor_password;
+    }
+
     private synchronized void createKBase() throws DroolsChtijbugException {
 
         if (kbase != null) {

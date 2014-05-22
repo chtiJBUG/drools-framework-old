@@ -96,9 +96,9 @@ public class RuleBaseSingleton implements RuleBasePackage {
     private String guvnor_username;
     private String guvnor_password;
     /**
-     *  Java Dialect
+     * Java Dialect
      */
-     private JavaDialect javaDialect=JavaDialect.ECLIPSE;
+    private JavaDialect javaDialect = JavaDialect.ECLIPSE;
     /**
      * History Listener
      */
@@ -107,18 +107,40 @@ public class RuleBaseSingleton implements RuleBasePackage {
     private int eventCounter;
 
     public RuleBaseSingleton() throws DroolsChtijbugException {
+        this((Integer) null);
+    }
+
+    public RuleBaseSingleton(Integer givenRuleBaseID) throws DroolsChtijbugException {
         //____ Remove Existing MBean from the MBeanServer
         if (ruleBaseCounter != 0)
             clearPreviousInstanceMBeans();
         //____ Increment the ruleBaseID
-        this.ruleBaseID = addRuleBase();
+        if (givenRuleBaseID != null) {
+            this.ruleBaseID = givenRuleBaseID;
+        } else {
+            this.ruleBaseID = addRuleBase();
+        }
+
         initMBeans();
     }
 
+    public RuleBaseSingleton(Integer ruleBaseID, int maxNumberRulesToExecute) throws DroolsChtijbugException {
+        this(ruleBaseID);
+        this.maxNumberRuleToExecute = maxNumberRulesToExecute;
+    }
 
     public RuleBaseSingleton(int maxNumberRulesToExecute) throws DroolsChtijbugException {
-        this();
+        this((Integer) null);
         this.maxNumberRuleToExecute = maxNumberRulesToExecute;
+    }
+
+    public RuleBaseSingleton(Integer ruleBaseID, int maxNumberRulesToExecute, HistoryListener historyListener) throws DroolsChtijbugException {
+        this(ruleBaseID, maxNumberRulesToExecute);
+        this.historyListener = historyListener;
+        if (this.historyListener != null) {
+            KnowledgeBaseCreatedEvent knowledgeBaseCreatedEvent = new KnowledgeBaseCreatedEvent(this.getNextEventCounter(), new Date(), ruleBaseCounter);
+            this.historyListener.fireEvent(knowledgeBaseCreatedEvent);
+        }
     }
 
     public RuleBaseSingleton(int maxNumberRulesToExecute, HistoryListener historyListener) throws DroolsChtijbugException {
@@ -130,8 +152,17 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
     }
 
+    public RuleBaseSingleton(Integer ruleBaseID, HistoryListener historyListener) throws DroolsChtijbugException {
+        this(ruleBaseID);
+        this.historyListener = historyListener;
+        if (this.historyListener != null) {
+            KnowledgeBaseCreatedEvent knowledgeBaseCreatedEvent = new KnowledgeBaseCreatedEvent(this.getNextEventCounter(), new Date(), ruleBaseCounter);
+            this.historyListener.fireEvent(knowledgeBaseCreatedEvent);
+        }
+    }
+
     public RuleBaseSingleton(HistoryListener historyListener) throws DroolsChtijbugException {
-        this();
+        this((Integer) null);
         this.historyListener = historyListener;
         if (this.historyListener != null) {
             KnowledgeBaseCreatedEvent knowledgeBaseCreatedEvent = new KnowledgeBaseCreatedEvent(this.getNextEventCounter(), new Date(), ruleBaseCounter);
@@ -305,6 +336,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
         listResouces.add(res);
     }
+
     private void deleteAllDroolsResources() throws DroolsChtijbugException {
         for (DroolsResource droolsResource : this.listResouces) {
             this.deleteDroolsResource(droolsResource);
@@ -383,7 +415,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     @Override
     public void createKBase(DroolsResource... res) throws DroolsChtijbugException {
-       this.deleteAllDroolsResources();
+        this.deleteAllDroolsResources();
         for (DroolsResource droolsResource : res) {
             this.addDroolsResource(droolsResource);
         }
@@ -450,7 +482,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     @Override
     public void dispose() {
-          if (this.historyListener != null) {
+        if (this.historyListener != null) {
             KnowledgeBaseDisposeEvent knowledgeBaseDisposeEvent = new KnowledgeBaseDisposeEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID);
             try {
                 this.historyListener.fireEvent(knowledgeBaseDisposeEvent);

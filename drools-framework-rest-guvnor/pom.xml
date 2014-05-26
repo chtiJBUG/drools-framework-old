@@ -54,15 +54,7 @@
               <goal>manifest</goal>
             </goals>
           </execution>
-          <execution>
-            <id>wrap-my-dependency</id>
-            <goals>
-              <goal>wrap</goal>
-            </goals>
-            <configuration>
-              <wrapImportPackage>;</wrapImportPackage>
-            </configuration>
-          </execution>
+
         </executions>
         <extensions>true</extensions>
         <configuration>

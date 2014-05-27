@@ -1,59 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <parent>
-        <groupId>org.chtijbug.drools</groupId>
-        <artifactId>drools-framework-parent</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
-    </parent>
+  <parent>
+    <groupId>org.chtijbug.drools</groupId>
+    <artifactId>drools-framework-parent</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+  </parent>
 
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>drools-framework-common</artifactId>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>drools-framework-common</artifactId>
 
+
+
+  <dependencies>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.easytesting</groupId>
+      <artifactId>fest-assert</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
   <build>
-    <plugins>
-      <plugin>
-           <groupId>org.apache.felix</groupId>
-           <artifactId>maven-bundle-plugin</artifactId>
-           <executions>
-             <execution>
-               <id>bundle-manifest</id>
-               <phase>process-classes</phase>
-               <goals>
-                 <goal>manifest</goal>
-               </goals>
-             </execution>
-           </executions>
-           <extensions>true</extensions>
-           <configuration>
-             <instructions>
-               <Export-Package>org.chtijbug.drools.common.*</Export-Package>
-                <Private-Package>org.chtijbug.drools.common.*</Private-Package>
-             </instructions>
-           </configuration>
-         </plugin>
-    </plugins>
-  </build>
-
-    <dependencies>
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>commons-io</groupId>
-          <artifactId>commons-io</artifactId>
-      </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.easytesting</groupId>
-            <artifactId>fest-assert</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
+     <plugins>
+       <plugin>
+         <groupId>org.apache.felix</groupId>
+         <artifactId>maven-bundle-plugin</artifactId>
+         <executions>
+           <execution>
+             <id>bundle-manifest</id>
+             <phase>process-classes</phase>
+             <goals>
+               <goal>bundle</goal>
+             </goals>
+           </execution>
+         </executions>
+         <extensions>true</extensions>
+         <configuration>
+           <instructions>
+             <Export-Package>org.chtijbug.drools.common.*</Export-Package>
+             <Private-Package>org.chtijbug.drools.common.*</Private-Package>
+           </instructions>
+         </configuration>
+       </plugin>
+     </plugins>
+   </build>
 </project>

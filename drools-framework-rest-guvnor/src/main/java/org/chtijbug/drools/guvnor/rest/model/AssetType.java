@@ -7,7 +7,7 @@ package org.chtijbug.drools.guvnor.rest.model;
  * To change this template use File | Settings | File Templates.
  */
 public enum AssetType {
-    GuidedRule("brl"), RuleTemplate("template"), DecisionTable("gdst") ,Scenario("scenario");
+    GuidedRule("brl"), RuleTemplate("template"), DecisionTable("gdst") ,Scenario("scenario"),Bpmn2Process("bpmn2");
     private String id;
 
     private AssetType(String id) {

@@ -13,8 +13,8 @@ import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.chtijbug.drools.runtime.mbeans.RuleBaseSupervision;
 import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervision;
-import org.chtijbug.drools.runtime.resource.Bpmn2DroolsRessource;
-import org.chtijbug.drools.runtime.resource.DrlDroolsRessource;
+import org.chtijbug.drools.runtime.resource.Bpmn2DroolsResource;
+import org.chtijbug.drools.runtime.resource.DrlDroolsResource;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
 import org.chtijbug.drools.runtime.resource.GuvnorDroolsResource;
 import org.drools.KnowledgeBase;
@@ -319,17 +319,17 @@ public class RuleBaseSingleton implements RuleBasePackage {
                 this.historyListener.fireEvent(knowledgeBaseAddRessourceEvent);
             }
 
-        } else if (res instanceof DrlDroolsRessource) {
-            DrlDroolsRessource drlDroolsRessource = (DrlDroolsRessource) res;
+        } else if (res instanceof DrlDroolsResource) {
+            DrlDroolsResource drlDroolsResource = (DrlDroolsResource) res;
             if (this.historyListener != null) {
-                KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent = new KnowledgeBaseAddRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, drlDroolsRessource.getFileName(), drlDroolsRessource.getFileContent());
+                KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent = new KnowledgeBaseAddRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, drlDroolsResource.getFileName(), drlDroolsResource.getFileContent());
                 this.historyListener.fireEvent(knowledgeBaseAddRessourceEvent);
             }
 
-        } else if (res instanceof Bpmn2DroolsRessource) {
-            Bpmn2DroolsRessource bpmn2DroolsRessource = (Bpmn2DroolsRessource) res;
+        } else if (res instanceof Bpmn2DroolsResource) {
+            Bpmn2DroolsResource bpmn2DroolsResource = (Bpmn2DroolsResource) res;
             if (this.historyListener != null) {
-                KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent = new KnowledgeBaseAddRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, bpmn2DroolsRessource.getFileName(), bpmn2DroolsRessource.getFileContent());
+                KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent = new KnowledgeBaseAddRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, bpmn2DroolsResource.getFileName(), bpmn2DroolsResource.getFileContent());
                 this.historyListener.fireEvent(knowledgeBaseAddRessourceEvent);
             }
 
@@ -354,17 +354,17 @@ public class RuleBaseSingleton implements RuleBasePackage {
             if (res instanceof GuvnorDroolsResource) {
                 KnowledgeBaseDelRessourceEvent knowledgeBaseDelRessourceEvent = new KnowledgeBaseDelRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url, this.guvnor_appName, this.guvnor_packageName, this.guvnor_packageVersion);
                 this.historyListener.fireEvent(knowledgeBaseDelRessourceEvent);
-            } else if (res instanceof DrlDroolsRessource) {
-                DrlDroolsRessource drlDroolsRessource = (DrlDroolsRessource) res;
+            } else if (res instanceof DrlDroolsResource) {
+                DrlDroolsResource drlDroolsResource = (DrlDroolsResource) res;
                 if (this.historyListener != null) {
-                    KnowledgeBaseDelRessourceEvent knowledgeBaseDelRessourceEvent = new KnowledgeBaseDelRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, drlDroolsRessource.getFileName(), drlDroolsRessource.getFileContent());
+                    KnowledgeBaseDelRessourceEvent knowledgeBaseDelRessourceEvent = new KnowledgeBaseDelRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, drlDroolsResource.getFileName(), drlDroolsResource.getFileContent());
                     this.historyListener.fireEvent(knowledgeBaseDelRessourceEvent);
                 }
 
-            } else if (res instanceof Bpmn2DroolsRessource) {
-                Bpmn2DroolsRessource bpmn2DroolsRessource = (Bpmn2DroolsRessource) res;
+            } else if (res instanceof Bpmn2DroolsResource) {
+                Bpmn2DroolsResource bpmn2DroolsResource = (Bpmn2DroolsResource) res;
                 if (this.historyListener != null) {
-                    KnowledgeBaseDelRessourceEvent knowledgeBaseDelRessourceEvent = new KnowledgeBaseDelRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, bpmn2DroolsRessource.getFileName(), bpmn2DroolsRessource.getFileContent());
+                    KnowledgeBaseDelRessourceEvent knowledgeBaseDelRessourceEvent = new KnowledgeBaseDelRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, bpmn2DroolsResource.getFileName(), bpmn2DroolsResource.getFileContent());
                     this.historyListener.fireEvent(knowledgeBaseDelRessourceEvent);
                 }
 

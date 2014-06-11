@@ -13,23 +13,23 @@ import java.io.InputStream;
  * Time: 16:15
  * To change this template use File | Settings | File Templates.
  */
-public class Bpmn2DroolsRessource implements DroolsResource {
+public class Bpmn2DroolsResource implements DroolsResource {
 
     private final Resource resource;
     private String fileName;
     private String fileContent;
 
-    public Bpmn2DroolsRessource(Resource resource, String fileName, String fileContent) {
+    public Bpmn2DroolsResource(Resource resource, String fileName, String fileContent) {
         this.resource = resource;
         this.fileName = fileName;
         this.fileContent = fileContent;
     }
 
 
-    public static Bpmn2DroolsRessource createClassPathResource(String path) {
-        InputStream inputStream = DrlDroolsRessource.class.getResourceAsStream("/"+path);
+    public static Bpmn2DroolsResource createClassPathResource(String path) {
+        InputStream inputStream = DrlDroolsResource.class.getResourceAsStream("/"+path);
         String fileContent = FileHelper.getFileContent(inputStream) ;
-        return new Bpmn2DroolsRessource(ResourceFactory.newClassPathResource(path), path, fileContent);
+        return new Bpmn2DroolsResource(ResourceFactory.newClassPathResource(path), path, fileContent);
 
     }
 

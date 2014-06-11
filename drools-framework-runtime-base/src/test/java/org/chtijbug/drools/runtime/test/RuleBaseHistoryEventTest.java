@@ -10,7 +10,7 @@ import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBaseBuilder;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
-import org.chtijbug.drools.runtime.resource.DrlDroolsRessource;
+import org.chtijbug.drools.runtime.resource.DrlDroolsResource;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -56,7 +56,7 @@ public class RuleBaseHistoryEventTest {
         KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = (KnowledgeBaseInitialLoadEvent) historyEvents.get(2);
         Assert.assertEquals(knowledgeBaseInitialLoadEvent.getEventID(), 3l);
         Assert.assertEquals(knowledgeBaseInitialLoadEvent.getTypeEvent(), HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
-        ruleBasePackage.RecreateKBaseWithNewRessources(DrlDroolsRessource.createClassPathResource("fibonacciBis.drl"));
+        ruleBasePackage.RecreateKBaseWithNewRessources(DrlDroolsResource.createClassPathResource("fibonacciBis.drl"));
         Assert.assertTrue(historyEvents.size() == 6);
         Assert.assertTrue(historyEvents.get(4) instanceof KnowledgeBaseAddRessourceEvent);
         KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent2 = (KnowledgeBaseAddRessourceEvent) historyEvents.get(4);

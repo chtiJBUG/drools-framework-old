@@ -14,26 +14,26 @@ import java.io.InputStream;
  * @author Bertrand Gressier
  * @date 9 déc. 2011
  */
-public class DrlDroolsRessource implements DroolsResource {
+public class DrlDroolsResource implements DroolsResource {
 
     private final Resource resource;
     private String fileName;
     private String fileContent;
 
-    public DrlDroolsRessource(Resource resource) {
+    public DrlDroolsResource(Resource resource) {
         this.resource = resource;
     }
 
-    public DrlDroolsRessource(Resource resource, String fileName, String fileContent) {
+    public DrlDroolsResource(Resource resource, String fileName, String fileContent) {
         this.fileContent = fileContent;
         this.fileName = fileName;
         this.resource = resource;
     }
 
-    public static DrlDroolsRessource createClassPathResource(String path) {
-        InputStream inputStream = DrlDroolsRessource.class.getResourceAsStream("/"+path);
+    public static DrlDroolsResource createClassPathResource(String path) {
+        InputStream inputStream = DrlDroolsResource.class.getResourceAsStream("/"+path);
         String fileContent = FileHelper.getFileContent(inputStream) ;
-        return new DrlDroolsRessource(ResourceFactory.newClassPathResource(path), path, fileContent);
+        return new DrlDroolsResource(ResourceFactory.newClassPathResource(path), path, fileContent);
      }
     @Override
     public Resource getResource() throws Exception {
@@ -59,7 +59,7 @@ public class DrlDroolsRessource implements DroolsResource {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DrlDroolsRessource that = (DrlDroolsRessource) o;
+        DrlDroolsResource that = (DrlDroolsResource) o;
 
         if (!fileName.equals(that.fileName)) return false;
 

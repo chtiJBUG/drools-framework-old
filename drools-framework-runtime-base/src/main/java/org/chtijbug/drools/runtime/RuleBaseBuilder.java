@@ -6,8 +6,8 @@ package org.chtijbug.drools.runtime;
 
 import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
-import org.chtijbug.drools.runtime.resource.Bpmn2DroolsRessource;
-import org.chtijbug.drools.runtime.resource.DrlDroolsRessource;
+import org.chtijbug.drools.runtime.resource.Bpmn2DroolsResource;
+import org.chtijbug.drools.runtime.resource.DrlDroolsResource;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
 import org.chtijbug.drools.runtime.resource.GuvnorDroolsResource;
 import org.slf4j.Logger;
@@ -68,9 +68,9 @@ public class RuleBaseBuilder {
                 String extensionName = getFileExtension(filename);
                 DroolsResource resource = null;
                 if ("DRL".equals(extensionName)) {
-                    resource = DrlDroolsRessource.createClassPathResource(filename);
+                    resource = DrlDroolsResource.createClassPathResource(filename);
                 } else if ("BPMN2".equals(extensionName)) {
-                    resource = Bpmn2DroolsRessource.createClassPathResource(filename);
+                    resource = Bpmn2DroolsResource.createClassPathResource(filename);
                 }
                 if (resource != null) {
                     droolsResources.add(resource);

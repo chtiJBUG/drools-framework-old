@@ -10,15 +10,14 @@ import org.chtijbug.drools.runtime.resource.DroolsResource;
 import java.util.List;
 
 /**
- *
  * @author nheron
  */
 public interface RuleBasePackage {
-    
-	
-    RuleBaseSession createRuleBaseSession()  throws DroolsChtijbugException;
 
-    RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute)  throws DroolsChtijbugException;
+
+    RuleBaseSession createRuleBaseSession() throws DroolsChtijbugException;
+
+    RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute) throws DroolsChtijbugException;
 
 
     public void createKBase(DroolsResource... res) throws DroolsChtijbugException;
@@ -38,5 +37,4 @@ public interface RuleBasePackage {
     public void dispose();
 
     void cleanup();
-
 }

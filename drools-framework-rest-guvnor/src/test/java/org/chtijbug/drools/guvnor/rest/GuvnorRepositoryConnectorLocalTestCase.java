@@ -64,7 +64,7 @@ public class GuvnorRepositoryConnectorLocalTestCase {
     public void testcreateAsset() throws Exception {
         Asset newAsset = new Asset();
         newAsset.setName("FirstRule2");
-        newAsset.setSumary("First Rule via Rest");
+        newAsset.setSummary("First Rule via Rest");
         AssetCategory newCategoryOne = new AssetCategory("amag");
         newAsset.getCategories().add(newCategoryOne) ;
         AssetCategory newCategorytwo = new AssetCategory("amag");
@@ -84,5 +84,11 @@ public class GuvnorRepositoryConnectorLocalTestCase {
 
     }
 
+    @Test
+    @Ignore
+    public void getListAssets() throws Exception {
+        List<Asset> listAssets = guvnorRepositoryConnector.getAllBusinessAssets("loyalty");
+        System.out.println(listAssets.toString());
+    }
 
 }

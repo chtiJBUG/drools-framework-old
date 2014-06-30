@@ -25,7 +25,9 @@ public class Asset {
     /** Business Asset Type */
     private String type;
 
-    private String sumary;
+    private String summary;
+
+    private String versionNumber;
 
     private List<AssetCategory> categories = new ArrayList<AssetCategory>();
 
@@ -72,12 +74,12 @@ public class Asset {
         this.type = type;
     }
 
-    public String getSumary() {
-        return sumary;
+    public String getSummary() {
+        return summary;
     }
 
-    public void setSumary(String sumary) {
-        this.sumary = sumary;
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
     public List<AssetCategory> getCategories() {
@@ -88,15 +90,23 @@ public class Asset {
         this.categories = categories;
     }
 
+    public String getVersionNumber() {
+        return versionNumber;
+    }
+
+    public void setVersionNumber(String versionNumber) {
+        this.versionNumber = versionNumber;
+    }
+
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer();
-        sb.append("Asset");
-        sb.append("{packageName='").append(packageName).append('\'');
+        final StringBuffer sb = new StringBuffer("Asset{");
+        sb.append("packageName='").append(packageName).append('\'');
         sb.append(", name='").append(name).append('\'');
         sb.append(", status='").append(status).append('\'');
         sb.append(", type='").append(type).append('\'');
-        sb.append(", sumary='").append(sumary).append('\'');
+        sb.append(", summary='").append(summary).append('\'');
+        sb.append(", versionNumber='").append(versionNumber).append('\'');
         sb.append(", categories=").append(categories);
         sb.append('}');
         return sb.toString();

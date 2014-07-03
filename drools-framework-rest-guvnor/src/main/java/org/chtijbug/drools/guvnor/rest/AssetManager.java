@@ -160,7 +160,7 @@ class AssetManager {
                     asset.setType(format);
                     status = xPath.evaluate("/metadata/state/value", new InputSource(new StringReader(metadataContent)));
                     asset.setStatus(status);
-                    versionNumber = xPath.evaluate("/metadata/state/value", new InputSource(new StringReader(metadataContent)));
+                    versionNumber = xPath.evaluate("/metadata/versionNumber/value", new InputSource(new StringReader(metadataContent)));
                     asset.setVersionNumber(versionNumber);
                     NodeList nodeList = (NodeList) xPath.evaluate("//categories/value", new InputSource(new StringReader(metadataContent)), XPathConstants.NODESET);
                     List<AssetCategory> assetCategoryList = new ArrayList<AssetCategory>();

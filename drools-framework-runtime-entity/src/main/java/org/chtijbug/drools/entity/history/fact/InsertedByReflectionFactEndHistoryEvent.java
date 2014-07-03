@@ -11,12 +11,11 @@ import java.util.Date;
  */
 public class InsertedByReflectionFactEndHistoryEvent extends FactHistoryEvent {
 
-
     public InsertedByReflectionFactEndHistoryEvent() {
     }
 
     public InsertedByReflectionFactEndHistoryEvent(int eventID, int ruleBaseId, int sessionId) {
-        super(eventID,new Date(),ruleBaseId,sessionId);
+        super(eventID, new Date(), ruleBaseId, sessionId);
     }
 
 
@@ -30,7 +29,6 @@ public class InsertedByReflectionFactEndHistoryEvent extends FactHistoryEvent {
         StringBuilder str = new StringBuilder();
         str.append(super.toString() + "\n");
         str.append("End InsertBuReflectionEndHistoryEvent\n");
-
 
 
         return str.toString();

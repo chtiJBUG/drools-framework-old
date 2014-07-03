@@ -343,7 +343,6 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             }
         }
         if (this.historyListener != null) {
-            DroolsFactObject topDroolsObject = DroolsFactObjectFactory.createFactObject(newObject);
             InsertedByReflectionFactEndHistoryEvent insertedByReflectionFactEndHistoryEvent = new InsertedByReflectionFactEndHistoryEvent(this.getNextEventCounter(), this.ruleBaseID, this.sessionId);
             this.addHistoryElement(insertedByReflectionFactEndHistoryEvent);
         }
@@ -364,6 +363,29 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     public void retractObject(Object oldObject) {
         FactHandle factToDelete = listFact.get(oldObject);
         this.knowledgeSession.retract(factToDelete);
+    }
+
+    @Override
+    public Object fireAllRulesAndStartProcess(Object inputObject, String processName) throws DroolsChtijbugException {
+        DroolsFactObject inputDroolsObject = null;
+        DroolsFactObject outputDroolsObject = null;
+        if (inputObject != null) {
+            this.insertByReflection(inputObject);
+            inputDroolsObject = DroolsFactObjectFactory.createFactObject(inputObject);
+        }
+        if (processName != null && processName.length() > 0) {
+            this.startProcess(processName);
+        }
+        this.fireAllRules();
+        if (inputDroolsObject != null) {
+            outputDroolsObject = DroolsFactObjectFactory.createFactObject(inputObject);
+        }
+
+        if (this.historyListener != null) {
+            SessionFireAllRulesAndStartProcess sessionFireAllRulesAndStartProcess = new SessionFireAllRulesAndStartProcess(this.getNextEventCounter(), this.ruleBaseID, this.sessionId, inputDroolsObject, outputDroolsObject);
+            this.addHistoryElement(sessionFireAllRulesAndStartProcess);
+        }
+        return inputObject;
     }
 
     @Override

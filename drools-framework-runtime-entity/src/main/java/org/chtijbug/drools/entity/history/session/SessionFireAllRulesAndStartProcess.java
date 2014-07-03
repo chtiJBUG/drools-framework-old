@@ -22,4 +22,12 @@ public class SessionFireAllRulesAndStartProcess extends SessionEvent {
 
     public SessionFireAllRulesAndStartProcess() {
     }
+
+    public DroolsFactObject getInputObject() {
+        return inputObject;
+    }
+
+    public DroolsFactObject getOutputObject() {
+        return outputObject;
+    }
 }

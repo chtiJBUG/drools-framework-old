@@ -25,11 +25,11 @@ public class GuvnorRepositoryConnectorLocalTestCase {
     }
 
     @Test
-      //  @Ignore
-        public void testgetAllPackages() throws Exception {
-            List<Asset> toto = guvnorRepositoryConnector.getAllPackagesInGuvnorRepo();
-            System.out.println(toto.toString());
-        }
+    //  @Ignore
+    public void testgetAllPackages() throws Exception {
+        List<Asset> toto = guvnorRepositoryConnector.getAllPackagesInGuvnorRepo();
+        System.out.println(toto.toString());
+    }
 
     @Test
     @Ignore
@@ -66,11 +66,11 @@ public class GuvnorRepositoryConnectorLocalTestCase {
         newAsset.setName("FirstRule2");
         newAsset.setSummary("First Rule via Rest");
         AssetCategory newCategoryOne = new AssetCategory("amag");
-        newAsset.getCategories().add(newCategoryOne) ;
+        newAsset.getCategories().add(newCategoryOne);
         AssetCategory newCategorytwo = new AssetCategory("amag");
         newAsset.getCategories().add(newCategorytwo);
 
-        guvnorRepositoryConnector.createAsset(newAsset, AssetType.GuidedRule,"no source");
+        guvnorRepositoryConnector.createAsset(newAsset, AssetType.GuidedRule, "no source");
 
     }
 
@@ -89,6 +89,13 @@ public class GuvnorRepositoryConnectorLocalTestCase {
     public void getListAssets() throws Exception {
         List<Asset> listAssets = guvnorRepositoryConnector.getAllBusinessAssets("loyalty");
         System.out.println(listAssets.toString());
+    }
+
+    @Test
+    //@Ignore
+    public void getAssetVersion() throws Exception {
+        Integer version = guvnorRepositoryConnector.getAssetVersion("alertesecurite", "Alerte_DepLivraison_Marque_ConnaissanceClient");
+        System.out.println(version);
     }
 
 }

@@ -35,7 +35,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ch.lambdaj.Lambda.*;
+import static ch.lambdaj.Lambda.convert;
 import static java.lang.String.format;
 
 /**
@@ -142,43 +142,47 @@ class AssetManager {
         result = convert(feed.getEntries(), new Converter<Entry, Asset>() {
             @Override
             public Asset convert(Entry entry) {
-                Asset asset = new Asset();
-                String assetName = entry.getTitle();
-                asset.setSummary(entry.getSummary());
-                asset.setName(assetName);
-                asset.setPackageName(packageName);
-                Element metadata = entry.getExtension(QName.valueOf("metadata"));
-
-
-                String metadataContent = ((FOMExtensibleElement) metadata).toFormattedString();
-                String format = null;
-                String status = null;
-                String versionNumber = null;
-                try {
-
-                    format = xPath.evaluate("/metadata/format/value", new InputSource(new StringReader(metadataContent)));
-                    asset.setType(format);
-                    status = xPath.evaluate("/metadata/state/value", new InputSource(new StringReader(metadataContent)));
-                    asset.setStatus(status);
-                    versionNumber = xPath.evaluate("/metadata/versionNumber/value", new InputSource(new StringReader(metadataContent)));
-                    asset.setVersionNumber(versionNumber);
-                    NodeList nodeList = (NodeList) xPath.evaluate("//categories/value", new InputSource(new StringReader(metadataContent)), XPathConstants.NODESET);
-                    List<AssetCategory> assetCategoryList = new ArrayList<AssetCategory>();
-                    for (int i = 0; i < nodeList.getLength(); i++) {
-                        Node node = nodeList.item(i);
-                        String categorieName = node.getFirstChild().getNodeValue();
-                        AssetCategory assetCategory = new AssetCategory();
-                        assetCategory.setName(categorieName);
-                        assetCategoryList.add(assetCategory);
-                    }
-                    asset.setCategories(assetCategoryList);
-                } catch (XPathExpressionException e) {
-                    //____ Let the null value by default
-                }
-                return asset;
+                return transformFromFeed(packageName, entry, xPath);
             }
         });
         return result;
+    }
+
+    private Asset transformFromFeed(String packageName, Entry entry, XPath xPath) {
+        Asset asset = new Asset();
+        String assetName = entry.getTitle();
+        asset.setSummary(entry.getSummary());
+        asset.setName(assetName);
+        asset.setPackageName(packageName);
+        Element metadata = entry.getExtension(QName.valueOf("metadata"));
+
+
+        String metadataContent = ((FOMExtensibleElement) metadata).toFormattedString();
+        String format = null;
+        String status = null;
+        String versionNumber = null;
+        try {
+
+            format = xPath.evaluate("/metadata/format/value", new InputSource(new StringReader(metadataContent)));
+            asset.setType(format);
+            status = xPath.evaluate("/metadata/state/value", new InputSource(new StringReader(metadataContent)));
+            asset.setStatus(status);
+            versionNumber = xPath.evaluate("/metadata/versionNumber/value", new InputSource(new StringReader(metadataContent)));
+            asset.setVersionNumber(versionNumber);
+            NodeList nodeList = (NodeList) xPath.evaluate("//categories/value", new InputSource(new StringReader(metadataContent)), XPathConstants.NODESET);
+            List<AssetCategory> assetCategoryList = new ArrayList<AssetCategory>();
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node node = nodeList.item(i);
+                String categorieName = node.getFirstChild().getNodeValue();
+                AssetCategory assetCategory = new AssetCategory();
+                assetCategory.setName(categorieName);
+                assetCategoryList.add(assetCategory);
+            }
+            asset.setCategories(assetCategoryList);
+        } catch (XPathExpressionException e) {
+            //____ Let the null value by default
+        }
+        return asset;
     }
 
     public List<Asset> getAllPackagesInGuvnorRepo() {
@@ -202,20 +206,18 @@ class AssetManager {
     }
 
 
-    public Integer getAssetVersion(String packageName, String assetName) {
+    public Asset getAsset(final String packageName, String assetName) {
+
         InputStream inputStream = configuration.webClient()
-                .path(configuration.assetVersionPath(packageName, assetName))
+                .path(format("%s/rest/packages/%s/assets/%s", configuration.getWebappName(), packageName, assetName))
                 .accept(MediaType.APPLICATION_ATOM_XML)
                 .get(InputStream.class);
+        Document atomDocument = Abdera.getInstance().getParser().parse(inputStream);
+        Entry entry = (Entry) atomDocument.getRoot();
+        final XPath xPath = XPathFactory.newInstance().newXPath();
+        Asset asset = transformFromFeed(packageName, entry, xPath);
 
-        Document<Element> atomDocument = Abdera.getInstance().getParser().parse(inputStream);
-        Feed feed = (Feed) atomDocument.getRoot();
-        List<Integer> allVersions = convert(feed.getEntries(), new Converter<Entry, Integer>() {
-            public Integer convert(Entry from) {
-                return Integer.valueOf(from.getTitle());
-            }
-        });
-        return selectMax(allVersions, on(Integer.class));
+        return asset;
     }
 
     public InputStream getPojoModel(String packageName) {

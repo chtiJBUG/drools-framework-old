@@ -176,17 +176,23 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
     }
 
     public Integer getAssetVersion(String assetName) throws ChtijbugDroolsRestException {
+
+        return this.getAssetVersion(configuration.getDefaultPackageName(), assetName);
+    }
+
+    public Integer getAssetVersion(String packageName, String assetName) throws ChtijbugDroolsRestException {
         if (configuration.getDefaultPackageName() == null || configuration.getDefaultPackageName().length() == 0) {
             ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException("No Default Package Name defined");
             throw chtijbugDroolsRestException;
         }
-        return this.assetManager.getAssetVersion(configuration.getDefaultPackageName(), assetName);
+        Asset asset = this.assetManager.getAsset(packageName, assetName);
+        Integer assetVersion = null;
+        if (asset != null && asset.getVersionNumber() != null) {
+            assetVersion = new Integer(asset.getVersionNumber());
+        }
+        return assetVersion;
     }
 
-    public Integer getAssetVersion(String packageName,String assetName) throws ChtijbugDroolsRestException {
-
-           return this.assetManager.getAssetVersion(packageName, assetName);
-       }
     @Override
     public void buildRulePackageByStatus(String snapshotName, String filter) throws ChtijbugDroolsRestException {
         if (configuration.getDefaultPackageName() == null || configuration.getDefaultPackageName().length() == 0) {

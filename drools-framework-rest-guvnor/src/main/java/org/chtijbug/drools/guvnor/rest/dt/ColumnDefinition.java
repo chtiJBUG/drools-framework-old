@@ -62,6 +62,7 @@ public class ColumnDefinition {
             this.defaultValue = getValue(conditionCol52.getDefaultValue());
         }
         this.hideColumn = conditionCol52.isHideColumn();
+        this.header = conditionCol52.getHeader();
     }
 
     public ColumnDefinition(int columnNumber, ActionInsertFactCol52 actionInsertFact52) {
@@ -78,6 +79,7 @@ public class ColumnDefinition {
             }
         }
         this.hideColumn = actionInsertFact52.isHideColumn();
+        this.header = actionInsertFact52.getHeader();
     }
 
     public int getColumnNumber() {

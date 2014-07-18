@@ -34,6 +34,8 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
 
     private RulePackageManager rulePackageManager = null;
 
+    private BPMN2ManagerManager bpmn2ManagerManager = null;
+
     public GuvnorRepositoryConnector(GuvnorConnexionConfiguration configuration) {
         logger.debug(format("Creating new GuvnorRepositoryConnector with args : %s", configuration.toString()));
         this.configuration = configuration;
@@ -41,6 +43,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
         this.ruleTemplateManager = new RuleTemplateManager(configuration, this.assetManager);
         this.decisionTableManager = new DecisionTableManager(configuration, this.assetManager);
         this.rulePackageManager = new RulePackageManager(configuration);
+        this.bpmn2ManagerManager = new BPMN2ManagerManager(configuration,this.assetManager);
     }
 
     public GuvnorRepositoryConnector(String guvnorUrl, String guvnorAppName, String packageName, String guvnorUserName, String guvnorPassword) {
@@ -233,6 +236,18 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
     @Override
     public List<Snapshot> getListSnapshots(String packageName) throws ChtijbugDroolsRestException {
         return this.rulePackageManager.getListSnaphots(packageName);
+    }
+
+    @Override
+    public String getBPMN2InXML(String packageName, String bpmn2name) throws ChtijbugDroolsRestException {
+        String result = this.bpmn2ManagerManager.getBPMN2InXML(packageName,bpmn2name);
+        return result;
+    }
+
+    @Override
+    public String getBPMN2ProcessID(String packageName, String bpmnName) throws ChtijbugDroolsRestException {
+        String result = this.bpmn2ManagerManager.getBPMN2ProcessID(packageName,bpmnName);
+        return result;
     }
 
     public GuvnorConnexionConfiguration getConfiguration() {

@@ -84,5 +84,11 @@ public interface RestRepositoryConnector {
     List<Snapshot> getListSnapshots() throws ChtijbugDroolsRestException;
 
     List<Snapshot> getListSnapshots(String packageName) throws ChtijbugDroolsRestException;
+
+    String getBPMN2InXML(String packageNamen,String bpmn2name) throws ChtijbugDroolsRestException;
+
+    public String getBPMN2ProcessID( String packageName,String bpmnName) throws ChtijbugDroolsRestException;
+
+
 }
 

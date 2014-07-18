@@ -92,10 +92,22 @@ public class GuvnorRepositoryConnectorLocalTestCase {
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void getAssetVersion() throws Exception {
-        Integer version = guvnorRepositoryConnector.getAssetVersion("alertesecurite", "Alerte_DepLivraison_Marque_ConnaissanceClient");
+        Integer version = guvnorRepositoryConnector.getAssetVersion("loyalty", "P1");
         System.out.println(version);
     }
+    @Test
+    @Ignore
+    public void getAssetBPMN2Conrent() throws Exception {
+        String content= guvnorRepositoryConnector.getBPMN2InXML("loyalty", "P1");
+        System.out.println(content);
+    }
+    @Test
+     @Ignore
+     public void getBPMN2ProcessID() throws Exception {
+         String content= guvnorRepositoryConnector.getBPMN2ProcessID("loyalty", "P1");
+         System.out.println(content);
+     }
 
 }

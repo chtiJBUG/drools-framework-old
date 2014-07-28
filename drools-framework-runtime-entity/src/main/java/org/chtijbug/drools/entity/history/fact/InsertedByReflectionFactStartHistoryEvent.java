@@ -42,11 +42,14 @@ public class InsertedByReflectionFactStartHistoryEvent extends FactHistoryEvent 
         StringBuilder str = new StringBuilder();
         str.append(super.toString() + "\n");
 
-        str.append("inserted Top Object : " + topObject.getFullClassName() + "\n");
-        str.append("version Object : " + topObject.getObjectVersion() + "\n");
-        str.append("attributes :\n");
-        for (DroolsFactObjectAttribute foa : topObject.getListfactObjectAttributes()) {
-            str.append("- " + foa.getAttributeType() + " " + foa.getAttributeName() + "=" + foa.getAttributeValue() + "\n");
+        if (topObject != null) {
+            str.append("inserted Top Object : " + topObject.getFullClassName() + "\n");
+            str.append("version Object : " + topObject.getObjectVersion() + "\n");
+            str.append("attributes :\n");
+            for (DroolsFactObjectAttribute foa : topObject.getListfactObjectAttributes()) {
+                str.append("- " + foa.getAttributeType() + " " + foa.getAttributeName() + "=" + foa.getAttributeValue() + "\n");
+            }
+
         }
 
         return str.toString();

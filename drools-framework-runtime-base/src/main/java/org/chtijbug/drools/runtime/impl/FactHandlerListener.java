@@ -6,13 +6,19 @@ package org.chtijbug.drools.runtime.impl;
 
 import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.history.fact.DeletedFactHistoryEvent;
+import org.chtijbug.drools.entity.history.fact.FactHistoryEvent;
 import org.chtijbug.drools.entity.history.fact.InsertedFactHistoryEvent;
 import org.chtijbug.drools.entity.history.fact.UpdatedFactHistoryEvent;
 import org.chtijbug.drools.runtime.DroolsFactObjectFactory;
+import org.drools.common.DefaultFactHandle;
+import org.drools.common.PropagationContextImpl;
 import org.drools.event.rule.ObjectInsertedEvent;
 import org.drools.event.rule.ObjectRetractedEvent;
 import org.drools.event.rule.ObjectUpdatedEvent;
 import org.drools.event.rule.WorkingMemoryEventListener;
+import org.drools.reteoo.RuleTerminalNode;
+import org.drools.reteoo.RuleTerminalNodeLeftTuple;
+import org.drools.rule.Rule;
 import org.drools.runtime.rule.FactHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +40,20 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
         logger.debug(">>objectInserted", event);
         try {
             //____ Updating reference into the facts map from knowledge Session
+            //((RuleTerminalNode)((RuleTerminalNodeLeftTuple)((org.drools.common.DefaultFactHandle)event.getFactHandle()).getFirstLeftTuple()).getSink()).getRule().getRuleFlowGroup()
             FactHandle f = event.getFactHandle();
             Object newObject = event.getObject();
             DroolsFactObject ff = DroolsFactObjectFactory.createFactObject(newObject);
             ruleBaseSession.setData(f, newObject, ff);
             //____ Adding the Insert Event from the History Container
-            InsertedFactHistoryEvent insertFactHistoryEvent = new InsertedFactHistoryEvent(this.ruleBaseSession.getNextEventCounter(), ff,this.ruleBaseSession.getRuleBaseID(),this.ruleBaseSession.getSessionId());
+            InsertedFactHistoryEvent insertFactHistoryEvent = new InsertedFactHistoryEvent(this.ruleBaseSession.getNextEventCounter(), ff, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
+            this.updateRuleDetailFromFacttHandle(f, insertFactHistoryEvent);
+            if (insertFactHistoryEvent.getRuleName() == null) {
+                if (event.getPropagationContext() instanceof PropagationContextImpl) {
+                    PropagationContextImpl propagationContext = (PropagationContextImpl) event.getPropagationContext();
+                    this.updateRuleDetailFromPropagationContext(propagationContext, insertFactHistoryEvent);
+                }
+            }
             this.ruleBaseSession.addHistoryElement(insertFactHistoryEvent);
         } finally {
             logger.debug("<<objectInserted");
@@ -54,11 +68,19 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
             FactHandle f = event.getFactHandle();
             Object oldValue = event.getOldObject();
             Object newValue = event.getObject();
+
             DroolsFactObject factOldValue = this.ruleBaseSession.getLastFactObjectVersion(oldValue);
             DroolsFactObject factNewValue = DroolsFactObjectFactory.createFactObject(newValue, factOldValue.getNextObjectVersion());
             ruleBaseSession.setData(f, newValue, factNewValue);
             //____ Adding the Update Event from the History Container
-            UpdatedFactHistoryEvent updatedFactHistoryEvent = new UpdatedFactHistoryEvent(this.ruleBaseSession.getNextEventCounter(), factOldValue, factNewValue,this.ruleBaseSession.getRuleBaseID(),this.ruleBaseSession.getSessionId());
+            UpdatedFactHistoryEvent updatedFactHistoryEvent = new UpdatedFactHistoryEvent(this.ruleBaseSession.getNextEventCounter(), factOldValue, factNewValue, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
+            this.updateRuleDetailFromFacttHandle(f, updatedFactHistoryEvent);
+            if (updatedFactHistoryEvent.getRuleName() == null) {
+                if (event.getPropagationContext() instanceof PropagationContextImpl) {
+                    PropagationContextImpl propagationContext = (PropagationContextImpl) event.getPropagationContext();
+                    this.updateRuleDetailFromPropagationContext(propagationContext, updatedFactHistoryEvent);
+                }
+            }
             this.ruleBaseSession.addHistoryElement(updatedFactHistoryEvent);
         } finally {
             logger.debug("<<objectUpdated");
@@ -75,11 +97,44 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
             DroolsFactObject deletedFact = this.ruleBaseSession.getLastFactObjectVersion(newObject);
             ruleBaseSession.unsetData(f, newObject);
             //____ Adding a Delete Event from the HistoryContainer
-            DeletedFactHistoryEvent deleteFactEvent = new DeletedFactHistoryEvent(this.ruleBaseSession.getNextEventCounter(), deletedFact,this.ruleBaseSession.getRuleBaseID(),this.ruleBaseSession.getSessionId());
+
+            DeletedFactHistoryEvent deleteFactEvent = new DeletedFactHistoryEvent(this.ruleBaseSession.getNextEventCounter(), deletedFact, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
+            if (event.getPropagationContext() instanceof PropagationContextImpl) {
+                PropagationContextImpl propagationContext = (PropagationContextImpl) event.getPropagationContext();
+                this.updateRuleDetailFromPropagationContext(propagationContext, deleteFactEvent);
+            }
             this.ruleBaseSession.addHistoryElement(deleteFactEvent);
 
         } finally {
             logger.debug("<<objectRetracted");
+        }
+    }
+
+    private void updateRuleDetailFromPropagationContext(PropagationContextImpl f, FactHistoryEvent historyEvent) {
+        Rule ruleOrigin = f.getRuleOrigin();
+        if (ruleOrigin != null) {
+            historyEvent.setRuleName(ruleOrigin.getName());
+            historyEvent.setRulePackageName(ruleOrigin.getPackageName());
+            historyEvent.setRuleflowGroup(ruleOrigin.getRuleFlowGroup());
+        }
+    }
+
+
+    private void updateRuleDetailFromFacttHandle(FactHandle f, FactHistoryEvent historyEvent) {
+        if (f instanceof DefaultFactHandle) {
+            DefaultFactHandle dfh = (DefaultFactHandle) f;
+            if (dfh.getFirstLeftTuple() != null && dfh.getFirstLeftTuple() instanceof RuleTerminalNodeLeftTuple) {
+                RuleTerminalNodeLeftTuple rtn = (RuleTerminalNodeLeftTuple) dfh.getFirstLeftTuple();
+                if (rtn.getSink() != null && rtn.getSink() instanceof RuleTerminalNode) {
+                    RuleTerminalNode ruleTerminalNode = (RuleTerminalNode) rtn.getSink();
+                    Rule realRule = ruleTerminalNode.getRule();
+                    historyEvent.setRuleName(realRule.getName());
+                    historyEvent.setRulePackageName(realRule.getPackageName());
+                    historyEvent.setRuleflowGroup(realRule.getRuleFlowGroup());
+                }
+            }
+
+
         }
     }
 

@@ -10,14 +10,11 @@ import org.chtijbug.drools.entity.history.fact.FactHistoryEvent;
 import org.chtijbug.drools.entity.history.fact.InsertedFactHistoryEvent;
 import org.chtijbug.drools.entity.history.fact.UpdatedFactHistoryEvent;
 import org.chtijbug.drools.runtime.DroolsFactObjectFactory;
-import org.drools.common.DefaultFactHandle;
 import org.drools.common.PropagationContextImpl;
 import org.drools.event.rule.ObjectInsertedEvent;
 import org.drools.event.rule.ObjectRetractedEvent;
 import org.drools.event.rule.ObjectUpdatedEvent;
 import org.drools.event.rule.WorkingMemoryEventListener;
-import org.drools.reteoo.RuleTerminalNode;
-import org.drools.reteoo.RuleTerminalNodeLeftTuple;
 import org.drools.rule.Rule;
 import org.drools.runtime.rule.FactHandle;
 import org.slf4j.Logger;
@@ -47,7 +44,6 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
             ruleBaseSession.setData(f, newObject, ff);
             //____ Adding the Insert Event from the History Container
             InsertedFactHistoryEvent insertFactHistoryEvent = new InsertedFactHistoryEvent(this.ruleBaseSession.getNextEventCounter(), ff, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
-            this.updateRuleDetailFromFacttHandle(f, insertFactHistoryEvent);
             if (insertFactHistoryEvent.getRuleName() == null) {
                 if (event.getPropagationContext() instanceof PropagationContextImpl) {
                     PropagationContextImpl propagationContext = (PropagationContextImpl) event.getPropagationContext();
@@ -74,7 +70,6 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
             ruleBaseSession.setData(f, newValue, factNewValue);
             //____ Adding the Update Event from the History Container
             UpdatedFactHistoryEvent updatedFactHistoryEvent = new UpdatedFactHistoryEvent(this.ruleBaseSession.getNextEventCounter(), factOldValue, factNewValue, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
-            this.updateRuleDetailFromFacttHandle(f, updatedFactHistoryEvent);
             if (updatedFactHistoryEvent.getRuleName() == null) {
                 if (event.getPropagationContext() instanceof PropagationContextImpl) {
                     PropagationContextImpl propagationContext = (PropagationContextImpl) event.getPropagationContext();
@@ -119,23 +114,5 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
         }
     }
 
-
-    private void updateRuleDetailFromFacttHandle(FactHandle f, FactHistoryEvent historyEvent) {
-        if (f instanceof DefaultFactHandle) {
-            DefaultFactHandle dfh = (DefaultFactHandle) f;
-            if (dfh.getFirstLeftTuple() != null && dfh.getFirstLeftTuple() instanceof RuleTerminalNodeLeftTuple) {
-                RuleTerminalNodeLeftTuple rtn = (RuleTerminalNodeLeftTuple) dfh.getFirstLeftTuple();
-                if (rtn.getSink() != null && rtn.getSink() instanceof RuleTerminalNode) {
-                    RuleTerminalNode ruleTerminalNode = (RuleTerminalNode) rtn.getSink();
-                    Rule realRule = ruleTerminalNode.getRule();
-                    historyEvent.setRuleName(realRule.getName());
-                    historyEvent.setRulePackageName(realRule.getPackageName());
-                    historyEvent.setRuleflowGroup(realRule.getRuleFlowGroup());
-                }
-            }
-
-
-        }
-    }
 
 }

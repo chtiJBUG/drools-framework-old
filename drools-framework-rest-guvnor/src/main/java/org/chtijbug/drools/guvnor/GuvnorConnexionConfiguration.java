@@ -16,17 +16,28 @@ import static java.lang.String.format;
  * Time: 09:05
  */
 public class GuvnorConnexionConfiguration {
-    /** Hostname and port */
+    /**
+     * Hostname and port
+     */
     private String hostname;
-    /** Web application Name */
+    /**
+     * Web application Name
+     */
     private String webappName;
-    /** The package name which contains all business assets */
+    /**
+     * The package name which contains all business assets
+     */
     private String defaultPackageName;
-    /** username for login*/
+    /**
+     * username for login
+     */
     private String username;
-    /** password for login */
+    /**
+     * password for login
+     */
     private String password;
 
+    private static WebClient client = null;
 
     public GuvnorConnexionConfiguration(String hostname, String webappName, String defaultPackageName, String username, String password) {
         this.hostname = hostname;
@@ -58,6 +69,7 @@ public class GuvnorConnexionConfiguration {
 
     /**
      * This method will create authentication header frame containing Base 64 encoded username and password
+     *
      * @return the authentication header frame
      */
     public String createAuthenticationHeader() {
@@ -65,22 +77,24 @@ public class GuvnorConnexionConfiguration {
     }
 
     public WebClient webClient() {
-        WebClient client = WebClient.create(this.getHostname());
-        client.header("Authorization", this.createAuthenticationHeader());
+        if (client == null) {
+            client = WebClient.create(this.getHostname());
+            client.header("Authorization", this.createAuthenticationHeader());
+        }
         return client;
     }
 
-    public String assetBinaryPath(String packageName,String ruleName) {
-         return getPathFor(packageName,ruleName, "source");
-     }
+    public String assetBinaryPath(String packageName, String ruleName) {
+        return getPathFor(packageName, ruleName, "source");
+    }
 
-     public String getPathFor(String packageName,String assetName, String pathType) {
-         return format("%s/rest/packages/%s/assets/%s/%s", this.getWebappName(), packageName, assetName, pathType);
-     }
+    public String getPathFor(String packageName, String assetName, String pathType) {
+        return format("%s/rest/packages/%s/assets/%s/%s", this.getWebappName(), packageName, assetName, pathType);
+    }
 
-     public String assetVersionPath(String packageName,String assertName) {
-         return getPathFor(packageName,assertName, "versions");
-     }
+    public String assetVersionPath(String packageName, String assertName) {
+        return getPathFor(packageName, assertName, "versions");
+    }
 
     public void noTimeout(WebClient client) {
         ClientConfiguration config = WebClient.getConfig(client);

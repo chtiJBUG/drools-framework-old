@@ -1,6 +1,5 @@
 package org.chtijbug.drools.guvnor;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.cxf.common.util.Base64Utility;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
 import org.apache.cxf.jaxrs.client.WebClient;
@@ -59,6 +58,10 @@ public class GuvnorConnexionConfiguration {
         return defaultPackageName;
     }
 
+    public void setDefaultPackageName(String defaultPackageName) {
+        this.defaultPackageName = defaultPackageName;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -77,6 +80,10 @@ public class GuvnorConnexionConfiguration {
     }
 
     public WebClient webClient() {
+        if (client != null) {
+            client.close();
+            client = null;
+        }
         if (client == null) {
             client = WebClient.create(this.getHostname());
             client.header("Authorization", this.createAuthenticationHeader());
@@ -110,15 +117,16 @@ public class GuvnorConnexionConfiguration {
         http.setClient(httpClientPolicy);
     }
 
-
     @Override
     public String toString() {
-        return new ToStringBuilder(this).
-                append("hostname", hostname).
-                append("webappName", webappName).
-                append("username", username).
-                append("password", password).
-                toString();
+        final StringBuffer sb = new StringBuffer("GuvnorConnexionConfiguration{");
+        sb.append("hostname='").append(hostname).append('\'');
+        sb.append(", webappName='").append(webappName).append('\'');
+        sb.append(", defaultPackageName='").append(defaultPackageName).append('\'');
+        sb.append(", username='").append(username).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 
 

@@ -21,7 +21,7 @@ public class GuvnorRepositoryConnectorLocalTestCase {
 
     @Before
     public void setUp() throws Exception {
-        guvnorRepositoryConnector = new GuvnorRepositoryConnector("http://localhost:8080/", "/drools-guvnor", "mortgages", "tomcat", "tomcat");
+        guvnorRepositoryConnector = new GuvnorRepositoryConnector("http://localhost:8080/", "/drools-guvnor", "swimmingpool", "admin", "admin");
     }
 
     @Test
@@ -91,6 +91,13 @@ public class GuvnorRepositoryConnectorLocalTestCase {
         System.out.println(listAssets.toString());
     }
 
+    @Test
+    @Ignore
+    public void getListAssets2() throws Exception {
+        List<Asset> listAssets1 = guvnorRepositoryConnector.getAllBusinessAssets("loyalty");
+        List<Asset> listAssets12 = guvnorRepositoryConnector.getAllBusinessAssets("swimmingpool");
+        System.out.println(listAssets1.toString());
+    }
     @Test
     @Ignore
     public void getAssetVersion() throws Exception {

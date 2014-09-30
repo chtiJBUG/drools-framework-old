@@ -5,7 +5,6 @@ import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
 import org.chtijbug.drools.guvnor.rest.model.Asset;
 import org.chtijbug.drools.guvnor.rest.model.AssetPropertyType;
 import org.chtijbug.drools.guvnor.rest.model.AssetType;
-import org.chtijbug.drools.guvnor.rest.model.Snapshot;
 import org.drools.ide.common.client.modeldriven.dt52.GuidedDecisionTable52;
 
 import java.io.InputStream;
@@ -81,9 +80,9 @@ public interface RestRepositoryConnector {
     void deletePackageSnapshot(String packageName,String snapshotName) throws ChtijbugDroolsRestException;
 
 
-    List<Snapshot> getListSnapshots() throws ChtijbugDroolsRestException;
+    List<String> getListSnapshots() throws ChtijbugDroolsRestException;
 
-    List<Snapshot> getListSnapshots(String packageName) throws ChtijbugDroolsRestException;
+    List<String> getListSnapshots(String packageName) throws ChtijbugDroolsRestException;
 
     String getBPMN2InXML(String packageNamen,String bpmn2name) throws ChtijbugDroolsRestException;
 

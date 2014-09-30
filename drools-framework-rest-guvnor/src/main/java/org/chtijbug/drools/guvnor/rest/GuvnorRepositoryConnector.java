@@ -5,7 +5,6 @@ import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
 import org.chtijbug.drools.guvnor.rest.model.Asset;
 import org.chtijbug.drools.guvnor.rest.model.AssetPropertyType;
 import org.chtijbug.drools.guvnor.rest.model.AssetType;
-import org.chtijbug.drools.guvnor.rest.model.Snapshot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -225,7 +224,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
     }
 
     @Override
-    public List<Snapshot> getListSnapshots() throws ChtijbugDroolsRestException {
+    public List<String> getListSnapshots() throws ChtijbugDroolsRestException {
         if (configuration.getDefaultPackageName() == null || configuration.getDefaultPackageName().length() == 0) {
             ChtijbugDroolsRestException chtijbugDroolsRestException = new ChtijbugDroolsRestException("No Default Package Name defined");
             throw chtijbugDroolsRestException;
@@ -234,7 +233,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
     }
 
     @Override
-    public List<Snapshot> getListSnapshots(String packageName) throws ChtijbugDroolsRestException {
+    public List<String> getListSnapshots(String packageName) throws ChtijbugDroolsRestException {
         return this.rulePackageManager.getListSnaphots(packageName);
     }
 

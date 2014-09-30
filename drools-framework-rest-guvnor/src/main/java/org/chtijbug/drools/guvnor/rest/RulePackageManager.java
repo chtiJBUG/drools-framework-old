@@ -1,20 +1,26 @@
 package org.chtijbug.drools.guvnor.rest;
 
-import com.google.common.collect.Lists;
+import ch.lambdaj.function.convert.Converter;
+import org.apache.abdera.Abdera;
+import org.apache.abdera.model.Document;
+import org.apache.abdera.model.Element;
+import org.apache.abdera.parser.stax.FOMExtensibleElement;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.chtijbug.drools.common.jaxb.JAXBContextUtils;
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
-import org.chtijbug.drools.guvnor.rest.model.Snapshot;
 import org.drools.guvnor.server.jaxrs.jaxb.SnapshotCreationData;
-import org.drools.guvnor.server.jaxrs.jaxb.Snapshots;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathFactory;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ch.lambdaj.Lambda.convert;
 import static java.lang.String.format;
 
 /**
@@ -53,21 +59,34 @@ public class RulePackageManager {
         }
     }
 
-    public List<Snapshot> getListSnaphots(String packageName) throws ChtijbugDroolsRestException {
-        List<Snapshot> result = new ArrayList<Snapshot>();
+    public List<String> getListSnaphots(String packageName) throws ChtijbugDroolsRestException {
+        List<String> result = new ArrayList();
         try {
             String path = format("%s/rest/packages/%s/snapshots", this.configuration.getWebappName(), packageName);
             WebClient webClient = this.configuration.webClient();
             this.configuration.noTimeout(webClient);
-            Snapshots list = webClient.path(path)
+            /**
+             * Snapshots list = webClient.path(path)
                     .type(MediaType.APPLICATION_ATOM_XML)
                     .get(Snapshots.class);
-            if (list == null || list.getListNames() == null)
-                return Lists.newArrayList();
-            for (int i = 0; i < list.getListNames().length; i++) {
-                Snapshot snapshot = new Snapshot(packageName, list.getListNames()[i]);
-                result.add(snapshot);
-            }
+             **/
+            InputStream inputStream = webClient.path(path)
+                    .type(MediaType.APPLICATION_ATOM_XML)
+                    .get(InputStream.class);
+            Document<Element> atomDocument = Abdera.getInstance().getParser().parse(inputStream);
+            FOMExtensibleElement feed = (FOMExtensibleElement) atomDocument.getRoot();
+            final XPath xPath = XPathFactory.newInstance().newXPath();
+            result = convert(feed.getElements(), new Converter<FOMExtensibleElement, String>() {
+
+
+                @Override
+                public String convert(FOMExtensibleElement element) {
+                    if (element.getNextSibling() != null)
+                        return element.getNextSibling().getText();
+                    else
+                        return null;
+                }
+            });
         } catch (Exception e) {
             throw new ChtijbugDroolsRestException(e);
         }
@@ -83,4 +102,6 @@ public class RulePackageManager {
                 .type(MediaType.APPLICATION_ATOM_XML)
                 .delete();
     }
+
+
 }

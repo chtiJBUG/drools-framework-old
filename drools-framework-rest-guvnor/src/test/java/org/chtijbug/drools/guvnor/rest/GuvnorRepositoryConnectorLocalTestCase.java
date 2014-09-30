@@ -1,7 +1,10 @@
 package org.chtijbug.drools.guvnor.rest;
 
 import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
-import org.chtijbug.drools.guvnor.rest.model.*;
+import org.chtijbug.drools.guvnor.rest.model.Asset;
+import org.chtijbug.drools.guvnor.rest.model.AssetCategory;
+import org.chtijbug.drools.guvnor.rest.model.AssetPropertyType;
+import org.chtijbug.drools.guvnor.rest.model.AssetType;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -79,7 +82,7 @@ public class GuvnorRepositoryConnectorLocalTestCase {
     public void testListSnapshots() throws Exception {
 
 
-        List<Snapshot> theList = guvnorRepositoryConnector.getListSnapshots();
+        List<String> theList = guvnorRepositoryConnector.getListSnapshots();
         System.out.println(theList.toString());
 
     }
@@ -98,23 +101,33 @@ public class GuvnorRepositoryConnectorLocalTestCase {
         List<Asset> listAssets12 = guvnorRepositoryConnector.getAllBusinessAssets("swimmingpool");
         System.out.println(listAssets1.toString());
     }
+
     @Test
     @Ignore
     public void getAssetVersion() throws Exception {
         Integer version = guvnorRepositoryConnector.getAssetVersion("loyalty", "P1");
         System.out.println(version);
     }
+
     @Test
     @Ignore
     public void getAssetBPMN2Conrent() throws Exception {
-        String content= guvnorRepositoryConnector.getBPMN2InXML("loyalty", "P1");
+        String content = guvnorRepositoryConnector.getBPMN2InXML("loyalty", "P1");
         System.out.println(content);
     }
+
     @Test
-     @Ignore
-     public void getBPMN2ProcessID() throws Exception {
-         String content= guvnorRepositoryConnector.getBPMN2ProcessID("loyalty", "P1");
-         System.out.println(content);
-     }
+    @Ignore
+    public void getBPMN2ProcessID() throws Exception {
+        String content = guvnorRepositoryConnector.getBPMN2ProcessID("loyalty", "P1");
+        System.out.println(content);
+    }
+
+    @Test
+    @Ignore
+    public void getListPAckageVersion() throws Exception {
+        List<String> content = guvnorRepositoryConnector.getListSnapshots("loyalty");
+        System.out.println(content);
+    }
 
 }

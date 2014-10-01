@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014 Pymma Software
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.chtijbug.drools.guvnor.rest;
 
 import com.google.common.collect.Iterables;
@@ -24,29 +39,29 @@ class RuleTemplateManager {
 
     private GuvnorConnexionConfiguration configuration = null;
 
-    private AssetManager assetManager=null;
+    private AssetManager assetManager = null;
 
-    public RuleTemplateManager(GuvnorConnexionConfiguration configuration,AssetManager assetManager) {
+    public RuleTemplateManager(GuvnorConnexionConfiguration configuration, AssetManager assetManager) {
         this.configuration = configuration;
         this.assetManager = assetManager;
     }
 
-    public Map<String, List<String>> getTemplateTable(String packageName,String templateRuleName) throws ChtijbugDroolsRestException{
-        TemplateModel templateModel = getTemplateModel(packageName,templateRuleName);
+    public Map<String, List<String>> getTemplateTable(String packageName, String templateRuleName) throws ChtijbugDroolsRestException {
+        TemplateModel templateModel = getTemplateModel(packageName, templateRuleName);
         Map<String, List<String>> table = templateModel.getTable();
         table.remove(TemplateModel.ID_COLUMN_NAME);
         return table;
     }
 
-    public void putTemplateTable(String packageName,String templateRuleName, Map<String, List<String>> newTable) throws ChtijbugDroolsRestException {
-        TemplateModel templateModel = getTemplateModel(packageName,templateRuleName);
+    public void putTemplateTable(String packageName, String templateRuleName, Map<String, List<String>> newTable) throws ChtijbugDroolsRestException {
+        TemplateModel templateModel = getTemplateModel(packageName, templateRuleName);
         updateTableContent(newTable, templateModel);
         String xmlContent = BRXMLPersistence.getInstance().marshal(templateModel);
-        this.assetManager.updateAssetCodeFromXML(packageName,templateRuleName,xmlContent);
-     }
+        this.assetManager.updateAssetCodeFromXML(packageName, templateRuleName, xmlContent);
+    }
 
-    private TemplateModel getTemplateModel(String packageName,String templateRuleName) throws ChtijbugDroolsRestException {
-        String content =this.assetManager.getAssetCodeInXML(packageName,templateRuleName);
+    private TemplateModel getTemplateModel(String packageName, String templateRuleName) throws ChtijbugDroolsRestException {
+        String content = this.assetManager.getAssetCodeInXML(packageName, templateRuleName);
         RuleModel ruleModel = BRXMLPersistence.getInstance().unmarshal(content);
         return (TemplateModel) ruleModel;
     }

@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014 Pymma Software
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.chtijbug.drools.runner;
 
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
@@ -12,14 +27,22 @@ import java.io.File;
  */
 public class RunnerConfiguration {
     protected static final String WORKSPACE_FOLDER = "/tmp/chtijbug";
-    /** The string used to separator packages */
+    /**
+     * The string used to separator packages
+     */
     public static final String PACKAGE_SEPARATOR = ".";
 
-    /** Guvnor connexion configuration bean */
+    /**
+     * Guvnor connexion configuration bean
+     */
     private GuvnorConnexionConfiguration configuration;
-    /** Class name to be used as an argument */
+    /**
+     * Class name to be used as an argument
+     */
     private String inputClassName;
-    /** Class name to be used as a result */
+    /**
+     * Class name to be used as a result
+     */
     private String outputClassName;
 
     public RunnerConfiguration(GuvnorConnexionConfiguration configuration, String inputClassName, String outputClassName) {

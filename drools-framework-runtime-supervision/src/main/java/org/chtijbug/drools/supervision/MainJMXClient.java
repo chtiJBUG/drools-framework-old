@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014 Pymma Software
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.chtijbug.drools.supervision;
 
 import org.chtijbug.drools.runtime.mbeans.ResultStructure;
@@ -25,7 +40,7 @@ public class MainJMXClient extends JDialog {
     private JMXClient client = null;
     private DefaultTableModel listFiredAllRulesTableModel;
     private long selectedRow;
-    private Map<Integer,ResultStructure> data = new HashMap<Integer,ResultStructure>();
+    private Map<Integer, ResultStructure> data = new HashMap<Integer, ResultStructure>();
 
     public MainJMXClient() {
         setContentPane(contentPane);
@@ -82,7 +97,7 @@ public class MainJMXClient extends JDialog {
         });
         ListRulesJtableMouseListener mouseListener = new ListRulesJtableMouseListener(this.listFireAllRules);
         this.listFireAllRules.addMouseListener(mouseListener);
-        ActionListenerDetailLine actionListenerDetailLine = new ActionListenerDetailLine(mouseListener,this.data);
+        ActionListenerDetailLine actionListenerDetailLine = new ActionListenerDetailLine(mouseListener, this.data);
         buttonDetailLine.addActionListener(actionListenerDetailLine);
     }
 
@@ -95,7 +110,7 @@ public class MainJMXClient extends JDialog {
             @Override
             public void fireAllRules(ResultStructure container) {
 
-               addRow(container);
+                addRow(container);
             }
         });
         this.buttonConnect.setEnabled(false);
@@ -120,9 +135,9 @@ public class MainJMXClient extends JDialog {
         System.exit(0);
     }
 
-    private void addRow(ResultStructure line){
-        this.listFiredAllRulesTableModel.insertRow(this.listFiredAllRulesTableModel.getRowCount(), new Object[]{line.getNumberFireAllRulesExecuted(),line.getNumberRulesExecuted(),line.getTotalTimeExecution()});
-         this.data.put(Integer.valueOf(this.listFiredAllRulesTableModel.getRowCount()),line);
+    private void addRow(ResultStructure line) {
+        this.listFiredAllRulesTableModel.insertRow(this.listFiredAllRulesTableModel.getRowCount(), new Object[]{line.getNumberFireAllRulesExecuted(), line.getNumberRulesExecuted(), line.getTotalTimeExecution()});
+        this.data.put(Integer.valueOf(this.listFiredAllRulesTableModel.getRowCount()), line);
 
     }
 
@@ -133,9 +148,6 @@ public class MainJMXClient extends JDialog {
         this.listFiredAllRulesTableModel.addColumn("id");
         this.listFiredAllRulesTableModel.addColumn("numberRules");
         this.listFiredAllRulesTableModel.addColumn("Times");
-
-
-
 
 
         // TODO: place custom component creation code here

@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014 Pymma Software
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.chtijbug.drools.guvnor.rest;
 
 import ch.lambdaj.function.convert.Converter;
@@ -39,7 +54,7 @@ public class RulePackageManager {
         this.configuration = configuration;
     }
 
-    public void buildRulePackageByStatus(String packageName,String snapshotName, String filter) throws ChtijbugDroolsRestException {
+    public void buildRulePackageByStatus(String packageName, String snapshotName, String filter) throws ChtijbugDroolsRestException {
         SnapshotCreationData snapshotCreationData = new SnapshotCreationData();
         snapshotCreationData.setBuildMode("BuiltInSelector");
         snapshotCreationData.setEnableStatusSelector(true);
@@ -67,8 +82,8 @@ public class RulePackageManager {
             this.configuration.noTimeout(webClient);
             /**
              * Snapshots list = webClient.path(path)
-                    .type(MediaType.APPLICATION_ATOM_XML)
-                    .get(Snapshots.class);
+             .type(MediaType.APPLICATION_ATOM_XML)
+             .get(Snapshots.class);
              **/
             InputStream inputStream = webClient.path(path)
                     .type(MediaType.APPLICATION_ATOM_XML)
@@ -94,8 +109,8 @@ public class RulePackageManager {
     }
 
 
-    public void deletePackageSnapshot(String packageName,String snapshotName) {
-        String path = format("%s/rest/packages/%s/snapshot/%s/delete", this.configuration.getWebappName(), packageName,snapshotName);
+    public void deletePackageSnapshot(String packageName, String snapshotName) {
+        String path = format("%s/rest/packages/%s/snapshot/%s/delete", this.configuration.getWebappName(), packageName, snapshotName);
         WebClient webClient = this.configuration.webClient();
         this.configuration.noTimeout(webClient);
         webClient.path(path)

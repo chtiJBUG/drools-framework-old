@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014 Pymma Software
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.chtijbug.drools.runner;
 
 import org.apache.commons.io.IOUtils;
@@ -17,7 +32,9 @@ import java.io.InputStream;
  * Time: 20:02
  */
 public class ServiceGenerator {
-    /** Class logger */
+    /**
+     * Class logger
+     */
     private static Logger logger = LoggerFactory.getLogger(ServiceGenerator.class);
 
 
@@ -29,7 +46,7 @@ public class ServiceGenerator {
             archiveBuilder.buildWebApplication();
             //_____ Run mvn clean command for installing the model.jar into the local repository
             String warFilePath = runnerConfiguration.getWarFileFile();
-            String pomFilePath =  runnerConfiguration.getPomFilePath();
+            String pomFilePath = runnerConfiguration.getPomFilePath();
             runMvnCleanCommand(pomFilePath);
             //_____ Run mvn package command for packaging the websevice into a war file.
             runMvnPackageCommand(pomFilePath);
@@ -48,7 +65,7 @@ public class ServiceGenerator {
 
     private void runMvnCleanCommand(String mavenProjectPath) throws DroolsRunnerGenerationException {
         try {
-            Runtime.getRuntime().exec("mvn -f "+mavenProjectPath+" clean");
+            Runtime.getRuntime().exec("mvn -f " + mavenProjectPath + " clean");
         } catch (IOException e) {
             throw new DroolsRunnerGenerationException("An error occurred while executing mvn clean command", e);
         }
@@ -56,7 +73,7 @@ public class ServiceGenerator {
 
     private void runMvnPackageCommand(String mavenProjectPath) throws DroolsRunnerGenerationException {
         try {
-            Runtime.getRuntime().exec("mvn -f "+mavenProjectPath+" package");
+            Runtime.getRuntime().exec("mvn -f " + mavenProjectPath + " package");
         } catch (IOException e) {
             throw new DroolsRunnerGenerationException("An error occurred while executing mvn package command", e);
         }
@@ -66,7 +83,7 @@ public class ServiceGenerator {
         ServiceGenerator generator = new ServiceGenerator();
 
         try {
-            GuvnorConnexionConfiguration configuration = new GuvnorConnexionConfiguration("http://192.168.255.60:8080", "drools-guvnor","amag", "tomcat", "tomcat");
+            GuvnorConnexionConfiguration configuration = new GuvnorConnexionConfiguration("http://192.168.255.60:8080", "drools-guvnor", "amag", "tomcat", "tomcat");
             RunnerConfiguration runnerConfiguration = new RunnerConfiguration(configuration, "com.axonactive.amag.pojo.Decision", "com.axonactive.amag.pojo.Decision");
             InputStream warFileInputStream = generator.generateWebServiceArchive(runnerConfiguration);
 

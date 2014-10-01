@@ -1,5 +1,17 @@
-/**
+/*
+ * Copyright 2014 Pymma Software
  *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.chtijbug.drools.runtime.resource;
 
@@ -15,24 +27,42 @@ import org.slf4j.LoggerFactory;
  * @date 9 déc. 2011
  */
 public class GuvnorDroolsResource implements DroolsResource {
-    /** Class Logger */
+    /**
+     * Class Logger
+     */
     private static Logger logger = LoggerFactory.getLogger(GuvnorDroolsResource.class);
-    /** Constant used for building the web resource URL */
+    /**
+     * Constant used for building the web resource URL
+     */
     private static final String PKG_PARTIAL_URL = "org.drools.guvnor.Guvnor/package";
 
-    /** the URL base part */
+    /**
+     * the URL base part
+     */
     private final String baseUrl;
-    /** application name to connect */
+    /**
+     * application name to connect
+     */
     private String webappName = "drools-guvnor";
-    /** package name */
+    /**
+     * package name
+     */
     private final String packageName;
-    /** The package version to fetch from remote application */
+    /**
+     * The package version to fetch from remote application
+     */
     private String packageVersion = "LATEST";
-    /** the username used for connecting to Guvnor remote application */
+    /**
+     * the username used for connecting to Guvnor remote application
+     */
     private final String username;
-    /** the password used for connecting to Guvnor remote application */
+    /**
+     * the password used for connecting to Guvnor remote application
+     */
     private final String password;
-    /** The wrapepd Drools Resource */
+    /**
+     * The wrapepd Drools Resource
+     */
     private Resource resource;
 
 
@@ -98,7 +128,7 @@ public class GuvnorDroolsResource implements DroolsResource {
 
     protected static String removeTrailingSlash(String toCheck) {
         if (toCheck.endsWith("/")) {
-            return toCheck.substring(0, toCheck.length()-1);
+            return toCheck.substring(0, toCheck.length() - 1);
         }
         return toCheck;
     }

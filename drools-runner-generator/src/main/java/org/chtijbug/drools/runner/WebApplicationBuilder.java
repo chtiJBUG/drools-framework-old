@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014 Pymma Software
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.chtijbug.drools.runner;
 
 
@@ -22,21 +37,37 @@ import static org.chtijbug.drools.utils.FileUtils.*;
  * Time: 17:38
  */
 public class WebApplicationBuilder {
-    /** class logger */
+    /**
+     * class logger
+     */
     private static final Logger logger = LoggerFactory.getLogger(WebApplicationBuilder.class);
-    /** POM file template */
+    /**
+     * POM file template
+     */
     private static final String POM_FILE = "/templates/pom-template";
-    /** log4j file template */
+    /**
+     * log4j file template
+     */
     private static final String LOG4J_FILE = "/templates/log4j-template";
-    /** spring file template */
+    /**
+     * spring file template
+     */
     private static final String SPRING_FILE = "/templates/spring-template";
-    /** spring CXF file template */
+    /**
+     * spring CXF file template
+     */
     private static final String SPRING_CXF_FILE = "/templates/spring-cxf-template";
-    /** web.xml file template */
+    /**
+     * web.xml file template
+     */
     private static final String WEB_XML_FILE = "/templates/web-xml-template";
-    /** web service package  */
+    /**
+     * web service package
+     */
     private static final String WS_INTERFACE_PACKAGE = "org/chtijbug/drools/ws";
-    /** web service implementation package */
+    /**
+     * web service implementation package
+     */
     private static final String WS_IMPLEMENTATION_PACKAGE = WS_INTERFACE_PACKAGE.concat("/impl");
     public static final String SRC_MAIN_JAVA = "src/main/java";
     public static final String SRC_MAIN_RESOURCES = "src/main/resources";
@@ -100,7 +131,7 @@ public class WebApplicationBuilder {
         } catch (IOException e) {
             throw new DroolsRunnerGenerationException("An error occurred while genereting the tmp Maven project", e);
         } catch (ChtijbugDroolsRestException e) {
-            throw new DroolsRunnerGenerationException("An error occurred while genereting the tmp Maven project ", (IOException)e.getCause());
+            throw new DroolsRunnerGenerationException("An error occurred while genereting the tmp Maven project ", (IOException) e.getCause());
         }
     }
 
@@ -118,6 +149,7 @@ public class WebApplicationBuilder {
      * This method create the service interface Java resource.
      * By default, this method considers that the input class == the output class
      * That's why default local variable intialization set the same values as the input
+     *
      * @throws IOException
      */
     private void createServiceInterface() throws IOException {
@@ -138,18 +170,18 @@ public class WebApplicationBuilder {
         String outputClassName = this.runnerConfiguration.getOutputClassName();
         String inputClassShortName = this.runnerConfiguration.getInputClassShortName();
         String outputClassShortName = this.runnerConfiguration.getInputClassShortName();
-        String importInputClass = "import "+inputClassName+";";
+        String importInputClass = "import " + inputClassName + ";";
 
         String importOutputClass = "";
         if (!inputClassName.equals(outputClassName)) {
-            importOutputClass = "import "+this.runnerConfiguration.getOutputClassName()+";";
+            importOutputClass = "import " + this.runnerConfiguration.getOutputClassName() + ";";
             outputClassShortName = this.runnerConfiguration.getOutputClassShortName();
         }
         FileUtils.replaceTokenInFile(javaResourceFile, "#INPUT_CLASS_IMPORT#", importInputClass);
         FileUtils.replaceTokenInFile(javaResourceFile, "#OUTPUT_CLASS_IMPORT#", importOutputClass);
         FileUtils.replaceTokenInFile(javaResourceFile, "#INPUT_CLASS_NAME#", inputClassShortName);
         FileUtils.replaceTokenInFile(javaResourceFile, "#OUTPUT_CLASS_NAME#", outputClassShortName);
-        String variableName = inputClassShortName.substring(0,1).toLowerCase().concat(inputClassShortName.substring(1,inputClassShortName.length()));
+        String variableName = inputClassShortName.substring(0, 1).toLowerCase().concat(inputClassShortName.substring(1, inputClassShortName.length()));
         FileUtils.replaceTokenInFile(javaResourceFile, "#INPUT_PARAM_NAME#", variableName);
     }
 
@@ -182,7 +214,7 @@ public class WebApplicationBuilder {
         createFolder("spring", webInfFolder);
         //______ Create folder for containing java classes to be generated
         File srcFolder = getFolder(projectFolder, SRC_MAIN_JAVA);
-        createFolder(WS_IMPLEMENTATION_PACKAGE,srcFolder );
+        createFolder(WS_IMPLEMENTATION_PACKAGE, srcFolder);
         //______ Add lib/ folder at the project root path
         createFolder(LIB_FOLDER, projectFolder);
     }

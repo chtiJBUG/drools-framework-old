@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014 Pymma Software
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.chtijbug.drools.guvnor.rest;
 
 import org.apache.commons.io.IOUtils;
@@ -34,7 +49,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 @PrepareForTest(WebClient.class)
 public class GuvnorRepositoryConnectorTest {
 
-    GuvnorConnexionConfiguration configuration = new GuvnorConnexionConfiguration("http://mock-server","drools-guvnor","test","tomcat","tomcat");
+    GuvnorConnexionConfiguration configuration = new GuvnorConnexionConfiguration("http://mock-server", "drools-guvnor", "test", "tomcat", "tomcat");
     GuvnorRepositoryConnector guvnorRepositoryConnector = new GuvnorRepositoryConnector(configuration);
     private WebClient mockWebClient;
 
@@ -67,10 +82,10 @@ public class GuvnorRepositoryConnectorTest {
     @Test
     @Ignore
     public void should_put_template_table() throws Exception {
-        Map<String,List<String>> table = newHashMap();
-        table.put("CONTRACT_A" , asList("false","false","false","false"));
-        table.put("CONTRACT_B" , asList("true" ,"false","true" ,"false"));
-        table.put("CONTRACT_C" , asList("true" ,"true" ,"false","false"));
+        Map<String, List<String>> table = newHashMap();
+        table.put("CONTRACT_A", asList("false", "false", "false", "false"));
+        table.put("CONTRACT_B", asList("true", "false", "true", "false"));
+        table.put("CONTRACT_C", asList("true", "true", "false", "false"));
 
         guvnorRepositoryConnector.putTemplateTable("MyTemplateRule", table);
 
@@ -81,9 +96,9 @@ public class GuvnorRepositoryConnectorTest {
     @Test(expected = ChtijbugDroolsRestException.class)
     @Ignore
     public void should_detect_wrong_column_number() throws Exception {
-        Map<String,List<String>> table = newHashMap();
-        table.put("CONTRACT_A" , asList("false","false","false","false"));
-        table.put("CONTRACT_C" , asList("true" ,"true" ,"false","false"));
+        Map<String, List<String>> table = newHashMap();
+        table.put("CONTRACT_A", asList("false", "false", "false", "false"));
+        table.put("CONTRACT_C", asList("true", "true", "false", "false"));
 
         guvnorRepositoryConnector.putTemplateTable("MyTemplateRule", table);
     }

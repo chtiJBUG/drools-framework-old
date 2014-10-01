@@ -1,6 +1,17 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2014 Pymma Software
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.chtijbug.drools.runtime.impl;
 
@@ -71,20 +82,20 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             //____ Getting the Rule object summary from the session
             DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(activation.getRule());
             //____ Creating the specific History event for history managment
-            BeforeRuleFiredHistoryEvent newBeforeRuleEvent = new BeforeRuleFiredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), this.nbRuleFired + 1, droolsRuleObject,this.ruleBaseSession.getRuleBaseID(),this.ruleBaseSession.getSessionId());
+            BeforeRuleFiredHistoryEvent newBeforeRuleEvent = new BeforeRuleFiredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), this.nbRuleFired + 1, droolsRuleObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             //____ Adding all objects info contained in the Activation object into the history Events
             for (FactHandle h : listFact) {
-                 if (h instanceof DefaultFactHandle){
-                     DefaultFactHandle defaultFactHandle = (DefaultFactHandle)h;
-                     //System.out.println(defaultFactHandle.toString());
-                     if (defaultFactHandle.getObject() instanceof org.drools.reteoo.InitialFactImpl){
+                if (h instanceof DefaultFactHandle) {
+                    DefaultFactHandle defaultFactHandle = (DefaultFactHandle) h;
+                    //System.out.println(defaultFactHandle.toString());
+                    if (defaultFactHandle.getObject() instanceof org.drools.reteoo.InitialFactImpl) {
                         // org.drools.reteoo.InitialFactImpl initialFact = (org.drools.reteoo.InitialFactImpl)defaultFactHandle.getObject();
                         //TODO in case of NOT, OR, etc..
-                     } else {
-                         DroolsFactObject sourceFactObject = ruleBaseSession.getLastFactObjectVersionFromFactHandle(h);
-                         newBeforeRuleEvent.getWhenObjects().add(sourceFactObject);
-                     }
-                 }
+                    } else {
+                        DroolsFactObject sourceFactObject = ruleBaseSession.getLastFactObjectVersionFromFactHandle(h);
+                        newBeforeRuleEvent.getWhenObjects().add(sourceFactObject);
+                    }
+                }
             }
             //_____ Add Event into the History Container
             ruleBaseSession.addHistoryElement(newBeforeRuleEvent);
@@ -104,7 +115,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(activation.getRule());
 
             //____ Creating the specific "After Rule Fired" History Event
-            AfterRuleFiredHistoryEvent newAfterRuleEvent = new AfterRuleFiredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), this.nbRuleFired, droolsRuleObject,this.ruleBaseSession.getRuleBaseID(),this.ruleBaseSession.getSessionId());
+            AfterRuleFiredHistoryEvent newAfterRuleEvent = new AfterRuleFiredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), this.nbRuleFired, droolsRuleObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             ruleBaseSession.addHistoryElement(newAfterRuleEvent);
             //____ If the max number rule able to be executed threshold is raised, stop the session execution
             if (nbRuleFired >= maxNumberRuleToExecute) {
@@ -113,7 +124,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
                 KnowledgeRuntime runTime = event.getKnowledgeRuntime();
                 this.maxNumerExecutedRulesReached = true;
                 //(int eventID, int sessionId, int numberOfRulesExecuted, int maxNumberOfRulesForSession)
-                SessionFireAllRulesMaxNumberReachedEvent sessionFireAllRulesMaxNumberReachedEvent = new SessionFireAllRulesMaxNumberReachedEvent(this.ruleBaseSession.getNextEventCounter(),nbRuleFired,maxNumberRuleToExecute,this.ruleBaseSession.getRuleBaseID(),this.ruleBaseSession.getSessionId());
+                SessionFireAllRulesMaxNumberReachedEvent sessionFireAllRulesMaxNumberReachedEvent = new SessionFireAllRulesMaxNumberReachedEvent(this.ruleBaseSession.getNextEventCounter(), nbRuleFired, maxNumberRuleToExecute, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
                 ruleBaseSession.addHistoryElement(sessionFireAllRulesMaxNumberReachedEvent);
                 runTime.halt();
             }
@@ -134,7 +145,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             }
             DroolsRuleFlowGroupObject droolsRuleFlowGroupObject = new DroolsRuleFlowGroupObject(this.nbRuleFlowGroupUsed + 1, ruleFlowGroupName);
             //____ Creating history event
-            AfterRuleFlowActivatedHistoryEvent afterRuleFlowActivatedHistoryEvent = new AfterRuleFlowActivatedHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsRuleFlowGroupObject,this.ruleBaseSession.getRuleBaseID(),this.ruleBaseSession.getSessionId());
+            AfterRuleFlowActivatedHistoryEvent afterRuleFlowActivatedHistoryEvent = new AfterRuleFlowActivatedHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsRuleFlowGroupObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             //____ Adding into the History container
             ruleBaseSession.addHistoryElement(afterRuleFlowActivatedHistoryEvent);
         } finally {
@@ -153,7 +164,7 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             this.nbRuleFlowGroupUsed++;
             DroolsRuleFlowGroupObject droolsRuleFlowGroupObject = new DroolsRuleFlowGroupObject(this.nbRuleFlowGroupUsed, ruleFlowGroupName);
             //____ Creating history event
-            AfterRuleFlowDeactivatedHistoryEvent afterRuleFlowGroupDeactivated = new AfterRuleFlowDeactivatedHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsRuleFlowGroupObject,this.ruleBaseSession.getRuleBaseID(),this.ruleBaseSession.getSessionId());
+            AfterRuleFlowDeactivatedHistoryEvent afterRuleFlowGroupDeactivated = new AfterRuleFlowDeactivatedHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsRuleFlowGroupObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             //_____ Adding the event to the History container
             ruleBaseSession.addHistoryElement(afterRuleFlowGroupDeactivated);
         } finally {

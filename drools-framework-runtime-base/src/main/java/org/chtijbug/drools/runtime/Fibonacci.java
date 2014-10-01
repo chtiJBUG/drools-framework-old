@@ -1,39 +1,50 @@
-/**
- * 
+/*
+ * Copyright 2014 Pymma Software
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.chtijbug.drools.runtime;
 
 /**
  * @author Bertrand Gressier
  * @date 12 déc. 2011
- * 
- * 
- *       Source: http://legacy.drools.codehaus.org/Fibonacci+Example
- * 
+ * <p/>
+ * <p/>
+ * Source: http://legacy.drools.codehaus.org/Fibonacci+Example
  */
 public class Fibonacci {
-	private final int sequence;
-	private long value;
+    private final int sequence;
+    private long value;
 
-	public Fibonacci(int sequence) {
-		this.sequence = sequence;
-		this.value = -1;
-	}
+    public Fibonacci(int sequence) {
+        this.sequence = sequence;
+        this.value = -1;
+    }
 
-	public int getSequence() {
-		return this.sequence;
-	}
+    public int getSequence() {
+        return this.sequence;
+    }
 
-	public void setValue(long value) {
-		this.value = value;
-	}
+    public void setValue(long value) {
+        this.value = value;
+    }
 
-	public long getValue() {
-		return this.value;
-	}
+    public long getValue() {
+        return this.value;
+    }
 
-	@Override
-	public String toString() {
-		return "Fibonacci(" + this.sequence + "/" + this.value + ")";
-	}
+    @Override
+    public String toString() {
+        return "Fibonacci(" + this.sequence + "/" + this.value + ")";
+    }
 }

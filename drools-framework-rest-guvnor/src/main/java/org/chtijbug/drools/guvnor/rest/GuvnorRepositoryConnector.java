@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014 Pymma Software
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.chtijbug.drools.guvnor.rest;
 
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
@@ -43,7 +58,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
         this.ruleTemplateManager = new RuleTemplateManager(configuration, this.assetManager);
         this.decisionTableManager = new DecisionTableManager(configuration, this.assetManager);
         this.rulePackageManager = new RulePackageManager(configuration);
-        this.bpmn2ManagerManager = new BPMN2ManagerManager(configuration,this.assetManager);
+        this.bpmn2ManagerManager = new BPMN2ManagerManager(configuration, this.assetManager);
     }
 
     public GuvnorRepositoryConnector(String guvnorUrl, String guvnorAppName, String packageName, String guvnorUserName, String guvnorPassword) {
@@ -213,7 +228,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
     }
 
     @Override
-    public List<Snapshot> getListSnapshots() throws ChtijbugDroolsRestException {
+    public List<String> getListSnapshots() throws ChtijbugDroolsRestException {
         if (configuration.getDefaultPackageName() == null || configuration.getDefaultPackageName().length() == 0) {
             throw new ChtijbugDroolsRestException("No Default Package Name defined");
         }
@@ -221,7 +236,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
     }
 
     @Override
-    public List<Snapshot> getListSnapshots(String packageName) throws ChtijbugDroolsRestException {
+    public List<String> getListSnapshots(String packageName) throws ChtijbugDroolsRestException {
         return this.rulePackageManager.getListSnaphots(packageName);
     }
 

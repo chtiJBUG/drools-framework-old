@@ -1,6 +1,17 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2014 Pymma Software
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.chtijbug.drools.runtime.mbeans;
 
@@ -14,7 +25,6 @@ import javax.management.Notification;
 import javax.management.NotificationBroadcasterSupport;
 
 /**
- *
  * @author nheron
  */
 public class StatefulSessionSupervision extends NotificationBroadcasterSupport implements StatefulSessionSupervisionMBean {
@@ -31,7 +41,7 @@ public class StatefulSessionSupervision extends NotificationBroadcasterSupport i
     private double averageRuleThroughout;
     private double minRuleThroughout = 1000000;
     private double maxRuleThroughout = 0;
-    private boolean generateXMLHistoryContainer=false;
+    private boolean generateXMLHistoryContainer = false;
     //private HistoryContainer historyContainer;
     private MBeanNotificationInfo[] notificationInfo = null;
     private XStream xstream = new XStream(new JettisonMappedXmlDriver());
@@ -79,15 +89,15 @@ public class StatefulSessionSupervision extends NotificationBroadcasterSupport i
         // this.historyContainer = historyContainer;
         Notification n =
                 new AttributeChangeNotification(this,
-                numberFireAllRulesExecuted,
-                System.currentTimeMillis(),
-                "number of FireAllRules ",
-                "ResultStructure",
-                String.class.getName(),
-                "No",
-                historyContainer.toString());
-        if (generateXMLHistoryContainer==true){
-             result.setHistoryContainer(historyContainer);
+                        numberFireAllRulesExecuted,
+                        System.currentTimeMillis(),
+                        "number of FireAllRules ",
+                        "ResultStructure",
+                        String.class.getName(),
+                        "No",
+                        historyContainer.toString());
+        if (generateXMLHistoryContainer == true) {
+            result.setHistoryContainer(historyContainer);
         }
         xstream.setMode(XStream.NO_REFERENCES);
         String xml = xstream.toXML(result);
@@ -159,7 +169,7 @@ public class StatefulSessionSupervision extends NotificationBroadcasterSupport i
     @Override
     public MBeanNotificationInfo[] getNotificationInfo() {
         String[] types = new String[]{
-            AttributeChangeNotification.ATTRIBUTE_CHANGE
+                AttributeChangeNotification.ATTRIBUTE_CHANGE
         };
         String name = AttributeChangeNotification.class.getName();
         String description = "Fire All rules ";
@@ -167,23 +177,24 @@ public class StatefulSessionSupervision extends NotificationBroadcasterSupport i
                 new MBeanNotificationInfo(types, name, description);
 
         notificationInfo = new MBeanNotificationInfo[]{
-            new MBeanNotificationInfo(new String[]{"service.user.start"},
-            Notification.class.getName(),
-            "DateTime service start."),
-            new MBeanNotificationInfo(new String[]{
-                AttributeChangeNotification.ATTRIBUTE_CHANGE},
-            AttributeChangeNotification.class.getName(),
-            "Fire All rules attribute changes.")
+                new MBeanNotificationInfo(new String[]{"service.user.start"},
+                        Notification.class.getName(),
+                        "DateTime service start."),
+                new MBeanNotificationInfo(new String[]{
+                        AttributeChangeNotification.ATTRIBUTE_CHANGE},
+                        AttributeChangeNotification.class.getName(),
+                        "Fire All rules attribute changes.")
         };
-
 
 
         return notificationInfo;
     }
+
     @Override
     public boolean isGenerateXMLHistoryContainer() {
         return generateXMLHistoryContainer;
     }
+
     @Override
     public void setGenerateXMLHistoryContainer(boolean generateXMLHistoryContainer) {
         this.generateXMLHistoryContainer = generateXMLHistoryContainer;

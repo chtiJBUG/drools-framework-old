@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014 Pymma Software
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.chtijbug.drools.guvnor.rest.dt;
 
 import org.drools.ide.common.client.modeldriven.dt52.*;
@@ -26,7 +41,7 @@ public class ColumnDefinition {
     public ColumnDefinition(int columnNumber, RowNumberCol52 rowNumberCol52) {
         this.columnNumber = columnNumber;
         this.columnType = ColumnType.rowNumber;
-        this.fieldType   =DTDataTypes52.NUMERIC_INTEGER.toString();
+        this.fieldType = DTDataTypes52.NUMERIC_INTEGER.toString();
         this.rowNumberCol52 = rowNumberCol52;
         this.header = rowNumberCol52.getHeader();
     }
@@ -35,14 +50,15 @@ public class ColumnDefinition {
         this.columnNumber = columnNumber;
         this.columnType = ColumnType.description;
         this.header = descriptionCol52.getHeader();
-        this.fieldType=DTDataTypes52.STRING.toString();
+        this.fieldType = DTDataTypes52.STRING.toString();
         this.descriptionCol52 = descriptionCol52;
     }
+
     public ColumnDefinition(int columnNumber, AttributeCol52 attributeCol52) {
         this.attributeCol52 = attributeCol52;
         this.columnNumber = columnNumber;
         this.columnType = ColumnType.attribute;
-        this.fieldType=DTDataTypes52.STRING.toString();
+        this.fieldType = DTDataTypes52.STRING.toString();
         if (attributeCol52.getDefaultValue() != null) {
             this.hasDefaultValue = true;
             this.defaultValueCell = attributeCol52.getDefaultValue();
@@ -71,9 +87,9 @@ public class ColumnDefinition {
         this.columnType = ColumnType.action;
         this.fieldType = actionInsertFact52.getType();
         this.header = actionInsertFact52.getHeader();
-        if (actionInsertFact52.getDefaultValue() != null ) {
+        if (actionInsertFact52.getDefaultValue() != null) {
             DTCellValue52 defaultValue = actionInsertFact52.getDefaultValue();
-            if (!(DTDataTypes52.STRING.equals(defaultValue.getDataType()) && defaultValue.getStringValue().isEmpty())){
+            if (!(DTDataTypes52.STRING.equals(defaultValue.getDataType()) && defaultValue.getStringValue().isEmpty())) {
                 this.hasDefaultValue = true;
                 this.defaultValue = getValue(actionInsertFact52.getDefaultValue());
             }
@@ -146,17 +162,17 @@ public class ColumnDefinition {
         }
         /**
          *  STRING,
-             NUMERIC,
-             NUMERIC_BIGDECIMAL,
-             NUMERIC_BIGINTEGER,
-             NUMERIC_BYTE,
-             NUMERIC_DOUBLE,
-             NUMERIC_FLOAT,
-             NUMERIC_INTEGER,
-             NUMERIC_LONG,
-             NUMERIC_SHORT,
-             DATE,
-             BOOLEAN
+         NUMERIC,
+         NUMERIC_BIGDECIMAL,
+         NUMERIC_BIGINTEGER,
+         NUMERIC_BYTE,
+         NUMERIC_DOUBLE,
+         NUMERIC_FLOAT,
+         NUMERIC_INTEGER,
+         NUMERIC_LONG,
+         NUMERIC_SHORT,
+         DATE,
+         BOOLEAN
          */
         return value;
     }

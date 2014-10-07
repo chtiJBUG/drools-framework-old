@@ -1,6 +1,17 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2014 Pymma Software
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.chtijbug.drools.runtime;
 
@@ -17,6 +28,7 @@ public interface RuleBaseSession {
     /**
      * This method injects the newObject parameter into this session.
      * No deep insertion(using relfection) is done
+     *
      * @param newObject
      */
     public void insertObject(Object newObject);
@@ -24,12 +36,14 @@ public interface RuleBaseSession {
     /**
      * This method injects the newObject parameter into this session.
      * No deep insertion(using relfection) is done
+     *
      * @param newObject
      */
     public void insertByReflection(Object newObject) throws DroolsChtijbugException;
 
     /**
      * This method helps for introducing a global object into the RuleBaseSession
+     *
      * @param identifier
      * @param value
      */
@@ -61,6 +75,6 @@ public interface RuleBaseSession {
 
     public int getSessionId();
 
-    public int getRuleBaseID() ;
+    public int getRuleBaseID();
 
 }

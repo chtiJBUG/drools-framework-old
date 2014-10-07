@@ -1,11 +1,25 @@
 package org.chtijbug.drools.guvnor;
 
+import com.squareup.okhttp.OkHttpClient;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.cxf.common.util.Base64Utility;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
+import org.chtijbug.drools.guvnor.rest.DateFormatTransformer;
+import org.chtijbug.drools.guvnor.rest.GuvnorRestApi;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.transform.RegistryMatcher;
+import retrofit.RequestInterceptor;
+import retrofit.RestAdapter;
+import retrofit.client.OkClient;
+import retrofit.converter.SimpleXMLConverter;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static java.lang.String.format;
 
@@ -78,10 +92,6 @@ public class GuvnorConnexionConfiguration {
          return format("%s/rest/packages/%s/assets/%s/%s", this.getWebappName(), packageName, assetName, pathType);
      }
 
-     public String assetVersionPath(String packageName,String assertName) {
-         return getPathFor(packageName,assertName, "versions");
-     }
-
     public void noTimeout(WebClient client) {
         ClientConfiguration config = WebClient.getConfig(client);
         HTTPConduit http = (HTTPConduit) config.getConduit();
@@ -96,6 +106,29 @@ public class GuvnorConnexionConfiguration {
         http.setClient(httpClientPolicy);
     }
 
+
+    public GuvnorRestApi getGuvnorRestApiService() {
+        RequestInterceptor requestInterceptor = new RequestInterceptor() {
+            @Override
+            public void intercept(RequestFacade request) {
+                request.addHeader("Authorization", createAuthenticationHeader());
+            }
+        };
+        // Maybe you have to correct this or use another / no Locale
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        RegistryMatcher m = new RegistryMatcher();
+        m.bind(Date.class, new DateFormatTransformer(format));
+        Serializer ser = new Persister(m);
+
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(this.getHostname() + this.getWebappName())
+                .setRequestInterceptor(requestInterceptor)
+                .setClient(new OkClient(new OkHttpClient()))
+                .setConverter(new SimpleXMLConverter(ser))
+                .build();
+
+        return restAdapter.create(GuvnorRestApi.class);
+    }
 
     @Override
     public String toString() {

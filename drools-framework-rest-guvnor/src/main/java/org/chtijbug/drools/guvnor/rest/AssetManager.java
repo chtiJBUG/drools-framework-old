@@ -1,42 +1,24 @@
 package org.chtijbug.drools.guvnor.rest;
 
 import ch.lambdaj.function.convert.Converter;
-import org.apache.abdera.Abdera;
-import org.apache.abdera.model.Document;
-import org.apache.abdera.model.Element;
-import org.apache.abdera.model.Entry;
-import org.apache.abdera.model.Feed;
-import org.apache.abdera.parser.stax.FOMExtensibleElement;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
 import org.chtijbug.drools.guvnor.rest.model.Asset;
 import org.chtijbug.drools.guvnor.rest.model.AssetCategory;
 import org.chtijbug.drools.guvnor.rest.model.AssetPropertyType;
 import org.chtijbug.drools.guvnor.rest.model.AssetType;
+import org.drools.guvnor.server.jaxrs.jaxb.AssetMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.namespace.QName;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 import java.io.InputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import static ch.lambdaj.Lambda.convert;
-import static java.lang.String.format;
+import static org.chtijbug.drools.guvnor.rest.model.AssetPropertyType.STATE;
 
 /**
  * Created by IntelliJ IDEA.
@@ -56,187 +38,109 @@ class AssetManager {
 
 
     public void changeAssetPropertyValue(String packageName, String assetName, AssetPropertyType assetPropertyType, String propertyValue) {
-        String assetPath = format("%s/rest/packages/%s/assets/%s", configuration.getWebappName(), packageName, assetName);
+        GuvnorRestApi guvnorService = configuration.getGuvnorRestApiService();
         //_____ Extract the current version of the asset
-        InputStream inputStream = configuration.webClient()
-                .path(assetPath)
-                .accept(MediaType.APPLICATION_XML)
-                .get(InputStream.class);
+        org.drools.guvnor.server.jaxrs.jaxb.Asset asset = guvnorService.getAsset(packageName, assetName);
         //_____ Replace the property value
-        String newAssetVersion = null;
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(org.drools.guvnor.server.jaxrs.jaxb.Asset.class);
-            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            org.drools.guvnor.server.jaxrs.jaxb.Asset asset = (org.drools.guvnor.server.jaxrs.jaxb.Asset) unmarshaller.unmarshal(inputStream);
-
-            org.drools.guvnor.server.jaxrs.jaxb.AssetMetadata assetMetadata = asset.getMetadata();
-            if (assetMetadata != null) {
-                if (AssetPropertyType.STATE.toString().equals(assetPropertyType.toString())) {
-                    assetMetadata.setState(propertyValue);
-                }
+        org.drools.guvnor.server.jaxrs.jaxb.AssetMetadata assetMetadata = asset.getMetadata();
+        if (assetMetadata != null) {
+            if (STATE.toString().equals(assetPropertyType.toString())) {
+                assetMetadata.setState(propertyValue);
             }
-            Marshaller marshaller = jaxbContext.createMarshaller();
-            StringWriter stringWriter = new StringWriter();
-            marshaller.marshal(asset, stringWriter);
-            newAssetVersion = stringWriter.toString();
-        } catch (Exception e) {
-            //____ if an exception occurs, return an empty String (No support at the moment)
-            newAssetVersion = null;
+            assetMetadata.setCheckInComment("Updated attribute: " + assetPropertyType);
         }
-        if (newAssetVersion == null) {
-            return;
+        if (asset.getDescription() == null) {
+            asset.setDescription("Default Description");
         }
         //____ Put the new version of the Asset
-        configuration.webClient()
-                .path(assetPath)
-                .type(MediaType.APPLICATION_XML)
-                .put(newAssetVersion);
-
+        guvnorService.updateAsset(packageName, assetName, asset);
     }
 
-    public org.drools.guvnor.server.jaxrs.providers.atom.Entry createAsset(String packageName, Asset asset, AssetType assetType) throws ChtijbugDroolsRestException {
-        String assetPath = format("%s/rest/packages/%s/assets", configuration.getWebappName(), packageName);
-        org.drools.guvnor.server.jaxrs.providers.atom.Entry entry = new org.drools.guvnor.server.jaxrs.providers.atom.Entry();
-        entry.setTitle(asset.getName());
-        entry.setSummary(asset.getSummary());
+    public void createAsset(String packageName, Asset newAsset, AssetType assetType) throws ChtijbugDroolsRestException {
+        GuvnorRestApi guvnorService = configuration.getGuvnorRestApiService();
+        org.drools.guvnor.server.jaxrs.jaxb.Asset asset = new org.drools.guvnor.server.jaxrs.jaxb.Asset();
+        asset.setTitle(newAsset.getName());
+        asset.setDescription(newAsset.getSummary());
 
-        org.drools.guvnor.server.jaxrs.jaxb.AtomAssetMetadata atomAssetMetadata = new org.drools.guvnor.server.jaxrs.jaxb.AtomAssetMetadata();
-        entry.setAnyOtherJAXBObject(atomAssetMetadata);
-        atomAssetMetadata.setState(asset.getStatus());
-        atomAssetMetadata.setFormat(assetType.getId());
+        AssetMetadata metadata = new AssetMetadata();
+        asset.setMetadata(metadata);
+
+        metadata.setState(newAsset.getStatus());
+        metadata.setFormat(assetType.getId());
         String[] categories = new String[]{};
         List<String> listCategories = new ArrayList<String>();
-        for (AssetCategory assetCategory : asset.getCategories()) {
+        for (AssetCategory assetCategory : newAsset.getCategories()) {
             listCategories.add(assetCategory.getName());
         }
         categories = listCategories.toArray(categories);
-        atomAssetMetadata.setCategories(categories);
-        String newAssetVersion = null;
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(org.drools.guvnor.server.jaxrs.providers.atom.Entry.class, org.drools.guvnor.server.jaxrs.jaxb.AtomAssetMetadata.class, org.drools.guvnor.server.jaxrs.jaxb.Categories.class);
-            Marshaller marshaller = jaxbContext.createMarshaller();
-            StringWriter stringWriter = new StringWriter();
-            marshaller.marshal(entry, stringWriter);
-            newAssetVersion = stringWriter.toString();
+        metadata.setCategories(categories);
 
-            org.drools.guvnor.server.jaxrs.providers.atom.Entry output = configuration.webClient()
-                    .path(assetPath)
-                    .type(MediaType.APPLICATION_ATOM_XML)
-                    .accept(MediaType.APPLICATION_ATOM_XML)
-                    .post(newAssetVersion, org.drools.guvnor.server.jaxrs.providers.atom.Entry.class);
-            return output;
-        } catch (Exception e) {
-            throw new ChtijbugDroolsRestException(e);
-        }
+        guvnorService.createAsset(packageName, asset);
     }
 
     public List<Asset> getAllBusinessAssets(final String packageName) {
         List<Asset> result;
-        InputStream inputStream = configuration.webClient()
-                .path(format("%s/rest/packages/%s/assets", configuration.getWebappName(), packageName))
-                .accept(MediaType.APPLICATION_ATOM_XML)
-                .get(InputStream.class);
-        Document<Element> atomDocument = Abdera.getInstance().getParser().parse(inputStream);
-        Feed feed = (Feed) atomDocument.getRoot();
-        final XPath xPath = XPathFactory.newInstance().newXPath();
-        result = convert(feed.getEntries(), new Converter<Entry, Asset>() {
-            @Override
-            public Asset convert(Entry entry) {
-                return transformFromFeed(packageName, entry, xPath);
-            }
-        });
+        GuvnorRestApi guvnorService = configuration.getGuvnorRestApiService();
+        result = convert(guvnorService.getAllAssets(packageName), new AssetConverter(packageName));
         return result;
-    }
-
-    private Asset transformFromFeed(String packageName, Entry entry, XPath xPath) {
-        Asset asset = new Asset();
-        String assetName = entry.getTitle();
-        asset.setSummary(entry.getSummary());
-        asset.setName(assetName);
-        asset.setPackageName(packageName);
-        Element metadata = entry.getExtension(QName.valueOf("metadata"));
-
-
-        String metadataContent = ((FOMExtensibleElement) metadata).toFormattedString();
-        String format = null;
-        String status = null;
-        String versionNumber = null;
-        try {
-
-            format = xPath.evaluate("/metadata/format/value", new InputSource(new StringReader(metadataContent)));
-            asset.setType(format);
-            status = xPath.evaluate("/metadata/state/value", new InputSource(new StringReader(metadataContent)));
-            asset.setStatus(status);
-            versionNumber = xPath.evaluate("/metadata/versionNumber/value", new InputSource(new StringReader(metadataContent)));
-            asset.setVersionNumber(versionNumber);
-            NodeList nodeList = (NodeList) xPath.evaluate("//categories/value", new InputSource(new StringReader(metadataContent)), XPathConstants.NODESET);
-            List<AssetCategory> assetCategoryList = new ArrayList<AssetCategory>();
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                Node node = nodeList.item(i);
-                String categorieName = node.getFirstChild().getNodeValue();
-                AssetCategory assetCategory = new AssetCategory();
-                assetCategory.setName(categorieName);
-                assetCategoryList.add(assetCategory);
-            }
-            asset.setCategories(assetCategoryList);
-        } catch (XPathExpressionException e) {
-            //____ Let the null value by default
-        }
-        return asset;
     }
 
     public List<Asset> getAllPackagesInGuvnorRepo() {
-        List<Asset> result;
-        InputStream inputStream = configuration.webClient()
-                .path(format("%s/rest/packages", configuration.getWebappName()))
-                .accept(MediaType.APPLICATION_ATOM_XML)
-                .get(InputStream.class);
-        Document<Element> atomDocument = Abdera.getInstance().getParser().parse(inputStream);
-        Feed feed = (Feed) atomDocument.getRoot();
-        final XPath xPath = XPathFactory.newInstance().newXPath();
-        result = convert(feed.getEntries(), new Converter<Entry, Asset>() {
+        GuvnorRestApi guvnorService = configuration.getGuvnorRestApiService();
+        return convert(guvnorService.getAllPackages(), new Converter<org.drools.guvnor.server.jaxrs.jaxb.Asset, Asset>() {
             @Override
-            public Asset convert(Entry entry) {
-                String assetName = entry.getTitle();
-
-                return new Asset(assetName, assetName, "", "");
+            public Asset convert(org.drools.guvnor.server.jaxrs.jaxb.Asset entry) {
+                return new Asset(entry.getTitle(), entry.getTitle(), "", "");
             }
         });
-        return result;
     }
 
 
     public Asset getAsset(final String packageName, String assetName) {
-
-        InputStream inputStream = configuration.webClient()
-                .path(format("%s/rest/packages/%s/assets/%s", configuration.getWebappName(), packageName, assetName))
-                .accept(MediaType.APPLICATION_ATOM_XML)
-                .get(InputStream.class);
-        Document atomDocument = Abdera.getInstance().getParser().parse(inputStream);
-        Entry entry = (Entry) atomDocument.getRoot();
-        final XPath xPath = XPathFactory.newInstance().newXPath();
-        Asset asset = transformFromFeed(packageName, entry, xPath);
-
-        return asset;
+        GuvnorRestApi guvnorService = configuration.getGuvnorRestApiService();
+        //_____ Extract the current version of the asset
+        org.drools.guvnor.server.jaxrs.jaxb.Asset asset = guvnorService.getAsset(packageName, assetName);
+        return convert(asset, new AssetConverter(packageName)).get(0);
     }
 
     public InputStream getPojoModel(String packageName) {
         String path = this.configuration.getWebappName() + "/org.drools.guvnor.Guvnor/package/" + packageName + "/LATEST/MODEL";
         WebClient client = configuration.webClient();
         Response stream = client.path(path).accept(MediaType.APPLICATION_OCTET_STREAM_TYPE).get();
-        InputStream inputStream = (InputStream) stream.getEntity();
-        return inputStream;
+        return (InputStream) stream.getEntity();
     }
 
     public void updateAssetCodeFromXML(String packageName, String assetName, String newCode) throws ChtijbugDroolsRestException {
-        WebClient client = configuration.webClient();
-        configuration.noTimeout(client);
-        client.path(configuration.assetBinaryPath(packageName, assetName)).accept("application/xml").put(newCode);
-
+        GuvnorRestApi guvnorService = configuration.getGuvnorRestApiService();
+        guvnorService.updateAssetFromSource(packageName, assetName, newCode);
     }
 
     public String getAssetCodeInXML(String packageName, String dtName) throws ChtijbugDroolsRestException {
-        String content = configuration.webClient().path(configuration.assetBinaryPath(packageName, dtName)).accept("text/plain").get(String.class);
-        return content;
+        return configuration.webClient().path(configuration.assetBinaryPath(packageName, dtName)).accept("text/plain").get(String.class);
+    }
+
+    protected class AssetConverter implements Converter<org.drools.guvnor.server.jaxrs.jaxb.Asset, Asset> {
+        private final String packageName;
+
+        public AssetConverter(String packageName) {
+            this.packageName = packageName;
+        }
+        @Override
+        public Asset convert(org.drools.guvnor.server.jaxrs.jaxb.Asset asset) {
+            Asset result = new Asset();
+            String assetName = asset.getTitle();
+            result.setSummary(asset.getDescription());
+            result.setName(assetName);
+            result.setPackageName(this.packageName);
+            result.setType(asset.getMetadata().getFormat());
+            result.setStatus(asset.getMetadata().getState());
+            result.setVersionNumber(Long.toString(asset.getMetadata().getVersionNumber()));
+            for (String category : asset.getMetadata().getCategories()) {
+                AssetCategory assetCategory = new AssetCategory();
+                assetCategory.setName(category);
+                result.addCategory(assetCategory);
+            }
+            return result;
+        }
     }
 }

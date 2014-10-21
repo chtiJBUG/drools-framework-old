@@ -43,7 +43,7 @@ public class GuvnorRepositoryConnectorLocalTestCase {
     }
 
     @Test
-    //  @Ignore
+    @Ignore
     public void testgetAllPackages() throws Exception {
         List<Asset> toto = guvnorRepositoryConnector.getAllPackagesInGuvnorRepo();
         System.out.println(toto.toString());

@@ -24,6 +24,7 @@ import org.apache.cxf.jaxrs.client.WebClient;
 import org.chtijbug.drools.common.jaxb.JAXBContextUtils;
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
 import org.drools.guvnor.server.jaxrs.jaxb.SnapshotCreationData;
+import org.hamcrest.Matchers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ch.lambdaj.Lambda.convert;
+import static ch.lambdaj.Lambda.filter;
 import static java.lang.String.format;
 
 /**
@@ -102,6 +104,7 @@ public class RulePackageManager {
                         return null;
                 }
             });
+            result = filter(Matchers.notNullValue(), result);
         } catch (Exception e) {
             throw new ChtijbugDroolsRestException(e);
         }

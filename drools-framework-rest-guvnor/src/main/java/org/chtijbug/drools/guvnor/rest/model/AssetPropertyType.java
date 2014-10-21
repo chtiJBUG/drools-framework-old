@@ -28,5 +28,5 @@ package org.chtijbug.drools.guvnor.rest.model;
  * TODO Add specific JAVADOC for
  */
 public enum AssetPropertyType {
-    STATE, CHECK_IN_COMMENT
+    STATE
 }

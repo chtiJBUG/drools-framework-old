@@ -134,8 +134,4 @@ public class Asset {
         sb.append('}');
         return sb.toString();
     }
-
-    public void addCategory(AssetCategory assetCategory) {
-        this.getCategories().add(assetCategory);
-    }
 }

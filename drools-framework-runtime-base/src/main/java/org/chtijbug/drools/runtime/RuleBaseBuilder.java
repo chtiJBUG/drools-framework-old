@@ -36,15 +36,6 @@ public class RuleBaseBuilder {
      */
     private static Logger logger = LoggerFactory.getLogger(RuleBaseBuilder.class);
 
-    /**
-     * @param guvnor_url
-     * @param guvnor_appName
-     * @param guvnor_packageName
-     * @param guvnor_packageVersion
-     * @param guvnor_username
-     * @param guvnor_password
-     * @return
-     */
 
     public static RuleBasePackage createGuvnorRuleBasePackage(String guvnor_url, String guvnor_appName, String guvnor_packageName, String guvnor_packageVersion,
                                                               String guvnor_username, String guvnor_password) throws DroolsChtijbugException {
@@ -98,10 +89,10 @@ public class RuleBaseBuilder {
         }
     }
 
-    private static String getFileExtension(String ressourceName) {
-        int mid = ressourceName.lastIndexOf(".");
-        String fileName = ressourceName.substring(0, mid);
-        String ext = ressourceName.substring(mid + 1, ressourceName.length()).toUpperCase();
+    private static String getFileExtension(String resourceName) {
+        int mid = resourceName.lastIndexOf(".");
+        String fileName = resourceName.substring(0, mid);
+        String ext = resourceName.substring(mid + 1, resourceName.length()).toUpperCase();
         return ext;
     }
 

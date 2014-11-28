@@ -15,6 +15,7 @@
  */
 package org.chtijbug.drools.runtime;
 
+import com.google.common.base.Throwables;
 import org.apache.commons.beanutils.BeanMap;
 import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.DroolsFactObjectAttribute;
@@ -38,7 +39,7 @@ public class DroolsFactObjectFactory {
     }
 
     public static DroolsFactObject createFactObject(Object o, int version) {
-        logger.debug(">>createFactObject", o, version);
+        logger.debug(">> createFactObject", o, version);
         DroolsFactObject createFactObject = null;
         try {
             if (o != null) {
@@ -61,11 +62,12 @@ public class DroolsFactObjectFactory {
 
                 }
             }
+            return createFactObject;
         } catch (Exception e) {
             logger.error("Not possible to introspect {} for reason {}", o, e);
+            throw Throwables.propagate(e);
         } finally {
-            logger.debug("<<createFactObject", createFactObject);
-            return createFactObject;
+            logger.debug("<< createFactObject", createFactObject);
         }
     }
 

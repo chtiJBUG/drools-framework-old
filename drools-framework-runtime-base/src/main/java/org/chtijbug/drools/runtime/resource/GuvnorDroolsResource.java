@@ -167,9 +167,8 @@ public class GuvnorDroolsResource implements DroolsResource {
         if (!baseUrl.equals(that.baseUrl)) return false;
         if (!packageName.equals(that.packageName)) return false;
         if (!packageVersion.equals(that.packageVersion)) return false;
-        if (!webappName.equals(that.webappName)) return false;
+        return webappName.equals(that.webappName);
 
-        return true;
     }
 
     @Override

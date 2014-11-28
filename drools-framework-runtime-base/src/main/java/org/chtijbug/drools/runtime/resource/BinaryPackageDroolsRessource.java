@@ -36,34 +36,6 @@ public class BinaryPackageDroolsRessource implements DroolsResource {
         if (resource != null) {
             return resource;
         }
-        /*
-        StringBuffer changesetxml = null;
-
-        StringBuilder buff = new StringBuilder();
-        buff.append(fileName);
-
-        changesetxml = new StringBuffer();
-        changesetxml.append("<change-set xmlns='http://drools.org/drools-5.0/change-set' \n xmlns:xs='http://www.w3.org/2001/XMLSchema-instance'> \n  \n <add> \n");// xs:schemaLocation='http://drools.org/drools-5.0/change-set
-        // http://anonsvn.jboss.org/repos/labs/labs/jbossrules/trunk/drools-api/src/main/resources/change-set-1.0.0.xsd'
-        changesetxml.append("<resource source='");
-        changesetxml.append(buff.toString());
-        changesetxml.append("' type='PKG' ");
-        changesetxml.append("/> \n </add> \n </change-set>\n");
-        File fxml = null;
-        try {
-
-            fxml = File.createTempFile("ChangeSet", ".xml");
-            fxml.deleteOnExit();
-
-            BufferedWriter output = new BufferedWriter(new FileWriter(fxml));
-            output.write(changesetxml.toString());
-            output.close();
-        } catch (Exception e) {
-            LOGGER.error("Error creating file {}", fxml);
-        }
-
-        resource = ResourceFactory.newFileResource(fxml);
-        */
         resource = ResourceFactory.newClassPathResource(fileName);
         return resource;
     }

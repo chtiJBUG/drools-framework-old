@@ -22,8 +22,6 @@ import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
-import org.chtijbug.drools.runtime.mbeans.RuleBaseSupervision;
-import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervision;
 import org.chtijbug.drools.runtime.resource.Bpmn2DroolsResource;
 import org.chtijbug.drools.runtime.resource.DrlDroolsResource;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
@@ -80,14 +78,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
      */
     private final List<DroolsResource> listResouces = new ArrayList<DroolsResource>();
     /**
-     * MBean JMX to enable Dynamics rule base operation
-     */
-    private RuleBaseSupervision mbsRuleBase;
-    /**
-     * MBean JMX To enable RuleSession statistics collect
-     */
-    private StatefulSessionSupervision mbsSession;
-    /**
      * Max rule to be fired threshold.
      */
     private int maxNumberRuleToExecute = DEFAULT_RULE_THRESHOLD;
@@ -131,8 +121,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
         } else {
             this.ruleBaseID = addRuleBase();
         }
-
-        initMBeans();
     }
 
     public RuleBaseSingleton(Integer ruleBaseID, int maxNumberRulesToExecute) throws DroolsChtijbugException {
@@ -210,32 +198,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
     }
 
     /**
-     * This method creates and registers MBean Object into the MBeanServer.
-     *
-     * @throws DroolsChtijbugException
-     */
-    private void initMBeans() throws DroolsChtijbugException {
-        //____ Get the MBeanServer from the platform
-        MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-        try {
-            //____ Instanciate all expected MBeans Object
-            mbsRuleBase = new RuleBaseSupervision(this);
-            mbsSession = new StatefulSessionSupervision();
-            //____ Register them to the MBeanServer
-            ObjectName objectName = getRuleBaseObjectName();
-            logger.info("Registering MBean with name {}", objectName);
-            server.registerMBean(mbsRuleBase, objectName);
-
-            objectName = getRuleSessionObjectName();
-            logger.info("Registering MBean with name {}", objectName);
-            server.registerMBean(mbsSession, getRuleSessionObjectName());
-        } catch (Exception e) {
-            logger.warn("Error registering MBeans", e);
-            logger.warn("All JMX Features are not available till the issue is not fixed.");
-        }
-    }
-
-    /**
      * @return The ObjectName related to the Rulebase Object inside the MBeanServer
      * @throws MalformedObjectNameException
      */
@@ -249,13 +211,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
      */
     protected ObjectName getRuleSessionObjectName() throws MalformedObjectNameException {
         return new ObjectName(RULE_SESSION_OBJECT_NAME + this.ruleBaseID);
-    }
-
-    public boolean isKbaseLoaded() {
-        if (kbase == null) {
-            return false;
-        }
-        return true;
     }
 
     public List<DroolsResource> getListDroolsRessources() {
@@ -298,7 +253,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
                 }
 
                 //_____ Wrapping the knowledge Session
-                newRuleBaseSession = new RuleBaseStatefulSession(this.ruleBaseID, this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, mbsSession, this.historyListener);
+                newRuleBaseSession = new RuleBaseStatefulSession(this.ruleBaseID, this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, this.historyListener);
                 //_____ Release semaphore
                 lockKbase.release();
             } else {
@@ -313,9 +268,8 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
 
     private void addDroolsResource(DroolsResource res) throws DroolsChtijbugException {
-        if (this.listResouces.contains(res) == true) {
-            DroolsChtijbugException droolsChtijbugException = new DroolsChtijbugException(DroolsChtijbugException.RessourceAlreadyAdded, res.toString(), null);
-            throw droolsChtijbugException;
+        if (this.listResouces.contains(res)) {
+            throw new DroolsChtijbugException(DroolsChtijbugException.RessourceAlreadyAdded, res.toString(), null);
         }
         if (res instanceof GuvnorDroolsResource) {
             GuvnorDroolsResource guvnorDroolsResource = (GuvnorDroolsResource) res;
@@ -357,9 +311,8 @@ public class RuleBaseSingleton implements RuleBasePackage {
     }
 
     private void deleteDroolsResource(DroolsResource res) throws DroolsChtijbugException {
-        if (this.listResouces.contains(res) == false) {
-            DroolsChtijbugException droolsChtijbugException = new DroolsChtijbugException(DroolsChtijbugException.RessourceDoesNotExist, res.toString(), null);
-            throw droolsChtijbugException;
+        if (!this.listResouces.contains(res)) {
+            throw new DroolsChtijbugException(DroolsChtijbugException.RessourceDoesNotExist, res.toString(), null);
         }
         if (this.historyListener != null) {
             if (res instanceof GuvnorDroolsResource) {
@@ -367,18 +320,13 @@ public class RuleBaseSingleton implements RuleBasePackage {
                 this.historyListener.fireEvent(knowledgeBaseDelRessourceEvent);
             } else if (res instanceof DrlDroolsResource) {
                 DrlDroolsResource drlDroolsResource = (DrlDroolsResource) res;
-                if (this.historyListener != null) {
-                    KnowledgeBaseDelRessourceEvent knowledgeBaseDelRessourceEvent = new KnowledgeBaseDelRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, drlDroolsResource.getFileName(), drlDroolsResource.getFileContent());
-                    this.historyListener.fireEvent(knowledgeBaseDelRessourceEvent);
-                }
+                KnowledgeBaseDelRessourceEvent knowledgeBaseDelRessourceEvent = new KnowledgeBaseDelRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, drlDroolsResource.getFileName(), drlDroolsResource.getFileContent());
+                this.historyListener.fireEvent(knowledgeBaseDelRessourceEvent);
 
             } else if (res instanceof Bpmn2DroolsResource) {
                 Bpmn2DroolsResource bpmn2DroolsResource = (Bpmn2DroolsResource) res;
-                if (this.historyListener != null) {
-                    KnowledgeBaseDelRessourceEvent knowledgeBaseDelRessourceEvent = new KnowledgeBaseDelRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, bpmn2DroolsResource.getFileName(), bpmn2DroolsResource.getFileContent());
-                    this.historyListener.fireEvent(knowledgeBaseDelRessourceEvent);
-                }
-
+                KnowledgeBaseDelRessourceEvent knowledgeBaseDelRessourceEvent = new KnowledgeBaseDelRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, bpmn2DroolsResource.getFileName(), bpmn2DroolsResource.getFileContent());
+                this.historyListener.fireEvent(knowledgeBaseDelRessourceEvent);
             }
         }
     }
@@ -487,7 +435,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
      * @throws DroolsChtijbugException
      */
     private Object readResolve() throws DroolsChtijbugException {
-        initMBeans();
         return this;
     }
 
@@ -550,14 +497,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     public String getGuvnor_password() {
         return guvnor_password;
-    }
-
-    public StatefulSessionSupervision getMbsSession() {
-        return mbsSession;
-    }
-
-    public RuleBaseSupervision getMbsRuleBase() {
-        return mbsRuleBase;
     }
 
     public JavaDialect getJavaDialect() {

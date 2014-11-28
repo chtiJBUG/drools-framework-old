@@ -16,7 +16,6 @@
 package org.chtijbug.drools.guvnor;
 
 import com.squareup.okhttp.OkHttpClient;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.cxf.common.util.Base64Utility;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
 import org.apache.cxf.jaxrs.client.WebClient;

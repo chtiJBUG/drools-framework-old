@@ -28,7 +28,7 @@ import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.DroolsFactObjectFactory;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
-import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervision;
+import org.drools.core.definitions.rule.impl.RuleImpl;
 import org.drools.definition.rule.Rule;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.NodeInstance;
@@ -72,7 +72,6 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     private RuleHandlerListener ruleHandlerListener;
     private ProcessHandlerListener processHandlerListener;
     private int maxNumberRuleToExecute;
-    private StatefulSessionSupervision mbeanStatefulSessionSupervision;
 
     private XStream xstream = new XStream(new JettisonMappedXmlDriver());
     private int ruleBaseID;
@@ -81,7 +80,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
     private HistoryListener historyListener;
 
-    public RuleBaseStatefulSession(int ruleBaseID, int sessionId, StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefulSessionSupervision mbeanStatefulSessionSupervision, HistoryListener historyListener) throws DroolsChtijbugException {
+    public RuleBaseStatefulSession(int ruleBaseID, int sessionId, StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, HistoryListener historyListener) throws DroolsChtijbugException {
         this.ruleBaseID = ruleBaseID;
         this.sessionId = sessionId;
         this.knowledgeSession = knowledgeSession;
@@ -96,7 +95,6 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         this.listRules = new HashMap<String, DroolsRuleObject>();
         this.processList = new HashMap<String, DroolsProcessObject>();
         this.processInstanceList = new HashMap<String, DroolsProcessInstanceObject>();
-        this.mbeanStatefulSessionSupervision = mbeanStatefulSessionSupervision;
         knowledgeSession.addEventListener(factListener);
         knowledgeSession.addEventListener(ruleHandlerListener);
         knowledgeSession.addEventListener(processHandlerListener);
@@ -110,11 +108,6 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
     public int getMaxNumberRuleToExecute() {
         return maxNumberRuleToExecute;
-    }
-
-    @Deprecated
-    public void setMaxNumberRuleToExecute(int maxNumberRuleToExecute) {
-        this.maxNumberRuleToExecute = maxNumberRuleToExecute;
     }
 
     public DroolsProcessInstanceObject getDroolsProcessInstanceObject(ProcessInstance processInstance) {
@@ -174,7 +167,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
     public DroolsRuleObject getDroolsRuleObject(Rule rule) {
         DroolsRuleObject droolsRuleObject = listRules.get(rule.toString());
-        org.drools.rule.Rule ruleInstance = (org.drools.rule.Rule) rule;
+        RuleImpl ruleInstance = (RuleImpl) rule;
         if (droolsRuleObject == null) {
             droolsRuleObject = DroolsRuleObject.createDroolRuleObject(rule.getName(), rule.getPackageName());
             droolsRuleObject.setRuleFlowGroup(ruleInstance.getRuleFlowGroup());
@@ -213,15 +206,6 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
         int lastVersion = facto.size() - 1;
         return listFactObjects.get(searchObject).get(lastVersion);
-    }
-
-    @Deprecated
-    public DroolsFactObject getFactObjectVersionFromFactHandle(FactHandle factToFind, int version) {
-        Object searchObject = this.listObject.get(factToFind);
-        if (searchObject == null) {
-            return null;
-        }
-        return listFactObjects.get(searchObject).get(version);
     }
 
     @Override
@@ -264,9 +248,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     public void setData(FactHandle f, Object o, DroolsFactObject fObject) {
 
         Object objectSearch = listObject.containsKey(f);
-        if (objectSearch != null) {
-            listFact.remove(objectSearch);
-        }
+        listFact.remove(objectSearch);
 
         listObject.put(f, o);
         listFact.put(o, f);
@@ -338,12 +320,11 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             if (!ReflectionUtils.IsGetter(method)) {
                 continue;
             }
-            Object getterValue = null;
+            Object getterValue;
             try {
                 getterValue = method.invoke(newObject, (Object[]) null);
             } catch (Exception e) {
-                DroolsChtijbugException ee = new DroolsChtijbugException(DroolsChtijbugException.insertByReflection, "getterValue = method.invoke(newObject, (Object[]) null);", e);
-                throw ee;
+                throw new DroolsChtijbugException(DroolsChtijbugException.insertByReflection, "getterValue = method.invoke(newObject, (Object[]) null);", e);
             }
             if (getterValue == null)
                 continue;
@@ -419,15 +400,12 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
         long stopTime = System.currentTimeMillis();
         long afterNumberRules = ruleHandlerListener.getNbRuleFired();
-        mbeanStatefulSessionSupervision.fireAllRulesExecuted(stopTime - startTime, afterNumberRules - beforeNumberRules, historyContainer);
-        if (ruleHandlerListener.isMaxNumerExecutedRulesReached() == true) {
-            StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer.append("nbRulesExecuted").append(afterNumberRules).append(" and MaxNumberRules for the session is set to ").append(maxNumberRuleToExecute);
+        if (ruleHandlerListener.isMaxNumerExecutedRulesReached()) {
             if (this.historyListener != null) {
                 SessionFireAllRulesMaxNumberReachedEvent sessionFireAllRulesMaxNumberReachedEvent = new SessionFireAllRulesMaxNumberReachedEvent(this.getNextEventCounter(), ruleHandlerListener.getNbRuleFired(), maxNumberRuleToExecute, this.ruleBaseID, this.sessionId);
                 this.addHistoryElement(sessionFireAllRulesMaxNumberReachedEvent);
             }
-            throw new DroolsChtijbugException(DroolsChtijbugException.MaxNumberRuleExecutionReached, stringBuffer.toString(), null);
+            throw new DroolsChtijbugException(DroolsChtijbugException.MaxNumberRuleExecutionReached, "nbRulesExecuted" + afterNumberRules + " and MaxNumberRules for the session is set to " + maxNumberRuleToExecute, null);
         }
         if (this.historyListener != null) {
             SessionFireAllRulesEndEvent sessionFireAllRulesEndEvent = new SessionFireAllRulesEndEvent(this.getNextEventCounter(), this.ruleBaseID, this.sessionId, stopTime - startTime, afterNumberRules - beforeNumberRules);
@@ -457,7 +435,6 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
                 logger.error("Exception in calling historyEvent", e);
 
             }
-
         }
     }
 
@@ -490,10 +467,6 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
     public int getRuleBaseID() {
         return ruleBaseID;
-    }
-
-    public StatefulSessionSupervision getMbeanStatefulSessionSupervision() {
-        return mbeanStatefulSessionSupervision;
     }
 
     private RuleSetNode getRuleSetNode(NodeInstance nodeInstance) {

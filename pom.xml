@@ -19,7 +19,7 @@
     <jbpm.version>5.5.0.Final</jbpm.version>
     <powermock.version>1.4.12</powermock.version>
     <jackson.version>2.3.1</jackson.version>
-    <guvnor.version>5.6.1.chtijbug-SNAPSHOT</guvnor.version>
+    <guvnor.version>5.6.1.chtijbug</guvnor.version>
   </properties>
 
   <licenses>
@@ -79,7 +79,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.4.1</version>
+        <version>2.5.1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

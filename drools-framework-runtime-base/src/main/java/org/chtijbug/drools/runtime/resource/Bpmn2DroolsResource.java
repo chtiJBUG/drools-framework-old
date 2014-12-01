@@ -37,7 +37,14 @@ public class Bpmn2DroolsResource implements DroolsResource {
 
 
     public static Bpmn2DroolsResource createClassPathResource(String path) {
-        InputStream inputStream = DrlDroolsResource.class.getResourceAsStream("/" + path);
+        ClassLoader classLoader = Thread.currentThread()
+                .getContextClassLoader();
+        InputStream inputStream;
+        if (classLoader == null) {
+            inputStream = DrlDroolsResource.class.getResourceAsStream("/" + path);
+        } else {
+            inputStream = classLoader.getResourceAsStream(path);
+        }
         String fileContent = FileHelper.getFileContent(inputStream);
         return new Bpmn2DroolsResource(ResourceFactory.newClassPathResource(path), path, fileContent);
 

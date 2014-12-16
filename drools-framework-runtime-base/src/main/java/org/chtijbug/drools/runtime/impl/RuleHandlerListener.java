@@ -25,14 +25,15 @@ import org.chtijbug.drools.entity.history.rule.BeforeRuleFiredHistoryEvent;
 import org.chtijbug.drools.entity.history.session.SessionFireAllRulesMaxNumberReachedEvent;
 import org.drools.core.common.InternalFactHandle;
 import org.drools.core.reteoo.InitialFactImpl;
-import org.drools.event.rule.*;
-import org.drools.runtime.KnowledgeRuntime;
-import org.drools.runtime.rule.Activation;
-import org.drools.runtime.rule.FactHandle;
+import org.kie.api.event.rule.*;
+import org.kie.api.runtime.KieRuntime;
+import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.runtime.rule.Match;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+
 
 /**
  * @author nheron
@@ -75,13 +76,13 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
     }
 
     @Override
-    public void beforeActivationFired(BeforeActivationFiredEvent event) {
+    public void beforeMatchFired(BeforeMatchFiredEvent event) {
         logger.debug(">>beforeActivationFired", event);
         try {
-            Activation activation = event.getActivation();
-            List<? extends FactHandle> listFact = activation.getFactHandles();
+            Match match = event.getMatch();
+            List<? extends FactHandle> listFact = match.getFactHandles();
             //____ Getting the Rule object summary from the session
-            DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(activation.getRule());
+            DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(match.getRule());
             //____ Creating the specific History event for history managment
             BeforeRuleFiredHistoryEvent newBeforeRuleEvent = new BeforeRuleFiredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), this.nbRuleFired + 1, droolsRuleObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             //____ Adding all objects info contained in the Activation object into the history Events
@@ -106,14 +107,14 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
     }
 
     @Override
-    public void afterActivationFired(AfterActivationFiredEvent event) {
+    public void afterMatchFired(AfterMatchFiredEvent event) {
         logger.debug(">>afterActivationFired", event);
         try {
             //____ Increment the global rule fired count
             nbRuleFired++;
-            Activation activation = event.getActivation();
+            Match match = event.getMatch();
             //____ Getting the Rule Object Summary from the session
-            DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(activation.getRule());
+            DroolsRuleObject droolsRuleObject = ruleBaseSession.getDroolsRuleObject(match.getRule());
 
             //____ Creating the specific "After Rule Fired" History Event
             AfterRuleFiredHistoryEvent newAfterRuleEvent = new AfterRuleFiredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), this.nbRuleFired, droolsRuleObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
@@ -122,12 +123,12 @@ public class RuleHandlerListener extends DefaultAgendaEventListener {
             if (nbRuleFired >= maxNumberRuleToExecute) {
                 logger.warn(String.format("%d rules have been fired. This is the limit.", maxNumberRuleToExecute));
                 logger.warn("The session execution will be stop");
-                KnowledgeRuntime runTime = event.getKnowledgeRuntime();
+                KieRuntime runtime = event.getKieRuntime();
                 this.maxNumerExecutedRulesReached = true;
                 //(int eventID, int sessionId, int numberOfRulesExecuted, int maxNumberOfRulesForSession)
                 SessionFireAllRulesMaxNumberReachedEvent sessionFireAllRulesMaxNumberReachedEvent = new SessionFireAllRulesMaxNumberReachedEvent(this.ruleBaseSession.getNextEventCounter(), nbRuleFired, maxNumberRuleToExecute, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
                 ruleBaseSession.addHistoryElement(sessionFireAllRulesMaxNumberReachedEvent);
-                runTime.halt();
+                runtime.halt();
             }
             logger.debug("nbre RDG Fired ==> ", nbRuleFired);
         } finally {

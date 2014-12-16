@@ -26,8 +26,6 @@ import java.util.List;
  * @author nheron
  */
 public class HistoryContainer implements Serializable {
-    public static String nameRuleBaseObjectName = "org.chtijbug.drools.runtime:type=RuleBaseSupervision";
-    public static String nameSessionObjectName = "org.chtijbug.drools.runtime:type=StateFullSessionSupervision";
     private static final long serialVersionUID = 5645452451089006572L;
     private int sessionID;
     protected List<HistoryEvent> listHistoryEvent = new LinkedList<HistoryEvent>();

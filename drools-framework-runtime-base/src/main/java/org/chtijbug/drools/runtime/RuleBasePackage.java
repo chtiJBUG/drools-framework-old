@@ -16,9 +16,6 @@
 package org.chtijbug.drools.runtime;
 
 import org.chtijbug.drools.runtime.listener.HistoryListener;
-import org.chtijbug.drools.runtime.resource.DroolsResource;
-
-import java.util.List;
 
 /**
  * @author nheron
@@ -31,15 +28,9 @@ public interface RuleBasePackage {
     RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute) throws DroolsChtijbugException;
 
 
-    public void createKBase(DroolsResource... res) throws DroolsChtijbugException;
+    public void createKBase(String groupId, String artifactId, String version) throws DroolsChtijbugException;
 
-    public void createKBase(List<DroolsResource> res) throws DroolsChtijbugException;
-
-    public void RecreateKBaseWithNewRessources(DroolsResource... res) throws DroolsChtijbugException;
-
-    public void RecreateKBaseWithNewRessources(List<DroolsResource> res) throws DroolsChtijbugException;
-
-    public void ReloadWithSameRessources() throws DroolsChtijbugException;
+    public void loadKBase(String version) throws DroolsChtijbugException;
 
     public HistoryListener getHistoryListener();
 

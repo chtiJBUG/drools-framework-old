@@ -30,12 +30,12 @@ import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.drools.core.definitions.rule.impl.RuleImpl;
 import org.drools.definition.rule.Rule;
-import org.drools.runtime.StatefulKnowledgeSession;
-import org.drools.runtime.process.NodeInstance;
-import org.drools.runtime.process.ProcessInstance;
-import org.drools.runtime.rule.FactHandle;
 import org.jbpm.workflow.core.node.RuleSetNode;
 import org.jbpm.workflow.instance.node.*;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.NodeInstance;
+import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.runtime.rule.FactHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +53,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     /**
      * The wrapped Drools KnowledgeSession
      */
-    private StatefulKnowledgeSession knowledgeSession = null;
+    private KieSession knowledgeSession = null;
     /**
      * All objects inserted into the session as fact
      */
@@ -80,7 +80,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
     private HistoryListener historyListener;
 
-    public RuleBaseStatefulSession(int ruleBaseID, int sessionId, StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, HistoryListener historyListener) throws DroolsChtijbugException {
+    public RuleBaseStatefulSession(int ruleBaseID, int sessionId, KieSession knowledgeSession, int maxNumberRuleToExecute, HistoryListener historyListener) throws DroolsChtijbugException {
         this.ruleBaseID = ruleBaseID;
         this.sessionId = sessionId;
         this.knowledgeSession = knowledgeSession;

@@ -47,5 +47,4 @@ public interface RuleBasePackage {
 
     public void dispose();
 
-    void cleanup();
 }

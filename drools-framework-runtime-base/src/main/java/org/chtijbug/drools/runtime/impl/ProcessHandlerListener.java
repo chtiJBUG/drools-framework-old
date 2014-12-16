@@ -20,14 +20,14 @@ import org.chtijbug.drools.entity.DroolsNodeInstanceObject;
 import org.chtijbug.drools.entity.DroolsProcessInstanceObject;
 import org.chtijbug.drools.entity.DroolsProcessObject;
 import org.chtijbug.drools.entity.history.process.*;
-import org.drools.event.process.*;
+import org.kie.api.event.process.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author nheron
  */
-public class ProcessHandlerListener extends DefaultProcessEventListener {
+public class ProcessHandlerListener implements org.kie.api.event.process.ProcessEventListener {
     /**
      * Class logger
      */

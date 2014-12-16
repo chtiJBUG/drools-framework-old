@@ -26,16 +26,14 @@ import org.chtijbug.drools.runtime.resource.Bpmn2DroolsResource;
 import org.chtijbug.drools.runtime.resource.DrlDroolsResource;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
 import org.chtijbug.drools.runtime.resource.GuvnorDroolsResource;
-import org.drools.KnowledgeBase;
-import org.drools.builder.KnowledgeBuilder;
-import org.drools.builder.KnowledgeBuilderConfiguration;
-import org.drools.builder.KnowledgeBuilderFactory;
-import org.drools.runtime.StatefulKnowledgeSession;
+import org.kie.api.KieServices;
+import org.kie.api.builder.KieScanner;
+import org.kie.api.builder.ReleaseId;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.management.*;
-import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -69,10 +67,8 @@ public class RuleBaseSingleton implements RuleBasePackage {
      * Rule Base ID
      */
     private int ruleBaseID;
-    /**
-     * KnowledgeBase reference
-     */
-    private KnowledgeBase kbase = null;
+
+    private KieContainer kContainer;
     /**
      * All Drools resources inserted into the RuleBase
      */
@@ -85,7 +81,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
      * Semaphore used to void concurrent access to the singleton
      */
     private Semaphore lockKbase = new Semaphore(1);
-    //private transient MBeanServer server = null;
     private int sessionCounter = 0;
     /**
      * Guvnor Connection
@@ -112,9 +107,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
     }
 
     public RuleBaseSingleton(Integer givenRuleBaseID) throws DroolsChtijbugException {
-        //____ Remove Existing MBean from the MBeanServer
-        if (ruleBaseCounter != 0)
-            clearPreviousInstanceMBeans();
         //____ Increment the ruleBaseID
         if (givenRuleBaseID != null) {
             this.ruleBaseID = givenRuleBaseID;
@@ -169,50 +161,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
     }
 
-    /**
-     * This methods unregisters all existing MBean from the MBean Server.
-     * All statistics data will be erased !!
-     */
-    private static void clearPreviousInstanceMBeans() {
-        logger.debug(">>clearPreviousInstanceMBeans");
-        logger.debug("ruleBaseCounter : {}", ruleBaseCounter);
-        try {
-            MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-            unregisterMBean(server, new ObjectName(RULE_BASE_OBJECT_NAME + ruleBaseCounter));
-            unregisterMBean(server, new ObjectName(RULE_SESSION_OBJECT_NAME + ruleBaseCounter));
-        } catch (MalformedObjectNameException e) {
-            logger.warn("Oups, wrong object name", e);
-        } finally {
-            logger.debug("<<clearPreviousInstanceMBeans");
-        }
-    }
-
-    private static void unregisterMBean(MBeanServer server, ObjectName objectName) {
-        try {
-            server.unregisterMBean(objectName);
-        } catch (InstanceNotFoundException e) {
-            logger.info("MBean not found while unregistering it {}", objectName);
-        } catch (MBeanRegistrationException e) {
-            logger.warn("Error append while unregistering MBean with name {}. Continue unregister process execution", objectName);
-        }
-    }
-
-    /**
-     * @return The ObjectName related to the Rulebase Object inside the MBeanServer
-     * @throws MalformedObjectNameException
-     */
-    protected ObjectName getRuleBaseObjectName() throws MalformedObjectNameException {
-        return new ObjectName(RULE_BASE_OBJECT_NAME + this.ruleBaseID);
-    }
-
-    /**
-     * @return The ObjectName related to the RuleSession Object inside the MBeanServer
-     * @throws MalformedObjectNameException
-     */
-    protected ObjectName getRuleSessionObjectName() throws MalformedObjectNameException {
-        return new ObjectName(RULE_SESSION_OBJECT_NAME + this.ruleBaseID);
-    }
-
     public List<DroolsResource> getListDroolsRessources() {
         return listResouces;
     }
@@ -222,9 +170,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
         logger.debug(">>createRuleBaseSession");
         try {
             //____ Creating new Rule Base Session using default rule threshold
-            RuleBaseSession newRuleBaseSession = this.createRuleBaseSession(this.maxNumberRuleToExecute);
-            //____ Returning it
-            return newRuleBaseSession;
+            return this.createRuleBaseSession(this.maxNumberRuleToExecute);
         } finally {
             logger.debug("<<createRuleBaseSession");
         }
@@ -235,7 +181,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
         logger.debug(">>createRuleBaseSession", maxNumberRulesToExecute);
         RuleBaseSession newRuleBaseSession = null;
         try {
-            if (kbase != null) {
                 //____ Acquire semaphore
                 try {
                     lockKbase.acquire();
@@ -243,7 +188,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
                     throw new DroolsChtijbugException(DroolsChtijbugException.KbaseAcquire, "", e);
                 }
                 //_____ Now we can create a new stateful session using KnowledgeBase
-                StatefulKnowledgeSession newDroolsSession = kbase.newStatefulKnowledgeSession();
+                KieSession newDroolsSession = this.kContainer.newKieSession();
                 //_____ Increment session counter
                 this.sessionCounter++;
                 if (this.historyListener != null) {
@@ -256,9 +201,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
                 newRuleBaseSession = new RuleBaseStatefulSession(this.ruleBaseID, this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, this.historyListener);
                 //_____ Release semaphore
                 lockKbase.release();
-            } else {
-                throw new DroolsChtijbugException(DroolsChtijbugException.KbaseNotInitialised, "", null);
-            }
             //____ return the wrapped KnowledgeSession
             return newRuleBaseSession;
         } finally {
@@ -316,17 +258,17 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
         if (this.historyListener != null) {
             if (res instanceof GuvnorDroolsResource) {
-                KnowledgeBaseDelRessourceEvent knowledgeBaseDelRessourceEvent = new KnowledgeBaseDelRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url, this.guvnor_appName, this.guvnor_packageName, this.guvnor_packageVersion);
-                this.historyListener.fireEvent(knowledgeBaseDelRessourceEvent);
+                KnowledgeBaseDelResourceEvent knowledgeBaseDelResourceEvent = new KnowledgeBaseDelResourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url, this.guvnor_appName, this.guvnor_packageName, this.guvnor_packageVersion);
+                this.historyListener.fireEvent(knowledgeBaseDelResourceEvent);
             } else if (res instanceof DrlDroolsResource) {
                 DrlDroolsResource drlDroolsResource = (DrlDroolsResource) res;
-                KnowledgeBaseDelRessourceEvent knowledgeBaseDelRessourceEvent = new KnowledgeBaseDelRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, drlDroolsResource.getFileName(), drlDroolsResource.getFileContent());
-                this.historyListener.fireEvent(knowledgeBaseDelRessourceEvent);
+                KnowledgeBaseDelResourceEvent knowledgeBaseDelResourceEvent = new KnowledgeBaseDelResourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, drlDroolsResource.getFileName(), drlDroolsResource.getFileContent());
+                this.historyListener.fireEvent(knowledgeBaseDelResourceEvent);
 
             } else if (res instanceof Bpmn2DroolsResource) {
                 Bpmn2DroolsResource bpmn2DroolsResource = (Bpmn2DroolsResource) res;
-                KnowledgeBaseDelRessourceEvent knowledgeBaseDelRessourceEvent = new KnowledgeBaseDelRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, bpmn2DroolsResource.getFileName(), bpmn2DroolsResource.getFileContent());
-                this.historyListener.fireEvent(knowledgeBaseDelRessourceEvent);
+                KnowledgeBaseDelResourceEvent knowledgeBaseDelResourceEvent = new KnowledgeBaseDelResourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, bpmn2DroolsResource.getFileName(), bpmn2DroolsResource.getFileContent());
+                this.historyListener.fireEvent(knowledgeBaseDelResourceEvent);
             }
         }
     }
@@ -340,8 +282,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
     }
 
     private synchronized void createKBase() throws DroolsChtijbugException {
-
-        if (kbase != null) {
+        if (kContainer != null) {
             if (this.historyListener != null) {
                 KnowledgeBaseReloadedEvent knowledgeBaseReloadLoadEvent = new KnowledgeBaseReloadedEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url, this.guvnor_appName, this.guvnor_packageName, this.guvnor_packageVersion);
                 this.historyListener.fireEvent(knowledgeBaseReloadLoadEvent);
@@ -355,14 +296,11 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
 
         try {
-            KnowledgeBuilderConfiguration config = KnowledgeBuilderFactory.newKnowledgeBuilderConfiguration();
-            config.setProperty("drools.dialect.java.compiler", this.javaDialect.toString());
-            KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(config);
-
-            for (DroolsResource res : listResouces) {
-                kbuilder.add(res.getResource(), res.getResourceType());
-            }
-            KnowledgeBase newkbase = kbuilder.newKnowledgeBase();
+            KieServices kieServices = KieServices.Factory.get();
+            ReleaseId releaseId = kieServices.newReleaseId("com.pymmasoftware.drools", "hello-world", "4.0");
+            this.kContainer = kieServices.newKieContainer(releaseId);
+            KieScanner kScanner = kieServices.newKieScanner( kContainer );
+            kScanner.start(1000L);
             lockKbase.acquire();
             kbase = newkbase;
             lockKbase.release();
@@ -449,25 +387,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
             }
 
         }
-        this.cleanup();
-        this.kbase = null;
-
-    }
-
-    @Override
-    public void cleanup() {
-        clearInstanceMBeans();
-    }
-
-    private void clearInstanceMBeans() {
-        MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-        try {
-            unregisterMBean(server, getRuleBaseObjectName());
-            unregisterMBean(server, getRuleSessionObjectName());
-        } catch (MalformedObjectNameException e) {
-            logger.error("Error clearing instance MBeans", e);
-        }
-
+        this.kContainer = null;
     }
 
     public int getNextEventCounter() {

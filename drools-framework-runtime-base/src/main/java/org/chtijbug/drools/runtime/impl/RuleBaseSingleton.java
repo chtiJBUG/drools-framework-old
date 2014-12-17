@@ -22,7 +22,6 @@ import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.kie.api.KieServices;
-import org.kie.api.builder.KieScanner;
 import org.kie.api.builder.ReleaseId;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -192,8 +191,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
             this.releaseId = kieServices.newReleaseId(packageName, projectName, version);
             lockKbase.acquire();
             this.kContainer = kieServices.newKieContainer(releaseId);
-            KieScanner kScanner = kieServices.newKieScanner( kContainer );
-            kScanner.start(1000L);
             lockKbase.release();
             if (this.historyListener != null) {
                 // TODO change the following event...
@@ -209,11 +206,9 @@ public class RuleBaseSingleton implements RuleBasePackage {
     @Override
     public void loadKBase(String version) throws DroolsChtijbugException {
         try {
-            this.releaseId = kieServices.newReleaseId(this.releaseId.getGroupId(), this.releaseId.getArtifactId(), version);
             lockKbase.acquire();
-            this.kContainer = kieServices.newKieContainer(releaseId);
-            KieScanner kScanner = kieServices.newKieScanner( kContainer );
-            kScanner.start(1000L);
+            this.releaseId = kieServices.newReleaseId(this.releaseId.getGroupId(), this.releaseId.getArtifactId(), version);
+            kContainer.updateToVersion(this.releaseId);
             lockKbase.release();
             if (this.historyListener != null) {
                 // TODO change the following event...

@@ -30,10 +30,9 @@ public class KnowledgeBaseInitialLoadEvent extends KnowledgeBaseEvent {
         super(eventID, dateEvent, ruleBaseID);
     }
 
-    public KnowledgeBaseInitialLoadEvent(int eventID, Date dateEvent, int ruleBaseID, String baseUrl, String webappName,
-                                         String packageName, String packageVersion) {
+    public KnowledgeBaseInitialLoadEvent(int eventID, Date dateEvent, int ruleBaseID, String baseUrl) {
         super(eventID, dateEvent, ruleBaseID);
-        GuvnorResourceFile guvnorResourceFile = new GuvnorResourceFile(baseUrl, webappName, packageName, packageVersion, null, null);
+        GuvnorResourceFile guvnorResourceFile = new GuvnorResourceFile(baseUrl, null, null);
         this.getResourceFiles().add(guvnorResourceFile);
 
     }

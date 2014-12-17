@@ -68,9 +68,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
      * Guvnor Connection
      */
     private String guvnor_url;
-    private String guvnor_appName;
-    private String guvnor_packageName;
-    private String guvnor_packageVersion;
     private String guvnor_username;
     private String guvnor_password;
     /**
@@ -180,13 +177,13 @@ public class RuleBaseSingleton implements RuleBasePackage {
     public synchronized void createKBase(String packageName, String projectName, String version) throws DroolsChtijbugException {
         if (kContainer != null) {
             if (this.historyListener != null) {
-                KnowledgeBaseReloadedEvent knowledgeBaseReloadLoadEvent = new KnowledgeBaseReloadedEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url, this.guvnor_appName, this.guvnor_packageName, this.guvnor_packageVersion);
+                KnowledgeBaseReloadedEvent knowledgeBaseReloadLoadEvent = new KnowledgeBaseReloadedEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url);
                 this.historyListener.fireEvent(knowledgeBaseReloadLoadEvent);
             }
             // TODO dispose all elements
         } else {
             if (this.historyListener != null) {
-                KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = new KnowledgeBaseInitialLoadEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url, this.guvnor_appName, this.guvnor_packageName, this.guvnor_packageVersion);
+                KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = new KnowledgeBaseInitialLoadEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url);
                 this.historyListener.fireEvent(knowledgeBaseInitialLoadEvent);
             }
         }
@@ -200,8 +197,8 @@ public class RuleBaseSingleton implements RuleBasePackage {
             lockKbase.release();
             if (this.historyListener != null) {
                 // TODO change the following event...
-                KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent = new KnowledgeBaseAddRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url, this.guvnor_appName, this.guvnor_packageName, this.guvnor_packageVersion);
-                this.historyListener.fireEvent(knowledgeBaseAddRessourceEvent);
+                KnowledgeBaseAddResourceEvent knowledgeBaseAddResourceEvent = new KnowledgeBaseAddResourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url);
+                this.historyListener.fireEvent(knowledgeBaseAddResourceEvent);
             }
         } catch (Exception e) {
             logger.error("error to load Agent", e);
@@ -220,8 +217,8 @@ public class RuleBaseSingleton implements RuleBasePackage {
             lockKbase.release();
             if (this.historyListener != null) {
                 // TODO change the following event...
-                KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent = new KnowledgeBaseAddRessourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url, this.guvnor_appName, this.guvnor_packageName, this.guvnor_packageVersion);
-                this.historyListener.fireEvent(knowledgeBaseAddRessourceEvent);
+                KnowledgeBaseAddResourceEvent knowledgeBaseAddResourceEvent = new KnowledgeBaseAddResourceEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url);
+                this.historyListener.fireEvent(knowledgeBaseAddResourceEvent);
             }
         } catch (InterruptedException e) {
          throw Throwables.propagate(e);
@@ -264,18 +261,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     public String getGuvnor_url() {
         return guvnor_url;
-    }
-
-    public String getGuvnor_appName() {
-        return guvnor_appName;
-    }
-
-    public String getGuvnor_packageName() {
-        return guvnor_packageName;
-    }
-
-    public String getGuvnor_packageVersion() {
-        return guvnor_packageVersion;
     }
 
     public String getGuvnor_username() {

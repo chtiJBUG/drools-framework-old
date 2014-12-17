@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author nheron
  */
-public class ProcessHandlerListener implements org.kie.api.event.process.ProcessEventListener {
+public class ProcessHandlerListener implements ProcessEventListener {
     /**
      * Class logger
      */

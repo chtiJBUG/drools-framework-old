@@ -27,7 +27,6 @@ public interface RuleBasePackage {
 
     RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute) throws DroolsChtijbugException;
 
-
     public void createKBase(String groupId, String artifactId, String version) throws DroolsChtijbugException;
 
     public void loadKBase(String version) throws DroolsChtijbugException;

@@ -20,21 +20,20 @@ import org.chtijbug.drools.entity.history.GuvnorResourceFile;
 
 import java.util.Date;
 
-public class KnowledgeBaseAddRessourceEvent extends KnowledgeBaseEvent {
+public class KnowledgeBaseAddResourceEvent extends KnowledgeBaseEvent {
 
-    public KnowledgeBaseAddRessourceEvent(int eventID, Date dateEvent, int ruleBaseID) {
+    public KnowledgeBaseAddResourceEvent(int eventID, Date dateEvent, int ruleBaseID) {
         super(eventID, dateEvent, ruleBaseID);
     }
 
 
-    public KnowledgeBaseAddRessourceEvent(int eventID, Date dateEvent, int ruleBaseID, String baseUrl, String webappName,
-                                          String packageName, String packageVersion) {
+    public KnowledgeBaseAddResourceEvent(int eventID, Date dateEvent, int ruleBaseID, String guvnor_url) {
         super(eventID, dateEvent, ruleBaseID);
-        GuvnorResourceFile guvnorResourceFile = new GuvnorResourceFile(baseUrl, webappName, packageName, packageVersion, null, null);
+        GuvnorResourceFile guvnorResourceFile = new GuvnorResourceFile(guvnor_url, null, null);
         this.getResourceFiles().add(guvnorResourceFile);
     }
 
-    public KnowledgeBaseAddRessourceEvent(int eventID, Date dateEvent, int ruleBaseID, String fileName, String content) {
+    public KnowledgeBaseAddResourceEvent(int eventID, Date dateEvent, int ruleBaseID, String fileName, String content) {
         super(eventID, dateEvent, ruleBaseID);
         DrlResourceFile drlRessourceFile = new DrlResourceFile();
         drlRessourceFile.setFileName(fileName);
@@ -43,6 +42,6 @@ public class KnowledgeBaseAddRessourceEvent extends KnowledgeBaseEvent {
 
     }
 
-    public KnowledgeBaseAddRessourceEvent() {
+    public KnowledgeBaseAddResourceEvent() {
     }
 }

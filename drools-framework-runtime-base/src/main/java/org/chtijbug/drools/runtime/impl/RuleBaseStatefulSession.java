@@ -29,6 +29,7 @@ import org.chtijbug.drools.runtime.DroolsFactObjectFactory;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervision;
+import org.drools.ObjectFilter;
 import org.drools.definition.rule.Rule;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.NodeInstance;
@@ -403,6 +404,10 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         return inputObject;
     }
 
+    @Override
+    public Collection<Object> getObjects(ObjectFilter objectFilter) {
+        return this.knowledgeSession.getObjects(objectFilter);
+    }
     @Override
     public void fireAllRules() throws DroolsChtijbugException {
         if (this.historyListener != null) {

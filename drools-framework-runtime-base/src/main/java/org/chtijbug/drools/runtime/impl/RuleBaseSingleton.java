@@ -42,6 +42,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Semaphore;
+import org.drools.builder.KnowledgeBuilderError;
+import org.drools.builder.KnowledgeBuilderErrors;
 
 /**
  * @author Bertrand Gressier
@@ -414,6 +416,14 @@ public class RuleBaseSingleton implements RuleBasePackage {
             for (DroolsResource res : listResouces) {
                 kbuilder.add(res.getResource(), res.getResourceType());
             }
+            KnowledgeBuilderErrors errors = kbuilder.getErrors();
+            if (errors.size() > 0) {
+               for (KnowledgeBuilderError error: errors) {
+                    System.err.println(error);
+               }
+               
+               throw new IllegalArgumentException("Could not parse knowledge.");
+          }
             KnowledgeBase newkbase = kbuilder.newKnowledgeBase();
             lockKbase.acquire();
             kbase = newkbase;

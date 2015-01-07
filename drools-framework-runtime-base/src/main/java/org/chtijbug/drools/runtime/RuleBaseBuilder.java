@@ -31,6 +31,7 @@ import java.util.List;
  * @author nheron
  */
 public class RuleBaseBuilder {
+
     /**
      * Class Logger
      */
@@ -45,15 +46,14 @@ public class RuleBaseBuilder {
      * @param guvnor_password
      * @return
      */
-
     public static RuleBasePackage createGuvnorRuleBasePackage(String guvnor_url, String guvnor_appName, String guvnor_packageName, String guvnor_packageVersion,
-                                                              String guvnor_username, String guvnor_password) throws DroolsChtijbugException {
+            String guvnor_username, String guvnor_password) throws DroolsChtijbugException {
         return RuleBaseBuilder.createGuvnorRuleBasePackageWithListener(null, guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion,
                 guvnor_username, guvnor_password);
     }
 
     public static RuleBasePackage createGuvnorRuleBasePackageWithListener(HistoryListener historyListener, String guvnor_url, String guvnor_appName, String guvnor_packageName, String guvnor_packageVersion,
-                                                                          String guvnor_username, String guvnor_password) throws DroolsChtijbugException {
+            String guvnor_username, String guvnor_password) throws DroolsChtijbugException {
         logger.debug(">>createGuvnorRuleBasePackage", guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion, guvnor_username, guvnor_password);
         RuleBasePackage newRuleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener);
         try {
@@ -71,6 +71,11 @@ public class RuleBaseBuilder {
     }
 
     public static RuleBasePackage createPackageBasePackageWithListener(HistoryListener historyListener, String... filenames) throws DroolsChtijbugException {
+        return RuleBaseBuilder.createPackageBasePackageWithListenerandRootPath(null, historyListener, filenames);
+    }
+
+    public static RuleBasePackage createPackageBasePackageWithListenerandRootPath(String rootPath, HistoryListener historyListener, String... filenames) throws DroolsChtijbugException {
+
         logger.debug(">>createPackageBasePackage");
         RuleBasePackage ruleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener);
         try {
@@ -79,9 +84,17 @@ public class RuleBaseBuilder {
                 String extensionName = getFileExtension(filename);
                 DroolsResource resource = null;
                 if ("DRL".equals(extensionName)) {
-                    resource = DrlDroolsResource.createClassPathResource(filename);
+                    if (rootPath == null) {
+                        resource = DrlDroolsResource.createClassPathResource(filename);
+                    } else {
+                        resource = DrlDroolsResource.createFileSystemPathResource(rootPath + "/" + filename);
+                    }
                 } else if ("BPMN2".equals(extensionName)) {
-                    resource = Bpmn2DroolsResource.createClassPathResource(filename);
+                    if (rootPath == null) {
+                        resource = Bpmn2DroolsResource.createClassPathResource(filename);
+                    } else {
+                        resource = Bpmn2DroolsResource.createFileSystemPathResource(rootPath + "/" + filename);
+                    }
                 }
                 if (resource != null) {
                     droolsResources.add(resource);

@@ -53,11 +53,7 @@ public class DrlDroolsResource implements DroolsResource {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DrlDroolsResource.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                inputStream.close();
-            } catch (IOException ex) {
-                Logger.getLogger(DrlDroolsResource.class.getName()).log(Level.SEVERE, null, ex);
-            }
+           
         }
         return null;
     }

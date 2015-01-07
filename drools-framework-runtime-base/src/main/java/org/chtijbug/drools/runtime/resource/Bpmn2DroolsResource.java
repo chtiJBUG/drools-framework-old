@@ -48,11 +48,7 @@ public class Bpmn2DroolsResource implements DroolsResource {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DrlDroolsResource.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                inputStream.close();
-            } catch (IOException ex) {
-                Logger.getLogger(Bpmn2DroolsResource.class.getName()).log(Level.SEVERE, null, ex);
-            }
+           
         }
         return null;
     }

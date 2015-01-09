@@ -44,8 +44,8 @@ public class Bpmn2DroolsResource implements DroolsResource {
         try {
             inputStream = new FileInputStream(path);
             String fileContent = FileHelper.getFileContent(inputStream);
-            inputStream.reset();
-            return new Bpmn2DroolsResource(ResourceFactory.newInputStreamResource(inputStream), path, fileContent);
+          
+            return new Bpmn2DroolsResource(ResourceFactory.newFileResource(path), path, fileContent);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DrlDroolsResource.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

@@ -47,6 +47,7 @@ import java.util.*;
  * @author nheron
  */
 public class RuleBaseStatefulSession implements RuleBaseSession {
+
     /**
      * Class Logger
      */
@@ -168,7 +169,6 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             droolsNodeInstanceObject = DroolsNodeInstanceObject.createDroolsNodeInstanceObject(String.valueOf(nodeInstance.getId()), droolsNodeObject);
             droolsProcessInstanceObject.addDroolsNodeInstanceObject(droolsNodeInstanceObject);
         }
-
 
         return droolsNodeInstanceObject;
     }
@@ -323,10 +323,15 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     @Override
     public void insertByReflection(Object newObject) throws DroolsChtijbugException {
         // Avoid inserting java.* classes
-        if (newObject.getClass().getPackage()!= null 
-                && newObject.getClass().getPackage().getName()!= null 
-                && newObject.getClass().getPackage().getName().startsWith("java.")) {
-            return;
+        if (newObject != null) {
+            if (newObject.getClass() != null) {
+                if (newObject.getClass().getPackage() != null) {
+                    if (newObject.getClass().getPackage().getName() != null
+                            && newObject.getClass().getPackage().getName().startsWith("java.")) {
+                        return;
+                    }
+                }
+            }
         }
         if (this.historyListener != null) {
             DroolsFactObject topDroolsObject = DroolsFactObjectFactory.createFactObject(newObject);
@@ -348,8 +353,9 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
                 DroolsChtijbugException ee = new DroolsChtijbugException(DroolsChtijbugException.insertByReflection, "getterValue = method.invoke(newObject, (Object[]) null);", e);
                 throw ee;
             }
-            if (getterValue == null)
+            if (getterValue == null) {
                 continue;
+            }
             //____ If returned value is not a collection, insert it in the ksession
             if (!(getterValue instanceof Iterable)) {
                 this.insertByReflection(getterValue);
@@ -405,10 +411,12 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         }
         return inputObject;
     }
+
     @Override
     public Collection<Object> getObjects(ObjectFilter objectFilter) {
         return this.knowledgeSession.getObjects(objectFilter);
     }
+
     @Override
     public void fireAllRules() throws DroolsChtijbugException {
         if (this.historyListener != null) {

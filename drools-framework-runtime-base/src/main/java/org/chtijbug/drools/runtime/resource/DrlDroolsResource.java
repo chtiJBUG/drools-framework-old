@@ -49,7 +49,7 @@ public class DrlDroolsResource implements DroolsResource {
         try {
             inputStream = new FileInputStream(path);
             String fileContent = FileHelper.getFileContent(inputStream);
-            return new DrlDroolsResource(ResourceFactory.newInputStreamResource(inputStream), path, fileContent);
+            return new DrlDroolsResource(ResourceFactory.newFileResource(path), path, fileContent);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DrlDroolsResource.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

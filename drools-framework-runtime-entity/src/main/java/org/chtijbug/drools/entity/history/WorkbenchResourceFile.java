@@ -23,16 +23,16 @@ import java.io.Serializable;
  * Time: 15:40
  * To change this template use File | Settings | File Templates.
  */
-public class GuvnorResourceFile implements Serializable, ResourceFile {
+public class WorkbenchResourceFile implements Serializable, ResourceFile {
 
     private String guvnor_url;
     private String guvnor_userName;
     private String guvnor_password;
 
-    public GuvnorResourceFile() {
+    public WorkbenchResourceFile() {
     }
 
-    public GuvnorResourceFile(String guvnor_url, String guvnor_userName, String guvnor_password) {
+    public WorkbenchResourceFile(String guvnor_url, String guvnor_userName, String guvnor_password) {
         this.guvnor_url = guvnor_url;
         this.guvnor_userName = guvnor_userName;
         this.guvnor_password = guvnor_password;

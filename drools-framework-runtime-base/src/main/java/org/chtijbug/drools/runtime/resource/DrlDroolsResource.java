@@ -16,9 +16,9 @@
 package org.chtijbug.drools.runtime.resource;
 
 import org.chtijbug.drools.common.file.FileHelper;
-import org.drools.builder.ResourceType;
-import org.drools.io.Resource;
-import org.drools.io.ResourceFactory;
+import org.kie.api.io.Resource;
+import org.kie.api.io.ResourceType;
+import org.kie.internal.io.ResourceFactory;
 
 import java.io.InputStream;
 
@@ -47,13 +47,17 @@ public class DrlDroolsResource implements DroolsResource {
 
     @Override
     public Resource getResource() throws Exception {
-
         return resource;
     }
 
     @Override
     public ResourceType getResourceType() {
         return ResourceType.DRL;
+    }
+
+    @Override
+    public InputStream getInputStream() {
+        return null;
     }
 
     public String getFileName() {
@@ -68,12 +72,8 @@ public class DrlDroolsResource implements DroolsResource {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         DrlDroolsResource that = (DrlDroolsResource) o;
-
-        if (!fileName.equals(that.fileName)) return false;
-
-        return true;
+        return fileName.equals(that.fileName);
     }
 
     @Override

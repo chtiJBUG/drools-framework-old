@@ -15,8 +15,9 @@
  */
 package org.chtijbug.drools.runtime.resource;
 
-import org.drools.builder.ResourceType;
-import org.drools.io.Resource;
+import org.kie.api.io.Resource;
+
+import java.io.InputStream;
 
 
 /**
@@ -25,16 +26,16 @@ import org.drools.io.Resource;
  */
 public interface DroolsResource {
 
-
     /**
      * @return resource to load in KnowledgeBuilder
      */
-    public Resource getResource() throws Exception;
+    Resource getResource() throws Exception;
 
     /**
      * @return ResourceType for KnowledgeBuilder
      */
-    public ResourceType getResourceType();
+    org.kie.api.io.ResourceType getResourceType();
 
 
+    InputStream getInputStream();
 }

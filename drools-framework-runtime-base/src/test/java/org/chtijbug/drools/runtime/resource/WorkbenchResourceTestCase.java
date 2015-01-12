@@ -1,43 +1,25 @@
 package org.chtijbug.drools.runtime.resource;
 
-import org.drools.io.Resource;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.io.StringWriter;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 /**
  * Created with IntelliJ IDEA.
  * User: samuel
  * Date: 26/09/12
  * Time: 18:01
  */
-public class GuvnorDroolsResourceTestCase {
-
+public class WorkbenchResourceTestCase {
+    /**
     @Test
     public void testRemoveTrailingSlash()  {
         String expected = "//String";
 
-        String toEval = GuvnorDroolsResource.removeTrailingSlash("//String/");
+        String toEval = WorkbenchResource.removeTrailingSlash("//String/");
         assertEquals("Remove trailind '/' operation failed", expected, toEval);
     }
 
 
     @Test
     public void testGetWebResourceUrl()  {
-        GuvnorDroolsResource toTest = new GuvnorDroolsResource("http://localhost:8080/", "drools-guvnor", "amag/", "LATEST", "tomcat", "tomcat");
+        WorkbenchResource toTest = new WorkbenchResource("http://localhost:8080/", "drools-guvnor", "amag/", "LATEST", "tomcat", "tomcat");
         String expected = "http://localhost:8080/drools-guvnor/org.drools.guvnor.Guvnor/package/amag/LATEST";
 
         String toEval = toTest.getWebResourceUrl();
@@ -46,7 +28,7 @@ public class GuvnorDroolsResourceTestCase {
 
     @Test
     public void testGetResource() {
-        GuvnorDroolsResource toTest = new GuvnorDroolsResource("http://localhost:8080/", "drools-guvnor", "amag/", "LATEST", "tomcat", "tomcat");
+        WorkbenchResource toTest = new WorkbenchResource("http://localhost:8080/", "drools-guvnor", "amag/", "LATEST", "tomcat", "tomcat");
 
         final String expectedChangeSet = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
                 "<change-set xmlns=\"http://drools.org/drools-5.0/change-set\"" +
@@ -96,4 +78,5 @@ public class GuvnorDroolsResourceTestCase {
         }
     }
 
+    */
 }

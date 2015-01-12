@@ -2,20 +2,19 @@ package org.chtijbug.drools.runtime.test;
 
 import org.chtijbug.drools.entity.history.DrlResourceFile;
 import org.chtijbug.drools.entity.history.HistoryEvent;
-import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseAddRessourceEvent;
+import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseAddResourceEvent;
 import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseCreatedEvent;
 import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseInitialLoadEvent;
-import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseReloadedEvent;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBaseBuilder;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
-import org.chtijbug.drools.runtime.resource.DrlDroolsResource;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by IntelliJ IDEA.
@@ -34,47 +33,46 @@ public class RuleBaseHistoryEventTest {
                 historyEvents.add(newHistoryEvent);
             }
         };
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackageWithListener(historyListener, "fibonacci.drl");
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "fibonacci.drl");
         int rulePackageID = ruleBasePackage.getRuleBaseID();
 
-        Assert.assertTrue(historyEvents.size() == 3);
-        Assert.assertTrue(historyEvents.get(0) instanceof KnowledgeBaseCreatedEvent);
+        assertThat(historyEvents).hasSize(3);
+        assertThat(historyEvents.get(0)).isInstanceOf(KnowledgeBaseCreatedEvent.class);
         KnowledgeBaseCreatedEvent knowledgeBaseCreatedEvent = (KnowledgeBaseCreatedEvent) historyEvents.get(0);
-        Assert.assertEquals(knowledgeBaseCreatedEvent.getRuleBaseID(), rulePackageID);
-        Assert.assertEquals(knowledgeBaseCreatedEvent.getEventID(), 1l);
-        Assert.assertEquals(knowledgeBaseCreatedEvent.getSessionId(), 0l);
-        Assert.assertEquals(knowledgeBaseCreatedEvent.getTypeEvent(), HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
-        Assert.assertTrue(historyEvents.get(1) instanceof KnowledgeBaseAddRessourceEvent);
-        KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent = (KnowledgeBaseAddRessourceEvent) historyEvents.get(1);
-        Assert.assertEquals(knowledgeBaseAddRessourceEvent.getEventID(), 2l);
-        Assert.assertEquals(knowledgeBaseAddRessourceEvent.getTypeEvent(), HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
-        Assert.assertTrue(knowledgeBaseAddRessourceEvent.getResourceFiles().size() == 1);
-        Assert.assertTrue(knowledgeBaseAddRessourceEvent.getResourceFiles().get(0) instanceof DrlResourceFile);
+        assertThat(knowledgeBaseCreatedEvent.getRuleBaseID()).isEqualTo(rulePackageID);
+        assertThat(knowledgeBaseCreatedEvent.getEventID()).isEqualTo(1);
+        assertThat(knowledgeBaseCreatedEvent.getSessionId()).isEqualTo(0);
+        assertThat(knowledgeBaseCreatedEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
+        assertThat(historyEvents.get(2)).isInstanceOf(KnowledgeBaseAddResourceEvent.class);
+        KnowledgeBaseAddResourceEvent knowledgeBaseAddRessourceEvent = (KnowledgeBaseAddResourceEvent) historyEvents.get(2);
+        assertThat(knowledgeBaseAddRessourceEvent.getEventID()).isEqualTo(3);
+        assertThat(knowledgeBaseAddRessourceEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
+        assertThat(knowledgeBaseAddRessourceEvent.getResourceFiles()).hasSize(1);
+        assertThat(knowledgeBaseAddRessourceEvent.getResourceFiles().get(0)).isInstanceOf(DrlResourceFile.class);
         DrlResourceFile drlRessourceFile =(DrlResourceFile) knowledgeBaseAddRessourceEvent.getResourceFiles().get(0);
-        Assert.assertTrue(drlRessourceFile.getFileName().equals("fibonacci.drl"));
-        Assert.assertTrue(historyEvents.get(2) instanceof KnowledgeBaseInitialLoadEvent);
-        KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = (KnowledgeBaseInitialLoadEvent) historyEvents.get(2);
-        Assert.assertEquals(knowledgeBaseInitialLoadEvent.getEventID(), 3l);
-        Assert.assertEquals(knowledgeBaseInitialLoadEvent.getTypeEvent(), HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
-        ruleBasePackage.RecreateKBaseWithNewRessources(DrlDroolsResource.createClassPathResource("fibonacciBis.drl"));
-        Assert.assertTrue(historyEvents.size() == 6);
-        Assert.assertTrue(historyEvents.get(4) instanceof KnowledgeBaseAddRessourceEvent);
-        KnowledgeBaseAddRessourceEvent knowledgeBaseAddRessourceEvent2 = (KnowledgeBaseAddRessourceEvent) historyEvents.get(4);
-        Assert.assertEquals(knowledgeBaseAddRessourceEvent2.getEventID(), 5l);
-        Assert.assertEquals(knowledgeBaseAddRessourceEvent2.getTypeEvent(), HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
-        Assert.assertTrue(knowledgeBaseAddRessourceEvent2.getResourceFiles().size() == 1);
-        Assert.assertTrue(knowledgeBaseAddRessourceEvent2.getResourceFiles().get(0) instanceof DrlResourceFile);
+        assertThat(drlRessourceFile.getFileName()).isEqualTo("fibonacci.drl");
+        assertThat(historyEvents.get(1)).isInstanceOf(KnowledgeBaseInitialLoadEvent.class);
+        KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = (KnowledgeBaseInitialLoadEvent) historyEvents.get(1);
+        assertThat(knowledgeBaseInitialLoadEvent.getEventID()).isEqualTo(2);
+        assertThat(knowledgeBaseInitialLoadEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
+        /** ruleBasePackage.RecreateKBaseWithNewRessources(DrlDroolsResource.createClassPathResource("fibonacciBis.drl"));
+        assertThat(historyEvents.size() == 6);
+        assertThat(historyEvents.get(4) instanceof KnowledgeBaseAddResourceEvent);
+        KnowledgeBaseAddResourceEvent knowledgeBaseAddRessourceEvent2 = (KnowledgeBaseAddResourceEvent) historyEvents.get(4);
+        assertThat(knowledgeBaseAddRessourceEvent2.getEventID(), 5l);
+        assertThat(knowledgeBaseAddRessourceEvent2.getTypeEvent(), HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
+        assertThat(knowledgeBaseAddRessourceEvent2.getResourceFiles().size() == 1);
+        assertThat(knowledgeBaseAddRessourceEvent2.getResourceFiles().get(0) instanceof DrlResourceFile);
         DrlResourceFile drlRessourceFile2 = (DrlResourceFile)knowledgeBaseAddRessourceEvent2.getResourceFiles().get(0);
-        Assert.assertTrue(drlRessourceFile2.getFileName().equals("fibonacciBis.drl"));
+        assertThat(drlRessourceFile2.getFileName().equals("fibonacciBis.drl"));
 
-
-        Assert.assertTrue(historyEvents.get(5) instanceof KnowledgeBaseReloadedEvent);
+        assertThat(historyEvents.get(5) instanceof KnowledgeBaseReloadedEvent);
         KnowledgeBaseReloadedEvent knowledgeBaseReloadedEvent = (KnowledgeBaseReloadedEvent) historyEvents.get(5);
-        Assert.assertEquals(knowledgeBaseReloadedEvent.getRuleBaseID(), rulePackageID);
-        Assert.assertEquals(knowledgeBaseReloadedEvent.getEventID(), 6l);
-        Assert.assertEquals(knowledgeBaseReloadedEvent.getSessionId(), 0l);
-        Assert.assertEquals(knowledgeBaseReloadedEvent.getTypeEvent(), HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
-
+        assertThat(knowledgeBaseReloadedEvent.getRuleBaseID()).isEqualTo(rulePackageID);
+        assertThat(knowledgeBaseReloadedEvent.getEventID()).isEqualTo(6);
+        assertThat(knowledgeBaseReloadedEvent.getSessionId()).isEqualTo(0);
+        assertThat(knowledgeBaseReloadedEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
+         */
 
     }
 }

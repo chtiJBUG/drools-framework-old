@@ -89,12 +89,12 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         this.ruleHandlerListener = new RuleHandlerListener(this);
         this.processHandlerListener = new ProcessHandlerListener(this);
         this.historyContainer = new HistoryContainer(sessionId, historyListener);
-        this.listFactObjects = new HashMap<Object, List<DroolsFactObject>>();
-        this.listFact = new HashMap<Object, FactHandle>();
-        this.listObject = new HashMap<FactHandle, Object>();
-        this.listRules = new HashMap<String, DroolsRuleObject>();
-        this.processList = new HashMap<String, DroolsProcessObject>();
-        this.processInstanceList = new HashMap<String, DroolsProcessInstanceObject>();
+        this.listFactObjects = new HashMap<>();
+        this.listFact = new HashMap<>();
+        this.listObject = new HashMap<>();
+        this.listRules = new HashMap<>();
+        this.processList = new HashMap<>();
+        this.processInstanceList = new HashMap<>();
         knowledgeSession.addEventListener(factListener);
         knowledgeSession.addEventListener(ruleHandlerListener);
         knowledgeSession.addEventListener(processHandlerListener);
@@ -225,7 +225,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
     @Override
     public Collection<DroolsFactObject> listLastVersionObjects() {
-        Collection<DroolsFactObject> list = new ArrayList<DroolsFactObject>();
+        Collection<DroolsFactObject> list = new ArrayList<>();
         for (Object o : this.listFact.keySet()) {
             FactHandle factHandle = this.listFact.get(o);
             list.add(this.getLastFactObjectVersionFromFactHandle(factHandle));
@@ -254,7 +254,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         listFact.put(o, f);
 
         if (!listFactObjects.containsKey(o)) {
-            List<DroolsFactObject> newList = new LinkedList<DroolsFactObject>();
+            List<DroolsFactObject> newList = new LinkedList<>();
             newList.add(fObject);
             listFactObjects.put(o, newList);
         } else {
@@ -274,7 +274,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         knowledgeSession.removeEventListener(ruleHandlerListener);
         knowledgeSession.removeEventListener(processHandlerListener);
         for (FactHandle f : listObject.keySet()) {
-            knowledgeSession.retract(f);
+            knowledgeSession.delete(f);
         }
 
         factListener = null;
@@ -358,7 +358,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     @Override
     public void retractObject(Object oldObject) {
         FactHandle factToDelete = listFact.get(oldObject);
-        this.knowledgeSession.retract(factToDelete);
+        this.knowledgeSession.delete(factToDelete);
     }
 
     @Override
@@ -472,10 +472,8 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     private RuleSetNode getRuleSetNode(NodeInstance nodeInstance) {
         RuleSetNode ruleSetNode = null;
         if (nodeInstance instanceof RuleSetNodeInstance) {
-            RuleSetNodeInstance ruleSetNodeInstance = (RuleSetNodeInstance) nodeInstance;
-            if (ruleSetNodeInstance.getNode() instanceof RuleSetNode) {
-                ruleSetNode = (RuleSetNode) ruleSetNodeInstance.getNode();
-
+            if (nodeInstance.getNode() instanceof RuleSetNode) {
+                ruleSetNode = (RuleSetNode) nodeInstance.getNode();
             }
         }
         return ruleSetNode;

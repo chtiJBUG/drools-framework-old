@@ -15,21 +15,26 @@
  */
 package org.chtijbug.drools.runtime.impl;
 
-import com.google.common.base.Throwables;
+import org.apache.commons.io.IOUtils;
 import org.chtijbug.drools.entity.history.knowledge.*;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.kie.api.KieServices;
-import org.kie.api.builder.ReleaseId;
+import org.kie.api.builder.*;
+import org.kie.api.io.KieResources;
+import org.kie.api.io.Resource;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.Semaphore;
+
+import static com.google.common.base.Throwables.propagate;
 
 /**
  * @author Bertrand Gressier
@@ -51,8 +56,11 @@ public class RuleBaseSingleton implements RuleBasePackage {
      * Rule Base ID
      */
     private int ruleBaseID;
-    private final KieServices kieServices;
-    private KieContainer kContainer;
+    private KieServices kieServices;
+    private KieContainer kieContainer;
+    private KieResources kieResources;
+    private KieFileSystem kieFileSystem;
+    private KieRepository kieRepository;
     private ReleaseId releaseId;
     /**
      * Max rule to be fired threshold.
@@ -92,6 +100,9 @@ public class RuleBaseSingleton implements RuleBasePackage {
             this.ruleBaseID = addRuleBase();
         }
         this.kieServices = KieServices.Factory.get();
+        this.kieResources = kieServices.getResources();
+        this.kieFileSystem = kieServices.newKieFileSystem();
+        this.kieRepository = kieServices.getRepository();
     }
 
     public RuleBaseSingleton(Integer ruleBaseID, int maxNumberRulesToExecute) throws DroolsChtijbugException {
@@ -138,26 +149,26 @@ public class RuleBaseSingleton implements RuleBasePackage {
         logger.debug(">>createRuleBaseSession", maxNumberRulesToExecute);
         RuleBaseSession newRuleBaseSession = null;
         try {
-                //____ Acquire semaphore
-                try {
-                    lockKbase.acquire();
-                } catch (Exception e) {
-                    throw new DroolsChtijbugException(DroolsChtijbugException.KbaseAcquire, "", e);
-                }
-                //_____ Now we can create a new stateful session using KnowledgeBase
-                KieSession newDroolsSession = this.kContainer.newKieSession();
-                //_____ Increment session counter
-                this.sessionCounter++;
-                if (this.historyListener != null) {
-                    KnowledgeBaseCreateSessionEvent knowledgeBaseCreateSessionEvent = new KnowledgeBaseCreateSessionEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID);
-                    knowledgeBaseCreateSessionEvent.setSessionId(this.sessionCounter);
-                    this.historyListener.fireEvent(knowledgeBaseCreateSessionEvent);
-                }
+            //____ Acquire semaphore
+            try {
+                lockKbase.acquire();
+            } catch (Exception e) {
+                throw new DroolsChtijbugException(DroolsChtijbugException.KbaseAcquire, "", e);
+            }
+            //_____ Now we can create a new stateful session using KnowledgeBase
+            KieSession newDroolsSession = this.kieContainer.newKieSession();
+            //_____ Increment session counter
+            this.sessionCounter++;
+            if (this.historyListener != null) {
+                KnowledgeBaseCreateSessionEvent knowledgeBaseCreateSessionEvent = new KnowledgeBaseCreateSessionEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID);
+                knowledgeBaseCreateSessionEvent.setSessionId(this.sessionCounter);
+                this.historyListener.fireEvent(knowledgeBaseCreateSessionEvent);
+            }
 
-                //_____ Wrapping the knowledge Session
-                newRuleBaseSession = new RuleBaseStatefulSession(this.ruleBaseID, this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, this.historyListener);
-                //_____ Release semaphore
-                lockKbase.release();
+            //_____ Wrapping the knowledge Session
+            newRuleBaseSession = new RuleBaseStatefulSession(this.ruleBaseID, this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, this.historyListener);
+            //_____ Release semaphore
+            lockKbase.release();
             //____ return the wrapped KnowledgeSession
             return newRuleBaseSession;
         } finally {
@@ -174,7 +185,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
     }
 
     public synchronized void createKBase(String packageName, String projectName, String version) throws DroolsChtijbugException {
-        if (kContainer != null) {
+        if (kieContainer != null) {
             if (this.historyListener != null) {
                 KnowledgeBaseReloadedEvent knowledgeBaseReloadLoadEvent = new KnowledgeBaseReloadedEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url);
                 this.historyListener.fireEvent(knowledgeBaseReloadLoadEvent);
@@ -190,7 +201,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
         try {
             this.releaseId = kieServices.newReleaseId(packageName, projectName, version);
             lockKbase.acquire();
-            this.kContainer = kieServices.newKieContainer(releaseId);
+            this.kieContainer = kieServices.newKieContainer(releaseId);
             lockKbase.release();
             if (this.historyListener != null) {
                 // TODO change the following event...
@@ -208,7 +219,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
         try {
             lockKbase.acquire();
             this.releaseId = kieServices.newReleaseId(this.releaseId.getGroupId(), this.releaseId.getArtifactId(), version);
-            kContainer.updateToVersion(this.releaseId);
+            kieContainer.updateToVersion(this.releaseId);
             lockKbase.release();
             if (this.historyListener != null) {
                 // TODO change the following event...
@@ -216,7 +227,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
                 this.historyListener.fireEvent(knowledgeBaseAddResourceEvent);
             }
         } catch (InterruptedException e) {
-         throw Throwables.propagate(e);
+            throw propagate(e);
         }
     }
 
@@ -242,11 +253,52 @@ public class RuleBaseSingleton implements RuleBasePackage {
             try {
                 this.historyListener.fireEvent(knowledgeBaseDisposeEvent);
             } catch (DroolsChtijbugException e) {
-                throw Throwables.propagate(e);
+                throw propagate(e);
             }
 
         }
-        this.kContainer = null;
+        this.kieContainer = null;
+    }
+
+    @Override
+    public void createKBase(String... filenames) {
+        try {
+            if (this.historyListener != null) {
+                KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = new KnowledgeBaseInitialLoadEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID, this.guvnor_url);
+                this.historyListener.fireEvent(knowledgeBaseInitialLoadEvent);
+            }
+            lockKbase.acquire();
+
+            for (String filename : filenames) {
+                addRuleFile("rules", filename);
+            }
+            KieBuilder kb = kieServices.newKieBuilder(kieFileSystem);
+            kb.buildAll();
+            if (kb.getResults().hasMessages(Message.Level.ERROR)) {
+                throw new RuntimeException("Build Errors:\n" + kb.getResults().toString());
+            }
+
+            kieContainer = kieServices.newKieContainer(kieRepository.getDefaultReleaseId());
+            lockKbase.release();
+        } catch (InterruptedException | DroolsChtijbugException e) {
+            propagate(e);
+        }
+    }
+
+    public void addRuleFile(String packageName, String ruleFile) throws DroolsChtijbugException {
+        Resource resource = kieResources.newClassPathResource(ruleFile);
+        packageName = packageName.replace(".", "/");
+        String resourcePath = "src/main/resources/" + packageName + "/" + ruleFile;
+        kieFileSystem.write(resourcePath, resource);
+        if (historyListener != null)
+            try {
+                historyListener.fireEvent(
+                        new KnowledgeBaseAddResourceEvent(
+                                this.getNextEventCounter(), new Date(), this.ruleBaseID,
+                                ruleFile, IOUtils.toString(resource.getInputStream())));
+            } catch (IOException e) {
+                throw propagate(e);
+            }
     }
 
     public int getNextEventCounter() {

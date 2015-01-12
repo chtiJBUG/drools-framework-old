@@ -16,13 +16,13 @@
 package org.chtijbug.drools.runner;
 
 
-import org.chtijbug.drools.common.log.Logger;
-import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
 import org.chtijbug.drools.guvnor.rest.ChtijbugDroolsRestException;
 import org.chtijbug.drools.guvnor.rest.GuvnorRepositoryConnector;
 import org.chtijbug.drools.guvnor.rest.RestRepositoryConnector;
 import org.chtijbug.drools.utils.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -153,14 +153,14 @@ public class WebApplicationBuilder {
      * @throws IOException
      */
     private void createServiceInterface() throws IOException {
-        logger.entry("createServiceInterface");
+        logger.debug("createServiceInterface");
         try {
             File javaSrcFolder = getFolder(this.projectFolder, SRC_MAIN_JAVA);
             File servicePackageFolder = getFolder(javaSrcFolder, WS_INTERFACE_PACKAGE);
             File serviceInterfaceFile = createFileFromTemplate(servicePackageFolder, "RulesRunnerService.java", "/templates/service-interface-template");
             replaceJavaClassToken(serviceInterfaceFile);
         } finally {
-            logger.exit("createServiceInterface");
+            logger.debug("createServiceInterface");
         }
     }
 
@@ -186,7 +186,7 @@ public class WebApplicationBuilder {
     }
 
     private void replacePropertyFileTokens(File resourcesFolder) throws IOException {
-        logger.entry("replacePropertyFileTokens", resourcesFolder);
+        logger.debug("replacePropertyFileTokens", resourcesFolder);
         try {
             GuvnorConnexionConfiguration guvnorConf = this.runnerConfiguration.getConfiguration();
             File guvnorPropsFile = createFileFromTemplate(resourcesFolder, "rules-runner.properties", "/templates/guvnor-properties-template");
@@ -196,7 +196,7 @@ public class WebApplicationBuilder {
             FileUtils.replaceTokenInFile(guvnorPropsFile, "#USERNAME#", guvnorConf.getUsername());
             FileUtils.replaceTokenInFile(guvnorPropsFile, "#PASSWORD#", guvnorConf.getPassword());
         } finally {
-            logger.exit("replacePropertyFileTokens");
+            logger.debug("replacePropertyFileTokens");
         }
     }
 

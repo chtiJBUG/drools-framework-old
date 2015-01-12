@@ -16,9 +16,9 @@
 package org.chtijbug.drools.runner;
 
 import org.apache.commons.io.IOUtils;
-import org.chtijbug.drools.common.log.Logger;
-import org.chtijbug.drools.common.log.LoggerFactory;
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -39,7 +39,7 @@ public class ServiceGenerator {
 
 
     public InputStream generateWebServiceArchive(RunnerConfiguration runnerConfiguration) throws DroolsRunnerGenerationException {
-        logger.entry("generateWebServiceArchive");
+        logger.debug(">> generateWebServiceArchive");
         try {
 
             WebApplicationBuilder archiveBuilder = WebApplicationBuilder.get(runnerConfiguration);
@@ -59,7 +59,7 @@ public class ServiceGenerator {
         } catch (IOException e) {
             throw new DroolsRunnerGenerationException("An error occured while creating the war file on the filesystem. Do you have write access on the target location ?", e);
         } finally {
-            logger.exit("generateWebServiceArchive");
+            logger.debug("<< generateWebServiceArchive");
         }
     }
 
@@ -92,10 +92,7 @@ public class ServiceGenerator {
             IOUtils.closeQuietly(warFileInputStream);
             IOUtils.closeQuietly(outputStream);
             generator.cleanWorkspace();
-        } catch (DroolsRunnerGenerationException e) {
-            //____ Error during execution
-            System.exit(-1);
-        } catch (IOException e) {
+        } catch (DroolsRunnerGenerationException | IOException e) {
             //____ Error during execution
             System.exit(-1);
         }

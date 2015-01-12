@@ -15,11 +15,13 @@
  */
 package org.chtijbug.drools.runtime.resource;
 
-import org.drools.builder.ResourceType;
-import org.drools.io.Resource;
-import org.drools.io.ResourceFactory;
+import org.kie.api.io.Resource;
+import org.kie.api.io.ResourceType;
+import org.kie.internal.io.ResourceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.InputStream;
 
 
 public class BinaryPackageDroolsRessource implements DroolsResource {
@@ -43,5 +45,10 @@ public class BinaryPackageDroolsRessource implements DroolsResource {
     @Override
     public ResourceType getResourceType() {
         return ResourceType.PKG;
+    }
+
+    @Override
+    public InputStream getInputStream() {
+        return null;
     }
 }

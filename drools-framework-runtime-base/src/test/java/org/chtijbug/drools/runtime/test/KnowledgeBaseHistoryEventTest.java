@@ -11,11 +11,12 @@ import org.chtijbug.drools.runtime.RuleBaseBuilder;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by IntelliJ IDEA.
@@ -34,31 +35,31 @@ public class KnowledgeBaseHistoryEventTest {
                 historyEvents.add(newHistoryEvent);
             }
         };
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackageWithListener(historyListener, "fibonacci.drl");
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "fibonacci.drl");
         int rulePackageID = ruleBasePackage.getRuleBaseID();
 
         RuleBaseSession ruleBaseSession = ruleBasePackage.createRuleBaseSession();
-        Assert.assertTrue(historyEvents.size() == 5);
-        Assert.assertTrue(historyEvents.get(3) instanceof KnowledgeBaseCreateSessionEvent);
+        assertThat(historyEvents).hasSize(5);
+        assertThat(historyEvents.get(3)).isInstanceOf(KnowledgeBaseCreateSessionEvent.class);
         KnowledgeBaseCreateSessionEvent knowledgeBaseCreateSessionEvent = (KnowledgeBaseCreateSessionEvent) historyEvents.get(3);
-        Assert.assertEquals(knowledgeBaseCreateSessionEvent.getRuleBaseID(), rulePackageID);
-        Assert.assertEquals(knowledgeBaseCreateSessionEvent.getEventID(), 4l);
-        Assert.assertEquals(knowledgeBaseCreateSessionEvent.getSessionId(), 1l);
-        Assert.assertEquals(knowledgeBaseCreateSessionEvent.getTypeEvent(), HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
-        Assert.assertTrue(historyEvents.get(4) instanceof SessionCreatedEvent);
+        assertThat(knowledgeBaseCreateSessionEvent.getRuleBaseID()).isEqualTo(rulePackageID);
+        assertThat(knowledgeBaseCreateSessionEvent.getEventID()).isEqualTo(4);
+        assertThat(knowledgeBaseCreateSessionEvent.getSessionId()).isEqualTo(1);
+        assertThat(knowledgeBaseCreateSessionEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
+        assertThat(historyEvents.get(4)).isInstanceOf(SessionCreatedEvent.class);
         SessionCreatedEvent sessionCreatedEvent = (SessionCreatedEvent) historyEvents.get(4);
-        Assert.assertEquals(sessionCreatedEvent.getRuleBaseID(), rulePackageID);
-        Assert.assertEquals(sessionCreatedEvent.getEventID(), 1l);
-        Assert.assertEquals(sessionCreatedEvent.getSessionId(), 1l);
-        Assert.assertEquals(sessionCreatedEvent.getTypeEvent(), HistoryEvent.TypeEvent.Session);
+        assertThat(sessionCreatedEvent.getRuleBaseID()).isEqualTo(rulePackageID);
+        assertThat(sessionCreatedEvent.getEventID()).isEqualTo(1);
+        assertThat(sessionCreatedEvent.getSessionId()).isEqualTo(1);
+        assertThat(sessionCreatedEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Session);
         ruleBaseSession.dispose();
-        Assert.assertTrue(historyEvents.size() == 6);
-        Assert.assertTrue(historyEvents.get(5) instanceof SessionDisposedEvent);
+        assertThat(historyEvents).hasSize(6);
+        assertThat(historyEvents.get(5)).isInstanceOf(SessionDisposedEvent.class);
         SessionDisposedEvent sessionDisposedEvent = (SessionDisposedEvent) historyEvents.get(5);
-        Assert.assertEquals(sessionDisposedEvent.getRuleBaseID(), rulePackageID);
-        Assert.assertEquals(sessionDisposedEvent.getEventID(), 2l);
-        Assert.assertEquals(sessionDisposedEvent.getSessionId(), 1l);
-        Assert.assertEquals(sessionCreatedEvent.getTypeEvent(), HistoryEvent.TypeEvent.Session);
+        assertThat(sessionDisposedEvent.getRuleBaseID()).isEqualTo(rulePackageID);
+        assertThat(sessionDisposedEvent.getEventID()).isEqualTo(2);
+        assertThat(sessionDisposedEvent.getSessionId()).isEqualTo(1);
+        assertThat(sessionCreatedEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Session);
     }
 
     @Test
@@ -71,55 +72,55 @@ public class KnowledgeBaseHistoryEventTest {
                 historyEvents.add(newHistoryEvent);
             }
         };
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackageWithListener(historyListener, "fibonacci.drl");
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "fibonacci.drl");
         int rulePackageID = ruleBasePackage.getRuleBaseID();
 
         RuleBaseSession ruleBaseSession1 = ruleBasePackage.createRuleBaseSession();
-        Assert.assertTrue(historyEvents.size() == 5);
-        Assert.assertTrue(historyEvents.get(3) instanceof KnowledgeBaseCreateSessionEvent);
+        assertThat(historyEvents).hasSize(5);
+        assertThat(historyEvents.get(3)).isInstanceOf(KnowledgeBaseCreateSessionEvent.class);
         KnowledgeBaseCreateSessionEvent knowledgeBaseCreateSessionEvent = (KnowledgeBaseCreateSessionEvent) historyEvents.get(3);
-        Assert.assertEquals(knowledgeBaseCreateSessionEvent.getRuleBaseID(), rulePackageID);
-        Assert.assertEquals(knowledgeBaseCreateSessionEvent.getEventID(), 4l);
-        Assert.assertEquals(knowledgeBaseCreateSessionEvent.getSessionId(), 1l);
-        Assert.assertEquals(knowledgeBaseCreateSessionEvent.getTypeEvent(), HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
-        Assert.assertTrue(historyEvents.get(4) instanceof SessionCreatedEvent);
+        assertThat(knowledgeBaseCreateSessionEvent.getRuleBaseID()).isEqualTo(rulePackageID);
+        assertThat(knowledgeBaseCreateSessionEvent.getEventID()).isEqualTo(4);
+        assertThat(knowledgeBaseCreateSessionEvent.getSessionId()).isEqualTo(1);
+        assertThat(knowledgeBaseCreateSessionEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
+        assertThat(historyEvents.get(4)).isInstanceOf(SessionCreatedEvent.class);
         SessionCreatedEvent sessionCreatedEvent = (SessionCreatedEvent) historyEvents.get(4);
-        Assert.assertEquals(sessionCreatedEvent.getRuleBaseID(), rulePackageID);
-        Assert.assertEquals(sessionCreatedEvent.getEventID(), 1l);
-        Assert.assertEquals(sessionCreatedEvent.getSessionId(), 1l);
-        Assert.assertEquals(sessionCreatedEvent.getTypeEvent(), HistoryEvent.TypeEvent.Session);
+        assertThat(sessionCreatedEvent.getRuleBaseID()).isEqualTo(rulePackageID);
+        assertThat(sessionCreatedEvent.getEventID()).isEqualTo(1);
+        assertThat(sessionCreatedEvent.getSessionId()).isEqualTo(1);
+        assertThat(sessionCreatedEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Session);
         RuleBaseSession ruleBaseSession2 = ruleBasePackage.createRuleBaseSession();
-        Assert.assertTrue(historyEvents.size() == 7);
-        Assert.assertTrue(historyEvents.get(5) instanceof KnowledgeBaseCreateSessionEvent);
+        assertThat(historyEvents).hasSize(7);
+        assertThat(historyEvents.get(5)).isInstanceOf(KnowledgeBaseCreateSessionEvent.class);
         KnowledgeBaseCreateSessionEvent knowledgeBaseCreateSessionEvent2 = (KnowledgeBaseCreateSessionEvent) historyEvents.get(5);
-        Assert.assertEquals(knowledgeBaseCreateSessionEvent2.getRuleBaseID(), rulePackageID);
-        Assert.assertEquals(knowledgeBaseCreateSessionEvent2.getEventID(), 5l);
-        Assert.assertEquals(knowledgeBaseCreateSessionEvent2.getSessionId(), 2l);
-        Assert.assertEquals(knowledgeBaseCreateSessionEvent2.getTypeEvent(), HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
-        Assert.assertTrue(historyEvents.get(6) instanceof SessionCreatedEvent);
+        assertThat(knowledgeBaseCreateSessionEvent2.getRuleBaseID()).isEqualTo(rulePackageID);
+        assertThat(knowledgeBaseCreateSessionEvent2.getEventID()).isEqualTo(5);
+        assertThat(knowledgeBaseCreateSessionEvent2.getSessionId()).isEqualTo(2);
+        assertThat(knowledgeBaseCreateSessionEvent2.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
+        assertThat(historyEvents.get(6)).isInstanceOf(SessionCreatedEvent.class);
         SessionCreatedEvent sessionCreatedEvent2 = (SessionCreatedEvent) historyEvents.get(6);
-        Assert.assertEquals(sessionCreatedEvent2.getRuleBaseID(), rulePackageID);
-        Assert.assertEquals(sessionCreatedEvent2.getEventID(), 1l);
-        Assert.assertEquals(sessionCreatedEvent2.getSessionId(), 2l);
-        Assert.assertEquals(sessionCreatedEvent2.getTypeEvent(), HistoryEvent.TypeEvent.Session);
+        assertThat(sessionCreatedEvent2.getRuleBaseID()).isEqualTo(rulePackageID);
+        assertThat(sessionCreatedEvent2.getEventID()).isEqualTo(1);
+        assertThat(sessionCreatedEvent2.getSessionId()).isEqualTo(2);
+        assertThat(sessionCreatedEvent2.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Session);
 
 
         ruleBaseSession1.dispose();
-        Assert.assertTrue(historyEvents.size() == 8);
-        Assert.assertTrue(historyEvents.get(7) instanceof SessionDisposedEvent);
+        assertThat(historyEvents).hasSize(8);
+        assertThat(historyEvents.get(7)).isInstanceOf(SessionDisposedEvent.class);
         SessionDisposedEvent sessionDisposedEvent = (SessionDisposedEvent) historyEvents.get(7);
-        Assert.assertEquals(sessionDisposedEvent.getRuleBaseID(), rulePackageID);
-        Assert.assertEquals(sessionDisposedEvent.getEventID(), 2l);
-        Assert.assertEquals(sessionDisposedEvent.getSessionId(), 1l);
-        Assert.assertEquals(sessionCreatedEvent.getTypeEvent(), HistoryEvent.TypeEvent.Session);
+        assertThat(sessionDisposedEvent.getRuleBaseID()).isEqualTo(rulePackageID);
+        assertThat(sessionDisposedEvent.getEventID()).isEqualTo(2);
+        assertThat(sessionDisposedEvent.getSessionId()).isEqualTo(1);
+        assertThat(sessionCreatedEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Session);
         ruleBaseSession2.dispose();
-        Assert.assertTrue(historyEvents.size() == 9);
-        Assert.assertTrue(historyEvents.get(8) instanceof SessionDisposedEvent);
+        assertThat(historyEvents).hasSize(9);
+        assertThat(historyEvents.get(8)).isInstanceOf(SessionDisposedEvent.class);
         SessionDisposedEvent sessionDisposedEvent2 = (SessionDisposedEvent) historyEvents.get(8);
-        Assert.assertEquals(sessionDisposedEvent2.getRuleBaseID(), rulePackageID);
-        Assert.assertEquals(sessionDisposedEvent2.getEventID(), 2l);
-        Assert.assertEquals(sessionDisposedEvent2.getSessionId(), 2l);
-        Assert.assertEquals(sessionDisposedEvent2.getTypeEvent(), HistoryEvent.TypeEvent.Session);
+        assertThat(sessionDisposedEvent2.getRuleBaseID()).isEqualTo(rulePackageID);
+        assertThat(sessionDisposedEvent2.getEventID()).isEqualTo(2);
+        assertThat(sessionDisposedEvent2.getSessionId()).isEqualTo(2);
+        assertThat(sessionDisposedEvent2.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Session);
     }
 
     @Test
@@ -132,27 +133,27 @@ public class KnowledgeBaseHistoryEventTest {
                 historyEvents.add(newHistoryEvent);
             }
         };
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackageWithListener(historyListener, "fibonacci.drl");
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "fibonacci.drl");
         int rulePackageID = ruleBasePackage.getRuleBaseID();
 
         RuleBaseSession ruleBaseSession1 = ruleBasePackage.createRuleBaseSession();
         Fibonacci fibonacci = new Fibonacci(1);
         ruleBaseSession1.insertObject(fibonacci);
         ruleBaseSession1.fireAllRules();
-        Assert.assertTrue(historyEvents.size() == 11);
-        Assert.assertTrue(historyEvents.get(6) instanceof SessionFireAllRulesBeginEvent);
+        assertThat(historyEvents).hasSize(11);
+        assertThat(historyEvents.get(6)).isInstanceOf(SessionFireAllRulesBeginEvent.class);
         SessionFireAllRulesBeginEvent sessionFireAllRulesBeginEvent = (SessionFireAllRulesBeginEvent) historyEvents.get(6);
-        Assert.assertEquals(sessionFireAllRulesBeginEvent.getRuleBaseID(), rulePackageID);
-        Assert.assertEquals(sessionFireAllRulesBeginEvent.getEventID(), 3l);
-        Assert.assertEquals(sessionFireAllRulesBeginEvent.getSessionId(), 1l);
-        Assert.assertEquals(sessionFireAllRulesBeginEvent.getTypeEvent(), HistoryEvent.TypeEvent.Session);
-        Assert.assertTrue(historyEvents.get(10) instanceof SessionFireAllRulesEndEvent);
+        assertThat(sessionFireAllRulesBeginEvent.getRuleBaseID()).isEqualTo(rulePackageID);
+        assertThat(sessionFireAllRulesBeginEvent.getEventID()).isEqualTo(3);
+        assertThat(sessionFireAllRulesBeginEvent.getSessionId()).isEqualTo(1);
+        assertThat(sessionFireAllRulesBeginEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Session);
+        assertThat(historyEvents.get(10)).isInstanceOf(SessionFireAllRulesEndEvent.class);
         SessionFireAllRulesEndEvent sessionFireAllRulesEndEvent = (SessionFireAllRulesEndEvent) historyEvents.get(10);
-        Assert.assertEquals(sessionFireAllRulesEndEvent.getRuleBaseID(), rulePackageID);
-        Assert.assertEquals(sessionFireAllRulesEndEvent.getEventID(), 7l);
-        Assert.assertEquals(sessionFireAllRulesEndEvent.getSessionId(), 1l);
-        Assert.assertEquals(sessionFireAllRulesEndEvent.getNumberRulesExecuted(), 1l);
-        Assert.assertTrue(sessionFireAllRulesEndEvent.getExecutionTime()> 0l);
-        Assert.assertEquals(sessionFireAllRulesEndEvent.getTypeEvent(), HistoryEvent.TypeEvent.Session);
+        assertThat(sessionFireAllRulesEndEvent.getRuleBaseID()).isEqualTo(rulePackageID);
+        assertThat(sessionFireAllRulesEndEvent.getEventID()).isEqualTo(7);
+        assertThat(sessionFireAllRulesEndEvent.getSessionId()).isEqualTo(1);
+        assertThat(sessionFireAllRulesEndEvent.getNumberRulesExecuted()).isEqualTo(1);
+        assertThat(sessionFireAllRulesEndEvent.getExecutionTime() > 0l);
+        assertThat(sessionFireAllRulesEndEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Session);
     }
 }

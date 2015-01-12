@@ -37,4 +37,5 @@ public interface RuleBasePackage {
 
     public void dispose();
 
+    void createKBase(String... filenames);
 }

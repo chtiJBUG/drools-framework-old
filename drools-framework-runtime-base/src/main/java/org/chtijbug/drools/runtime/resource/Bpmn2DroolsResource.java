@@ -16,9 +16,9 @@
 package org.chtijbug.drools.runtime.resource;
 
 import org.chtijbug.drools.common.file.FileHelper;
-import org.drools.builder.ResourceType;
-import org.drools.io.Resource;
-import org.drools.io.ResourceFactory;
+import org.kie.api.io.Resource;
+import org.kie.api.io.ResourceType;
+import org.kie.internal.io.ResourceFactory;
 
 import java.io.InputStream;
 
@@ -66,5 +66,10 @@ public class Bpmn2DroolsResource implements DroolsResource {
     @Override
     public ResourceType getResourceType() {
         return ResourceType.BPMN2;
+    }
+
+    @Override
+    public InputStream getInputStream() {
+        return null;
     }
 }

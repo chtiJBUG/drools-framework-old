@@ -26,11 +26,11 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class KnowledgeBaseInitialLoadEvent extends KnowledgeBaseEvent {
-    public KnowledgeBaseInitialLoadEvent(int eventID, Date dateEvent, int ruleBaseID) {
+    public KnowledgeBaseInitialLoadEvent(Long eventID, Date dateEvent, int ruleBaseID) {
         super(eventID, dateEvent, ruleBaseID);
     }
 
-    public KnowledgeBaseInitialLoadEvent(int eventID, Date dateEvent, int ruleBaseID, String baseUrl) {
+    public KnowledgeBaseInitialLoadEvent(Long eventID, Date dateEvent, int ruleBaseID, String baseUrl) {
         super(eventID, dateEvent, ruleBaseID);
         WorkbenchResourceFile workbenchResourceFile = new WorkbenchResourceFile(baseUrl, null, null);
         this.getResourceFiles().add(workbenchResourceFile);

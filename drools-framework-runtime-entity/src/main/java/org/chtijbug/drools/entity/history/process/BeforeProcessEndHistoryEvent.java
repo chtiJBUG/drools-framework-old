@@ -29,7 +29,7 @@ public class BeforeProcessEndHistoryEvent extends ProcessHistoryEvent {
     public BeforeProcessEndHistoryEvent() {
     }
 
-    public BeforeProcessEndHistoryEvent(int eventID, DroolsProcessInstanceObject processInstance, int ruleBaseId, int sessionId) {
+    public BeforeProcessEndHistoryEvent(Long eventID, DroolsProcessInstanceObject processInstance, int ruleBaseId, int sessionId) {
         super(eventID, ruleBaseId, sessionId);
         this.processInstance = processInstance;
     }

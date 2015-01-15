@@ -25,7 +25,7 @@ public class InsertedByReflectionFactEndHistoryEvent extends FactHistoryEvent {
     public InsertedByReflectionFactEndHistoryEvent() {
     }
 
-    public InsertedByReflectionFactEndHistoryEvent(int eventID, int ruleBaseId, int sessionId) {
+    public InsertedByReflectionFactEndHistoryEvent(Long eventID, int ruleBaseId, int sessionId) {
         super(eventID, new Date(), ruleBaseId, sessionId);
     }
 

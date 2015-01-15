@@ -10,8 +10,10 @@ import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.junit.*;
 
+import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
 /**
@@ -49,7 +51,7 @@ public class RuleHandlerListenerTest {
 
     @Test
     public void DefaultMaxNumberRUleExecuted() throws Exception {
-        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("infiniteLoop.drl");
+        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("infiniteLoop.drl"));
         session = ruleBasePackage.createRuleBaseSession();
         Fibonacci newObject = new Fibonacci(0);
         session.insertObject(newObject);
@@ -57,14 +59,14 @@ public class RuleHandlerListenerTest {
             session.fireAllRules();
             fail();
         } catch (DroolsChtijbugException e) {
-            Assert.assertEquals(e.getKey(), DroolsChtijbugException.MaxNumberRuleExecutionReached);
+            assertThat(e.getKey()).isEqualTo(DroolsChtijbugException.MaxNumberRuleExecutionReached);
         }
     }
 
 
     @Test
     public void max10tMaxNumberRUleExecuted() throws Exception {
-        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("infiniteLoop.drl");
+        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("infiniteLoop.drl"));
 
         session = ruleBasePackage.createRuleBaseSession(10);
 
@@ -74,47 +76,51 @@ public class RuleHandlerListenerTest {
             session.fireAllRules();
             fail();
         } catch (DroolsChtijbugException e) {
-            Assert.assertEquals(session.getNumberRulesExecuted(), 10);
-            Assert.assertEquals(e.getKey(), DroolsChtijbugException.MaxNumberRuleExecutionReached);
+            assertThat(session.getNumberRulesExecuted()).isEqualTo(10);
+            assertThat(e.getKey()).isEqualTo(DroolsChtijbugException.MaxNumberRuleExecutionReached);
         }
     }
 
     @Test
-    public void RuleEvent() throws Exception {
-        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("rulehandler1.drl");
+    public void RuleEvent() throws DroolsChtijbugException {
+        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("infiniteLoop.drl"));
 
         session = ruleBasePackage.createRuleBaseSession();
 
         Fibonacci newObject = new Fibonacci(0);
         session.insertObject(newObject);
-        session.fireAllRules();
+        try {
+            session.fireAllRules();
+        } catch (DroolsChtijbugException e) {
+            e.printStackTrace();
+        }
         List<HistoryEvent> eventList = session.getHistoryContainer().getListHistoryEvent();
-        Assert.assertEquals(eventList.size(), 4);
+        assertThat(eventList).hasSize(6002);
         /*
             BeforeRuleFiredHistoryEvent
          */
         HistoryEvent event1 = eventList.get(1);
-        Assert.assertEquals(event1 instanceof BeforeRuleFiredHistoryEvent, true);
+        assertThat(event1).isInstanceOf(BeforeRuleFiredHistoryEvent.class);
         BeforeRuleFiredHistoryEvent beforeRuleFiredHistoryEvent = (BeforeRuleFiredHistoryEvent) event1;
-        Assert.assertEquals(beforeRuleFiredHistoryEvent.getRule().getRuleName(), "rule1");
-        Assert.assertEquals(beforeRuleFiredHistoryEvent.getWhenObjects().size(), 1);
-        Assert.assertEquals(beforeRuleFiredHistoryEvent.getWhenObjects().get(0).getFullClassName(), "org.chtijbug.drools.runtime.test.Fibonacci");
-        Assert.assertEquals(beforeRuleFiredHistoryEvent.getWhenObjects().get(0).getListfactObjectAttributes().size(), 2);
+        assertThat(beforeRuleFiredHistoryEvent.getRule().getRuleName()).isEqualTo("infiniteLoop");
+        assertThat(beforeRuleFiredHistoryEvent.getWhenObjects().size()).isEqualTo(1);
+        assertThat(beforeRuleFiredHistoryEvent.getWhenObjects().get(0).getFullClassName()).isEqualTo("org.chtijbug.drools.runtime.test.Fibonacci");
+        assertThat(beforeRuleFiredHistoryEvent.getWhenObjects().get(0).getListfactObjectAttributes()).hasSize(2);
         List<DroolsFactObjectAttribute> droolsFactObjectAttributes = beforeRuleFiredHistoryEvent.getWhenObjects().get(0).getListfactObjectAttributes();
-        Assert.assertEquals(droolsFactObjectAttributes.get(0).getAttributeValue(), "0");
+        assertThat(droolsFactObjectAttributes.get(0).getAttributeValue()).isEqualTo("0");
         /*
            AfterRuleFiredHistoryEvent
         */
         HistoryEvent event3 = eventList.get(3);
-        Assert.assertEquals(event3 instanceof AfterRuleFiredHistoryEvent, true);
+        assertThat(event3).isInstanceOf(AfterRuleFiredHistoryEvent.class);
         AfterRuleFiredHistoryEvent afterRuleFiredHistoryEvent = (AfterRuleFiredHistoryEvent) event3;
-        Assert.assertEquals(afterRuleFiredHistoryEvent.getRule().getRuleName(), "rule1");
+        assertThat(afterRuleFiredHistoryEvent.getRule().getRuleName()).isEqualTo("infiniteLoop");
     }
 
 
     @Test
     public void RuleFLowgroup1() throws Exception {
-        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("ruleflow1.drl", "RuleFlowProcess1.bpmn2");
+        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("ruleflow1.drl", "RuleFlowProcess1.bpmn2"));
 
         session = ruleBasePackage.createRuleBaseSession();
 
@@ -122,7 +128,7 @@ public class RuleHandlerListenerTest {
         session.insertObject(newObject);
         session.startProcess("P1");
         session.fireAllRules();
-        //Assert.assertEquals(session.getNumberRulesExecuted(), 10);
+        //assertThat(session.getNumberRulesExecuted(), 10);
 
     }
 

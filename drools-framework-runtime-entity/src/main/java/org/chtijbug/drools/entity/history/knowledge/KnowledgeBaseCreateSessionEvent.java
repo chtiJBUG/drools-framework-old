@@ -24,7 +24,7 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class KnowledgeBaseCreateSessionEvent extends KnowledgeBaseEvent {
-    public KnowledgeBaseCreateSessionEvent(int eventID, Date dateEvent, int ruleBaseID) {
+    public KnowledgeBaseCreateSessionEvent(Long eventID, Date dateEvent, int ruleBaseID) {
         super(eventID, dateEvent, ruleBaseID);
     }
 

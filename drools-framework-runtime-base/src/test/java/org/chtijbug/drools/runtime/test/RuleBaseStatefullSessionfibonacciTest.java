@@ -11,6 +11,8 @@ import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Arrays;
+
 /**
  * @author Bertrand Gressier @date 12 déc. 2011
  */
@@ -26,7 +28,7 @@ public class RuleBaseStatefullSessionfibonacciTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("fibonacci.drl");
+        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("fibonacci.drl"));
     }
 
     /**

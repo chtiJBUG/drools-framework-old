@@ -11,6 +11,8 @@ import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.junit.*;
 
+import java.util.Arrays;
+
 /**
  * Created by IntelliJ IDEA.
  * Date: 26/09/12
@@ -47,7 +49,7 @@ public class FactHandlerListernerTestTest {
 
     @Test
     public void test1ObjectInserted() throws Exception {
-        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("insert1.drl");
+        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("insert1.drl"));
         session = ruleBasePackage.createRuleBaseSession();
         Fibonacci newObject = new Fibonacci(0);
         session.insertObject(newObject);
@@ -71,7 +73,7 @@ public class FactHandlerListernerTestTest {
 
     @Test
     public void test1ObjectUpdated() throws Exception {
-        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("insert1.drl");
+        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("insert1.drl"));
         session = ruleBasePackage.createRuleBaseSession();
         Fibonacci newObject = new Fibonacci(0);
         session.insertObject(newObject);
@@ -106,7 +108,7 @@ public class FactHandlerListernerTestTest {
 
     @Test
     public void retracted() throws Exception {
-        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("insert1.drl");
+        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("insert1.drl"));
         session = ruleBasePackage.createRuleBaseSession();
         Fibonacci newObject = new Fibonacci(0);
         session.insertObject(newObject);
@@ -131,7 +133,7 @@ public class FactHandlerListernerTestTest {
 
     @Test
     public void test1RuleFired() throws Exception {
-        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("insert1.drl");
+        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("insert1.drl"));
         session = ruleBasePackage.createRuleBaseSession();
         session.fireAllRules();
         Assert.assertEquals(session.listRules().size(), 1);

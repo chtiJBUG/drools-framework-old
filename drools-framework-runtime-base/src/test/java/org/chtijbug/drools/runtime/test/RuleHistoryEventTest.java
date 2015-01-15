@@ -15,6 +15,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,7 +37,7 @@ public class RuleHistoryEventTest {
                 historyEvents.add(newHistoryEvent);
             }
         };
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "fibonacci.drl");
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList("fibonacci.drl"));
         int rulePackageID = ruleBasePackage.getRuleBaseID();
 
         RuleBaseSession ruleBaseSession1 = ruleBasePackage.createRuleBaseSession();
@@ -47,7 +48,7 @@ public class RuleHistoryEventTest {
         Assert.assertTrue(historyEvents.get(7) instanceof BeforeRuleFiredHistoryEvent);
         BeforeRuleFiredHistoryEvent beforeRuleFiredHistoryEvent = (BeforeRuleFiredHistoryEvent) historyEvents.get(7);
         assertThat(beforeRuleFiredHistoryEvent.getRuleBaseID()).isEqualTo(rulePackageID);
-        assertThat(beforeRuleFiredHistoryEvent.getEventID()).isEqualTo(4);
+        assertThat(beforeRuleFiredHistoryEvent.getEventID()).isEqualTo(12284);
         assertThat(beforeRuleFiredHistoryEvent.getSessionId()).isEqualTo(1);
         assertThat(beforeRuleFiredHistoryEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Rule);
         DroolsRuleObject droolsRuleObject = beforeRuleFiredHistoryEvent.getRule();
@@ -57,7 +58,7 @@ public class RuleHistoryEventTest {
         Assert.assertTrue(historyEvents.get(9) instanceof AfterRuleFiredHistoryEvent);
         AfterRuleFiredHistoryEvent afterRuleFiredHistoryEvent = (AfterRuleFiredHistoryEvent) historyEvents.get(9);
         assertThat(afterRuleFiredHistoryEvent.getRuleBaseID()).isEqualTo(rulePackageID);
-        assertThat(afterRuleFiredHistoryEvent.getEventID()).isEqualTo(6);
+        assertThat(afterRuleFiredHistoryEvent.getEventID()).isEqualTo(12286);
         assertThat(afterRuleFiredHistoryEvent.getSessionId()).isEqualTo(1);
         assertThat(afterRuleFiredHistoryEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Rule);
         DroolsRuleObject droolsRuleObject2 = afterRuleFiredHistoryEvent.getRule();
@@ -76,7 +77,7 @@ public class RuleHistoryEventTest {
                 historyEvents.add(newHistoryEvent);
             }
         };
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "ruleflow2.drl", "RuleFlowProcess2.bpmn2");
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList("ruleflow2.drl", "RuleFlowProcess2.bpmn2"));
         int rulePackageID = ruleBasePackage.getRuleBaseID();
 
         RuleBaseSession ruleBaseSession1 = ruleBasePackage.createRuleBaseSession();
@@ -88,7 +89,7 @@ public class RuleHistoryEventTest {
         assertThat(historyEvents.get(12)).isInstanceOfAny(AfterRuleFlowActivatedHistoryEvent.class);
         AfterRuleFlowActivatedHistoryEvent afterRuleFlowActivatedHistoryEvent = (AfterRuleFlowActivatedHistoryEvent) historyEvents.get(12);
         assertThat(afterRuleFlowActivatedHistoryEvent.getRuleBaseID()).isEqualTo(rulePackageID);
-        assertThat(afterRuleFlowActivatedHistoryEvent.getEventID()).isEqualTo(8);
+        assertThat(afterRuleFlowActivatedHistoryEvent.getEventID()).isEqualTo(12248);
         assertThat(afterRuleFlowActivatedHistoryEvent.getSessionId()).isEqualTo(1);
         assertThat(afterRuleFlowActivatedHistoryEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.RuleFlowGroup);
         assertThat(afterRuleFlowActivatedHistoryEvent.getDroolsRuleFlowGroupObject().getName()).isEqualTo("Group1");
@@ -96,7 +97,7 @@ public class RuleHistoryEventTest {
         assertThat(historyEvents.get(21)).isInstanceOfAny(AfterRuleFiredHistoryEvent.class);
         AfterRuleFiredHistoryEvent afterRuleFiredHistoryEvent = (AfterRuleFiredHistoryEvent) historyEvents.get(21);
         assertThat(afterRuleFiredHistoryEvent.getRuleBaseID()).isEqualTo(rulePackageID);
-        assertThat(afterRuleFiredHistoryEvent.getEventID()).isEqualTo(17);
+        assertThat(afterRuleFiredHistoryEvent.getEventID()).isEqualTo(12257);
         assertThat(afterRuleFiredHistoryEvent.getSessionId()).isEqualTo(1);
         assertThat(afterRuleFiredHistoryEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Rule);
         DroolsRuleObject droolsRuleObject2 = afterRuleFiredHistoryEvent.getRule();
@@ -108,7 +109,7 @@ public class RuleHistoryEventTest {
         assertThat(historyEvents.get(39)).isInstanceOf(AfterRuleFlowDeactivatedHistoryEvent.class);
         AfterRuleFlowDeactivatedHistoryEvent afterRuleFlowDeactivatedHistoryEvent = (AfterRuleFlowDeactivatedHistoryEvent) historyEvents.get(39);
         assertThat(afterRuleFlowDeactivatedHistoryEvent.getRuleBaseID()).isEqualTo(rulePackageID);
-        assertThat(afterRuleFlowDeactivatedHistoryEvent.getEventID()).isEqualTo(35);
+        assertThat(afterRuleFlowDeactivatedHistoryEvent.getEventID()).isEqualTo(12275);
         assertThat(afterRuleFlowDeactivatedHistoryEvent.getSessionId()).isEqualTo(1);
         assertThat(afterRuleFlowDeactivatedHistoryEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.RuleFlowGroup);
         assertThat(afterRuleFlowDeactivatedHistoryEvent.getDroolsRuleFlowGroupObject().getName()).isEqualTo("Group2");

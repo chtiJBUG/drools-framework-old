@@ -12,6 +12,7 @@ import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +34,7 @@ public class FactHistoryEventTest {
                 historyEvents.add(newHistoryEvent);
             }
         };
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "fibonacci.drl");
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList("fibonacci.drl"));
         int rulePackageID = ruleBasePackage.getRuleBaseID();
         RuleBaseSession ruleBaseSession = ruleBasePackage.createRuleBaseSession();
         Fibonacci fibonacci = new Fibonacci(1);
@@ -42,7 +43,7 @@ public class FactHistoryEventTest {
         assertThat(historyEvents.get(5)).isInstanceOfAny(InsertedFactHistoryEvent.class);
         InsertedFactHistoryEvent insertedFactHistoryEvent = (InsertedFactHistoryEvent) historyEvents.get(5);
         assertThat(insertedFactHistoryEvent.getRuleBaseID()).isEqualTo(rulePackageID);
-        assertThat(insertedFactHistoryEvent.getEventID()).isEqualTo(2);
+        assertThat(insertedFactHistoryEvent.getEventID()).isEqualTo(25);
         assertThat(insertedFactHistoryEvent.getSessionId()).isEqualTo(1);
         assertThat(insertedFactHistoryEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Fact);
         DroolsFactObject droolsFactObject = insertedFactHistoryEvent.getInsertedObject();
@@ -64,7 +65,7 @@ public class FactHistoryEventTest {
         assertThat(historyEvents.get(6) instanceof UpdatedFactHistoryEvent);
         UpdatedFactHistoryEvent updatedFactHistoryEvent = (UpdatedFactHistoryEvent) historyEvents.get(6);
         assertThat(updatedFactHistoryEvent.getRuleBaseID()).isEqualTo(rulePackageID);
-        assertThat(updatedFactHistoryEvent.getEventID()).isEqualTo(3);
+        assertThat(updatedFactHistoryEvent.getEventID()).isEqualTo(26);
         assertThat(updatedFactHistoryEvent.getSessionId()).isEqualTo(1);
         assertThat(updatedFactHistoryEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Fact);
         DroolsFactObject oldDroolsFactObject = updatedFactHistoryEvent.getObjectOldValue();
@@ -98,7 +99,7 @@ public class FactHistoryEventTest {
         assertThat(historyEvents.get(7)).isInstanceOf(DeletedFactHistoryEvent.class);
         DeletedFactHistoryEvent deletedFactHistoryEvent = (DeletedFactHistoryEvent) historyEvents.get(7);
         assertThat(deletedFactHistoryEvent.getRuleBaseID()).isEqualTo(rulePackageID);
-        assertThat(deletedFactHistoryEvent.getEventID()).isEqualTo(4);
+        assertThat(deletedFactHistoryEvent.getEventID()).isEqualTo(27);
         assertThat(deletedFactHistoryEvent.getSessionId()).isEqualTo(1);
         assertThat(deletedFactHistoryEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Fact);
 
@@ -127,7 +128,7 @@ public class FactHistoryEventTest {
                 historyEvents.add(newHistoryEvent);
             }
         };
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "fibonacci.drl");
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList("fibonacci.drl"));
         int rulePackageID = ruleBasePackage.getRuleBaseID();
 
         RuleBaseSession ruleBaseSession = ruleBasePackage.createRuleBaseSession();
@@ -137,13 +138,13 @@ public class FactHistoryEventTest {
         assertThat(historyEvents.get(5)).isInstanceOf(InsertedByReflectionFactStartHistoryEvent.class);
         InsertedByReflectionFactStartHistoryEvent insertedByReflectionFactHistoryEvent = (InsertedByReflectionFactStartHistoryEvent) historyEvents.get(5);
         assertThat(insertedByReflectionFactHistoryEvent.getRuleBaseID()).isEqualTo(rulePackageID);
-        assertThat(insertedByReflectionFactHistoryEvent.getEventID()).isEqualTo(2);
+        assertThat(insertedByReflectionFactHistoryEvent.getEventID()).isEqualTo(17);
         assertThat(insertedByReflectionFactHistoryEvent.getSessionId()).isEqualTo(1);
         assertThat(insertedByReflectionFactHistoryEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Fact);
         assertThat(historyEvents.get(6)).isInstanceOf(InsertedFactHistoryEvent.class);
         InsertedFactHistoryEvent insertedFactHistoryEvent = (InsertedFactHistoryEvent) historyEvents.get(6);
         assertThat(insertedFactHistoryEvent.getRuleBaseID()).isEqualTo(rulePackageID);
-        assertThat(insertedFactHistoryEvent.getEventID()).isEqualTo(3);
+        assertThat(insertedFactHistoryEvent.getEventID()).isEqualTo(18);
         assertThat(insertedFactHistoryEvent.getSessionId()).isEqualTo(1);
         assertThat(insertedFactHistoryEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Fact);
         DroolsFactObject droolsFactObject = insertedFactHistoryEvent.getInsertedObject();
@@ -163,7 +164,7 @@ public class FactHistoryEventTest {
         assertThat(historyEvents.get(7)).isInstanceOf(InsertedByReflectionFactEndHistoryEvent.class);
         InsertedByReflectionFactEndHistoryEvent insertedByReflectionFactEndHistoryEvent = (InsertedByReflectionFactEndHistoryEvent) historyEvents.get(7);
         assertThat(insertedByReflectionFactEndHistoryEvent.getRuleBaseID()).isEqualTo(rulePackageID);
-        assertThat(insertedByReflectionFactEndHistoryEvent.getEventID()).isEqualTo(4);
+        assertThat(insertedByReflectionFactEndHistoryEvent.getEventID()).isEqualTo(19);
         assertThat(insertedByReflectionFactEndHistoryEvent.getSessionId()).isEqualTo(1);
         assertThat(insertedByReflectionFactEndHistoryEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.Fact);
 

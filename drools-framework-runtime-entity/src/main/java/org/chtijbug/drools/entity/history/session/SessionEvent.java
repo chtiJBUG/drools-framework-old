@@ -27,7 +27,7 @@ import java.util.Date;
  */
 public class SessionEvent extends HistoryEvent {
 
-    public SessionEvent(int eventID, int ruleBaseId, int sessionId) {
+    public SessionEvent(Long eventID, int ruleBaseId, int sessionId) {
 
         super(eventID, new Date(), TypeEvent.Session);
         this.setRuleBaseID(ruleBaseId);

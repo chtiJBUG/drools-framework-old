@@ -12,6 +12,7 @@ import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,19 +34,19 @@ public class RuleBaseHistoryEventTest {
                 historyEvents.add(newHistoryEvent);
             }
         };
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "fibonacci.drl");
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList("fibonacci.drl"));
         int rulePackageID = ruleBasePackage.getRuleBaseID();
 
         assertThat(historyEvents).hasSize(3);
         assertThat(historyEvents.get(0)).isInstanceOf(KnowledgeBaseCreatedEvent.class);
         KnowledgeBaseCreatedEvent knowledgeBaseCreatedEvent = (KnowledgeBaseCreatedEvent) historyEvents.get(0);
         assertThat(knowledgeBaseCreatedEvent.getRuleBaseID()).isEqualTo(rulePackageID);
-        assertThat(knowledgeBaseCreatedEvent.getEventID()).isEqualTo(1);
+        assertThat(knowledgeBaseCreatedEvent.getEventID()).isEqualTo(54);
         assertThat(knowledgeBaseCreatedEvent.getSessionId()).isEqualTo(0);
         assertThat(knowledgeBaseCreatedEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
         assertThat(historyEvents.get(2)).isInstanceOf(KnowledgeBaseAddResourceEvent.class);
         KnowledgeBaseAddResourceEvent knowledgeBaseAddRessourceEvent = (KnowledgeBaseAddResourceEvent) historyEvents.get(2);
-        assertThat(knowledgeBaseAddRessourceEvent.getEventID()).isEqualTo(3);
+        assertThat(knowledgeBaseAddRessourceEvent.getEventID()).isEqualTo(56);
         assertThat(knowledgeBaseAddRessourceEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
         assertThat(knowledgeBaseAddRessourceEvent.getResourceFiles()).hasSize(1);
         assertThat(knowledgeBaseAddRessourceEvent.getResourceFiles().get(0)).isInstanceOf(DrlResourceFile.class);
@@ -53,7 +54,7 @@ public class RuleBaseHistoryEventTest {
         assertThat(drlRessourceFile.getFileName()).isEqualTo("fibonacci.drl");
         assertThat(historyEvents.get(1)).isInstanceOf(KnowledgeBaseInitialLoadEvent.class);
         KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = (KnowledgeBaseInitialLoadEvent) historyEvents.get(1);
-        assertThat(knowledgeBaseInitialLoadEvent.getEventID()).isEqualTo(2);
+        assertThat(knowledgeBaseInitialLoadEvent.getEventID()).isEqualTo(55);
         assertThat(knowledgeBaseInitialLoadEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
         /** ruleBasePackage.RecreateKBaseWithNewRessources(DrlDroolsResource.createClassPathResource("fibonacciBis.drl"));
         assertThat(historyEvents.size() == 6);

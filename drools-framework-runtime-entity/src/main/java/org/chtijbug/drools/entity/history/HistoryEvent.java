@@ -30,7 +30,7 @@ public class HistoryEvent implements Serializable {
      */
     private static final long serialVersionUID = -6640538290066213804L;
 
-    private int eventID;
+    private Long eventID;
     private int ruleBaseID;
     private int sessionId;
     private DroolsChtijbugException droolsChtijbugException;
@@ -49,7 +49,7 @@ public class HistoryEvent implements Serializable {
     protected Date dateEvent;
     protected TypeEvent typeEvent;
 
-    public HistoryEvent(int eventID, Date dateEvent, TypeEvent typeEvent) {
+    public HistoryEvent(Long eventID, Date dateEvent, TypeEvent typeEvent) {
 
         this.eventID = eventID;
         this.dateEvent = dateEvent;
@@ -81,7 +81,7 @@ public class HistoryEvent implements Serializable {
         return typeEvent;
     }
 
-    public int getEventID() {
+    public Long getEventID() {
         return eventID;
     }
 
@@ -102,7 +102,7 @@ public class HistoryEvent implements Serializable {
     }
 
 
-    public void setEventID(int eventID) {
+    public void setEventID(Long eventID) {
         this.eventID = eventID;
     }
 }

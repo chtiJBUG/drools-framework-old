@@ -42,6 +42,8 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Method;
 import java.util.*;
 
+import static org.chtijbug.drools.entity.history.EventCounter.Next;
+
 /**
  * @author nheron
  */
@@ -76,7 +78,6 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     private XStream xstream = new XStream(new JettisonMappedXmlDriver());
     private int ruleBaseID;
     private int sessionId;
-    private int eventCounter;
 
     private HistoryListener historyListener;
 
@@ -100,7 +101,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         knowledgeSession.addEventListener(processHandlerListener);
         this.historyListener = historyListener;
         if (this.historyListener != null) {
-            SessionCreatedEvent sessionCreatedEvent = new SessionCreatedEvent(this.getNextEventCounter(), this.ruleBaseID, this.sessionId);
+            SessionCreatedEvent sessionCreatedEvent = new SessionCreatedEvent(Next(), this.ruleBaseID, this.sessionId);
             this.addHistoryElement(sessionCreatedEvent);
         }
 
@@ -285,7 +286,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         if (this.historyListener != null) {
 
             try {
-                SessionDisposedEvent sessionDisposedEvent = new SessionDisposedEvent(this.getNextEventCounter(), this.ruleBaseID, this.sessionId);
+                SessionDisposedEvent sessionDisposedEvent = new SessionDisposedEvent(Next(), this.ruleBaseID, this.sessionId);
                 this.addHistoryElement(sessionDisposedEvent);
             } catch (Exception e) {
                 logger.error("Exception in calling historyEvent", e);
@@ -309,7 +310,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         }
         if (this.historyListener != null) {
             DroolsFactObject topDroolsObject = DroolsFactObjectFactory.createFactObject(newObject);
-            InsertedByReflectionFactStartHistoryEvent insertedByReflectionFactStartHistoryEvent = new InsertedByReflectionFactStartHistoryEvent(this.getNextEventCounter(), topDroolsObject, this.ruleBaseID, this.sessionId);
+            InsertedByReflectionFactStartHistoryEvent insertedByReflectionFactStartHistoryEvent = new InsertedByReflectionFactStartHistoryEvent(Next(), topDroolsObject, this.ruleBaseID, this.sessionId);
             this.addHistoryElement(insertedByReflectionFactStartHistoryEvent);
         }
         //____ First insert the root object
@@ -339,7 +340,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             }
         }
         if (this.historyListener != null) {
-            InsertedByReflectionFactEndHistoryEvent insertedByReflectionFactEndHistoryEvent = new InsertedByReflectionFactEndHistoryEvent(this.getNextEventCounter(), this.ruleBaseID, this.sessionId);
+            InsertedByReflectionFactEndHistoryEvent insertedByReflectionFactEndHistoryEvent = new InsertedByReflectionFactEndHistoryEvent(Next(), this.ruleBaseID, this.sessionId);
             this.addHistoryElement(insertedByReflectionFactEndHistoryEvent);
         }
     }
@@ -378,7 +379,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         }
 
         if (this.historyListener != null) {
-            SessionFireAllRulesAndStartProcess sessionFireAllRulesAndStartProcess = new SessionFireAllRulesAndStartProcess(this.getNextEventCounter(), this.ruleBaseID, this.sessionId, inputDroolsObject, outputDroolsObject);
+            SessionFireAllRulesAndStartProcess sessionFireAllRulesAndStartProcess = new SessionFireAllRulesAndStartProcess(Next(), this.ruleBaseID, this.sessionId, inputDroolsObject, outputDroolsObject);
             this.addHistoryElement(sessionFireAllRulesAndStartProcess);
         }
         return inputObject;
@@ -387,7 +388,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     @Override
     public void fireAllRules() throws DroolsChtijbugException {
         if (this.historyListener != null) {
-            SessionFireAllRulesBeginEvent sessionFireAllRulesBeginEvent = new SessionFireAllRulesBeginEvent(this.getNextEventCounter(), this.ruleBaseID, this.sessionId);
+            SessionFireAllRulesBeginEvent sessionFireAllRulesBeginEvent = new SessionFireAllRulesBeginEvent(Next(), this.ruleBaseID, this.sessionId);
             this.addHistoryElement(sessionFireAllRulesBeginEvent);
         }
         long startTime = System.currentTimeMillis();
@@ -402,13 +403,13 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         long afterNumberRules = ruleHandlerListener.getNbRuleFired();
         if (ruleHandlerListener.isMaxNumerExecutedRulesReached()) {
             if (this.historyListener != null) {
-                SessionFireAllRulesMaxNumberReachedEvent sessionFireAllRulesMaxNumberReachedEvent = new SessionFireAllRulesMaxNumberReachedEvent(this.getNextEventCounter(), ruleHandlerListener.getNbRuleFired(), maxNumberRuleToExecute, this.ruleBaseID, this.sessionId);
+                SessionFireAllRulesMaxNumberReachedEvent sessionFireAllRulesMaxNumberReachedEvent = new SessionFireAllRulesMaxNumberReachedEvent(Next(), ruleHandlerListener.getNbRuleFired(), maxNumberRuleToExecute, this.ruleBaseID, this.sessionId);
                 this.addHistoryElement(sessionFireAllRulesMaxNumberReachedEvent);
             }
             throw new DroolsChtijbugException(DroolsChtijbugException.MaxNumberRuleExecutionReached, "nbRulesExecuted" + afterNumberRules + " and MaxNumberRules for the session is set to " + maxNumberRuleToExecute, null);
         }
         if (this.historyListener != null) {
-            SessionFireAllRulesEndEvent sessionFireAllRulesEndEvent = new SessionFireAllRulesEndEvent(this.getNextEventCounter(), this.ruleBaseID, this.sessionId, stopTime - startTime, afterNumberRules - beforeNumberRules);
+            SessionFireAllRulesEndEvent sessionFireAllRulesEndEvent = new SessionFireAllRulesEndEvent(Next(), this.ruleBaseID, this.sessionId, stopTime - startTime, afterNumberRules - beforeNumberRules);
             this.addHistoryElement(sessionFireAllRulesEndEvent);
         }
     }
@@ -417,7 +418,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     public void startProcess(String processName) {
         if (this.historyListener != null) {
             try {
-                SessionStartProcessBeginEvent sessionStartProcessBeginEvent = new SessionStartProcessBeginEvent(this.getNextEventCounter(), processName, this.ruleBaseID, this.sessionId);
+                SessionStartProcessBeginEvent sessionStartProcessBeginEvent = new SessionStartProcessBeginEvent(Next(), processName, this.ruleBaseID, this.sessionId);
                 this.addHistoryElement(sessionStartProcessBeginEvent);
             } catch (Exception e) {
                 logger.error("Exception in calling historyEvent", e);
@@ -429,7 +430,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
         if (this.historyListener != null) {
             try {
-                SessionStartProcessEndEvent sessionStartProcessEndEvent = new SessionStartProcessEndEvent(this.getNextEventCounter(), processName, this.ruleBaseID, this.sessionId, processInstance.getProcessId());
+                SessionStartProcessEndEvent sessionStartProcessEndEvent = new SessionStartProcessEndEvent(Next(), processName, this.ruleBaseID, this.sessionId, processInstance.getProcessId());
                 this.addHistoryElement(sessionStartProcessEndEvent);
             } catch (Exception e) {
                 logger.error("Exception in calling historyEvent", e);
@@ -450,11 +451,6 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             result = this.ruleHandlerListener.getNbRuleFired();
         }
         return result;
-    }
-
-    public int getNextEventCounter() {
-        this.eventCounter++;
-        return this.eventCounter;
     }
 
     public void addHistoryElement(HistoryEvent newHistoryElement) {

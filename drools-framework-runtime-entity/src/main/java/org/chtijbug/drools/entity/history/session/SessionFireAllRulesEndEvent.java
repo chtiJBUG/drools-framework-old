@@ -25,7 +25,7 @@ public class SessionFireAllRulesEndEvent extends SessionEvent {
     private long executionTime;
     private long numberRulesExecuted;
 
-    public SessionFireAllRulesEndEvent(int eventID, int ruleBaseId, int sessionId, long executionTime, long numberRulesExecuted) {
+    public SessionFireAllRulesEndEvent(Long eventID, int ruleBaseId, int sessionId, long executionTime, long numberRulesExecuted) {
         super(eventID, ruleBaseId, sessionId);
         this.executionTime = executionTime;
         this.numberRulesExecuted = numberRulesExecuted;

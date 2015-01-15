@@ -33,7 +33,7 @@ public class AfterRuleFiredHistoryEvent extends RuleHistoryEvent {
     public AfterRuleFiredHistoryEvent() {
     }
 
-    public AfterRuleFiredHistoryEvent(int eventID, int ruleInstanceID, DroolsRuleObject rule, int ruleBaseId, int sessionId) {
+    public AfterRuleFiredHistoryEvent(Long eventID, int ruleInstanceID, DroolsRuleObject rule, int ruleBaseId, int sessionId) {
 
         super(eventID, ruleInstanceID, rule, ruleBaseId, sessionId);
     }

@@ -9,6 +9,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.*;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
@@ -28,7 +29,7 @@ public class RuleBasePackageTestCase {
 
         try {
             XStream xstream = new XStream();
-            RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("fibonacci.drl");
+            RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("fibonacci.drl"));
             String pkgXML = xstream.toXML(ruleBasePackage);
             FileWriter fstream = new FileWriter("/tmp/chtijbug-rule-cache");
             BufferedWriter out = new BufferedWriter(fstream);

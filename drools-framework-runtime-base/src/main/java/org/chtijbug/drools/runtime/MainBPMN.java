@@ -15,10 +15,12 @@
  */
 package org.chtijbug.drools.runtime;
 
+import java.util.Arrays;
+
 public class MainBPMN {
 
     public static void main(String args[]) throws Exception {
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("ruleflow2.drl", "RuleFlowProcess2.bpmn2");
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("ruleflow2.drl", "RuleFlowProcess2.bpmn2"));
         try {
             for (int i = 0; i < 100000; i++) {
                 RuleBaseSession session1 = ruleBasePackage.createRuleBaseSession();

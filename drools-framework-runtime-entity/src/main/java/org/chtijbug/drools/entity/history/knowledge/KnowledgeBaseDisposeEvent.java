@@ -30,7 +30,7 @@ public class KnowledgeBaseDisposeEvent extends KnowledgeBaseEvent implements Ser
 
     }
 
-    public KnowledgeBaseDisposeEvent(int eventID, Date dateEvent, int ruleBaseID) {
+    public KnowledgeBaseDisposeEvent(Long eventID, Date dateEvent, int ruleBaseID) {
         super(eventID, dateEvent, ruleBaseID);
     }
 

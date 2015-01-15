@@ -22,6 +22,8 @@ import org.chtijbug.drools.runtime.resource.WorkbenchResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 /**
  * @author nheron
  */
@@ -34,26 +36,27 @@ public class RuleBaseBuilder {
 
     public static RuleBasePackage createGuvnorRuleBasePackageWithListener(HistoryListener historyListener, String guvnor_url, Artifact artifact, String guvnor_username, String guvnor_password) throws DroolsChtijbugException {
         logger.debug(">>createGuvnorRuleBasePackage", guvnor_url, artifact, guvnor_username, guvnor_password);
-        RuleBasePackage newRuleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener);
+        // TODO to be refactored later on
+        //RuleBasePackage newRuleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener);
         try {
             WorkbenchResource gdr = new WorkbenchResource(guvnor_url, artifact, guvnor_username, guvnor_password);
            // TODO
            // newRuleBasePackage.createKBase(gdr);
             //_____ Returning the result
-            return newRuleBasePackage;
+            //return newRuleBasePackage;
         } finally {
-            logger.debug("<<createGuvnorRuleBasePackage", newRuleBasePackage);
+            //logger.debug("<<createGuvnorRuleBasePackage", newRuleBasePackage);
         }
+        return null;
     }
 
-    public static RuleBasePackage createPackageBasePackage(String... fileNames) throws DroolsChtijbugException {
-        return RuleBaseBuilder.newRuleBasePackage(null, fileNames);
+    public static RuleBasePackage createPackageBasePackage(String modulePackage, String moduleName, List<String> fileNames) throws DroolsChtijbugException {
+        return RuleBaseBuilder.newRuleBasePackage(null, modulePackage, moduleName, fileNames);
     }
 
-    public static RuleBasePackage newRuleBasePackage(HistoryListener historyListener, String... filenames) throws DroolsChtijbugException {
+    public static RuleBasePackage newRuleBasePackage(HistoryListener historyListener, String modulePackage, String moduleName, List<String> filenames) throws DroolsChtijbugException {
         logger.debug(">>createPackageBasePackage");
-        RuleBasePackage ruleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener);
-
+        RuleBasePackage ruleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener, modulePackage, moduleName);
         try {
             ruleBasePackage.createKBase(filenames);
             //_____ Returning the result

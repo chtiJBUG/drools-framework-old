@@ -19,6 +19,7 @@ import org.chtijbug.drools.entity.DroolsJbpmVariableObject;
 import org.chtijbug.drools.entity.DroolsNodeInstanceObject;
 import org.chtijbug.drools.entity.DroolsProcessInstanceObject;
 import org.chtijbug.drools.entity.DroolsProcessObject;
+import org.chtijbug.drools.entity.history.EventCounter;
 import org.chtijbug.drools.entity.history.process.*;
 import org.kie.api.event.process.*;
 import org.slf4j.Logger;
@@ -46,7 +47,7 @@ public class ProcessHandlerListener implements ProcessEventListener {
         logger.debug(">>beforeProcessStarted", event);
         try {
             DroolsProcessInstanceObject droolsProcessInstanceObject = ruleBaseSession.getDroolsProcessInstanceObject(event.getProcessInstance());
-            BeforeProcessStartHistoryEvent beforeProcessStart = new BeforeProcessStartHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsProcessInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
+            BeforeProcessStartHistoryEvent beforeProcessStart = new BeforeProcessStartHistoryEvent(EventCounter.Next(), droolsProcessInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             ruleBaseSession.addHistoryElement(beforeProcessStart);
         } finally {
             logger.debug("<<beforeProcessStarted");
@@ -60,7 +61,7 @@ public class ProcessHandlerListener implements ProcessEventListener {
         try {
 
             DroolsProcessInstanceObject droolsProcessInstanceObject = ruleBaseSession.getDroolsProcessInstanceObject(event.getProcessInstance());
-            AfterProcessStartHistoryEvent afterProcessStart = new AfterProcessStartHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsProcessInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
+            AfterProcessStartHistoryEvent afterProcessStart = new AfterProcessStartHistoryEvent(EventCounter.Next(), droolsProcessInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             ruleBaseSession.addHistoryElement(afterProcessStart);
         } finally {
             logger.debug("<<afterProcessStarted");
@@ -72,7 +73,7 @@ public class ProcessHandlerListener implements ProcessEventListener {
         logger.debug(">>beforeProcessCompleted", event);
         try {
             DroolsProcessInstanceObject droolsProcessInstanceObject = ruleBaseSession.getDroolsProcessInstanceObject(event.getProcessInstance());
-            BeforeProcessEndHistoryEvent beforeProcessEndHistoryEvent = new BeforeProcessEndHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsProcessInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
+            BeforeProcessEndHistoryEvent beforeProcessEndHistoryEvent = new BeforeProcessEndHistoryEvent(EventCounter.Next(), droolsProcessInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             ruleBaseSession.addHistoryElement(beforeProcessEndHistoryEvent);
         } finally {
             logger.debug("<<beforeProcessCompleted");
@@ -84,7 +85,7 @@ public class ProcessHandlerListener implements ProcessEventListener {
         logger.debug(">>afterProcessCompleted", event);
         try {
             DroolsProcessInstanceObject droolsProcessInstanceObject = ruleBaseSession.getDroolsProcessInstanceObject(event.getProcessInstance());
-            AfterProcessEndHistoryEvent AfterProcessStart = new AfterProcessEndHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsProcessInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
+            AfterProcessEndHistoryEvent AfterProcessStart = new AfterProcessEndHistoryEvent(EventCounter.Next(), droolsProcessInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             ruleBaseSession.addHistoryElement(AfterProcessStart);
         } finally {
             logger.debug("<<afterProcessCompleted");
@@ -96,7 +97,7 @@ public class ProcessHandlerListener implements ProcessEventListener {
         logger.debug(">>beforeNodeTriggered", event);
         try {
             DroolsNodeInstanceObject droolsNodeInstanceObject = ruleBaseSession.getDroolsNodeInstanceObject(event.getNodeInstance());
-            BeforeNodeInstanceTriggeredHistoryEvent beforeNodeInstanceTriggeredHistoryEvent = new BeforeNodeInstanceTriggeredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsNodeInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
+            BeforeNodeInstanceTriggeredHistoryEvent beforeNodeInstanceTriggeredHistoryEvent = new BeforeNodeInstanceTriggeredHistoryEvent(EventCounter.Next(), droolsNodeInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             DroolsProcessInstanceObject droolsProcessInstanceObject = ruleBaseSession.getDroolsProcessInstanceObject(event.getProcessInstance());
             beforeNodeInstanceTriggeredHistoryEvent.setProcessInstance(droolsProcessInstanceObject);
             ruleBaseSession.addHistoryElement(beforeNodeInstanceTriggeredHistoryEvent);
@@ -110,7 +111,7 @@ public class ProcessHandlerListener implements ProcessEventListener {
         logger.debug(">>afterNodeTriggered", event);
         try {
             DroolsNodeInstanceObject droolsNodeInstanceObject = ruleBaseSession.getDroolsNodeInstanceObject(event.getNodeInstance());
-            AfterNodeInstanceTriggeredHistoryEvent afterNodeInstanceTriggeredHistoryEvent = new AfterNodeInstanceTriggeredHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsNodeInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
+            AfterNodeInstanceTriggeredHistoryEvent afterNodeInstanceTriggeredHistoryEvent = new AfterNodeInstanceTriggeredHistoryEvent(EventCounter.Next(), droolsNodeInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             DroolsProcessInstanceObject droolsProcessInstanceObject = ruleBaseSession.getDroolsProcessInstanceObject(event.getProcessInstance());
             afterNodeInstanceTriggeredHistoryEvent.setProcessInstance(droolsProcessInstanceObject);
             ruleBaseSession.addHistoryElement(afterNodeInstanceTriggeredHistoryEvent);
@@ -125,7 +126,7 @@ public class ProcessHandlerListener implements ProcessEventListener {
         try {
 
             DroolsNodeInstanceObject droolsNodeInstanceObject = ruleBaseSession.getDroolsNodeInstanceObject(event.getNodeInstance());
-            BeforeNodeLeftHistoryEvent afterHistoryEvent = new BeforeNodeLeftHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsNodeInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
+            BeforeNodeLeftHistoryEvent afterHistoryEvent = new BeforeNodeLeftHistoryEvent(EventCounter.Next(), droolsNodeInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             DroolsProcessInstanceObject droolsProcessInstanceObject = ruleBaseSession.getDroolsProcessInstanceObject(event.getProcessInstance());
             afterHistoryEvent.setProcessInstance(droolsProcessInstanceObject);
             ruleBaseSession.addHistoryElement(afterHistoryEvent);
@@ -140,7 +141,7 @@ public class ProcessHandlerListener implements ProcessEventListener {
         try {
 
             DroolsNodeInstanceObject droolsNodeInstanceObject = ruleBaseSession.getDroolsNodeInstanceObject(event.getNodeInstance());
-            AfterNodeLeftHistoryEvent afterHistoryEvent = new AfterNodeLeftHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsNodeInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
+            AfterNodeLeftHistoryEvent afterHistoryEvent = new AfterNodeLeftHistoryEvent(EventCounter.Next(), droolsNodeInstanceObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
             DroolsProcessInstanceObject droolsProcessInstanceObject = ruleBaseSession.getDroolsProcessInstanceObject(event.getProcessInstance());
             afterHistoryEvent.setProcessInstance(droolsProcessInstanceObject);
 
@@ -157,7 +158,7 @@ public class ProcessHandlerListener implements ProcessEventListener {
 
             DroolsJbpmVariableObject oldValue = new DroolsJbpmVariableObject(event.getVariableId(), event.getVariableInstanceId(), event.getOldValue());
             DroolsProcessObject droolsProcessObject = new DroolsProcessObject(String.valueOf(event.getProcessInstance().getId()), event.getProcessInstance().getProcessName(), event.getProcessInstance().getProcess().getPackageName(), event.getProcessInstance().getProcess().getType(), event.getProcessInstance().getProcess().getVersion());
-            BeforeVariableChangeChangedHistoryEvent beforeVariableChangeChangedHistoryEvent = new BeforeVariableChangeChangedHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsProcessObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId(), oldValue);
+            BeforeVariableChangeChangedHistoryEvent beforeVariableChangeChangedHistoryEvent = new BeforeVariableChangeChangedHistoryEvent(EventCounter.Next(), droolsProcessObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId(), oldValue);
             DroolsProcessInstanceObject droolsProcessInstanceObject = ruleBaseSession.getDroolsProcessInstanceObject(event.getProcessInstance());
             beforeVariableChangeChangedHistoryEvent.setProcessInstance(droolsProcessInstanceObject);
             ruleBaseSession.addHistoryElement(beforeVariableChangeChangedHistoryEvent);
@@ -174,7 +175,7 @@ public class ProcessHandlerListener implements ProcessEventListener {
             DroolsJbpmVariableObject oldValue = new DroolsJbpmVariableObject(event.getVariableId(), event.getVariableInstanceId(), event.getOldValue());
             DroolsJbpmVariableObject newValue = new DroolsJbpmVariableObject(event.getVariableId(), event.getVariableInstanceId(), event.getNewValue());
             DroolsProcessObject droolsProcessObject = new DroolsProcessObject(String.valueOf(event.getProcessInstance().getId()), event.getProcessInstance().getProcessName(), event.getProcessInstance().getProcess().getPackageName(), event.getProcessInstance().getProcess().getType(), event.getProcessInstance().getProcess().getVersion());
-            AfterVariableChangeChangedHistoryEvent afterVariableChangeChangedHistoryEvent = new AfterVariableChangeChangedHistoryEvent(this.ruleBaseSession.getNextEventCounter(), droolsProcessObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId(), oldValue, newValue);
+            AfterVariableChangeChangedHistoryEvent afterVariableChangeChangedHistoryEvent = new AfterVariableChangeChangedHistoryEvent(EventCounter.Next(), droolsProcessObject, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId(), oldValue, newValue);
             DroolsProcessInstanceObject droolsProcessInstanceObject = ruleBaseSession.getDroolsProcessInstanceObject(event.getProcessInstance());
             afterVariableChangeChangedHistoryEvent.setProcessInstance(droolsProcessInstanceObject);
             ruleBaseSession.addHistoryElement(afterVariableChangeChangedHistoryEvent);

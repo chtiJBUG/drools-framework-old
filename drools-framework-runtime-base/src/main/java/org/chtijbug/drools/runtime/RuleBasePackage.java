@@ -17,6 +17,8 @@ package org.chtijbug.drools.runtime;
 
 import org.chtijbug.drools.runtime.listener.HistoryListener;
 
+import java.util.List;
+
 /**
  * @author nheron
  */
@@ -37,5 +39,5 @@ public interface RuleBasePackage {
 
     public void dispose();
 
-    void createKBase(String... filenames);
+    void createKBase(List<String> filenames);
 }

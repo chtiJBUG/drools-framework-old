@@ -15,10 +15,12 @@
  */
 package org.chtijbug.drools.runtime;
 
+import java.util.Arrays;
+
 public class Main {
 
     public static void main(String args[]) throws Exception {
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("fibonacci.drl");
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("fibonacci.drl"));
         try {
             for (int i = 0; i < 100000; i++) {
                 RuleBaseSession session1 = ruleBasePackage.createRuleBaseSession();

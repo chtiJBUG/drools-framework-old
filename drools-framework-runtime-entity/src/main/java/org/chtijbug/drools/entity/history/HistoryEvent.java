@@ -31,7 +31,7 @@ public class HistoryEvent implements Serializable {
     private static final long serialVersionUID = -6640538290066213804L;
 
     private Long eventID;
-    private int ruleBaseID;
+    private Long ruleBaseID;
     private int sessionId;
     private DroolsChtijbugException droolsChtijbugException;
     private ArrayList<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
@@ -85,11 +85,11 @@ public class HistoryEvent implements Serializable {
         return eventID;
     }
 
-    public int getRuleBaseID() {
+    public Long getRuleBaseID() {
         return ruleBaseID;
     }
 
-    public void setRuleBaseID(int ruleBaseID) {
+    public void setRuleBaseID(Long ruleBaseID) {
         this.ruleBaseID = ruleBaseID;
     }
 

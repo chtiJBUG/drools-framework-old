@@ -75,6 +75,6 @@ public interface RuleBaseSession {
 
     public int getSessionId();
 
-    public int getRuleBaseID();
+    public Long getRuleBaseID();
 
 }

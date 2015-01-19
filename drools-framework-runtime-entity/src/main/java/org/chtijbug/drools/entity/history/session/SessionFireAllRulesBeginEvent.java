@@ -22,7 +22,7 @@ package org.chtijbug.drools.entity.history.session;
  * To change this template use File | Settings | File Templates.
  */
 public class SessionFireAllRulesBeginEvent extends SessionEvent {
-    public SessionFireAllRulesBeginEvent(Long eventID, int ruleBaseId, int sessionId) {
+    public SessionFireAllRulesBeginEvent(Long eventID, Long ruleBaseId, int sessionId) {
         super(eventID, ruleBaseId, sessionId);
     }
 

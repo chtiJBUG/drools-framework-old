@@ -24,7 +24,7 @@ package org.chtijbug.drools.entity.history.session;
 public class SessionStartProcessBeginEvent extends SessionEvent {
     private String processName;
 
-    public SessionStartProcessBeginEvent(Long eventID, String processName, int ruleBaseId, int sessionId) {
+    public SessionStartProcessBeginEvent(Long eventID, String processName, Long ruleBaseId, int sessionId) {
         super(eventID, ruleBaseId, sessionId);
         this.processName = processName;
     }

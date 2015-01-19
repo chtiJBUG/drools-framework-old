@@ -25,10 +25,11 @@ public class KnowledgeModule {
     private final KieResources kieResources;
     private final KieFileSystem kieFileSystem;
     private final HistoryListener historyListener;
+    private final EventCounter sharedCounter;
     private String version;
-    private final int ruleBaseId;
+    private final Long ruleBaseId;
 
-    public KnowledgeModule(int ruleBaseId, HistoryListener historyListener, String packageName, String name) {
+    public KnowledgeModule(Long ruleBaseId, HistoryListener historyListener, String packageName, String name, EventCounter sharedCounter) {
         this.ruleBaseId = ruleBaseId;
         this.historyListener = historyListener;
         this.packageName = packageName;
@@ -36,6 +37,7 @@ public class KnowledgeModule {
         this.kieServices = KieServices.Factory.get();
         this.kieResources = kieServices.getResources();
         this.kieFileSystem = kieServices.newKieFileSystem();
+        this.sharedCounter = sharedCounter;
     }
 
     public void addAllFiles(List<String> filenames) {
@@ -53,7 +55,7 @@ public class KnowledgeModule {
             try {
                 historyListener.fireEvent(
                         new KnowledgeBaseAddResourceEvent(
-                                EventCounter.Next(), new Date(), this.ruleBaseId,
+                                sharedCounter.next(), new Date(), this.ruleBaseId,
                                 ruleFile, IOUtils.toString(resource.getInputStream())));
             } catch (IOException | DroolsChtijbugException e) {
                 throw propagate(e);

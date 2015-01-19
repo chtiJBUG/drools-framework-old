@@ -35,7 +35,7 @@ public interface RuleBasePackage {
 
     public HistoryListener getHistoryListener();
 
-    public int getRuleBaseID();
+    public Long getRuleBaseID();
 
     public void dispose();
 

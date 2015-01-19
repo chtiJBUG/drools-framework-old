@@ -22,23 +22,23 @@ import java.util.Date;
 
 public class KnowledgeBaseAddResourceEvent extends KnowledgeBaseEvent {
 
-    public KnowledgeBaseAddResourceEvent(Long eventID, Date dateEvent, int ruleBaseID) {
+    public KnowledgeBaseAddResourceEvent(Long eventID, Date dateEvent, Long ruleBaseID) {
         super(eventID, dateEvent, ruleBaseID);
     }
 
 
-    public KnowledgeBaseAddResourceEvent(Long eventID, Date dateEvent, int ruleBaseID, String guvnor_url) {
+    public KnowledgeBaseAddResourceEvent(Long eventID, Date dateEvent, Long ruleBaseID, String guvnor_url) {
         super(eventID, dateEvent, ruleBaseID);
         WorkbenchResourceFile workbenchResourceFile = new WorkbenchResourceFile(guvnor_url, null, null);
         this.getResourceFiles().add(workbenchResourceFile);
     }
 
-    public KnowledgeBaseAddResourceEvent(Long eventID, Date dateEvent, int ruleBaseID, String fileName, String content) {
+    public KnowledgeBaseAddResourceEvent(Long eventID, Date dateEvent, Long ruleBaseID, String fileName, String content) {
         super(eventID, dateEvent, ruleBaseID);
-        DrlResourceFile drlRessourceFile = new DrlResourceFile();
-        drlRessourceFile.setFileName(fileName);
-        drlRessourceFile.setContent(content);
-        this.getResourceFiles().add(drlRessourceFile);
+        DrlResourceFile drlResourceFile = new DrlResourceFile();
+        drlResourceFile.setFileName(fileName);
+        drlResourceFile.setContent(content);
+        this.getResourceFiles().add(drlResourceFile);
 
     }
 

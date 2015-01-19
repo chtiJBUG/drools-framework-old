@@ -28,7 +28,7 @@ import java.util.Date;
 public class KnowledgeBaseEvent extends HistoryEvent {
 
 
-    public KnowledgeBaseEvent(Long eventID, Date dateEvent, int ruleBaseID) {
+    public KnowledgeBaseEvent(Long eventID, Date dateEvent, Long ruleBaseID) {
         super(eventID, dateEvent, TypeEvent.KnowledgeBaseSingleton);
         this.setRuleBaseID(ruleBaseID);
     }

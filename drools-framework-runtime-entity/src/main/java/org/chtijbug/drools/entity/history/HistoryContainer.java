@@ -55,7 +55,7 @@ public class HistoryContainer implements Serializable {
         return listHistoryEvent;
     }
 
-    public void addHistoryElement(int ruleBaseID, int sessionID, HistoryEvent newHistoryElement) {
+    public void addHistoryElement(Long ruleBaseID, int sessionID, HistoryEvent newHistoryElement) {
         DroolsChtijbugException error = null;
         newHistoryElement.setRuleBaseID(ruleBaseID);
         newHistoryElement.setSessionId(sessionID);

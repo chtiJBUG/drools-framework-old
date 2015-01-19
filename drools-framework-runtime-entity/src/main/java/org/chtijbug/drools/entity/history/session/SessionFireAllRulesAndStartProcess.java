@@ -29,7 +29,7 @@ public class SessionFireAllRulesAndStartProcess extends SessionEvent {
     protected DroolsFactObject inputObject;
     protected DroolsFactObject outputObject;
 
-    public SessionFireAllRulesAndStartProcess(Long eventID, int ruleBaseId, int sessionId, DroolsFactObject inputObject, DroolsFactObject outputObject) {
+    public SessionFireAllRulesAndStartProcess(Long eventID, Long ruleBaseId, int sessionId, DroolsFactObject inputObject, DroolsFactObject outputObject) {
         super(eventID, ruleBaseId, sessionId);
         this.inputObject = inputObject;
         this.outputObject = outputObject;

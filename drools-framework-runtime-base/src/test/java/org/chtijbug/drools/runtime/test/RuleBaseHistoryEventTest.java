@@ -41,12 +41,12 @@ public class RuleBaseHistoryEventTest {
         assertThat(historyEvents.get(0)).isInstanceOf(KnowledgeBaseCreatedEvent.class);
         KnowledgeBaseCreatedEvent knowledgeBaseCreatedEvent = (KnowledgeBaseCreatedEvent) historyEvents.get(0);
         assertThat(knowledgeBaseCreatedEvent.getRuleBaseID()).isEqualTo(rulePackageID);
-        assertThat(knowledgeBaseCreatedEvent.getEventID()).isEqualTo(54);
+        assertThat(knowledgeBaseCreatedEvent.getEventID()).isEqualTo(6);
         assertThat(knowledgeBaseCreatedEvent.getSessionId()).isEqualTo(0);
         assertThat(knowledgeBaseCreatedEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
         assertThat(historyEvents.get(2)).isInstanceOf(KnowledgeBaseAddResourceEvent.class);
         KnowledgeBaseAddResourceEvent knowledgeBaseAddRessourceEvent = (KnowledgeBaseAddResourceEvent) historyEvents.get(2);
-        assertThat(knowledgeBaseAddRessourceEvent.getEventID()).isEqualTo(56);
+        assertThat(knowledgeBaseAddRessourceEvent.getEventID()).isEqualTo(8);
         assertThat(knowledgeBaseAddRessourceEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
         assertThat(knowledgeBaseAddRessourceEvent.getResourceFiles()).hasSize(1);
         assertThat(knowledgeBaseAddRessourceEvent.getResourceFiles().get(0)).isInstanceOf(DrlResourceFile.class);
@@ -54,7 +54,7 @@ public class RuleBaseHistoryEventTest {
         assertThat(drlRessourceFile.getFileName()).isEqualTo("fibonacci.drl");
         assertThat(historyEvents.get(1)).isInstanceOf(KnowledgeBaseInitialLoadEvent.class);
         KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = (KnowledgeBaseInitialLoadEvent) historyEvents.get(1);
-        assertThat(knowledgeBaseInitialLoadEvent.getEventID()).isEqualTo(55);
+        assertThat(knowledgeBaseInitialLoadEvent.getEventID()).isEqualTo(7);
         assertThat(knowledgeBaseInitialLoadEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
         /** ruleBasePackage.RecreateKBaseWithNewRessources(DrlDroolsResource.createClassPathResource("fibonacciBis.drl"));
         assertThat(historyEvents.size() == 6);

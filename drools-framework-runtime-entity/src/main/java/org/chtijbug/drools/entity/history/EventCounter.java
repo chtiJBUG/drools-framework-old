@@ -3,7 +3,7 @@ package org.chtijbug.drools.entity.history;
 import java.util.concurrent.atomic.AtomicLong;
 
 public final class EventCounter {
-    private AtomicLong nextEventId = new AtomicLong();
+    private AtomicLong nextEventId = new AtomicLong(1L);
 
     private EventCounter(){}
 

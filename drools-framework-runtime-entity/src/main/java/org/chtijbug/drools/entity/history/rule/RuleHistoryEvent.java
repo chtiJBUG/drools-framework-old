@@ -39,7 +39,7 @@ public class RuleHistoryEvent extends HistoryEvent {
     public RuleHistoryEvent() {
     }
 
-    public RuleHistoryEvent(Long eventID, int ruleInstanceId, DroolsRuleObject rule, int ruleBaseId, int sessionId) {
+    public RuleHistoryEvent(Long eventID, int ruleInstanceId, DroolsRuleObject rule, Long ruleBaseId, int sessionId) {
 
         super(eventID, new Date(), HistoryEvent.TypeEvent.Rule);
         this.ruleInstanceId = ruleInstanceId;

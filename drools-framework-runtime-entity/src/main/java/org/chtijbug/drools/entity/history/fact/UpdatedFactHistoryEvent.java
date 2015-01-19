@@ -37,7 +37,7 @@ public class UpdatedFactHistoryEvent extends FactHistoryEvent {
     public UpdatedFactHistoryEvent() {
     }
 
-    public UpdatedFactHistoryEvent(Long eventID, DroolsFactObject objectOldValue, DroolsFactObject objectNewValue, int ruleBaseId, int sessionId) {
+    public UpdatedFactHistoryEvent(Long eventID, DroolsFactObject objectOldValue, DroolsFactObject objectNewValue, Long ruleBaseId, int sessionId) {
         super(eventID, new Date(), ruleBaseId, sessionId);
         this.objectOldValue = objectOldValue;
         this.objectNewValue = objectNewValue;

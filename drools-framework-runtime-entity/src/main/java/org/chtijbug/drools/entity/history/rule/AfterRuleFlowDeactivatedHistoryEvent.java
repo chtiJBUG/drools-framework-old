@@ -27,7 +27,7 @@ public class AfterRuleFlowDeactivatedHistoryEvent extends RuleFlowHistoryEvent {
     public AfterRuleFlowDeactivatedHistoryEvent() {
     }
 
-    public AfterRuleFlowDeactivatedHistoryEvent(Long eventID, DroolsRuleFlowGroupObject droolsRuleFlowGroupObject, int ruleBaseId, int sessionId) {
+    public AfterRuleFlowDeactivatedHistoryEvent(Long eventID, DroolsRuleFlowGroupObject droolsRuleFlowGroupObject, Long ruleBaseId, int sessionId) {
         super(eventID, droolsRuleFlowGroupObject, ruleBaseId, sessionId);
     }
 }

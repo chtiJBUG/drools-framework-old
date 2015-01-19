@@ -468,4 +468,8 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         }
         return ruleSetNode;
     }
+
+    public Long nextEventId() {
+        return this.eventCounter.next();
+    }
 }

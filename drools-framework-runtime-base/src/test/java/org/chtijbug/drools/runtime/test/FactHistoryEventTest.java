@@ -35,7 +35,7 @@ public class FactHistoryEventTest {
             }
         };
         RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList("fibonacci.drl"));
-        int rulePackageID = ruleBasePackage.getRuleBaseID();
+        Long rulePackageID = ruleBasePackage.getRuleBaseID();
         RuleBaseSession ruleBaseSession = ruleBasePackage.createRuleBaseSession();
         Fibonacci fibonacci = new Fibonacci(1);
         ruleBaseSession.insertObject(fibonacci);
@@ -129,7 +129,7 @@ public class FactHistoryEventTest {
             }
         };
         RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList("fibonacci.drl"));
-        int rulePackageID = ruleBasePackage.getRuleBaseID();
+        Long rulePackageID = ruleBasePackage.getRuleBaseID();
 
         RuleBaseSession ruleBaseSession = ruleBasePackage.createRuleBaseSession();
         Fibonacci fibonacci = new Fibonacci(1);

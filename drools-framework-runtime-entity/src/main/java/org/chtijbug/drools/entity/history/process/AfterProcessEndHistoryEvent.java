@@ -30,7 +30,7 @@ public class AfterProcessEndHistoryEvent extends ProcessHistoryEvent {
     public AfterProcessEndHistoryEvent() {
     }
 
-    public AfterProcessEndHistoryEvent(Long eventID, DroolsProcessInstanceObject processInstance, int ruleBaseId, int sessionId) {
+    public AfterProcessEndHistoryEvent(Long eventID, DroolsProcessInstanceObject processInstance, Long ruleBaseId, int sessionId) {
         super(eventID, ruleBaseId, sessionId);
         this.processInstance = processInstance;
     }

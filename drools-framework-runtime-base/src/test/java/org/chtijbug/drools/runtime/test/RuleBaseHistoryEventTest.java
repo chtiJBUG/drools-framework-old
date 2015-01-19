@@ -35,7 +35,7 @@ public class RuleBaseHistoryEventTest {
             }
         };
         RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList("fibonacci.drl"));
-        int rulePackageID = ruleBasePackage.getRuleBaseID();
+        Long rulePackageID = ruleBasePackage.getRuleBaseID();
 
         assertThat(historyEvents).hasSize(3);
         assertThat(historyEvents.get(0)).isInstanceOf(KnowledgeBaseCreatedEvent.class);

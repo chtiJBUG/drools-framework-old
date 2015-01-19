@@ -31,7 +31,7 @@ public class ProcessHistoryEvent extends HistoryEvent {
 
     }
 
-    public ProcessHistoryEvent(Long eventID, int ruleBaseId, int sessionId) {
+    public ProcessHistoryEvent(Long eventID, Long ruleBaseId, int sessionId) {
         super(eventID, new Date(), TypeEvent.BPMN);
         this.setRuleBaseID(ruleBaseId);
         this.setSessionId(sessionId);

@@ -32,7 +32,7 @@ public class BeforeVariableChangeChangedHistoryEvent extends ProcessHistoryEvent
     public BeforeVariableChangeChangedHistoryEvent() {
     }
 
-    public BeforeVariableChangeChangedHistoryEvent(Long eventID, DroolsProcessObject droolsProcessObject, int ruleBaseId, int sessionId, DroolsJbpmVariableObject oldValue) {
+    public BeforeVariableChangeChangedHistoryEvent(Long eventID, DroolsProcessObject droolsProcessObject, Long ruleBaseId, int sessionId, DroolsJbpmVariableObject oldValue) {
         super(eventID, ruleBaseId, sessionId);
         this.oldValue = oldValue;
         this.droolsProcessObject = droolsProcessObject;

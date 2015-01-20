@@ -73,7 +73,7 @@ public interface RuleBaseSession {
 
     public int getNumberRulesExecuted();
 
-    public int getSessionId();
+    public Long getSessionId();
 
     public Long getRuleBaseID();
 

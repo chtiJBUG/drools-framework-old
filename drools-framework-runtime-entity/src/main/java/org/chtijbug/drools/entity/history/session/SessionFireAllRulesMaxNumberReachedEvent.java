@@ -25,7 +25,7 @@ public class SessionFireAllRulesMaxNumberReachedEvent extends SessionEvent {
     private int numberOfRulesExecuted = 0;
     private int maxNumberOfRulesForSession = 0;
 
-    public SessionFireAllRulesMaxNumberReachedEvent(Long eventID, int numberOfRulesExecuted, int maxNumberOfRulesForSession, Long ruleBaseId, int sessionId) {
+    public SessionFireAllRulesMaxNumberReachedEvent(Long eventID, int numberOfRulesExecuted, int maxNumberOfRulesForSession, Long ruleBaseId, Long sessionId) {
         super(eventID, ruleBaseId, sessionId);
         this.numberOfRulesExecuted = numberOfRulesExecuted;
         this.maxNumberOfRulesForSession = maxNumberOfRulesForSession;

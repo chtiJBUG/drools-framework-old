@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class HistoryContainer implements Serializable {
     private static final long serialVersionUID = 5645452451089006572L;
-    private int sessionID;
+    private Long sessionID;
     protected List<HistoryEvent> listHistoryEvent = new LinkedList<HistoryEvent>();
     private HistoryListener historylistener = null;
 
@@ -38,16 +38,16 @@ public class HistoryContainer implements Serializable {
      *
      */
 
-    public HistoryContainer(int sessionID, HistoryListener historylistener) {
+    public HistoryContainer(Long sessionID, HistoryListener historylistener) {
         this.sessionID = sessionID;
         this.historylistener = historylistener;
     }
 
-    public int getSessionID() {
+    public Long getSessionID() {
         return sessionID;
     }
 
-    public void setSessionID(int sessionID) {
+    public void setSessionID(Long sessionID) {
         this.sessionID = sessionID;
     }
 
@@ -55,7 +55,7 @@ public class HistoryContainer implements Serializable {
         return listHistoryEvent;
     }
 
-    public void addHistoryElement(Long ruleBaseID, int sessionID, HistoryEvent newHistoryElement) {
+    public void addHistoryElement(Long ruleBaseID, Long sessionID, HistoryEvent newHistoryElement) {
         DroolsChtijbugException error = null;
         newHistoryElement.setRuleBaseID(ruleBaseID);
         newHistoryElement.setSessionId(sessionID);
@@ -71,7 +71,5 @@ public class HistoryContainer implements Serializable {
             }
             this.listHistoryEvent.add(newHistoryElement);
         }
-
-
     }
 }

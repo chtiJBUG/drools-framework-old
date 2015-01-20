@@ -30,7 +30,7 @@ public class InsertedByReflectionFactStartHistoryEvent extends FactHistoryEvent 
     public InsertedByReflectionFactStartHistoryEvent() {
     }
 
-    public InsertedByReflectionFactStartHistoryEvent(Long eventID, DroolsFactObject topObject, Long ruleBaseId, int sessionId) {
+    public InsertedByReflectionFactStartHistoryEvent(Long eventID, DroolsFactObject topObject, Long ruleBaseId, Long sessionId) {
         super(eventID, new Date(), ruleBaseId, sessionId);
         this.topObject = topObject;
     }

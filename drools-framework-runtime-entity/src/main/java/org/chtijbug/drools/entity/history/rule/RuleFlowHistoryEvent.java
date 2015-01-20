@@ -39,7 +39,7 @@ public class RuleFlowHistoryEvent extends HistoryEvent {
         return droolsRuleFlowGroupObject;
     }
 
-    public RuleFlowHistoryEvent(Long eventID, DroolsRuleFlowGroupObject droolsRuleFlowGroupObject, Long ruleBaseId, int sessionId) {
+    public RuleFlowHistoryEvent(Long eventID, DroolsRuleFlowGroupObject droolsRuleFlowGroupObject, Long ruleBaseId, Long sessionId) {
 
 
         super(eventID, new Date(), HistoryEvent.TypeEvent.RuleFlowGroup);

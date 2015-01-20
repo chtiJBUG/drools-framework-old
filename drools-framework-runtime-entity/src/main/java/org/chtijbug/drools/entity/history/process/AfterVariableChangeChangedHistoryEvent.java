@@ -33,7 +33,7 @@ public class AfterVariableChangeChangedHistoryEvent extends ProcessHistoryEvent 
     public AfterVariableChangeChangedHistoryEvent() {
     }
 
-    public AfterVariableChangeChangedHistoryEvent(Long eventID, DroolsProcessObject droolsProcessObject, Long ruleBaseId, int sessionId, DroolsJbpmVariableObject oldValue, DroolsJbpmVariableObject newValue) {
+    public AfterVariableChangeChangedHistoryEvent(Long eventID, DroolsProcessObject droolsProcessObject, Long ruleBaseId, Long sessionId, DroolsJbpmVariableObject oldValue, DroolsJbpmVariableObject newValue) {
         super(eventID, ruleBaseId, sessionId);
         this.oldValue = oldValue;
         this.newValue = newValue;

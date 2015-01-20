@@ -51,22 +51,13 @@ public class RuleBaseSingleton implements RuleBasePackage {
     private int maxNumberRuleToExecute = DEFAULT_RULE_THRESHOLD;
     /** Semaphore used to void concurrent access to the singleton */
     private Semaphore lockKbase = new Semaphore(1);
-    private int sessionCounter = 0;
-    /**
-     * Guvnor Connection
-     */
-    private String guvnor_url;
-    private String guvnor_username;
-    private String guvnor_password;
-    /** Java Dialect */
-    private JavaDialect javaDialect = JavaDialect.ECLIPSE;
-
     /** History Listener */
     private HistoryListener historyListener = null;
     /** unique ID of the RuleBase in the JVM */
     protected static EventCounter ruleBaseCounter = EventCounter.newCounter();
     /** unique ID of the RuleBase in the JVM */
-    protected static EventCounter eventCounter = EventCounter.newCounter();
+    protected EventCounter eventCounter = EventCounter.newCounter();
+    protected EventCounter sessionCounter = EventCounter.newCounter();
 
 
 
@@ -78,7 +69,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
             KnowledgeBaseCreatedEvent knowledgeBaseCreatedEvent = new KnowledgeBaseCreatedEvent(eventCounter.next(), new Date(), ruleBaseID);
             this.historyListener.fireEvent(knowledgeBaseCreatedEvent);
         }
-        this.knowledgeModule = new KnowledgeModule(this.ruleBaseID, this.historyListener, modulePackage, moduleName, this.eventCounter);
+        this.knowledgeModule = new KnowledgeModule(this.ruleBaseID, this.historyListener, modulePackage, moduleName, eventCounter);
     }
 
 
@@ -106,16 +97,16 @@ public class RuleBaseSingleton implements RuleBasePackage {
             }
             //_____ Now we can create a new stateful session using KnowledgeBase
             KieSession newDroolsSession = this.kieContainer.newKieSession();
+            Long sessionId = this.sessionCounter.next();
             //_____ Increment session counter
-            this.sessionCounter++;
             if (this.historyListener != null) {
                 KnowledgeBaseCreateSessionEvent knowledgeBaseCreateSessionEvent = new KnowledgeBaseCreateSessionEvent(eventCounter.next(), new Date(), this.ruleBaseID);
-                knowledgeBaseCreateSessionEvent.setSessionId(this.sessionCounter);
+                knowledgeBaseCreateSessionEvent.setSessionId(sessionId);
                 this.historyListener.fireEvent(knowledgeBaseCreateSessionEvent);
             }
 
             //_____ Wrapping the knowledge Session
-            newRuleBaseSession = new RuleBaseStatefulSession(this.ruleBaseID, this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, this.historyListener);
+            newRuleBaseSession = new RuleBaseStatefulSession(this.ruleBaseID, sessionId, newDroolsSession, maxNumberRulesToExecute, this.historyListener);
             //_____ Release semaphore
             lockKbase.release();
             //____ return the wrapped KnowledgeSession
@@ -128,13 +119,13 @@ public class RuleBaseSingleton implements RuleBasePackage {
     public synchronized void createKBase(String packageName, String projectName, String version) throws DroolsChtijbugException {
         if (kieContainer != null) {
             if (this.historyListener != null) {
-                KnowledgeBaseReloadedEvent knowledgeBaseReloadLoadEvent = new KnowledgeBaseReloadedEvent(eventCounter.next(), new Date(), this.ruleBaseID, this.guvnor_url);
+                KnowledgeBaseReloadedEvent knowledgeBaseReloadLoadEvent = new KnowledgeBaseReloadedEvent(eventCounter.next(), new Date(), this.ruleBaseID);
                 this.historyListener.fireEvent(knowledgeBaseReloadLoadEvent);
             }
             // TODO dispose all elements
         } else {
             if (this.historyListener != null) {
-                KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = new KnowledgeBaseInitialLoadEvent(eventCounter.next(), new Date(), this.ruleBaseID, this.guvnor_url);
+                KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = new KnowledgeBaseInitialLoadEvent(eventCounter.next(), new Date(), this.ruleBaseID);
                 this.historyListener.fireEvent(knowledgeBaseInitialLoadEvent);
             }
         }
@@ -165,7 +156,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
             lockKbase.release();
             if (this.historyListener != null) {
                 // TODO change the following event...
-                KnowledgeBaseAddResourceEvent knowledgeBaseAddResourceEvent = new KnowledgeBaseAddResourceEvent(eventCounter.next(), new Date(), this.ruleBaseID, this.guvnor_url);
+                KnowledgeBaseAddResourceEvent knowledgeBaseAddResourceEvent = new KnowledgeBaseAddResourceEvent(eventCounter.next(), new Date(), this.ruleBaseID);
                 this.historyListener.fireEvent(knowledgeBaseAddResourceEvent);
             }
         } catch (InterruptedException e) {
@@ -200,7 +191,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
     public void createKBase(List<String> filenames) {
         try {
             if (this.historyListener != null) {
-                KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = new KnowledgeBaseInitialLoadEvent(eventCounter.next(), new Date(), this.ruleBaseID, this.guvnor_url);
+                KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = new KnowledgeBaseInitialLoadEvent(eventCounter.next(), new Date(), this.ruleBaseID);
                 this.historyListener.fireEvent(knowledgeBaseInitialLoadEvent);
             }
             lockKbase.acquire();
@@ -212,23 +203,4 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
     }
 
-    public String getGuvnor_url() {
-        return guvnor_url;
-    }
-
-    public String getGuvnor_username() {
-        return guvnor_username;
-    }
-
-    public String getGuvnor_password() {
-        return guvnor_password;
-    }
-
-    public JavaDialect getJavaDialect() {
-        return javaDialect;
-    }
-
-    public void setJavaDialect(JavaDialect javaDialect) {
-        this.javaDialect = javaDialect;
-    }
 }

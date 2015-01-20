@@ -25,7 +25,7 @@ public class SessionStartProcessEndEvent extends SessionEvent {
     private String processName;
     private String processInstanceId;
 
-    public SessionStartProcessEndEvent(Long eventID, String processName, Long ruleBaseId, int sessionId, String processInstanceId) {
+    public SessionStartProcessEndEvent(Long eventID, String processName, Long ruleBaseId, Long sessionId, String processInstanceId) {
         super(eventID, ruleBaseId, sessionId);
         this.processName = processName;
         this.processInstanceId = processInstanceId;

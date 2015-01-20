@@ -33,7 +33,7 @@ public class InsertedFactHistoryEvent extends FactHistoryEvent {
     public InsertedFactHistoryEvent() {
     }
 
-    public InsertedFactHistoryEvent(Long eventID, DroolsFactObject insertedObject, Long ruleBaseId, int sessionId) {
+    public InsertedFactHistoryEvent(Long eventID, DroolsFactObject insertedObject, Long ruleBaseId, Long sessionId) {
         super(eventID, new Date(), ruleBaseId, sessionId);
         this.insertedObject = insertedObject;
     }

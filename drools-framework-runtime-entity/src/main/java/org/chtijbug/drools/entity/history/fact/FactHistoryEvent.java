@@ -40,7 +40,7 @@ public abstract class FactHistoryEvent extends HistoryEvent {
 
     }
 
-    public FactHistoryEvent(Long eventID, Date dateEvent, Long ruleBaseId, int sessionId) {
+    public FactHistoryEvent(Long eventID, Date dateEvent, Long ruleBaseId, Long sessionId) {
 
         super(eventID, dateEvent, TypeEvent.Fact);
         this.setRuleBaseID(ruleBaseId);

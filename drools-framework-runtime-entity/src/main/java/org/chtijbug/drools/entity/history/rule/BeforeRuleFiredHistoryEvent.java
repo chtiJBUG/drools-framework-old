@@ -35,7 +35,7 @@ public class BeforeRuleFiredHistoryEvent extends RuleHistoryEvent {
     public BeforeRuleFiredHistoryEvent() {
     }
 
-    public BeforeRuleFiredHistoryEvent(Long eventID, int ruleInstanceID, DroolsRuleObject rule, Long ruleBaseId, int sessionId) {
+    public BeforeRuleFiredHistoryEvent(Long eventID, int ruleInstanceID, DroolsRuleObject rule, Long ruleBaseId, Long sessionId) {
 
         super(eventID, ruleInstanceID, rule, ruleBaseId, sessionId);
         this.whenObjects = new ArrayList<DroolsFactObject>();

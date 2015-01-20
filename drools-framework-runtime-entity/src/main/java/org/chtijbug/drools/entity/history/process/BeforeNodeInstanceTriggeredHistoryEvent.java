@@ -33,7 +33,7 @@ public class BeforeNodeInstanceTriggeredHistoryEvent extends ProcessHistoryEvent
     public BeforeNodeInstanceTriggeredHistoryEvent() {
     }
 
-    public BeforeNodeInstanceTriggeredHistoryEvent(Long eventID, DroolsNodeInstanceObject nodeInstance, Long ruleBaseId, int sessionId) {
+    public BeforeNodeInstanceTriggeredHistoryEvent(Long eventID, DroolsNodeInstanceObject nodeInstance, Long ruleBaseId, Long sessionId) {
         super(eventID, ruleBaseId, sessionId);
         this.nodeInstance = nodeInstance;
     }

@@ -28,7 +28,7 @@ public class BeforeProcessStartHistoryEvent extends ProcessHistoryEvent {
     public BeforeProcessStartHistoryEvent() {
     }
 
-    public BeforeProcessStartHistoryEvent(Long eventID, DroolsProcessInstanceObject processInstance, Long ruleBaseId, int sessionId) {
+    public BeforeProcessStartHistoryEvent(Long eventID, DroolsProcessInstanceObject processInstance, Long ruleBaseId, Long sessionId) {
         super(eventID, ruleBaseId, sessionId);
         this.processInstance = processInstance;
     }

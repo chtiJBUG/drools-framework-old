@@ -32,7 +32,7 @@ public class HistoryEvent implements Serializable {
 
     private Long eventID;
     private Long ruleBaseID;
-    private int sessionId;
+    private Long sessionId;
     private DroolsChtijbugException droolsChtijbugException;
     private ArrayList<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
 
@@ -93,11 +93,11 @@ public class HistoryEvent implements Serializable {
         this.ruleBaseID = ruleBaseID;
     }
 
-    public int getSessionId() {
+    public Long getSessionId() {
         return sessionId;
     }
 
-    public void setSessionId(int sessionId) {
+    public void setSessionId(Long sessionId) {
         this.sessionId = sessionId;
     }
 

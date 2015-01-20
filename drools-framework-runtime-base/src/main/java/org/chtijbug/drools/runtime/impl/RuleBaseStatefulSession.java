@@ -70,12 +70,12 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
     private XStream xstream = new XStream(new JettisonMappedXmlDriver());
     private Long ruleBaseID;
-    private int sessionId;
+    private Long sessionId;
 
     private HistoryListener historyListener;
     private EventCounter eventCounter = EventCounter.newCounter();
 
-    public RuleBaseStatefulSession(Long ruleBaseID, int sessionId, KieSession knowledgeSession, int maxNumberRuleToExecute, HistoryListener historyListener) throws DroolsChtijbugException {
+    public RuleBaseStatefulSession(Long ruleBaseID, Long sessionId, KieSession knowledgeSession, int maxNumberRuleToExecute, HistoryListener historyListener) throws DroolsChtijbugException {
         this.ruleBaseID = ruleBaseID;
         this.sessionId = sessionId;
         this.knowledgeSession = knowledgeSession;
@@ -451,7 +451,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         this.historyContainer.addHistoryElement(this.ruleBaseID, this.sessionId, newHistoryElement);
     }
 
-    public int getSessionId() {
+    public Long getSessionId() {
         return sessionId;
     }
 

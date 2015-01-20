@@ -44,7 +44,7 @@ public class KnowledgeBaseHistoryEventTest {
         assertThat(historyEvents.get(3)).isInstanceOf(KnowledgeBaseCreateSessionEvent.class);
         KnowledgeBaseCreateSessionEvent knowledgeBaseCreateSessionEvent = (KnowledgeBaseCreateSessionEvent) historyEvents.get(3);
         assertThat(knowledgeBaseCreateSessionEvent.getRuleBaseID()).isEqualTo(rulePackageID);
-        assertThat(knowledgeBaseCreateSessionEvent.getEventID()).isEqualTo(12);
+        assertThat(knowledgeBaseCreateSessionEvent.getEventID()).isEqualTo(4);
         assertThat(knowledgeBaseCreateSessionEvent.getSessionId()).isEqualTo(1);
         assertThat(knowledgeBaseCreateSessionEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
         assertThat(historyEvents.get(4)).isInstanceOf(SessionCreatedEvent.class);

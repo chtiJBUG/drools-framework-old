@@ -37,7 +37,7 @@ public class DeletedFactHistoryEvent extends FactHistoryEvent {
     public DeletedFactHistoryEvent() {
     }
 
-    public DeletedFactHistoryEvent(Long eventID, DroolsFactObject deletedObject, Long ruleBaseId, int sessionId) {
+    public DeletedFactHistoryEvent(Long eventID, DroolsFactObject deletedObject, Long ruleBaseId, Long sessionId) {
         super(eventID, new Date(), ruleBaseId, sessionId);
         this.deletedObject = deletedObject;
     }

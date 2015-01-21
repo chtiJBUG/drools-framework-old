@@ -34,11 +34,11 @@
 
     <dependencies>
 
-            <dependency>
-                <groupId>org.jbpm</groupId>
-                <artifactId>jbpm-runtime-manager</artifactId>
-                <version>${jbpm.version}</version>
-            </dependency>
+        <dependency>
+            <groupId>org.jbpm</groupId>
+            <artifactId>jbpm-runtime-manager</artifactId>
+            <version>${jbpm.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.kie</groupId>
@@ -788,6 +788,13 @@
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-rest-backend</artifactId>
             <version>${guvnor.version}</version>
+        </dependency>
+
+        <!-- Kie-Drools platform REST api -->
+        <dependency>
+            <groupId>org.chtijbug.drools</groupId>
+            <artifactId>kie-drools-framework-rest-backend</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- REST -->

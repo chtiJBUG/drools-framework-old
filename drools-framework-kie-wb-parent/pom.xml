@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>kie-drools-framework-wb-webapp</module>
+        <module>kie-drools-framework-rest</module>
     </modules>
     <build>
         <plugins>

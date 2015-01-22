@@ -14,6 +14,7 @@
     <modules>
         <module>kie-drools-framework-wb-webapp</module>
         <module>kie-drools-framework-rest</module>
+        <module>drools-framework-kie-wb-wars</module>
     </modules>
     <build>
         <plugins>

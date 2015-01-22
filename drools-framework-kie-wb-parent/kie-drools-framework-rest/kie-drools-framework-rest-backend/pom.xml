@@ -26,7 +26,11 @@
       <artifactId>kie-api</artifactId>
       <version>${kie.wb.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.kie.workbench.services</groupId>
+      <artifactId>kie-wb-common-services-api</artifactId>
+      <version>${kie.wb.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-api</artifactId>

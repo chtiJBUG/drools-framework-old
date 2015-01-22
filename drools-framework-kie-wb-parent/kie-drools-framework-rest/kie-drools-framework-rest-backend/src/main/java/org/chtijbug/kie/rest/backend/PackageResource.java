@@ -5,12 +5,14 @@ import org.drools.guvnor.server.jaxrs.jaxb.*;
 import org.drools.guvnor.server.jaxrs.jaxb.Package;
 import org.guvnor.common.services.project.model.Project;
 import org.guvnor.common.services.project.service.ProjectService;
+import org.guvnor.structure.organizationalunit.OrganizationalUnit;
 import org.guvnor.structure.organizationalunit.OrganizationalUnitService;
+import org.guvnor.structure.repositories.Repository;
 import org.guvnor.structure.repositories.RepositoryService;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.slf4j.LoggerFactory;
 import org.uberfire.io.IOService;
-
+import org.kie.workbench.common.services.shared.project.KieProjectService;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -19,10 +21,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Path("/packages")
 @Named
@@ -47,29 +46,51 @@ public class PackageResource {
     @Inject
     private ProjectService<? extends Project> projectService;
 
+    @Inject
+    private KieProjectService kieProjectService;
 
     @GET
-    @Path("{organizationalUNit}/{repositoryName}")
+    @Path("{organizationalUnitName}/{repositoryName}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Collection<Package> getPackagesAsJAXB( @PathParam("organizationalUNit") String organizationalUNit, @PathParam("repositoryName") String repositoryName) {
-        List<Package> ret = new ArrayList<Package>();
-        //ModuleIterator iter = rulesRepository.listModules();
-       // while (iter.hasNext()) {
-            //REVIST: Do not return detailed package info here. Package title and link should be enough.
-          //  ret.add(toPackage(iter.next(), uriInfo));
-        //}
-        return ret;
+    public Collection<Project> getPackagesAsJAXB( @PathParam("organizationalUnitName") String organizationalUnitName, @PathParam("repositoryName") String repositoryName) {
+        OrganizationalUnit organizationalUnit = organizationalUnitService.getOrganizationalUnit(organizationalUnitName);
+        Collection<Repository> repositories = organizationalUnit.getRepositories();
+        for (Repository repository : repositories){
+            if (repository.getAlias().equals(repositoryName)) {
+                String branch = repository.getCurrentBranch();
+                Set<Project> projects = projectService.getProjects(repository, branch);
+                return projects;
+            }
+        }
+        return null;
     }
 
     @GET
-    @Path("{organizationalUNit}/{repositoryName}/{packageName}/assets")
+    @Path("{organizationalUnitName}/{repositoryName}/{packageName}/assets")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Collection<Asset> getAssetsAsJAXB(
-            @PathParam("organizationalUNit") String organizationalUNit, @PathParam("repositoryName") String repositoryName,
+            @PathParam("organizationalUnitName") String organizationalUnitName, @PathParam("repositoryName") String repositoryName,
             @PathParam("packageName") String packageName,
             @QueryParam("format") List<String> formats) {
         try {
             List<Asset> ret = new ArrayList<Asset>();
+
+
+
+            OrganizationalUnit organizationalUnit = organizationalUnitService.getOrganizationalUnit(organizationalUnitName);
+            Collection<Repository> repositories = organizationalUnit.getRepositories();
+            for (Repository repository : repositories){
+                if (repository.getAlias().equals(repositoryName)) {
+                    String branch = repository.getCurrentBranch();
+                    Set<Project> projects = projectService.getProjects(repository, branch);
+                    for (Project project : projects){
+                        if (project.getProjectName().equals(packageName)){
+
+                            //ioService.readAllString()
+                        }
+                    }
+                }
+            }
             /**
            ModuleItem p = rulesRepository.loadModule(packageName);
 
@@ -94,11 +115,11 @@ public class PackageResource {
         }
     }
     @GET
-    @Path("{organizationalUNit}/{repositoryName}/{packageName}/assets/{assetName}")
+    @Path("{organizationalUnitName}/{repositoryName}/{packageName}/assets/{assetName}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 
     public Asset getAssetAsJaxB(
-            @PathParam("organizationalUNit") String organizationalUNit, @PathParam("repositoryName") String repositoryName,
+            @PathParam("organizationalUnitName") String organizationalUnitName, @PathParam("repositoryName") String repositoryName,
             @PathParam("packageName") String packageName, @PathParam("assetName") String assetName) {
        /**
         if (!assetExists(packageName, assetName)) {
@@ -116,10 +137,10 @@ public class PackageResource {
         return null;
     }
     @PUT
-    @Path("{organizationalUNit}/{repositoryName}/{packageName}/assets/{assetName}")
+    @Path("{organizationalUnitName}/{repositoryName}/{packageName}/assets/{assetName}")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public void updateAssetFromJAXB(
-            @PathParam("organizationalUNit") String organizationalUNit, @PathParam("repositoryName") String repositoryName,
+            @PathParam("organizationalUnitName") String organizationalUnitName, @PathParam("repositoryName") String repositoryName,
             @PathParam("packageName") String packageName,
             @PathParam("assetName") String assetName, Asset asset) {
         /**
@@ -154,11 +175,11 @@ public class PackageResource {
          **/
     }
     @POST
-    @Path("{organizationalUNit}/{repositoryName}/{packageName}/assets")
+    @Path("{organizationalUnitName}/{repositoryName}/{packageName}/assets")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Asset createAssetFromBinaryAndJAXB(
-            @PathParam("organizationalUNit") String organizationalUNit, @PathParam("repositoryName") String repositoryName,
+            @PathParam("organizationalUnitName") String organizationalUnitName, @PathParam("repositoryName") String repositoryName,
             @PathParam("packageName") String packageName, @MultipartForm AssetMultipartForm assetMultipartForm) {
         /* Verify passed in asset object */
         /**
@@ -186,11 +207,11 @@ public class PackageResource {
         return null;
     }
     @PUT
-    @Path("{organizationalUNit}/{repositoryName}/{packageName}/assets/{assetName}/source")
+    @Path("{organizationalUnitName}/{repositoryName}/{packageName}/assets/{assetName}/source")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN})
     @Produces({MediaType.WILDCARD})
     public void updateAssetSource(
-            @PathParam("organizationalUNit") String organizationalUNit, @PathParam("repositoryName") String repositoryName,
+            @PathParam("organizationalUnitName") String organizationalUnitName, @PathParam("repositoryName") String repositoryName,
             @PathParam("packageName") String packageName, @PathParam("assetName") String assetName, String content) {
         try {
             //Throws RulesRepositoryException if the package or asset does not exist

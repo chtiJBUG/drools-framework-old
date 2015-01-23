@@ -791,11 +791,11 @@
         </dependency>
 
         <!-- Kie-Drools platform REST api -->
-        <dependency>
+        <!--dependency>
             <groupId>org.chtijbug.drools</groupId>
             <artifactId>kie-drools-framework-rest-backend</artifactId>
             <version>${project.version}</version>
-        </dependency>
+        </dependency-->
 
         <!-- REST -->
         <dependency>

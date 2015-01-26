@@ -22,12 +22,16 @@ public class KnowledgeModule {
     private final String packageName;
     private final String name;
     private final KieServices kieServices;
+
     private final KieResources kieResources;
     private final KieFileSystem kieFileSystem;
+    private final KieRepository kieRepository;
     private final HistoryListener historyListener;
     private final EventCounter sharedCounter;
     private String version;
     private final Long ruleBaseId;
+    private ReleaseId releaseId;
+    private boolean fileBaseModule = false;
 
     public KnowledgeModule(Long ruleBaseId, HistoryListener historyListener, String packageName, String name, EventCounter sharedCounter) {
         this.ruleBaseId = ruleBaseId;
@@ -35,6 +39,7 @@ public class KnowledgeModule {
         this.packageName = packageName;
         this.name = name;
         this.kieServices = KieServices.Factory.get();
+        this.kieRepository = kieServices.getRepository();
         this.kieResources = kieServices.getResources();
         this.kieFileSystem = kieServices.newKieFileSystem();
         this.sharedCounter = sharedCounter;
@@ -47,6 +52,7 @@ public class KnowledgeModule {
     }
 
     public void addRuleFile(String packageName, String ruleFile) {
+        this.fileBaseModule = true;
         Resource resource = kieResources.newClassPathResource(ruleFile);
         packageName = packageName.replace(".", "/");
         String resourcePath = "src/main/resources/" + packageName + "/" + ruleFile;
@@ -64,15 +70,38 @@ public class KnowledgeModule {
 
     public KieContainer build() {
         if (version == null) {
-            version = "0.0.1-SNAPSHOT";
+            version = "1.0.0-SNAPSHOT";
         }
-        ReleaseId releaseId = kieServices.newReleaseId(packageName, name, version);
-        this.kieFileSystem.generateAndWritePomXML(releaseId);
-        KieBuilder kb = kieServices.newKieBuilder(kieFileSystem);
-        kb.buildAll();
-        if (kb.getResults().hasMessages(Message.Level.ERROR)) {
-            throw new RuntimeException("Build Errors:\n" + kb.getResults().toString());
+        this.releaseId = kieServices.newReleaseId(packageName, name, version);
+        if (fileBaseModule) {
+            this.kieFileSystem.generateAndWritePomXML(releaseId);
+            KieBuilder kb = kieServices.newKieBuilder(kieFileSystem);
+            kb.buildAll();
+            if (kb.getResults().hasMessages(Message.Level.ERROR)) {
+                throw new RuntimeException("Build Errors:\n" + kb.getResults().toString());
+            }
         }
         return this.kieServices.newKieContainer(releaseId);
     }
+
+    public void addWorkbenchResource(String version, String workbenchUrl, String username, String password) {
+        try (WorkbenchClient client = new WorkbenchClient(workbenchUrl, username, password)) {
+            this.version = version;
+            Resource resource = kieServices.getResources().newInputStreamResource(client.getWorkbenchResource(this));
+            this.kieRepository.addKieModule(resource);
+        }
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
 }

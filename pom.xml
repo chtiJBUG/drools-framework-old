@@ -15,8 +15,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <drools.version>6.2.0-SNAPSHOT</drools.version>
-        <jbpm.version>6.2.0-SNAPSHOT</jbpm.version>
+        <drools.version>6.2.0.CR3</drools.version>
+        <jbpm.version>6.1.0.Final</jbpm.version>
         <powermock.version>1.4.12</powermock.version>
         <jackson.version>2.3.1</jackson.version>
         <guvnor.version>6.2.0-SNAPSHOT</guvnor.version>
@@ -128,9 +128,8 @@
         <module>drools-framework-runtime-entity</module>
         <!--module>drools-framework-rest-guvnor</module-->
         <module>drools-service-runner-archetype</module>
-        <!--module>maven-guvnor-install-pojo-plugin</module-->
-        <!--module>drools-runner-generator</module-->
-        <module>drools-framework-kie-wb-parent</module>
+        <module>maven-guvnor-install-pojo-plugin</module>
+        <module>drools-runner-generator</module>
     </modules>
 
 

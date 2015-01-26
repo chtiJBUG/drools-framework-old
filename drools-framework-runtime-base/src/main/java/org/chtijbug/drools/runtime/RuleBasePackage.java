@@ -17,8 +17,6 @@ package org.chtijbug.drools.runtime;
 
 import org.chtijbug.drools.runtime.listener.HistoryListener;
 
-import java.util.List;
-
 /**
  * @author nheron
  */
@@ -29,8 +27,6 @@ public interface RuleBasePackage {
 
     RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute) throws DroolsChtijbugException;
 
-    public void createKBase(String groupId, String artifactId, String version) throws DroolsChtijbugException;
-
     public void loadKBase(String version) throws DroolsChtijbugException;
 
     public HistoryListener getHistoryListener();
@@ -39,5 +35,4 @@ public interface RuleBasePackage {
 
     public void dispose();
 
-    void createKBase(List<String> filenames);
 }

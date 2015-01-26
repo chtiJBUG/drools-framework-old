@@ -38,11 +38,13 @@ import static com.google.common.base.Throwables.propagate;
  * @author Bertrand Gressier
  */
 public class RuleBaseSingleton implements RuleBasePackage {
-    /** Class Logger */
-    private static Logger logger = LoggerFactory.getLogger(RuleBaseSingleton.class);
     /** default rule threshold */
     public static int DEFAULT_RULE_THRESHOLD = 2000;
-    /**  Rule Base ID */
+    /** Class Logger */
+    private static Logger logger = LoggerFactory.getLogger(RuleBaseSingleton.class);
+    /** unique ID of the RuleBase in the JVM */
+    protected static EventCounter ruleBaseCounter = EventCounter.newCounter();
+    /** Rule Base ID */
     private Long ruleBaseID;
     private KieContainer kieContainer;
     private ReleaseId releaseId;
@@ -54,12 +56,8 @@ public class RuleBaseSingleton implements RuleBasePackage {
     /** History Listener */
     private HistoryListener historyListener = null;
     /** unique ID of the RuleBase in the JVM */
-    protected static EventCounter ruleBaseCounter = EventCounter.newCounter();
-    /** unique ID of the RuleBase in the JVM */
     protected EventCounter eventCounter = EventCounter.newCounter();
     protected EventCounter sessionCounter = EventCounter.newCounter();
-
-
 
     public RuleBaseSingleton(int maxNumberRulesToExecute, HistoryListener historyListener, String modulePackage, String moduleName) throws DroolsChtijbugException {
         this.ruleBaseID = ruleBaseCounter.next();
@@ -71,7 +69,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
         this.knowledgeModule = new KnowledgeModule(this.ruleBaseID, this.historyListener, modulePackage, moduleName, eventCounter);
     }
-
 
     @Override
     public RuleBaseSession createRuleBaseSession() throws DroolsChtijbugException {
@@ -104,7 +101,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
                 knowledgeBaseCreateSessionEvent.setSessionId(sessionId);
                 this.historyListener.fireEvent(knowledgeBaseCreateSessionEvent);
             }
-
             //_____ Wrapping the knowledge Session
             newRuleBaseSession = new RuleBaseStatefulSession(this.ruleBaseID, sessionId, newDroolsSession, maxNumberRulesToExecute, this.historyListener);
             //_____ Release semaphore
@@ -116,31 +112,21 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
     }
 
-    public synchronized void createKBase(String packageName, String projectName, String version) throws DroolsChtijbugException {
+    public synchronized void createKBase(String version, String workbenchUrl, String username, String password) throws DroolsChtijbugException {
         if (kieContainer != null) {
             if (this.historyListener != null) {
-                KnowledgeBaseReloadedEvent knowledgeBaseReloadLoadEvent = new KnowledgeBaseReloadedEvent(eventCounter.next(), new Date(), this.ruleBaseID);
-                this.historyListener.fireEvent(knowledgeBaseReloadLoadEvent);
+                this.historyListener.fireEvent(new KnowledgeBaseReloadedEvent(eventCounter.next(), new Date(), this.ruleBaseID));
             }
             // TODO dispose all elements
         } else {
             if (this.historyListener != null) {
-                KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = new KnowledgeBaseInitialLoadEvent(eventCounter.next(), new Date(), this.ruleBaseID);
-                this.historyListener.fireEvent(knowledgeBaseInitialLoadEvent);
+                this.historyListener.fireEvent(new KnowledgeBaseInitialLoadEvent(eventCounter.next(), new Date(), this.ruleBaseID));
             }
         }
-
         try {
-            // TODO carrying on with refactoring
-            //this.releaseId = kieServices.newReleaseId(packageName, projectName, version);
-            //lockKbase.acquire();
-            //this.kieContainer = kieServices.newKieContainer(releaseId);
-            //lockKbase.release();
-            //if (this.historyListener != null) {
-                // TODO change the following event...
-            //    KnowledgeBaseAddResourceEvent knowledgeBaseAddResourceEvent = new KnowledgeBaseAddResourceEvent(EventCounter.Next(), new Date(), this.ruleBaseID, this.guvnor_url);
-            //    this.historyListener.fireEvent(knowledgeBaseAddResourceEvent);
-            //}
+            //___ TODO add URI Resource
+            this.knowledgeModule.addWorkbenchResource(version, workbenchUrl, username, password);
+            kieContainer = this.knowledgeModule.build();
         } catch (Exception e) {
             logger.error("error to load Agent", e);
             throw new DroolsChtijbugException(DroolsChtijbugException.ErrorToLoadAgent, "", e);
@@ -156,8 +142,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
             lockKbase.release();
             if (this.historyListener != null) {
                 // TODO change the following event...
-                KnowledgeBaseAddResourceEvent knowledgeBaseAddResourceEvent = new KnowledgeBaseAddResourceEvent(eventCounter.next(), new Date(), this.ruleBaseID);
-                this.historyListener.fireEvent(knowledgeBaseAddResourceEvent);
+                this.historyListener.fireEvent(new KnowledgeBaseAddResourceEvent(eventCounter.next(), new Date(), this.ruleBaseID));
             }
         } catch (InterruptedException e) {
             throw propagate(e);
@@ -176,23 +161,19 @@ public class RuleBaseSingleton implements RuleBasePackage {
     @Override
     public void dispose() {
         if (this.historyListener != null) {
-            KnowledgeBaseDisposeEvent knowledgeBaseDisposeEvent = new KnowledgeBaseDisposeEvent(eventCounter.next(), new Date(), this.ruleBaseID);
             try {
-                this.historyListener.fireEvent(knowledgeBaseDisposeEvent);
+                this.historyListener.fireEvent(new KnowledgeBaseDisposeEvent(eventCounter.next(), new Date(), this.ruleBaseID));
             } catch (DroolsChtijbugException e) {
                 throw propagate(e);
             }
-
         }
         this.kieContainer = null;
     }
 
-    @Override
     public void createKBase(List<String> filenames) {
         try {
             if (this.historyListener != null) {
-                KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = new KnowledgeBaseInitialLoadEvent(eventCounter.next(), new Date(), this.ruleBaseID);
-                this.historyListener.fireEvent(knowledgeBaseInitialLoadEvent);
+                this.historyListener.fireEvent(new KnowledgeBaseInitialLoadEvent(eventCounter.next(), new Date(), this.ruleBaseID));
             }
             lockKbase.acquire();
             this.knowledgeModule.addAllFiles(filenames);

@@ -11,12 +11,24 @@ import org.guvnor.structure.repositories.Repository;
 import org.guvnor.structure.repositories.RepositoryService;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.slf4j.LoggerFactory;
+import org.uberfire.backend.server.util.*;
+import org.uberfire.backend.server.util.Paths;
+import org.uberfire.backend.vfs.*;
+
 import org.uberfire.io.IOService;
 import org.kie.workbench.common.services.shared.project.KieProjectService;
+import org.uberfire.java.nio.file.*;
+import org.uberfire.java.nio.file.DirectoryStream;
+import org.uberfire.java.nio.file.FileSystem;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.*;
+import javax.ws.rs.Path;
+import javax.ws.rs.Path;
+import javax.ws.rs.Path;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -48,6 +60,8 @@ public class PackageResource {
 
     @Inject
     private KieProjectService kieProjectService;
+
+    private RestTypeDefinition dotFileFilter = new RestTypeDefinition();
 
     @GET
     @Path("{organizationalUnitName}/{repositoryName}")
@@ -83,32 +97,29 @@ public class PackageResource {
                 if (repository.getAlias().equals(repositoryName)) {
                     String branch = repository.getCurrentBranch();
                     Set<Project> projects = projectService.getProjects(repository, branch);
-                    for (Project project : projects){
-                        if (project.getProjectName().equals(packageName)){
+                    for (Project project : projects) {
+                        if (project.getProjectName().equals(packageName)) {
 
-                            //ioService.readAllString()
+                            org.uberfire.backend.vfs.Path rootPath = project.getRootPath();
+                            org.uberfire.java.nio.file.Path goodRootPath = Paths.convert(rootPath);
+                            DirectoryStream<org.uberfire.java.nio.file.Path> directoryStream = ioService.newDirectoryStream(goodRootPath);
+                            for (org.uberfire.java.nio.file.Path elementPath : directoryStream){
+                                if (org.uberfire.java.nio.file.Files.isDirectory(elementPath)){
+
+                                }else {
+                                    if (dotFileFilter.accept(Paths.convert(elementPath))) {
+                                        Map<String, Object> listAttributes = ioService.readAttributes(elementPath);
+                                        //ioService.
+                                    }
+                                }
+                            }
+
                         }
+                        System.out.print("hh");
                     }
                 }
             }
-            /**
-           ModuleItem p = rulesRepository.loadModule(packageName);
 
-            Iterator<AssetItem> iter = null;
-
-            if (formats.isEmpty()){
-                //no format specified? Return all assets
-                iter = p.getAssets();
-            }else{
-                //if the format is specified, return only the assets of
-                //the specified formats.
-                iter = p.listAssetsByFormat(formats);
-            }
-
-            while (iter.hasNext()) {
-                ret.add(toAsset(iter.next(), uriInfo));
-            }
-             **/
             return ret;
         } catch (RuntimeException e) {
             throw new WebApplicationException(e);

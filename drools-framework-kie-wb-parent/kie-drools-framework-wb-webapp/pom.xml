@@ -159,6 +159,12 @@
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-m2repo-editor-client</artifactId>
             <version>${guvnor.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>guava-gwt</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
@@ -544,6 +550,11 @@
             <artifactId>drools-wb-workitems-editor-backend</artifactId>
             <version>${guvnor.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.kie.uberfire</groupId>
+            <artifactId>kie-uberfire-social-activities-api</artifactId>
+            <version>${guvnor.version}</version>
+        </dependency>
 
         <!-- jBPM Designer -->
         <dependency>
@@ -605,6 +616,12 @@
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-workbench-client</artifactId>
             <version>${version.org.uberfire}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>guava-gwt</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
@@ -667,6 +684,7 @@
             <artifactId>uberfire-apps-backend</artifactId>
             <version>${version.org.uberfire}</version>
         </dependency>
+
 
         <!-- Search -->
         <dependency>
@@ -791,11 +809,11 @@
         </dependency>
 
         <!-- Kie-Drools platform REST api -->
-        <!--dependency>
+        <dependency>
             <groupId>org.chtijbug.drools</groupId>
             <artifactId>kie-drools-framework-rest-backend</artifactId>
             <version>${project.version}</version>
-        </dependency-->
+        </dependency>
 
         <!-- REST -->
         <dependency>
@@ -1042,6 +1060,7 @@
 
         <pluginManagement>
             <plugins>
+
                 <plugin>
                     <!-- Default configuration used for FastCompiled build. Includes the common GWT source artifacts and plugin
                          config. Product X community specific artifacts (e.g. home page) are specified using
@@ -1221,6 +1240,7 @@
                             <compileSourcesArtifact>org.uberfire:uberfire-runtime-plugins-client
                             </compileSourcesArtifact>
                             <compileSourcesArtifact>org.uberfire:uberfire-apps-client</compileSourcesArtifact>
+
                         </compileSourcesArtifacts>
                     </configuration>
                 </plugin>
@@ -1313,6 +1333,7 @@
             <build>
                 <pluginManagement>
                     <plugins>
+
                         <plugin>
                             <groupId>org.codehaus.mojo</groupId>
                             <artifactId>gwt-maven-plugin</artifactId>
@@ -1327,6 +1348,7 @@
                                     <compileSourcesArtifact>org.kie.workbench.screens:kie-wb-common-home-client
                                     </compileSourcesArtifact>
                                 </compileSourcesArtifacts>
+
                             </configuration>
                         </plugin>
                     </plugins>
@@ -1366,6 +1388,7 @@
                                     </compileSourcesArtifact>
                                     <compileSourcesArtifact>org.kie:kie-wb-distribution-home-client
                                     </compileSourcesArtifact>
+                                    <compileSourcesArtifact></compileSourcesArtifact>
                                 </compileSourcesArtifacts>
                             </configuration>
                         </plugin>

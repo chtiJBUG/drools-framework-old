@@ -15,19 +15,19 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <drools.version>6.2.0.CR3</drools.version>
-        <jbpm.version>6.1.0.Final</jbpm.version>
+        <drools.version>6.2.0.CR4</drools.version>
+        <jbpm.version>6.2.0.CR4</jbpm.version>
         <powermock.version>1.4.12</powermock.version>
         <jackson.version>2.3.1</jackson.version>
-        <guvnor.version>6.2.0-SNAPSHOT</guvnor.version>
-        <kie.wb.version>6.2.0-SNAPSHOT</kie.wb.version>
-        <version.org.uberfire>0.5.0-SNAPSHOT</version.org.uberfire>
+        <guvnor.version>6.2.0.CR4</guvnor.version>
+        <kie.wb.version>6.2.0.CR4</kie.wb.version>
+        <version.org.uberfire>0.5.0.CR10</version.org.uberfire>
         <version.org.jboss.errai>3.0.4.Final</version.org.jboss.errai>
         <version.com.google.gwt>2.5.1</version.com.google.gwt>
         <version>${kie.wb.version}</version>
         <version.org.mortbay.jetty>6.1.25</version.org.mortbay.jetty>
         <version.org.jboss.resteasy>2.3.7.Final</version.org.jboss.resteasy>
-        <version.org.jboss.weld.weld>1.1.25.Final</version.org.jboss.weld.weld>
+        <version.org.jboss.weld.weld>1.1.23.Final</version.org.jboss.weld.weld>
         <version.com.github.gwtbootstrap>2.2.1.0</version.com.github.gwtbootstrap>
         <version.org.owasp.encoder>1.1</version.org.owasp.encoder>
         <version.org.osgi>4.3.1</version.org.osgi>
@@ -39,6 +39,8 @@
         <version.com.h2database>1.3.168</version.com.h2database>
         <version.org.codehaus.btm>2.1.4</version.org.codehaus.btm>
         <version.org.apache.lucene>4.1.0</version.org.apache.lucene>
+        <version.org.apache.cxf>2.7.10</version.org.apache.cxf>
+
 
 
 
@@ -130,6 +132,7 @@
         <module>drools-service-runner-archetype</module>
         <module>maven-guvnor-install-pojo-plugin</module>
         <module>drools-runner-generator</module>
+        <module>drools-framework-kie-wb-parent</module>
     </modules>
 
 
@@ -232,11 +235,6 @@
                 <groupId>org.kie</groupId>
                 <artifactId>kie-api</artifactId>
                 <version>${drools.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.chtijbug.drools</groupId>
-                <artifactId>droolsjbpm-ide-common</artifactId>
-                <version>${guvnor.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>

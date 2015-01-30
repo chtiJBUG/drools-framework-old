@@ -17,6 +17,7 @@ package com.pymmasoftware.platform.login.loginmodule;
 
 import com.pymmasoftware.platform.login.loginmodule.principal.DroolsGroup;
 import com.pymmasoftware.platform.login.loginmodule.principal.DroolsPrincipal;
+import com.pymmasoftware.platform.login.loginmodule.principal.DroolsRole;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 
@@ -165,6 +166,7 @@ public class DroolsLoginModule implements LoginModule {
                     i = 0;
                     for (DroolsGroup droolsGroup : droolsGroups) {
                         roles[i] = droolsGroup;
+                        i++;
                     }
                 }
                 succeeded = true;
@@ -188,9 +190,12 @@ public class DroolsLoginModule implements LoginModule {
         // jboss requires the name 'Roles'
         DroolsGroup group = new DroolsGroup("Roles");
         for (DroolsGroup role : roles) {
-            group.addMember(role);
+           // group.addMember(role);
+            DroolsRole droolsRole = new DroolsRole(role.getName());
+            subject.getPrincipals().add(droolsRole);
         }
         subject.getPrincipals().add(group);
+        subject.getPrivateCredentials().add(password);
 
         return true;
     }

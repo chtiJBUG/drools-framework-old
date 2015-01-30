@@ -53,11 +53,8 @@ public class DroolsGroup implements Group, Serializable {
     public String getName() {
         return name;
     }
-
-    public boolean equals(Object o) {
-        // you are smart enough to write this; just compare the name
-        return true;
+    @Override
+    public String toString() {
+        return getName();
     }
-
-    // yeah, write your own hashCode method too
 }

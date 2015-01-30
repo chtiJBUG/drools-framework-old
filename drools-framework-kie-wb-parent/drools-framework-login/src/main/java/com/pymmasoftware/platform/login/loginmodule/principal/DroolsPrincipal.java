@@ -47,5 +47,8 @@ public class DroolsPrincipal implements Principal, Serializable {
         // TODO Auto-generated method stub
         return this.name;
     }
-
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

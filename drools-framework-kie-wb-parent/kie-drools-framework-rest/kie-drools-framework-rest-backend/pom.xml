@@ -10,7 +10,7 @@
 
   <artifactId>kie-drools-framework-rest-backend</artifactId>
   <packaging>jar</packaging>
-  
+
   <name>kie drools Framework - REST Backend</name>
   <description>kie drools Framework - REST Backend</description>
 
@@ -113,7 +113,7 @@
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
       <artifactId>resteasy-cdi</artifactId>
-                <version>${version.org.jboss.resteasy}</version>
+        <version>${version.org.jboss.resteasy}</version>
       <exclusions>
         <exclusion>
           <groupId>org.jboss.resteasy</groupId>
@@ -121,7 +121,11 @@
         </exclusion>
       </exclusions>
     </dependency>
-
+      <dependency>
+          <groupId>org.jboss.resteasy</groupId>
+          <artifactId>resteasy-jaxb-provider</artifactId>
+          <version>${version.org.jboss.resteasy}</version>
+      </dependency>
     <!-- async processing using jbpm executor -->
     <dependency>
       <groupId>org.jbpm</groupId>

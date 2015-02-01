@@ -66,14 +66,24 @@ public class PackageResource {
     @GET
     @Path("{organizationalUnitName}/{repositoryName}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Collection<Project> getPackagesAsJAXB( @PathParam("organizationalUnitName") String organizationalUnitName, @PathParam("repositoryName") String repositoryName) {
+    public Collection<Package> getPackagesAsJAXB( @PathParam("organizationalUnitName") String organizationalUnitName, @PathParam("repositoryName") String repositoryName) {
         OrganizationalUnit organizationalUnit = organizationalUnitService.getOrganizationalUnit(organizationalUnitName);
         Collection<Repository> repositories = organizationalUnit.getRepositories();
         for (Repository repository : repositories){
             if (repository.getAlias().equals(repositoryName)) {
                 String branch = repository.getCurrentBranch();
                 Set<Project> projects = projectService.getProjects(repository, branch);
-                return projects;
+                Collection<Package> packages = new ArrayList<>();
+                for (Project project : projects){
+                    Package aPackage = new Package();
+                    aPackage.setTitle(project.getProjectName());
+                    aPackage.setGroupID(project.getPom().getGav().getGroupId());
+                    aPackage.setArtifactID(project.getPom().getGav().getArtifactId());
+                    aPackage.setVersion(project.getPom().getGav().getVersion());
+                    aPackage.getModules().addAll(project.getModules());
+                    packages.add(aPackage);
+                }
+                return packages;
             }
         }
         return null;
@@ -87,10 +97,7 @@ public class PackageResource {
             @PathParam("packageName") String packageName,
             @QueryParam("format") List<String> formats) {
         try {
-            List<Asset> ret = new ArrayList<Asset>();
-
-
-
+            List<Asset> contentList = new LinkedList<>();
             OrganizationalUnit organizationalUnit = organizationalUnitService.getOrganizationalUnit(organizationalUnitName);
             Collection<Repository> repositories = organizationalUnit.getRepositories();
             for (Repository repository : repositories){
@@ -103,49 +110,73 @@ public class PackageResource {
                             org.uberfire.backend.vfs.Path rootPath = project.getRootPath();
                             org.uberfire.java.nio.file.Path goodRootPath = Paths.convert(rootPath);
                             DirectoryStream<org.uberfire.java.nio.file.Path> directoryStream = ioService.newDirectoryStream(goodRootPath);
-                            for (org.uberfire.java.nio.file.Path elementPath : directoryStream){
-                                if (org.uberfire.java.nio.file.Files.isDirectory(elementPath)){
-
-                                }else {
-                                    if (dotFileFilter.accept(Paths.convert(elementPath))) {
-                                        Map<String, Object> listAttributes = ioService.readAttributes(elementPath);
-                                        //ioService.
-                                    }
-                                }
-                            }
-
+                            getContent(directoryStream,contentList);
                         }
-                        System.out.print("hh");
                     }
                 }
             }
 
-            return ret;
+            return contentList;
         } catch (RuntimeException e) {
             throw new WebApplicationException(e);
         }
     }
+
+    private void getContent (DirectoryStream<org.uberfire.java.nio.file.Path> directoryStream,Collection<Asset> contentList){
+        for (org.uberfire.java.nio.file.Path elementPath : directoryStream){
+            if (org.uberfire.java.nio.file.Files.isDirectory(elementPath)){
+                DirectoryStream<org.uberfire.java.nio.file.Path> adirectoryStream = ioService.newDirectoryStream(elementPath);
+                getContent(adirectoryStream, contentList);
+            }else {
+                if (dotFileFilter.accept(Paths.convert(elementPath))) {
+                    Map<String, Object> listAttributes = ioService.readAttributes(elementPath);
+                    Asset asset = new Asset();
+                    asset.setTitle(elementPath.getFileName().toString());
+                    asset.setDirectory(elementPath.getParent().toString());
+                    asset.setRefLink(elementPath.getFileName().toUri());
+                    contentList.add(asset);
+                }
+            }
+        }
+    }
+
     @GET
     @Path("{organizationalUnitName}/{repositoryName}/{packageName}/assets/{assetName}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 
-    public Asset getAssetAsJaxB(
+    public Collection<Asset> getAssetAsJaxB(
             @PathParam("organizationalUnitName") String organizationalUnitName, @PathParam("repositoryName") String repositoryName,
             @PathParam("packageName") String packageName, @PathParam("assetName") String assetName) {
-       /**
-        if (!assetExists(packageName, assetName)) {
-            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("Asset [" + assetName + "] of package [" + packageName + "] does not exist").build());
-        }
+        List<Asset> resultList = new LinkedList<>();
         try {
-            //Throws RulesRepositoryException if the package or asset does not exist
-            AssetItem asset = rulesRepository.loadModule(packageName).loadAsset(assetName);
-            return toAsset(asset, uriInfo);
-        } catch (RuntimeException e) {
-            throw new WebApplicationException(e);
+            OrganizationalUnit organizationalUnit = organizationalUnitService.getOrganizationalUnit(organizationalUnitName);
+            Collection<Repository> repositories = organizationalUnit.getRepositories();
+            for (Repository repository : repositories) {
+                if (repository.getAlias().equals(repositoryName)) {
+                    String branch = repository.getCurrentBranch();
+                    Set<Project> projects = projectService.getProjects(repository, branch);
+                    for (Project project : projects) {
+                        if (project.getProjectName().equals(packageName)) {
+                            List<Asset> contentList = new LinkedList<>();
+                            org.uberfire.backend.vfs.Path rootPath = project.getRootPath();
+                            org.uberfire.java.nio.file.Path goodRootPath = Paths.convert(rootPath);
+                            DirectoryStream<org.uberfire.java.nio.file.Path> directoryStream = ioService.newDirectoryStream(goodRootPath);
+                            getContent(directoryStream, contentList);
+                            for (Asset asset : contentList){
+                                if (asset.getTitle().equals(assetName)){
+                                    resultList.add(asset);
+                                }
+                            }
+                        }
+                    }
+            }
         }
-        **/
-        return null;
+
+        return resultList;
+    } catch (RuntimeException e) {
+        throw new WebApplicationException(e);
+    }
+
     }
     @PUT
     @Path("{organizationalUnitName}/{repositoryName}/{packageName}/assets/{assetName}")

@@ -233,6 +233,13 @@
             <version>${kie.wb.version}</version>
         </dependency>
 
+        <!-- chtijbug REST -->
+        <dependency>
+            <groupId>org.chtijbug.drools</groupId>
+            <artifactId>kie-drools-framework-rest-backend </artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- Guvnor REST -->
         <dependency>
             <groupId>org.guvnor</groupId>

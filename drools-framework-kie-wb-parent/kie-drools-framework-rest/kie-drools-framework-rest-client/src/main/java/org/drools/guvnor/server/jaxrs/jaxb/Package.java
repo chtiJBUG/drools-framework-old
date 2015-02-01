@@ -19,7 +19,9 @@ package org.drools.guvnor.server.jaxrs.jaxb;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.net.URI;
+import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Set;
 
 @XmlRootElement()
@@ -30,38 +32,13 @@ public class Package {
     private String author;    
     private Date published;
 
-    private URI binaryLink, sourceLink;
-
-    private Set<URI> assets;
+    private Collection<String> modules = new LinkedList<>();
 
     private PackageMetadata metadata;
 
-    @XmlElement
-    public URI getBinaryLink() {
-        return binaryLink;
-    }
-
-    public void setBinaryLink(URI binaryLink) {
-        this.binaryLink = binaryLink;
-    }
-
-    @XmlElement
-    public URI getSourceLink() {
-        return sourceLink;
-    }
-
-    public void setSourceLink(URI sourceLink) {
-        this.sourceLink = sourceLink;
-    }
-/*
-    @XmlElement()
-    public String getSnapshot() {
-        return snapshot;
-    }
-
-    public void setSnapshot(String snapshot) {
-        this.snapshot = snapshot;
-    }*/
+    private String groupID;
+    private String artifactID;
+    private String version;
 
     @XmlElement
     public String getTitle() {
@@ -99,14 +76,7 @@ public class Package {
         this.published = published;
     }
 
-    @XmlElement
-    public Set<URI> getAssets() {
-        return assets;
-    }
 
-    public void setAssets(Set<URI> assets) {
-        this.assets = assets;
-    }
 
     @XmlElement
     public PackageMetadata getMetadata() {
@@ -116,5 +86,36 @@ public class Package {
     public void setMetadata(PackageMetadata metadata) {
         this.metadata = metadata;
     }
+    @XmlElement
+    public String getVersion() {
+        return version;
+    }
 
+    public void setVersion(String version) {
+        this.version = version;
+    }
+    @XmlElement
+    public String getGroupID() {
+        return groupID;
+    }
+
+    public void setGroupID(String groupID) {
+        this.groupID = groupID;
+    }
+    @XmlElement
+    public String getArtifactID() {
+        return artifactID;
+    }
+
+    public void setArtifactID(String artifactID) {
+        this.artifactID = artifactID;
+    }
+    @XmlElement
+    public Collection<String> getModules() {
+        return modules;
+    }
+
+    public void setModules(Collection<String> modules) {
+        this.modules = modules;
+    }
 }

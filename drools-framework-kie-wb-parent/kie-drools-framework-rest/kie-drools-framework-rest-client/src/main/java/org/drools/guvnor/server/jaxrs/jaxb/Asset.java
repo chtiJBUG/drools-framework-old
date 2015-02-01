@@ -33,6 +33,7 @@ public class Asset {
     private URI binaryLink, sourceLink, refLink;
     
     private AssetMetadata metadata;
+    private String directory;
 
     @XmlElement
     public URI getBinaryLink() {
@@ -115,4 +116,11 @@ public class Asset {
         this.metadata = metadata;
     }
 
+    public void setDirectory(String directory) {
+        this.directory = directory;
+    }
+    @XmlElement
+    public String getDirectory() {
+        return directory;
+    }
 }

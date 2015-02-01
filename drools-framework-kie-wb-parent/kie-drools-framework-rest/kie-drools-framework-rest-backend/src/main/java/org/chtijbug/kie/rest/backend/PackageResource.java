@@ -1,6 +1,5 @@
 package org.chtijbug.kie.rest.backend;
 
-import org.apache.camel.Headers;
 import org.drools.guvnor.server.jaxrs.jaxb.*;
 import org.drools.guvnor.server.jaxrs.jaxb.Package;
 import org.guvnor.common.services.project.model.Project;
@@ -11,28 +10,21 @@ import org.guvnor.structure.repositories.Repository;
 import org.guvnor.structure.repositories.RepositoryService;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.slf4j.LoggerFactory;
-import org.uberfire.backend.server.util.*;
 import org.uberfire.backend.server.util.Paths;
-import org.uberfire.backend.vfs.*;
 
 import org.uberfire.io.IOService;
 import org.kie.workbench.common.services.shared.project.KieProjectService;
-import org.uberfire.java.nio.file.*;
 import org.uberfire.java.nio.file.DirectoryStream;
-import org.uberfire.java.nio.file.FileSystem;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.*;
 import javax.ws.rs.Path;
-import javax.ws.rs.Path;
-import javax.ws.rs.Path;
-import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.*;
 
 @Path("/packages")
@@ -66,15 +58,15 @@ public class PackageResource {
     @GET
     @Path("{organizationalUnitName}/{repositoryName}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Collection<Package> getPackagesAsJAXB( @PathParam("organizationalUnitName") String organizationalUnitName, @PathParam("repositoryName") String repositoryName) {
+    public Collection<Package> getPackagesAsJAXB(@PathParam("organizationalUnitName") String organizationalUnitName, @PathParam("repositoryName") String repositoryName) {
         OrganizationalUnit organizationalUnit = organizationalUnitService.getOrganizationalUnit(organizationalUnitName);
         Collection<Repository> repositories = organizationalUnit.getRepositories();
-        for (Repository repository : repositories){
+        for (Repository repository : repositories) {
             if (repository.getAlias().equals(repositoryName)) {
                 String branch = repository.getCurrentBranch();
                 Set<Project> projects = projectService.getProjects(repository, branch);
                 Collection<Package> packages = new ArrayList<>();
-                for (Project project : projects){
+                for (Project project : projects) {
                     Package aPackage = new Package();
                     aPackage.setTitle(project.getProjectName());
                     aPackage.setGroupID(project.getPom().getGav().getGroupId());
@@ -98,23 +90,16 @@ public class PackageResource {
             @QueryParam("format") List<String> formats) {
         try {
             List<Asset> contentList = new LinkedList<>();
-            OrganizationalUnit organizationalUnit = organizationalUnitService.getOrganizationalUnit(organizationalUnitName);
-            Collection<Repository> repositories = organizationalUnit.getRepositories();
-            for (Repository repository : repositories){
-                if (repository.getAlias().equals(repositoryName)) {
-                    String branch = repository.getCurrentBranch();
-                    Set<Project> projects = projectService.getProjects(repository, branch);
-                    for (Project project : projects) {
-                        if (project.getProjectName().equals(packageName)) {
+            Project project = getProject(organizationalUnitName, repositoryName, packageName);
 
-                            org.uberfire.backend.vfs.Path rootPath = project.getRootPath();
-                            org.uberfire.java.nio.file.Path goodRootPath = Paths.convert(rootPath);
-                            DirectoryStream<org.uberfire.java.nio.file.Path> directoryStream = ioService.newDirectoryStream(goodRootPath);
-                            getContent(directoryStream,contentList);
-                        }
-                    }
-                }
+            if (project != null && project.getProjectName().equals(packageName)) {
+
+                org.uberfire.backend.vfs.Path rootPath = project.getRootPath();
+                org.uberfire.java.nio.file.Path goodRootPath = Paths.convert(rootPath);
+                DirectoryStream<org.uberfire.java.nio.file.Path> directoryStream = ioService.newDirectoryStream(goodRootPath);
+                getContent(directoryStream, contentList);
             }
+
 
             return contentList;
         } catch (RuntimeException e) {
@@ -122,12 +107,29 @@ public class PackageResource {
         }
     }
 
-    private void getContent (DirectoryStream<org.uberfire.java.nio.file.Path> directoryStream,Collection<Asset> contentList){
-        for (org.uberfire.java.nio.file.Path elementPath : directoryStream){
-            if (org.uberfire.java.nio.file.Files.isDirectory(elementPath)){
+    private Project getProject(String organizationalUnitName, String repositoryName, String packageName) {
+        OrganizationalUnit organizationalUnit = organizationalUnitService.getOrganizationalUnit(organizationalUnitName);
+        Collection<Repository> repositories = organizationalUnit.getRepositories();
+        for (Repository repository : repositories) {
+            if (repository.getAlias().equals(repositoryName)) {
+                String branch = repository.getCurrentBranch();
+                Set<Project> projects = projectService.getProjects(repository, branch);
+                for (Project project : projects) {
+                    if (project.getProjectName().equals(packageName)) {
+                        return project;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private void getContent(DirectoryStream<org.uberfire.java.nio.file.Path> directoryStream, Collection<Asset> contentList) {
+        for (org.uberfire.java.nio.file.Path elementPath : directoryStream) {
+            if (org.uberfire.java.nio.file.Files.isDirectory(elementPath)) {
                 DirectoryStream<org.uberfire.java.nio.file.Path> adirectoryStream = ioService.newDirectoryStream(elementPath);
                 getContent(adirectoryStream, contentList);
-            }else {
+            } else {
                 if (dotFileFilter.accept(Paths.convert(elementPath))) {
                     Map<String, Object> listAttributes = ioService.readAttributes(elementPath);
                     Asset asset = new Asset();
@@ -140,6 +142,39 @@ public class PackageResource {
         }
     }
 
+    private org.uberfire.java.nio.file.Path getFileElementPath(DirectoryStream<org.uberfire.java.nio.file.Path> directoryStream, String assetName) {
+        for (org.uberfire.java.nio.file.Path elementPath : directoryStream) {
+            if (org.uberfire.java.nio.file.Files.isDirectory(elementPath)) {
+                DirectoryStream<org.uberfire.java.nio.file.Path> adirectoryStream = ioService.newDirectoryStream(elementPath);
+                org.uberfire.java.nio.file.Path foundElementPath = getFileElementPath(adirectoryStream, assetName);
+                if (foundElementPath != null) {
+                    return foundElementPath;
+                }
+            } else {
+                if (dotFileFilter.accept(Paths.convert(elementPath))) {
+                    return elementPath;
+                }
+            }
+        }
+        return null;
+    }
+
+    private org.uberfire.java.nio.file.Path getDirectoryElementPath(DirectoryStream<org.uberfire.java.nio.file.Path> directoryStream, String assetName) {
+        for (org.uberfire.java.nio.file.Path elementPath : directoryStream) {
+            if (org.uberfire.java.nio.file.Files.isDirectory(elementPath)) {
+                DirectoryStream<org.uberfire.java.nio.file.Path> adirectoryStream = ioService.newDirectoryStream(elementPath);
+                if (elementPath.getFileName().toString().equals(assetName)) {
+                    return elementPath;
+                }
+                org.uberfire.java.nio.file.Path foundElementPath = getDirectoryElementPath(adirectoryStream, assetName);
+                if (foundElementPath != null) {
+                    return foundElementPath;
+                }
+            }
+        }
+        return null;
+    }
+
     @GET
     @Path("{organizationalUnitName}/{repositoryName}/{packageName}/assets/{assetName}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -149,35 +184,26 @@ public class PackageResource {
             @PathParam("packageName") String packageName, @PathParam("assetName") String assetName) {
         List<Asset> resultList = new LinkedList<>();
         try {
-            OrganizationalUnit organizationalUnit = organizationalUnitService.getOrganizationalUnit(organizationalUnitName);
-            Collection<Repository> repositories = organizationalUnit.getRepositories();
-            for (Repository repository : repositories) {
-                if (repository.getAlias().equals(repositoryName)) {
-                    String branch = repository.getCurrentBranch();
-                    Set<Project> projects = projectService.getProjects(repository, branch);
-                    for (Project project : projects) {
-                        if (project.getProjectName().equals(packageName)) {
-                            List<Asset> contentList = new LinkedList<>();
-                            org.uberfire.backend.vfs.Path rootPath = project.getRootPath();
-                            org.uberfire.java.nio.file.Path goodRootPath = Paths.convert(rootPath);
-                            DirectoryStream<org.uberfire.java.nio.file.Path> directoryStream = ioService.newDirectoryStream(goodRootPath);
-                            getContent(directoryStream, contentList);
-                            for (Asset asset : contentList){
-                                if (asset.getTitle().equals(assetName)){
-                                    resultList.add(asset);
-                                }
-                            }
-                        }
+            Project project = getProject(organizationalUnitName, repositoryName, packageName);
+            if (project != null && project.getProjectName().equals(packageName)) {
+                List<Asset> contentList = new LinkedList<>();
+                org.uberfire.backend.vfs.Path rootPath = project.getRootPath();
+                org.uberfire.java.nio.file.Path goodRootPath = Paths.convert(rootPath);
+                DirectoryStream<org.uberfire.java.nio.file.Path> directoryStream = ioService.newDirectoryStream(goodRootPath);
+                getContent(directoryStream, contentList);
+                for (Asset asset : contentList) {
+                    if (asset.getTitle().equals(assetName)) {
+                        resultList.add(asset);
                     }
+                }
             }
+            return resultList;
+        } catch (RuntimeException e) {
+            throw new WebApplicationException(e);
         }
 
-        return resultList;
-    } catch (RuntimeException e) {
-        throw new WebApplicationException(e);
     }
 
-    }
     @PUT
     @Path("{organizationalUnitName}/{repositoryName}/{packageName}/assets/{assetName}")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -185,69 +211,47 @@ public class PackageResource {
             @PathParam("organizationalUnitName") String organizationalUnitName, @PathParam("repositoryName") String repositoryName,
             @PathParam("packageName") String packageName,
             @PathParam("assetName") String assetName, Asset asset) {
-        /**
         try {
-            Throws RulesRepositoryException if the package or asset does not exist
-            AssetItem ai = rulesRepository.loadModule(packageName).loadAsset(assetName);
+            Project project = getProject(organizationalUnitName, repositoryName, packageName);
 
-            ai.checkout();
-            ai.updateTitle(asset.getTitle());
-            ai.updateDescription(asset.getDescription());
-            ai.updateValid(assetValidator.validate(ai));
-            if (asset.getMetadata() != null){
-                AssetMetadata assetMetadata = asset.getMetadata();
-                if (assetMetadata.getState() != null) {
-                    ai.updateState(assetMetadata.getState());
-                }
-                if (assetMetadata.getCategories()!= null){
-                    ai.updateCategoryList(assetMetadata.getCategories());
-                }
-                ai.updateDisabled(assetMetadata.isDisabled());
+            if (project != null && project.getProjectName().equals(packageName)) {
+                org.uberfire.backend.vfs.Path rootPath = project.getRootPath();
+                org.uberfire.java.nio.file.Path goodRootPath = Paths.convert(rootPath);
+                DirectoryStream<org.uberfire.java.nio.file.Path> directoryStream = ioService.newDirectoryStream(goodRootPath);
+                org.uberfire.java.nio.file.Path elementToUpdate = getFileElementPath(directoryStream, assetName);
+                //What To DO ?
             }
-            if (AssetFormats.affectsBinaryUpToDate(ai.getFormat())) {
-                ModuleItem pkg = ai.getModule();
-                pkg.updateBinaryUpToDate(false);
-                RuleBaseCache.getInstance().remove(pkg.getUUID());
-            }
-            ai.checkin(asset.getMetadata().getCheckInComment());
-            rulesRepository.save();
         } catch (RuntimeException e) {
             throw new WebApplicationException(e);
         }
-         **/
     }
+
     @POST
     @Path("{organizationalUnitName}/{repositoryName}/{packageName}/assets")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Asset createAssetFromBinaryAndJAXB(
+    public Asset createAssetFromSourceAndJAXB(
             @PathParam("organizationalUnitName") String organizationalUnitName, @PathParam("repositoryName") String repositoryName,
-            @PathParam("packageName") String packageName, @MultipartForm AssetMultipartForm assetMultipartForm) {
-        /* Verify passed in asset object */
-        /**
-        if (assetMultipartForm == null || assetMultipartForm.getAsset() == null || assetMultipartForm.getAsset().getMetadata() == null ){
-            throw new WebApplicationException(Response.status(500).entity("Request must contain asset and metadata").build());
+            @PathParam("packageName") String packageName, Asset asset) {
+        try {
+            Project project = getProject(organizationalUnitName, repositoryName, packageName);
+            org.uberfire.backend.vfs.Path rootPath = project.getRootPath();
+            org.uberfire.java.nio.file.Path goodRootPath = Paths.convert(rootPath);
+            DirectoryStream<org.uberfire.java.nio.file.Path> directoryStream = ioService.newDirectoryStream(goodRootPath);
+
+            org.uberfire.java.nio.file.Path directoryWhereCreateAsset = getDirectoryElementPath(directoryStream, asset.getTitle());
+            org.uberfire.backend.vfs.Path newDirectoryPath = Paths.convert(directoryWhereCreateAsset);
+            final org.uberfire.java.nio.file.Path nioPath = Paths.convert(newDirectoryPath).resolve(asset.getTitle());
+            if (ioService.exists(nioPath)) {
+                throw new FileAlreadyExistsException(nioPath.toString());
+            }
+            // ioService.write(nioPath,asset.getContent().getBytes(),asset.getComment());
+        } catch (Exception e) {
+            throw new WebApplicationException(e);
         }
-        final String assetName = assetMultipartForm.getAsset().getTitle();
-
-
-        if (assetName == null) {
-            throw new WebApplicationException(Response.status(500).entity("Asset name must be specified (Asset.metadata.title)").build());
-        }
-
-        AssetItem ai = rulesRepository.loadModule(packageName).addAsset(assetName, assetMultipartForm.getAsset().getDescription());
-        ai.checkout();
-        ai.updateBinaryContentAttachmentFileName(assetMultipartForm.getAsset().getBinaryContentAttachmentFileName());
-        ai.updateFormat(assetMultipartForm.getAsset().getMetadata().getFormat());
-        ai.updateBinaryContentAttachment(assetMultipartForm.getBinary());
-        ai.getModule().updateBinaryUpToDate(false);
-        ai.updateValid(assetValidator.validate(ai));
-        ai.checkin(assetMultipartForm.getAsset().getMetadata().getCheckInComment());
-        rulesRepository.save();
-        return assetMultipartForm.getAsset();
-         **/
         return null;
     }
+
     @PUT
     @Path("{organizationalUnitName}/{repositoryName}/{packageName}/assets/{assetName}/source")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN})
@@ -258,17 +262,17 @@ public class PackageResource {
         try {
             //Throws RulesRepositoryException if the package or asset does not exist
             /**
-            AssetItem asset = rulesRepository.loadModule(packageName).loadAsset(assetName);
-            asset.checkout();
-            asset.updateContent(content);
-            asset.updateValid(assetValidator.validate(asset));
-            if (AssetFormats.affectsBinaryUpToDate(asset.getFormat())) {
-                ModuleItem pkg = asset.getModule();
-                pkg.updateBinaryUpToDate(false);
-                RuleBaseCache.getInstance().remove(pkg.getUUID());
-            }
-            asset.checkin("Updated asset source from REST interface");
-            rulesRepository.save();
+             AssetItem asset = rulesRepository.loadModule(packageName).loadAsset(assetName);
+             asset.checkout();
+             asset.updateContent(content);
+             asset.updateValid(assetValidator.validate(asset));
+             if (AssetFormats.affectsBinaryUpToDate(asset.getFormat())) {
+             ModuleItem pkg = asset.getModule();
+             pkg.updateBinaryUpToDate(false);
+             RuleBaseCache.getInstance().remove(pkg.getUUID());
+             }
+             asset.checkin("Updated asset source from REST interface");
+             rulesRepository.save();
              **/
         } catch (RuntimeException e) {
             throw new WebApplicationException(e);

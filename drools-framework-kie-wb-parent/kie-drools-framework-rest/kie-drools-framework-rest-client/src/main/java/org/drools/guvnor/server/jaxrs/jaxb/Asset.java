@@ -28,12 +28,13 @@ public class Asset {
     private String title;
     private String binaryContentAttachmentFileName;
     private String description;
-    private String author;    
+    private String author;
     private Date published;
     private URI binaryLink, sourceLink, refLink;
-    
+    private String content;
     private AssetMetadata metadata;
     private String directory;
+    private String comment;
 
     @XmlElement
     public URI getBinaryLink() {
@@ -52,7 +53,7 @@ public class Asset {
     public void setSourceLink(URI sourceLink) {
         this.sourceLink = sourceLink;
     }
-    
+
     @XmlElement
     public String getTitle() {
         return title;
@@ -88,7 +89,7 @@ public class Asset {
     public void setAuthor(String author) {
         this.author = author;
     }
-    
+
     @XmlElement
     public Date getPublished() {
         return published;
@@ -97,7 +98,7 @@ public class Asset {
     public void setPublished(Date published) {
         this.published = published;
     }
-    
+
     @XmlElement
     public URI getRefLink() {
         return refLink;
@@ -119,8 +120,27 @@ public class Asset {
     public void setDirectory(String directory) {
         this.directory = directory;
     }
+
     @XmlElement
     public String getDirectory() {
         return directory;
+    }
+
+    @XmlElement
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    @XmlElement
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

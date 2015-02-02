@@ -21,19 +21,11 @@ import org.apache.cxf.jaxrs.client.ClientConfiguration;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
-import org.chtijbug.drools.guvnor.rest.DateFormatTransformer;
 import org.chtijbug.drools.guvnor.rest.GuvnorRestApi;
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
-import org.simpleframework.xml.transform.RegistryMatcher;
+import org.codehaus.jackson.map.ObjectMapper;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
-import retrofit.converter.SimpleXMLConverter;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static java.lang.String.format;
 
@@ -53,6 +45,14 @@ public class GuvnorConnexionConfiguration {
      */
     private String webappName;
     /**
+     * organizationalUnitName
+     */
+    private String organizationalUnitName;
+    /**
+     * repositoryName
+     */
+    private String repositoryName;
+    /**
      * The package name which contains all business assets
      */
     private String defaultPackageName;
@@ -67,9 +67,11 @@ public class GuvnorConnexionConfiguration {
 
     private static WebClient client = null;
 
-    public GuvnorConnexionConfiguration(String hostname, String webappName, String defaultPackageName, String username, String password) {
+    public GuvnorConnexionConfiguration(String hostname, String webappName, String organizationalUnitName,String repositoryName,String defaultPackageName, String username, String password) {
         this.hostname = hostname;
         this.webappName = webappName;
+        this.organizationalUnitName = organizationalUnitName;
+        this.repositoryName = repositoryName;
         this.defaultPackageName = defaultPackageName;
         this.username = username;
         this.password = password;
@@ -99,6 +101,14 @@ public class GuvnorConnexionConfiguration {
         return password;
     }
 
+    public String getOrganizationalUnitName() {
+        return organizationalUnitName;
+    }
+
+    public String getRepositoryName() {
+        return repositoryName;
+    }
+
     /**
      * This method will create authentication header frame containing Base 64 encoded username and password
      *
@@ -125,7 +135,7 @@ public class GuvnorConnexionConfiguration {
     }
 
     public String getPathFor(String packageName, String assetName, String pathType) {
-        return format("%s/rest/packages/%s/assets/%s/%s", this.getWebappName(), packageName, assetName, pathType);
+        return format("%s/rest/packages/%s/%s/%s", this.getWebappName(),this.organizationalUnitName,this.repositoryName, packageName, assetName, pathType);
     }
 
     public void noTimeout(WebClient client) {
@@ -151,16 +161,12 @@ public class GuvnorConnexionConfiguration {
             }
         };
         // Maybe you have to correct this or use another / no Locale
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        RegistryMatcher m = new RegistryMatcher();
-        m.bind(Date.class, new DateFormatTransformer(format));
-        Serializer ser = new Persister(m);
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(this.getHostname() + this.getWebappName())
                 .setRequestInterceptor(requestInterceptor)
                 .setClient(new OkClient(new OkHttpClient()))
-                .setConverter(new SimpleXMLConverter(ser))
+                .setConverter(new JacksonConverter(new ObjectMapper()))
                 .build();
 
         return restAdapter.create(GuvnorRestApi.class);

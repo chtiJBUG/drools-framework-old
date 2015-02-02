@@ -37,7 +37,7 @@ public class GuvnorConnexionConfigurationTestCase {
         String packageName = "amag";
         String username = "tomcat";
         String password = "tomcat";
-        this.toTest = new GuvnorConnexionConfiguration(hostname, webappName, packageName, username, password);
+        this.toTest = new GuvnorConnexionConfiguration(hostname, webappName, "","",packageName, username, password);
     }
 
 //    @Test

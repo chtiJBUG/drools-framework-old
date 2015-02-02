@@ -16,10 +16,10 @@
 package org.chtijbug.drools.guvnor.rest;
 
 import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
-import org.chtijbug.drools.guvnor.rest.model.Asset;
 import org.chtijbug.drools.guvnor.rest.model.AssetCategory;
 import org.chtijbug.drools.guvnor.rest.model.AssetPropertyType;
 import org.chtijbug.drools.guvnor.rest.model.AssetType;
+import org.drools.guvnor.server.jaxrs.jaxb.Asset;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -39,13 +39,13 @@ public class GuvnorRepositoryConnectorLocalTestCase {
 
     @Before
     public void setUp() throws Exception {
-        guvnorRepositoryConnector = new GuvnorRepositoryConnector("http://localhost:8080/", "/drools-guvnor", "swimmingpool", "admin", "admin");
+        guvnorRepositoryConnector = new GuvnorRepositoryConnector("http://localhost:8080/", "/drools-guvnor", "","","swimmingpool", "admin", "admin");
     }
 
     @Test
     //  @Ignore
     public void testgetAllPackages() throws Exception {
-        List<Asset> toto = guvnorRepositoryConnector.getAllPackagesInGuvnorRepo();
+        List<Package> toto = guvnorRepositoryConnector.getAllPackagesInGuvnorRepo();
         System.out.println(toto.toString());
     }
 
@@ -81,12 +81,12 @@ public class GuvnorRepositoryConnectorLocalTestCase {
     @Ignore
     public void testcreateAsset() throws Exception {
         Asset newAsset = new Asset();
-        newAsset.setName("FirstRule2");
-        newAsset.setSummary("First Rule via Rest");
+        newAsset.setTitle("FirstRule2");
+        newAsset.setDescription("First Rule via Rest");
         AssetCategory newCategoryOne = new AssetCategory("amag");
-        newAsset.getCategories().add(newCategoryOne);
+        //newAsset.getCategories().add(newCategoryOne);
         AssetCategory newCategorytwo = new AssetCategory("amag");
-        newAsset.getCategories().add(newCategorytwo);
+        //newAsset.getCategories().add(newCategorytwo);
 
         guvnorRepositoryConnector.createAsset(newAsset, AssetType.GuidedRule, "no source");
 

@@ -14,6 +14,7 @@ import org.uberfire.backend.server.util.Paths;
 
 import org.uberfire.io.IOService;
 import org.kie.workbench.common.services.shared.project.KieProjectService;
+import org.uberfire.java.nio.base.options.CommentedOption;
 import org.uberfire.java.nio.file.DirectoryStream;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -25,6 +26,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.NoSuchFileException;
 import java.util.*;
 
 @Path("/packages")
@@ -205,7 +207,7 @@ public class PackageResource {
     }
 
     @PUT
-    @Path("{organizationalUnitName}/{repositoryName}/{packageName}/assets/{assetName}")
+    @Path("{organizationalUnitName}/{repositoryName}/{packageName}/asset/{assetName}")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public void updateAssetFromJAXB(
             @PathParam("organizationalUnitName") String organizationalUnitName, @PathParam("repositoryName") String repositoryName,
@@ -227,7 +229,7 @@ public class PackageResource {
     }
 
     @POST
-    @Path("{organizationalUnitName}/{repositoryName}/{packageName}/assets")
+    @Path("{organizationalUnitName}/{repositoryName}/{packageName}/newAsset")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Asset createAssetFromSourceAndJAXB(
@@ -245,7 +247,8 @@ public class PackageResource {
             if (ioService.exists(nioPath)) {
                 throw new FileAlreadyExistsException(nioPath.toString());
             }
-            // ioService.write(nioPath,asset.getContent().getBytes(),asset.getComment());
+            CommentedOption commentedOption = new CommentedOption(asset.getComment());
+            ioService.write(nioPath, asset.getContent().getBytes(), commentedOption);
         } catch (Exception e) {
             throw new WebApplicationException(e);
         }
@@ -253,28 +256,26 @@ public class PackageResource {
     }
 
     @PUT
-    @Path("{organizationalUnitName}/{repositoryName}/{packageName}/assets/{assetName}/source")
+    @Path("{organizationalUnitName}/{repositoryName}/{packageName}/asset/{assetName}/source")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN})
     @Produces({MediaType.WILDCARD})
     public void updateAssetSource(
             @PathParam("organizationalUnitName") String organizationalUnitName, @PathParam("repositoryName") String repositoryName,
             @PathParam("packageName") String packageName, @PathParam("assetName") String assetName, String content) {
-        try {
-            //Throws RulesRepositoryException if the package or asset does not exist
-            /**
-             AssetItem asset = rulesRepository.loadModule(packageName).loadAsset(assetName);
-             asset.checkout();
-             asset.updateContent(content);
-             asset.updateValid(assetValidator.validate(asset));
-             if (AssetFormats.affectsBinaryUpToDate(asset.getFormat())) {
-             ModuleItem pkg = asset.getModule();
-             pkg.updateBinaryUpToDate(false);
-             RuleBaseCache.getInstance().remove(pkg.getUUID());
-             }
-             asset.checkin("Updated asset source from REST interface");
-             rulesRepository.save();
-             **/
-        } catch (RuntimeException e) {
+        try {       Project project = getProject(organizationalUnitName, repositoryName, packageName);
+            org.uberfire.backend.vfs.Path rootPath = project.getRootPath();
+            org.uberfire.java.nio.file.Path goodRootPath = Paths.convert(rootPath);
+            DirectoryStream<org.uberfire.java.nio.file.Path> directoryStream = ioService.newDirectoryStream(goodRootPath);
+
+            org.uberfire.java.nio.file.Path directoryWhereCreateAsset = getDirectoryElementPath(directoryStream, assetName);
+            org.uberfire.backend.vfs.Path newDirectoryPath = Paths.convert(directoryWhereCreateAsset);
+            final org.uberfire.java.nio.file.Path nioPath = Paths.convert(newDirectoryPath).resolve(assetName);
+            if (ioService.exists(nioPath)) {
+                throw new NoSuchFileException(nioPath.toString());
+            }
+            ioService.write(nioPath, content.getBytes(), null);
+
+        } catch (Exception e) {
             throw new WebApplicationException(e);
         }
 

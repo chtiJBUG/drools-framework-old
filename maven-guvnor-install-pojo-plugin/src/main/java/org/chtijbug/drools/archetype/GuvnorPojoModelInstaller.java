@@ -58,6 +58,12 @@ public class GuvnorPojoModelInstaller extends AbstractMojo {
      * @parameter expression="${app}"
      */
     private String app;
+
+    private String organizationalUnitName;
+
+    private String repositoryName;
+
+
     /**
      * @parameter expression="${pkg}"
      */
@@ -107,7 +113,7 @@ public class GuvnorPojoModelInstaller extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         logger.debug(" >> execute");
         try {
-            RestRepositoryConnector repositoryConnector = new GuvnorRepositoryConnector(host, app, pkg, username, password);
+            RestRepositoryConnector repositoryConnector = new GuvnorRepositoryConnector(host, app, organizationalUnitName,repositoryName,pkg, username, password);
             //____ Download the POJO Model from Guvnor instance
             InputStream inputStream = null;
             try {
@@ -175,5 +181,21 @@ public class GuvnorPojoModelInstaller extends AbstractMojo {
 
     public void setRepoSession(RepositorySystemSession repoSession) {
         this.repoSession = repoSession;
+    }
+
+    public String getOrganizationalUnitName() {
+        return organizationalUnitName;
+    }
+
+    public void setOrganizationalUnitName(String organizationalUnitName) {
+        this.organizationalUnitName = organizationalUnitName;
+    }
+
+    public String getRepositoryName() {
+        return repositoryName;
+    }
+
+    public void setRepositoryName(String repositoryName) {
+        this.repositoryName = repositoryName;
     }
 }

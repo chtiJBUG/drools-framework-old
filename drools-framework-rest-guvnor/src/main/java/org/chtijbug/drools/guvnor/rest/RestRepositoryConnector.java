@@ -17,10 +17,9 @@ package org.chtijbug.drools.guvnor.rest;
 
 
 import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
-import org.chtijbug.drools.guvnor.rest.model.Asset;
 import org.chtijbug.drools.guvnor.rest.model.AssetPropertyType;
 import org.chtijbug.drools.guvnor.rest.model.AssetType;
-import org.drools.ide.common.client.modeldriven.dt52.GuidedDecisionTable52;
+import org.drools.guvnor.server.jaxrs.jaxb.Asset;
 
 import java.io.InputStream;
 import java.util.List;
@@ -79,7 +78,7 @@ public interface RestRepositoryConnector {
      *
      * @return
      */
-    List<Asset> getAllPackagesInGuvnorRepo();
+    List<Package> getAllPackagesInGuvnorRepo();
 
 
     void changeAssetPropertyValue(String assetName, AssetPropertyType assetPropertyType, String propertyValue) throws ChtijbugDroolsRestException;

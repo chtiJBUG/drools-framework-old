@@ -83,7 +83,7 @@ public class ServiceGenerator {
         ServiceGenerator generator = new ServiceGenerator();
 
         try {
-            GuvnorConnexionConfiguration configuration = new GuvnorConnexionConfiguration("http://192.168.255.60:8080", "drools-guvnor", "amag", "tomcat", "tomcat");
+            GuvnorConnexionConfiguration configuration = new GuvnorConnexionConfiguration("http://192.168.255.60:8080", "drools-guvnor", "","","amag", "tomcat", "tomcat");
             RunnerConfiguration runnerConfiguration = new RunnerConfiguration(configuration, "com.axonactive.amag.pojo.Decision", "com.axonactive.amag.pojo.Decision");
             InputStream warFileInputStream = generator.generateWebServiceArchive(runnerConfiguration);
 

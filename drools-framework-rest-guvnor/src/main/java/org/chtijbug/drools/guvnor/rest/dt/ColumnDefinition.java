@@ -15,7 +15,9 @@
  */
 package org.chtijbug.drools.guvnor.rest.dt;
 
-import org.drools.ide.common.client.modeldriven.dt52.*;
+
+import org.drools.workbench.models.datamodel.oracle.DataType;
+import org.drools.workbench.models.guided.dtable.shared.model.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -41,7 +43,7 @@ public class ColumnDefinition {
     public ColumnDefinition(int columnNumber, RowNumberCol52 rowNumberCol52) {
         this.columnNumber = columnNumber;
         this.columnType = ColumnType.rowNumber;
-        this.fieldType = DTDataTypes52.NUMERIC_INTEGER.toString();
+        this.fieldType = DataType.TYPE_NUMERIC_INTEGER.toString();
         this.rowNumberCol52 = rowNumberCol52;
         this.header = rowNumberCol52.getHeader();
     }
@@ -50,7 +52,7 @@ public class ColumnDefinition {
         this.columnNumber = columnNumber;
         this.columnType = ColumnType.description;
         this.header = descriptionCol52.getHeader();
-        this.fieldType = DTDataTypes52.STRING.toString();
+        this.fieldType = DataType.TYPE_STRING.toString();
         this.descriptionCol52 = descriptionCol52;
     }
 
@@ -58,7 +60,7 @@ public class ColumnDefinition {
         this.attributeCol52 = attributeCol52;
         this.columnNumber = columnNumber;
         this.columnType = ColumnType.attribute;
-        this.fieldType = DTDataTypes52.STRING.toString();
+        this.fieldType = DataType.TYPE_STRING.toString();
         if (attributeCol52.getDefaultValue() != null) {
             this.hasDefaultValue = true;
             this.defaultValueCell = attributeCol52.getDefaultValue();
@@ -89,7 +91,7 @@ public class ColumnDefinition {
         this.header = actionInsertFact52.getHeader();
         if (actionInsertFact52.getDefaultValue() != null) {
             DTCellValue52 defaultValue = actionInsertFact52.getDefaultValue();
-            if (!(DTDataTypes52.STRING.equals(defaultValue.getDataType()) && defaultValue.getStringValue().isEmpty())) {
+            if (!(DataType.TYPE_STRING.equals(defaultValue.getDataType()) && defaultValue.getStringValue().isEmpty())) {
                 this.hasDefaultValue = true;
                 this.defaultValue = getValue(actionInsertFact52.getDefaultValue());
             }

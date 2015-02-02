@@ -17,8 +17,8 @@ package org.chtijbug.drools.guvnor.rest;
 
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
 import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
-import org.drools.ide.common.client.modeldriven.dt52.GuidedDecisionTable52;
-import org.drools.ide.common.server.util.GuidedDTXMLPersistence;
+import org.drools.workbench.models.guided.dtable.backend.GuidedDTXMLPersistence;
+import org.drools.workbench.models.guided.dtable.shared.model.GuidedDecisionTable52;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

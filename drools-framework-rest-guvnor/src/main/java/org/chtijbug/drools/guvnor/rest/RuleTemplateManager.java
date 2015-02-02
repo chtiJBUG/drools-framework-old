@@ -17,10 +17,10 @@ package org.chtijbug.drools.guvnor.rest;
 
 import com.google.common.collect.Iterables;
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
-import org.drools.ide.common.client.modeldriven.brl.RuleModel;
-import org.drools.ide.common.client.modeldriven.brl.templates.InterpolationVariable;
-import org.drools.ide.common.client.modeldriven.brl.templates.TemplateModel;
-import org.drools.ide.common.server.util.BRXMLPersistence;
+import org.drools.workbench.models.datamodel.rule.InterpolationVariable;
+import org.drools.workbench.models.datamodel.rule.RuleModel;
+import org.drools.workbench.models.guided.template.backend.RuleTemplateModelXMLPersistenceImpl;
+import org.drools.workbench.models.guided.template.shared.TemplateModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,13 +56,13 @@ class RuleTemplateManager {
     public void putTemplateTable(String packageName, String templateRuleName, Map<String, List<String>> newTable) throws ChtijbugDroolsRestException {
         TemplateModel templateModel = getTemplateModel(packageName, templateRuleName);
         updateTableContent(newTable, templateModel);
-        String xmlContent = BRXMLPersistence.getInstance().marshal(templateModel);
+        String xmlContent = RuleTemplateModelXMLPersistenceImpl.getInstance().marshal(templateModel);
         this.assetManager.updateAssetCodeFromXML(packageName, templateRuleName, xmlContent);
     }
 
     private TemplateModel getTemplateModel(String packageName, String templateRuleName) throws ChtijbugDroolsRestException {
         String content = this.assetManager.getAssetCodeInXML(packageName, templateRuleName);
-        RuleModel ruleModel = BRXMLPersistence.getInstance().unmarshal(content);
+        RuleModel ruleModel = RuleTemplateModelXMLPersistenceImpl.getInstance().unmarshal(content);
         return (TemplateModel) ruleModel;
     }
 

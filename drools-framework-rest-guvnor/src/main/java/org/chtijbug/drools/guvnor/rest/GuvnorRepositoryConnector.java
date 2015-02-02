@@ -17,9 +17,9 @@ package org.chtijbug.drools.guvnor.rest;
 
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
 import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
-import org.chtijbug.drools.guvnor.rest.model.Asset;
 import org.chtijbug.drools.guvnor.rest.model.AssetPropertyType;
 import org.chtijbug.drools.guvnor.rest.model.AssetType;
+import org.drools.guvnor.server.jaxrs.jaxb.Asset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,8 +60,8 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
         this.bpmn2ManagerManager = new BPMN2ManagerManager(configuration, this.assetManager);
     }
 
-    public GuvnorRepositoryConnector(String guvnorUrl, String guvnorAppName, String packageName, String guvnorUserName, String guvnorPassword) {
-        this(new GuvnorConnexionConfiguration(guvnorUrl, guvnorAppName, packageName, guvnorUserName, guvnorPassword));
+    public GuvnorRepositoryConnector(String guvnorUrl, String guvnorAppName, String organizationalUnitName,String repositoryName,String packageName, String guvnorUserName, String guvnorPassword) {
+        this(new GuvnorConnexionConfiguration(guvnorUrl, guvnorAppName, organizationalUnitName,repositoryName,packageName, guvnorUserName, guvnorPassword));
     }
 
     @Override
@@ -145,7 +145,7 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
     }
 
     @Override
-    public List<Asset> getAllPackagesInGuvnorRepo() {
+    public List<Package> getAllPackagesInGuvnorRepo() {
         return this.assetManager.getAllPackagesInGuvnorRepo();
     }
 
@@ -194,10 +194,10 @@ public class GuvnorRepositoryConnector implements RestRepositoryConnector {
         }
         Asset asset = this.assetManager.getAsset(packageName, assetName);
         Integer assetVersion = null;
-        if (asset != null && asset.getVersionNumber() != null) {
-            assetVersion = new Integer(asset.getVersionNumber());
-        }
-        return assetVersion;
+      //  if (asset != null && asset.getVersionNumber() != null) {
+       //     assetVersion = new Integer(asset.getVersionNumber());
+        //}
+        return 0;
     }
 
     @Override

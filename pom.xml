@@ -128,7 +128,8 @@
         <module>drools-framework-common</module>
         <module>drools-framework-runtime-base</module>
         <module>drools-framework-runtime-entity</module>
-        <!--module>drools-framework-rest-guvnor</module-->
+        <module>drools-framework-runtime-entity</module>
+        <module>drools-framework-rest-guvnor</module>
         <module>drools-service-runner-archetype</module>
         <module>maven-guvnor-install-pojo-plugin</module>
         <module>drools-runner-generator</module>
@@ -384,7 +385,7 @@
             <dependency>
                 <groupId>com.squareup.retrofit</groupId>
                 <artifactId>retrofit</artifactId>
-                <version>1.6.1</version>
+                <version>1.9.0</version>
             </dependency>
             <dependency>
                 <groupId>com.squareup.retrofit</groupId>

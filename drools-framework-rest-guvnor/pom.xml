@@ -60,24 +60,29 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.chtijbug.drools</groupId>
+            <artifactId>drools-framework-common</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http-hc</artifactId>
+            <version>${version.org.apache.cxf}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+            <version>${version.org.apache.cxf}</version>
         </dependency>
         <dependency>
             <groupId>org.chtijbug.drools</groupId>
-            <artifactId>droolsjbpm-ide-common</artifactId>
+            <artifactId>kie-drools-framework-rest-client</artifactId>
+            <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.chtijbug.drools</groupId>
-            <artifactId>guvnor-jaxb-entities</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.chtijbug.osgi</groupId>
             <artifactId>lambdaj.osgi</artifactId>
+            <version>2.3.3</version>
         </dependency>
         <dependency>
             <groupId>de.twentyeleven.skysail</groupId>
@@ -138,18 +143,34 @@
             <artifactId>retrofit</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.squareup.retrofit</groupId>
-            <artifactId>converter-simplexml</artifactId>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.2</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp</groupId>
             <artifactId>okhttp</artifactId>
-            <version>2.0.0</version>
+            <version>2.2.0</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp</groupId>
             <artifactId>okhttp-urlconnection</artifactId>
-            <version>2.0.0</version>
+            <version>2.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-workbench-models-guided-dtable</artifactId>
+            <version>${kie.wb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-workbench-models-datamodel-api</artifactId>
+            <version>${kie.wb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-workbench-models-guided-template</artifactId>
+            <version>${kie.wb.version}</version>
         </dependency>
     </dependencies>
 </project>

@@ -18,10 +18,10 @@ package org.chtijbug.drools.guvnor.rest;
 import ch.lambdaj.function.convert.Converter;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
-import org.chtijbug.drools.guvnor.rest.model.Asset;
 import org.chtijbug.drools.guvnor.rest.model.AssetCategory;
 import org.chtijbug.drools.guvnor.rest.model.AssetPropertyType;
 import org.chtijbug.drools.guvnor.rest.model.AssetType;
+import org.drools.guvnor.server.jaxrs.jaxb.Asset;
 import org.drools.guvnor.server.jaxrs.jaxb.AssetMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +30,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static ch.lambdaj.Lambda.convert;
@@ -55,7 +56,8 @@ class AssetManager {
     public void changeAssetPropertyValue(String packageName, String assetName, AssetPropertyType assetPropertyType, String propertyValue) {
         GuvnorRestApi guvnorService = configuration.getGuvnorRestApiService();
         //_____ Extract the current version of the asset
-        org.drools.guvnor.server.jaxrs.jaxb.Asset asset = guvnorService.getAsset(packageName, assetName);
+        Collection<org.drools.guvnor.server.jaxrs.jaxb.Asset> assets = guvnorService.getAsset(configuration.getOrganizationalUnitName(),configuration.getRepositoryName(),packageName, assetName);
+        org.drools.guvnor.server.jaxrs.jaxb.Asset asset = assets.iterator().next();
         //_____ Replace the property value
         org.drools.guvnor.server.jaxrs.jaxb.AssetMetadata assetMetadata = asset.getMetadata();
         if (assetMetadata != null) {
@@ -68,54 +70,53 @@ class AssetManager {
             asset.setDescription("Default Description");
         }
         //____ Put the new version of the Asset
-        guvnorService.updateAsset(packageName, assetName, asset);
+        guvnorService.updateAsset(configuration.getOrganizationalUnitName(),configuration.getRepositoryName(),packageName, assetName, asset);
     }
 
     public void createAsset(String packageName, Asset newAsset, AssetType assetType) throws ChtijbugDroolsRestException {
         GuvnorRestApi guvnorService = configuration.getGuvnorRestApiService();
         org.drools.guvnor.server.jaxrs.jaxb.Asset asset = new org.drools.guvnor.server.jaxrs.jaxb.Asset();
-        asset.setTitle(newAsset.getName());
-        asset.setDescription(newAsset.getSummary());
+        asset.setTitle(newAsset.getTitle());
+        asset.setDescription(newAsset.getDescription());
 
         AssetMetadata metadata = new AssetMetadata();
         asset.setMetadata(metadata);
 
-        metadata.setState(newAsset.getStatus());
+
         metadata.setFormat(assetType.getId());
         String[] categories = new String[]{};
         List<String> listCategories = new ArrayList<String>();
+        /**
         for (AssetCategory assetCategory : newAsset.getCategories()) {
             listCategories.add(assetCategory.getName());
         }
+
         categories = listCategories.toArray(categories);
         metadata.setCategories(categories);
-
-        guvnorService.createAsset(packageName, asset);
+         */
+        guvnorService.createAsset(configuration.getOrganizationalUnitName(),configuration.getRepositoryName(),packageName, asset);
     }
 
     public List<Asset> getAllBusinessAssets(final String packageName) {
         List<Asset> result;
         GuvnorRestApi guvnorService = configuration.getGuvnorRestApiService();
-        result = convert(guvnorService.getAllAssets(packageName), new AssetConverter(packageName));
+        result = guvnorService.getAllAssets(configuration.getOrganizationalUnitName(),configuration.getRepositoryName(),packageName);
         return result;
     }
 
-    public List<Asset> getAllPackagesInGuvnorRepo() {
+    public List<Package> getAllPackagesInGuvnorRepo() {
         GuvnorRestApi guvnorService = configuration.getGuvnorRestApiService();
-        return convert(guvnorService.getAllPackages(), new Converter<org.drools.guvnor.server.jaxrs.jaxb.Asset, Asset>() {
-            @Override
-            public Asset convert(org.drools.guvnor.server.jaxrs.jaxb.Asset entry) {
-                return new Asset(entry.getTitle(), entry.getTitle(), "", "");
-            }
-        });
+        return guvnorService.getAllPackages(configuration.getOrganizationalUnitName(),configuration.getRepositoryName());
+
     }
 
 
     public Asset getAsset(final String packageName, String assetName) {
         GuvnorRestApi guvnorService = configuration.getGuvnorRestApiService();
         //_____ Extract the current version of the asset
-        org.drools.guvnor.server.jaxrs.jaxb.Asset asset = guvnorService.getAsset(packageName, assetName);
-        return convert(asset, new AssetConverter(packageName)).get(0);
+        Collection<org.drools.guvnor.server.jaxrs.jaxb.Asset> assets = guvnorService.getAsset(configuration.getOrganizationalUnitName(),configuration.getRepositoryName(),packageName, assetName);
+        org.drools.guvnor.server.jaxrs.jaxb.Asset asset = assets.iterator().next();
+        return asset;
     }
 
     public InputStream getPojoModel(String packageName) {
@@ -127,35 +128,13 @@ class AssetManager {
 
     public void updateAssetCodeFromXML(String packageName, String assetName, String newCode) throws ChtijbugDroolsRestException {
         GuvnorRestApi guvnorService = configuration.getGuvnorRestApiService();
-        guvnorService.updateAssetFromSource(packageName, assetName, newCode);
+        guvnorService.updateAssetFromSource(configuration.getOrganizationalUnitName(),configuration.getRepositoryName(),packageName, assetName, newCode);
     }
 
     public String getAssetCodeInXML(String packageName, String dtName) throws ChtijbugDroolsRestException {
         return configuration.webClient().path(configuration.assetBinaryPath(packageName, dtName)).accept("text/plain").get(String.class);
     }
 
-    protected class AssetConverter implements Converter<org.drools.guvnor.server.jaxrs.jaxb.Asset, Asset> {
-        private final String packageName;
 
-        public AssetConverter(String packageName) {
-            this.packageName = packageName;
-        }
-        @Override
-        public Asset convert(org.drools.guvnor.server.jaxrs.jaxb.Asset asset) {
-            Asset result = new Asset();
-            String assetName = asset.getTitle();
-            result.setSummary(asset.getDescription());
-            result.setName(assetName);
-            result.setPackageName(this.packageName);
-            result.setType(asset.getMetadata().getFormat());
-            result.setStatus(asset.getMetadata().getState());
-            result.setVersionNumber(Long.toString(asset.getMetadata().getVersionNumber()));
-            for (String category : asset.getMetadata().getCategories()) {
-                AssetCategory assetCategory = new AssetCategory();
-                assetCategory.setName(category);
-                result.addCategory(assetCategory);
-            }
-            return result;
-        }
-    }
+
 }

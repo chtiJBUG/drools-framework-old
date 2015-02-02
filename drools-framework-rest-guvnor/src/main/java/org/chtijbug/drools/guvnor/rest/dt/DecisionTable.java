@@ -16,7 +16,7 @@
 package org.chtijbug.drools.guvnor.rest.dt;
 
 import org.chtijbug.drools.guvnor.rest.ChtijbugDroolsRestException;
-import org.drools.ide.common.client.modeldriven.dt52.*;
+import org.drools.workbench.models.guided.dtable.shared.model.*;
 
 import java.util.ArrayList;
 import java.util.List;

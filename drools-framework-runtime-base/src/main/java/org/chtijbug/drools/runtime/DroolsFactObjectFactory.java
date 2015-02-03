@@ -24,14 +24,13 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Bertrand Gressier
- * @date 27 déc. 2011
+ * @since 27 déc. 2011
  */
 public class DroolsFactObjectFactory {
 
     private static Logger logger = LoggerFactory.getLogger(DroolsFactObjectFactory.class);
 
     protected DroolsFactObjectFactory() {
-
     }
 
     public static DroolsFactObject createFactObject(Object o) {

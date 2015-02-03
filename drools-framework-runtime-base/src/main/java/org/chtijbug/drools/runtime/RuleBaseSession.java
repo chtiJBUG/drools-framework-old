@@ -29,7 +29,7 @@ public interface RuleBaseSession {
      * This method injects the newObject parameter into this session.
      * No deep insertion(using relfection) is done
      *
-     * @param newObject
+     * @param newObject - object to insert into this session
      */
     public void insertObject(Object newObject);
 
@@ -37,15 +37,16 @@ public interface RuleBaseSession {
      * This method injects the newObject parameter into this session.
      * No deep insertion(using relfection) is done
      *
-     * @param newObject
+     * @param newObject - object to insert into this session. all nested objects will be also inserted
+     * @throws org.chtijbug.drools.runtime.DroolsChtijbugException
      */
     public void insertByReflection(Object newObject) throws DroolsChtijbugException;
 
     /**
      * This method helps for introducing a global object into the RuleBaseSession
      *
-     * @param identifier
-     * @param value
+     * @param identifier - the key of the global variable to inject
+     * @param value      - the value of the global variable to inject
      */
     public void setGlobal(String identifier, Object value);
 

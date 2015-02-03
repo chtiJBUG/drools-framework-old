@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Bertrand Gressier
- * @date 9 déc. 2011
+ * @since 9 déc. 2011
  */
 public class WorkbenchResource extends AbstractDroolsResource {
     /** Class Logger */

@@ -38,8 +38,8 @@ public class DroolsRuleObject implements Serializable {
     }
 
     /**
-     * @param ruleName
-     * @param rulePackageName
+     * @param ruleName        - the rule name added to the knowledge base
+     * @param rulePackageName - the package of the rule
      */
     protected DroolsRuleObject(String ruleName, String rulePackageName) {
         this.ruleName = ruleName;

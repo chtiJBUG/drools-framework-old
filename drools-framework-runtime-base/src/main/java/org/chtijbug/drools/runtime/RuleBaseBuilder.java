@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * @author nheron
  */
-public class RuleBaseBuilder {
+public abstract class RuleBaseBuilder {
     /**
      * Class Logger
      */
@@ -33,8 +33,7 @@ public class RuleBaseBuilder {
 
 
     public static RuleBasePackage createWorkbenchRuleBasePackage(HistoryListener historyListener, String modulePackage, String moduleName, String version, String workbenchUrl, String username, String password) throws DroolsChtijbugException {
-        logger.debug(">>createWorkbenchRuleBasePackage()");
-        // TODO to be refactored later on
+        logger.debug(">> createWorkbenchRuleBasePackage()");
         RuleBaseSingleton newRuleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener, modulePackage, moduleName);
         try {
            newRuleBasePackage.createKBase(version, workbenchUrl, username, password);

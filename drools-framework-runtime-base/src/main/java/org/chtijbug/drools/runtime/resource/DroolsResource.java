@@ -22,17 +22,18 @@ import java.io.InputStream;
 
 /**
  * @author Bertrand Gressier
- * @date 9 déc. 2011
+ * @since 9 déc. 2011
  */
 public interface DroolsResource {
 
     /**
-     * @return resource to load in KnowledgeBuilder
+     * @return resource - resource to load in KnowledgeBuilder
+     * @throws Exception
      */
     Resource getResource() throws Exception;
 
     /**
-     * @return ResourceType for KnowledgeBuilder
+     * @return ResourceType - resource type for KnowledgeBuilder
      */
     org.kie.api.io.ResourceType getResourceType();
 

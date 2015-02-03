@@ -150,19 +150,19 @@
     <form action="j_security_check" method="POST">
       <p>
         <label style="white-space: nowrap;"><i18n:message key="UserName">Username</i18n:message></label>
-        <input value="" name="j_username" class="text-input" type="text"/>
+        <input value="" artifactId="j_username" class="text-input" type="text"/>
       </p>
       <br style="clear: both;"/>
 
       <p>
         <label style="white-space: nowrap;"><i18n:message key="Password">Password</i18n:message></label>
-        <input name="j_password" class="text-input" type="password"/>
+        <input artifactId="j_password" class="text-input" type="password"/>
       </p>
       <br style="clear: both;"/>
 
       <p>
         <% if (request.getParameter("gwt.codesvr") != null) { %>
-        <input type="hidden" name="gwt.codesvr" value="<%= org.owasp.encoder.Encode.forHtmlAttribute(request.getParameter("gwt.codesvr")) %>"/>
+        <input type="hidden" artifactId="gwt.codesvr" value="<%= org.owasp.encoder.Encode.forHtmlAttribute(request.getParameter("gwt.codesvr")) %>"/>
         <% } %>
         <input class="button" type="submit" value='<i18n:message key="SignIn">Sign In</i18n:message>'/>
       </p>

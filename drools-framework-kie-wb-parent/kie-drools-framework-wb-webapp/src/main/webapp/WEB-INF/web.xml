@@ -14,195 +14,195 @@
   </listener>
 
   <filter>
-    <filter-name>request-capture</filter-name>
+    <filter-artifactId>request-capture</filter-artifactId>
     <filter-class>org.uberfire.ext.security.server.SecurityIntegrationFilter</filter-class>
   </filter>
 
   <filter-mapping>
-    <filter-name>request-capture</filter-name>
+    <filter-artifactId>request-capture</filter-artifactId>
     <url-pattern>*</url-pattern>
   </filter-mapping>
 
   <filter>
-    <filter-name>UberFire Security Headers Filter</filter-name>
+    <filter-artifactId>UberFire Security Headers Filter</filter-artifactId>
     <filter-class>org.uberfire.ext.security.server.SecureHeadersFilter</filter-class>
     <init-param>
-      <param-name>x-frame-options</param-name>
+      <param-artifactId>x-frame-options</param-artifactId>
       <param-value>SAMEORIGIN</param-value>
     </init-param>
     <init-param>
-      <param-name>x-xss-protection-enable</param-name>
+      <param-artifactId>x-xss-protection-enable</param-artifactId>
       <param-value>true</param-value>
     </init-param>
     <init-param>
-      <param-name>x-xss-protection-block</param-name>
+      <param-artifactId>x-xss-protection-block</param-artifactId>
       <param-value>true</param-value>
     </init-param>
   </filter>
 
   <filter-mapping>
-    <filter-name>UberFire Security Headers Filter</filter-name>
+    <filter-artifactId>UberFire Security Headers Filter</filter-artifactId>
     <url-pattern>*</url-pattern>
   </filter-mapping>
 
   <!-- Basic Auth Filter for REST and Maven2 repo -->
   <filter>
-    <filter-name>HTTP Basic Auth Filter</filter-name>
+    <filter-artifactId>HTTP Basic Auth Filter</filter-artifactId>
     <filter-class>org.uberfire.ext.security.server.BasicAuthSecurityFilter</filter-class>
     <init-param>
-      <param-name>realmName</param-name>
+      <param-artifactId>realmName</param-artifactId>
       <param-value>KIE Workbench Realm</param-value>
     </init-param>
   </filter>
 
   <filter-mapping>
-    <filter-name>HTTP Basic Auth Filter</filter-name>
+    <filter-artifactId>HTTP Basic Auth Filter</filter-artifactId>
     <url-pattern>/rest/*</url-pattern>
     <url-pattern>/maven2/*</url-pattern>
   </filter-mapping>
 
   <!-- RESTEasy configurations -->
   <context-param>
-    <param-name>resteasy.scan</param-name>
+    <param-artifactId>resteasy.scan</param-artifactId>
     <param-value>true</param-value>
   </context-param>
 
   <context-param>
-    <param-name>resteasy.servlet.mapping.prefix</param-name>
+    <param-artifactId>resteasy.servlet.mapping.prefix</param-artifactId>
     <param-value>/rest</param-value>
   </context-param>
 
   <!-- Note, this configuration needs to be removed with AS7 deployement -->
   <context-param>
-    <param-name>resteasy.injector.factory</param-name>
+    <param-artifactId>resteasy.injector.factory</param-artifactId>
     <param-value>org.jboss.resteasy.cdi.CdiInjectorFactory</param-value>
   </context-param>
 
   <servlet>
-    <servlet-name>Resteasy</servlet-name>
+    <servlet-artifactId>Resteasy</servlet-artifactId>
     <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>Resteasy</servlet-name>
+    <servlet-artifactId>Resteasy</servlet-artifactId>
     <url-pattern>/rest/*</url-pattern>
   </servlet-mapping>
 
   <!-- UberFire servlets -->
   <servlet>
-    <servlet-name>UberfireFileUploadServlet</servlet-name>
+    <servlet-artifactId>UberfireFileUploadServlet</servlet-artifactId>
     <servlet-class>org.uberfire.server.FileUploadServlet</servlet-class>
     <init-param>
-      <param-name>includes-path</param-name>
+      <param-artifactId>includes-path</param-artifactId>
       <param-value>git://**,default://**</param-value>
     </init-param>
     <init-param>
-      <param-name>excludes-path</param-name>
+      <param-artifactId>excludes-path</param-artifactId>
       <param-value>file://**</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>UberfireFileUploadServlet</servlet-name>
+    <servlet-artifactId>UberfireFileUploadServlet</servlet-artifactId>
     <url-pattern>/org.kie.workbench.KIEWebapp/defaulteditor/upload/*</url-pattern>
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>UberfireFileDownloadServlet</servlet-name>
+    <servlet-artifactId>UberfireFileDownloadServlet</servlet-artifactId>
     <servlet-class>org.uberfire.server.FileDownloadServlet</servlet-class>
     <init-param>
-      <param-name>includes-path</param-name>
+      <param-artifactId>includes-path</param-artifactId>
       <param-value>git://**,default://**</param-value>
     </init-param>
     <init-param>
-      <param-name>excludes-path</param-name>
+      <param-artifactId>excludes-path</param-artifactId>
       <param-value>file://**</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>UberfireFileDownloadServlet</servlet-name>
+    <servlet-artifactId>UberfireFileDownloadServlet</servlet-artifactId>
     <url-pattern>/org.kie.workbench.KIEWebapp/defaulteditor/download/*</url-pattern>
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>PluginMediaServlet</servlet-name>
+    <servlet-artifactId>PluginMediaServlet</servlet-artifactId>
     <servlet-class>org.uberfire.ext.plugin.backend.PluginMediaServlet</servlet-class>
     <init-param>
-      <param-name>url-pattern</param-name>
+      <param-artifactId>url-pattern</param-artifactId>
       <param-value>/plugins/</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>PluginMediaServlet</servlet-name>
+    <servlet-artifactId>PluginMediaServlet</servlet-artifactId>
     <url-pattern>/plugins/*</url-pattern>
   </servlet-mapping>
 
   <!-- drools-wb servlets -->
   <servlet>
-    <servlet-name>DTableXLSFileServlet</servlet-name>
+    <servlet-artifactId>DTableXLSFileServlet</servlet-artifactId>
     <servlet-class>org.drools.workbench.screens.dtablexls.backend.server.DecisionTableXLSFileServlet</servlet-class>
     <init-param>
-      <param-name>includes-path</param-name>
+      <param-artifactId>includes-path</param-artifactId>
       <param-value>git://**,default://**</param-value>
     </init-param>
     <init-param>
-      <param-name>excludes-path</param-name>
+      <param-artifactId>excludes-path</param-artifactId>
       <param-value>file://**</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>DTableXLSFileServlet</servlet-name>
+    <servlet-artifactId>DTableXLSFileServlet</servlet-artifactId>
     <url-pattern>/org.kie.workbench.KIEWebapp/dtablexls/file</url-pattern>
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>ArchiveServlet</servlet-name>
+    <servlet-artifactId>ArchiveServlet</servlet-artifactId>
     <servlet-class>org.guvnor.common.services.backend.archive.ArchiveServlet</servlet-class>
     <init-param>
-      <param-name>includes-path</param-name>
+      <param-artifactId>includes-path</param-artifactId>
       <param-value>git://**,default://**</param-value>
     </init-param>
     <init-param>
-      <param-name>excludes-path</param-name>
+      <param-artifactId>excludes-path</param-artifactId>
       <param-value>file://**</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ArchiveServlet</servlet-name>
+    <servlet-artifactId>ArchiveServlet</servlet-artifactId>
     <url-pattern>/org.kie.workbench.KIEWebapp/archive</url-pattern>
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>ScoreCardFileServlet</servlet-name>
+    <servlet-artifactId>ScoreCardFileServlet</servlet-artifactId>
     <servlet-class>org.drools.workbench.screens.scorecardxls.backend.server.ScoreCardXLSFileServlet</servlet-class>
     <init-param>
-      <param-name>includes-path</param-name>
+      <param-artifactId>includes-path</param-artifactId>
       <param-value>git://**,default://**</param-value>
     </init-param>
     <init-param>
-      <param-name>excludes-path</param-name>
+      <param-artifactId>excludes-path</param-artifactId>
       <param-value>file://**</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ScoreCardFileServlet</servlet-name>
+    <servlet-artifactId>ScoreCardFileServlet</servlet-artifactId>
     <url-pattern>/org.kie.workbench.KIEWebapp/scorecardxls/file</url-pattern>
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>M2Servlet</servlet-name>
+    <servlet-artifactId>M2Servlet</servlet-artifactId>
     <servlet-class>org.guvnor.m2repo.backend.server.M2Servlet</servlet-class>
     <init-param>
-      <param-name>includes-path</param-name>
+      <param-artifactId>includes-path</param-artifactId>
       <param-value>git://**,default://**</param-value>
     </init-param>
     <init-param>
-      <param-name>excludes-path</param-name>
+      <param-artifactId>excludes-path</param-artifactId>
       <param-value>file://**</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>M2Servlet</servlet-name>
+    <servlet-artifactId>M2Servlet</servlet-artifactId>
     <url-pattern>/maven2/*</url-pattern>
   </servlet-mapping>
 
@@ -212,25 +212,25 @@
 with the DefaultBlockingServlet. If you change this setting, make a backup of this web.xml
 (perhaps under src/integration-test-settings/web.xml and alter the integration-test
 profile in pom.xml to use that. -->
-    <servlet-name>ErraiServlet</servlet-name>
+    <servlet-artifactId>ErraiServlet</servlet-artifactId>
     <servlet-class>org.jboss.errai.bus.server.servlet.DefaultBlockingServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>ErraiServlet</servlet-name>
+    <servlet-artifactId>ErraiServlet</servlet-artifactId>
     <url-pattern>*.erraiBus</url-pattern>
   </servlet-mapping>
 
   <resource-env-ref>
     <description>Object factory for the CDI Bean Manager</description>
-    <resource-env-ref-name>BeanManager</resource-env-ref-name>
+    <resource-env-ref-artifactId>BeanManager</resource-env-ref-artifactId>
     <resource-env-ref-type>javax.enterprise.inject.spi.BeanManager</resource-env-ref-type>
   </resource-env-ref>
 
   <resource-env-ref>
     <description>Object factory for the Errai Service</description>
-    <resource-env-ref-name>ErraiService</resource-env-ref-name>
+    <resource-env-ref-artifactId>ErraiService</resource-env-ref-artifactId>
     <resource-env-ref-type>org.jboss.errai.bus.server.service.ErraiService</resource-env-ref-type>
   </resource-env-ref>
 
@@ -241,278 +241,278 @@ profile in pom.xml to use that. -->
   <!-- Designer -->
   <!-- Designer Injection Filter -->
   <filter>
-    <filter-name>Designer Injection Filter</filter-name>
+    <filter-artifactId>Designer Injection Filter</filter-artifactId>
     <filter-class>org.jbpm.designer.filter.DesignerInjectionFilter</filter-class>
   </filter>
   <filter-mapping>
-    <filter-name>Designer Injection Filter</filter-name>
+    <filter-artifactId>Designer Injection Filter</filter-artifactId>
     <url-pattern>*.html</url-pattern>
   </filter-mapping>
   <filter>
-    <filter-name>Redirect Filter</filter-name>
+    <filter-artifactId>Redirect Filter</filter-artifactId>
     <filter-class>org.jbpm.designer.filter.DesignerResourcesRedirectFilter</filter-class>
     <init-param>
-      <param-name>redirectTo</param-name>
+      <param-artifactId>redirectTo</param-artifactId>
       <param-value>/org.kie.workbench.KIEWebapp</param-value>
     </init-param>
   </filter>
   <filter-mapping>
-    <filter-name>Redirect Filter</filter-name>
+    <filter-artifactId>Redirect Filter</filter-artifactId>
     <url-pattern>/org.jbpm.designer.jBPMDesigner/*</url-pattern>
   </filter-mapping>
   <filter>
-    <filter-name>Pluggable Filter</filter-name>
+    <filter-artifactId>Pluggable Filter</filter-artifactId>
     <filter-class>org.jbpm.designer.web.filter.impl.PluggableFilter</filter-class>
   </filter>
   <filter-mapping>
-    <filter-name>Pluggable Filter</filter-name>
+    <filter-artifactId>Pluggable Filter</filter-artifactId>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
   <servlet>
-    <display-name>Resource List</display-name>
-    <servlet-name>ResourceList</servlet-name>
+    <display-artifactId>Resource List</display-artifactId>
+    <servlet-artifactId>ResourceList</servlet-artifactId>
     <servlet-class>org.jbpm.designer.server.ResourceList</servlet-class>
   </servlet>
   <servlet>
-    <display-name>Oryx Editor Handler</display-name>
-    <servlet-name>EditorHandler</servlet-name>
+    <display-artifactId>Oryx Editor Handler</display-artifactId>
+    <servlet-artifactId>EditorHandler</servlet-artifactId>
     <servlet-class>org.jbpm.designer.server.EditorHandler</servlet-class>
     <init-param>
-      <param-name>designer.dev</param-name>
+      <param-artifactId>designer.dev</param-artifactId>
       <param-value>true</param-value>
     </init-param>
     <init-param>
-      <param-name>designer.preprocess</param-name>
+      <param-artifactId>designer.preprocess</param-artifactId>
       <param-value>true</param-value>
     </init-param>
     <init-param>
-      <param-name>designer.locale</param-name>
+      <param-artifactId>designer.locale</param-artifactId>
       <param-value>en</param-value>
     </init-param>
     <init-param>
-      <param-name>designer.skin</param-name>
+      <param-artifactId>designer.skin</param-artifactId>
       <param-value>default</param-value>
     </init-param>
   </servlet>
   <servlet>
-    <display-name>Menu Connector Servlet</display-name>
-    <servlet-name>MenuConnectorServlet</servlet-name>
+    <display-artifactId>Menu Connector Servlet</display-artifactId>
+    <servlet-artifactId>MenuConnectorServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.menu.MenuConnectorServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>Menu Servlet</display-name>
-    <servlet-name>MenuServlet</servlet-name>
+    <display-artifactId>Menu Servlet</display-artifactId>
+    <servlet-artifactId>MenuServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.menu.MenuServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>UUID Based Repository</display-name>
-    <servlet-name>UUIDBasedRepositoryServlet</servlet-name>
+    <display-artifactId>UUID Based Repository</display-artifactId>
+    <servlet-artifactId>UUIDBasedRepositoryServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.UUIDBasedRepositoryServlet</servlet-class>
     <init-param>
-      <param-name>factoryName</param-name>
+      <param-artifactId>factoryName</param-artifactId>
       <param-value>jbpm</param-value>
     </init-param>
   </servlet>
   <servlet>
-    <display-name>Transformer</display-name>
-    <servlet-name>TransformerServlet</servlet-name>
+    <display-artifactId>Transformer</display-artifactId>
+    <servlet-artifactId>TransformerServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.TransformerServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>AssetService</display-name>
-    <servlet-name>AssetServiceServlet</servlet-name>
+    <display-artifactId>AssetService</display-artifactId>
+    <servlet-artifactId>AssetServiceServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.repository.servlet.AssetServiceServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>FileStore</display-name>
-    <servlet-name>FileStoreServlet</servlet-name>
+    <display-artifactId>FileStore</display-artifactId>
+    <servlet-artifactId>FileStoreServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.FileStoreServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>Dictionary</display-name>
-    <servlet-name>DictionaryServlet</servlet-name>
+    <display-artifactId>Dictionary</display-artifactId>
+    <servlet-artifactId>DictionaryServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.DictionaryServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>Themes</display-name>
-    <servlet-name>ThemesServlet</servlet-name>
+    <display-artifactId>Themes</display-artifactId>
+    <servlet-artifactId>ThemesServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.ThemeServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>CustomEditors</display-name>
-    <servlet-name>CustomEditorsServlet</servlet-name>
+    <display-artifactId>CustomEditors</display-artifactId>
+    <servlet-artifactId>CustomEditorsServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.CustomEditorsServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>Simulation</display-name>
-    <servlet-name>SimulationServlet</servlet-name>
+    <display-artifactId>Simulation</display-artifactId>
+    <servlet-artifactId>SimulationServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.SimulationServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>FormWidget</display-name>
-    <servlet-name>FormWidgetServlet</servlet-name>
+    <display-artifactId>FormWidget</display-artifactId>
+    <servlet-artifactId>FormWidgetServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.FormWidgetServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>CalledElement</display-name>
-    <servlet-name>CalledElementServlet</servlet-name>
+    <display-artifactId>CalledElement</display-artifactId>
+    <servlet-artifactId>CalledElementServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.CalledElementServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>StencilPatterns</display-name>
-    <servlet-name>StencilPatternsServlet</servlet-name>
+    <display-artifactId>StencilPatterns</display-artifactId>
+    <servlet-artifactId>StencilPatternsServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.StencilPatternsServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>JbpmServiceRepository</display-name>
-    <servlet-name>JbpmServiceRepositoryServlet</servlet-name>
+    <display-artifactId>JbpmServiceRepository</display-artifactId>
+    <servlet-artifactId>JbpmServiceRepositoryServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.JbpmServiceRepositoryServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>ProcessDiffService</display-name>
-    <servlet-name>ProcessDiffServiceServlet</servlet-name>
+    <display-artifactId>ProcessDiffService</display-artifactId>
+    <servlet-artifactId>ProcessDiffServiceServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.ProcessDiffServiceServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>Taskforms</display-name>
-    <servlet-name>TaskformsServlet</servlet-name>
+    <display-artifactId>Taskforms</display-artifactId>
+    <servlet-artifactId>TaskformsServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.TaskFormsServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>TaskformsEditor</display-name>
-    <servlet-name>TaskFormsEditorServlet</servlet-name>
+    <display-artifactId>TaskformsEditor</display-artifactId>
+    <servlet-artifactId>TaskFormsEditorServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.TaskFormsEditorServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>ProcessInfo</display-name>
-    <servlet-name>ProcessInfoServlet</servlet-name>
+    <display-artifactId>ProcessInfo</display-artifactId>
+    <servlet-artifactId>ProcessInfoServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.ProcessInfoServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>SyntaxChecker</display-name>
-    <servlet-name>SyntaxCheckerServlet</servlet-name>
+    <display-artifactId>SyntaxChecker</display-artifactId>
+    <servlet-artifactId>SyntaxCheckerServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.server.SyntaxCheckerServlet</servlet-class>
   </servlet>
   <servlet>
-    <display-name>Plugin Service Servlet</display-name>
-    <servlet-name>PluginServiceServlet</servlet-name>
+    <display-artifactId>Plugin Service Servlet</display-artifactId>
+    <servlet-artifactId>PluginServiceServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.plugin.impl.PluginServiceServlet</servlet-class>
     <init-param>
-      <param-name>factoryName</param-name>
+      <param-artifactId>factoryName</param-artifactId>
       <param-value>jbpm</param-value>
     </init-param>
   </servlet>
   <servlet>
-    <display-name>StencilSet Service Servlet</display-name>
-    <servlet-name>StencilSetServiceServlet</servlet-name>
+    <display-artifactId>StencilSet Service Servlet</display-artifactId>
+    <servlet-artifactId>StencilSetServiceServlet</servlet-artifactId>
     <servlet-class>org.jbpm.designer.web.stencilset.impl.StencilSetServiceServlet</servlet-class>
     <init-param>
-      <param-name>defaultName</param-name>
+      <param-artifactId>defaultName</param-artifactId>
       <param-value>bpmn2.0jbpm</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ResourceList</servlet-name>
+    <servlet-artifactId>ResourceList</servlet-artifactId>
     <url-pattern>/resourceList</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>EditorHandler</servlet-name>
+    <servlet-artifactId>EditorHandler</servlet-artifactId>
     <url-pattern>/editor</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>EditorHandler</servlet-name>
+    <servlet-artifactId>EditorHandler</servlet-artifactId>
     <url-pattern>/editor/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>MenuConnectorServlet</servlet-name>
+    <servlet-artifactId>MenuConnectorServlet</servlet-artifactId>
     <url-pattern>/menuconnector/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>MenuServlet</servlet-name>
+    <servlet-artifactId>MenuServlet</servlet-artifactId>
     <url-pattern>/menu/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>UUIDBasedRepositoryServlet</servlet-name>
+    <servlet-artifactId>UUIDBasedRepositoryServlet</servlet-artifactId>
     <url-pattern>/uuidRepository</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>TransformerServlet</servlet-name>
+    <servlet-artifactId>TransformerServlet</servlet-artifactId>
     <url-pattern>/transformer</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>AssetServiceServlet</servlet-name>
+    <servlet-artifactId>AssetServiceServlet</servlet-artifactId>
     <url-pattern>/assetservice</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>FileStoreServlet</servlet-name>
+    <servlet-artifactId>FileStoreServlet</servlet-artifactId>
     <url-pattern>/filestore</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>DictionaryServlet</servlet-name>
+    <servlet-artifactId>DictionaryServlet</servlet-artifactId>
     <url-pattern>/dictionary</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>ThemesServlet</servlet-name>
+    <servlet-artifactId>ThemesServlet</servlet-artifactId>
     <url-pattern>/themes</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>CustomEditorsServlet</servlet-name>
+    <servlet-artifactId>CustomEditorsServlet</servlet-artifactId>
     <url-pattern>/customeditors</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>SimulationServlet</servlet-name>
+    <servlet-artifactId>SimulationServlet</servlet-artifactId>
     <url-pattern>/simulation</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>FormWidgetServlet</servlet-name>
+    <servlet-artifactId>FormWidgetServlet</servlet-artifactId>
     <url-pattern>/formwidget</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>CalledElementServlet</servlet-name>
+    <servlet-artifactId>CalledElementServlet</servlet-artifactId>
     <url-pattern>/calledelement</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>StencilPatternsServlet</servlet-name>
+    <servlet-artifactId>StencilPatternsServlet</servlet-artifactId>
     <url-pattern>/stencilpatterns</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>JbpmServiceRepositoryServlet</servlet-name>
+    <servlet-artifactId>JbpmServiceRepositoryServlet</servlet-artifactId>
     <url-pattern>/jbpmservicerepo</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>ProcessDiffServiceServlet</servlet-name>
+    <servlet-artifactId>ProcessDiffServiceServlet</servlet-artifactId>
     <url-pattern>/processdiff</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>TaskformsServlet</servlet-name>
+    <servlet-artifactId>TaskformsServlet</servlet-artifactId>
     <url-pattern>/taskforms</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>TaskFormsEditorServlet</servlet-name>
+    <servlet-artifactId>TaskFormsEditorServlet</servlet-artifactId>
     <url-pattern>/taskformseditor</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>ProcessInfoServlet</servlet-name>
+    <servlet-artifactId>ProcessInfoServlet</servlet-artifactId>
     <url-pattern>/processinfo</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>SyntaxCheckerServlet</servlet-name>
+    <servlet-artifactId>SyntaxCheckerServlet</servlet-artifactId>
     <url-pattern>/syntaxcheck</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>PluginServiceServlet</servlet-name>
+    <servlet-artifactId>PluginServiceServlet</servlet-artifactId>
     <url-pattern>/plugins</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>PluginServiceServlet</servlet-name>
+    <servlet-artifactId>PluginServiceServlet</servlet-artifactId>
     <url-pattern>/plugin</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>PluginServiceServlet</servlet-name>
+    <servlet-artifactId>PluginServiceServlet</servlet-artifactId>
     <url-pattern>/plugin/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>StencilSetServiceServlet</servlet-name>
+    <servlet-artifactId>StencilSetServiceServlet</servlet-artifactId>
     <url-pattern>/stencilset/*</url-pattern>
   </servlet-mapping>
 
@@ -546,24 +546,24 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
 
   <!-- start form-modeler -->
   <servlet>
-    <servlet-name>Controller</servlet-name>
+    <servlet-artifactId>Controller</servlet-artifactId>
     <servlet-class>org.jbpm.formModeler.service.bb.mvc.controller.ControllerServlet</servlet-class>
     <init-param>
-      <param-name>base.app.dir</param-name>
+      <param-artifactId>base.app.dir</param-artifactId>
       <param-value>${project.basedir}/target/${project.artifactId}-${project.version}</param-value>
     </init-param>
   </servlet>
 
 
   <servlet-mapping>
-    <servlet-name>Controller</servlet-name>
+    <servlet-artifactId>Controller</servlet-artifactId>
     <url-pattern>/org.kie.workbench.KIEWebapp/Controller</url-pattern>
   </servlet-mapping>
   <!-- end form-modeler-->
 
   <resource-ref>
     <description>Console DS</description>
-    <res-ref-name>jdbc/jbpmConsoleDS</res-ref-name>
+    <res-ref-artifactId>jdbc/jbpmConsoleDS</res-ref-artifactId>
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
   </resource-ref>
@@ -572,7 +572,7 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
 
   <security-constraint>
     <web-resource-collection>
-      <web-resource-name>download</web-resource-name>
+      <web-resource-artifactId>download</web-resource-artifactId>
       <url-pattern>/org.kie.workbench.KIEWebapp/archive</url-pattern>
       <url-pattern>/org.kie.workbench.KIEWebapp/defaulteditor/upload/*</url-pattern>
       <url-pattern>/org.kie.workbench.KIEWebapp/defaulteditor/download/*</url-pattern>
@@ -580,15 +580,15 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
       <url-pattern>/org.kie.workbench.KIEWebapp/scorecardxls/file</url-pattern>
     </web-resource-collection>
     <auth-constraint>
-      <role-name>admin</role-name>
-      <role-name>analyst</role-name>
-      <role-name>developer</role-name>
+      <role-artifactId>admin</role-artifactId>
+      <role-artifactId>analyst</role-artifactId>
+      <role-artifactId>developer</role-artifactId>
     </auth-constraint>
   </security-constraint>
 
   <security-constraint>
     <web-resource-collection>
-      <web-resource-name>console</web-resource-name>
+      <web-resource-artifactId>console</web-resource-artifactId>
       <url-pattern>/kie-drools-wb.html</url-pattern>
       <url-pattern>*.erraiBus</url-pattern>
       <url-pattern>/org.kie.workbench.KIEWebapp/*</url-pattern>
@@ -621,25 +621,25 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
       <url-pattern>/plugins/*</url-pattern>
     </web-resource-collection>
     <auth-constraint>
-      <role-name>admin</role-name>
-      <role-name>analyst</role-name>
-      <role-name>developer</role-name>
-      <role-name>user</role-name>
-      <role-name>manager</role-name>
+      <role-artifactId>admin</role-artifactId>
+      <role-artifactId>analyst</role-artifactId>
+      <role-artifactId>developer</role-artifactId>
+      <role-artifactId>user</role-artifactId>
+      <role-artifactId>manager</role-artifactId>
     </auth-constraint>
   </security-constraint>
 
   <security-constraint>
     <web-resource-collection>
-      <web-resource-name>formModeler</web-resource-name>
+      <web-resource-artifactId>formModeler</web-resource-artifactId>
       <url-pattern>/formModeler/*</url-pattern>
     </web-resource-collection>
     <auth-constraint>
-      <role-name>admin</role-name>
-      <role-name>analyst</role-name>
-      <role-name>developer</role-name>
-      <role-name>user</role-name>
-      <role-name>manager</role-name>
+      <role-artifactId>admin</role-artifactId>
+      <role-artifactId>analyst</role-artifactId>
+      <role-artifactId>developer</role-artifactId>
+      <role-artifactId>user</role-artifactId>
+      <role-artifactId>manager</role-artifactId>
     </auth-constraint>
   </security-constraint>
 
@@ -661,7 +661,7 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
       rights to make any changes necessary. Also has the
       ability to add and remove users from the system.
     </description>
-    <role-name>admin</role-name>
+    <role-artifactId>admin</role-artifactId>
   </security-role>
 
   <security-role>
@@ -670,7 +670,7 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
       process change requests. Needs to test processes that
       they create. Also creates forms and dashboards.
     </description>
-    <role-name>analyst</role-name>
+    <role-artifactId>analyst</role-artifactId>
   </security-role>
 
   <security-role>
@@ -678,7 +678,7 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
       the JBDS connection to view processes, but may use the
       web tool occasionally.
     </description>
-    <role-name>developer</role-name>
+    <role-artifactId>developer</role-artifactId>
   </security-role>
 
   <security-role>
@@ -686,7 +686,7 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
       that are required for the processes to continue forward. Works
       primarily with the task lists.
     </description>
-    <role-name>user</role-name>
+    <role-artifactId>user</role-artifactId>
   </security-role>
 
   <security-role>
@@ -694,7 +694,7 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
       around the business processes and their performance, business indicators, and other
       reporting of the system and people who interact with the system.
     </description>
-    <role-name>manager</role-name>
+    <role-artifactId>manager</role-artifactId>
   </security-role>
 
 </web-app>

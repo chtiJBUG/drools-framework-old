@@ -40,7 +40,7 @@ public class WorkbenchClient implements Closeable {
 
     public InputStream getWorkbenchResource(KnowledgeModule knowledgeModule) {
         // Build up url
-        String url = workbenchUrl + "maven2/" + knowledgeModule.getPackageName().replaceAll("\\.", "/") + "/" + knowledgeModule.getName() + "/" + knowledgeModule.getVersion() + "/" + knowledgeModule.getName() + "-" + knowledgeModule.getVersion() + ".jar";
+        String url = workbenchUrl + "maven2/" + knowledgeModule.getGroupId().replaceAll("\\.", "/") + "/" + knowledgeModule.getArtifactId() + "/" + knowledgeModule.getVersion() + "/" + knowledgeModule.getArtifactId() + "-" + knowledgeModule.getVersion() + ".jar";
         HttpGet httpget = new HttpGet(url);
         this.response = null;
         try {

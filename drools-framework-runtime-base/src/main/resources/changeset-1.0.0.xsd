@@ -5,7 +5,7 @@
             xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" 
             xmlns:change-set="http://drools.org/drools-5.0/change-set">
   <xsd:import namespace="http://www.w3.org/2001/XMLSchema-instance"/>
-  <xsd:element name="change-set">
+  <xsd:element artifactId="change-set">
     <xsd:complexType>
       <xsd:choice>
         <xsd:element ref="change-set:add"/>
@@ -13,40 +13,40 @@
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="add">
+  <xsd:element artifactId="add">
     <xsd:complexType mixed="true">
       <xsd:sequence>
         <xsd:element minOccurs="0" maxOccurs="unbounded" ref="change-set:resource"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="remove">
+  <xsd:element artifactId="remove">
     <xsd:complexType mixed="true">
       <xsd:sequence>
         <xsd:element minOccurs="0" maxOccurs="unbounded" ref="change-set:resource"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="resource">
+  <xsd:element artifactId="resource">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:any minOccurs="0"/>
         <xsd:element minOccurs="0" ref="change-set:decisiontable-conf"/>
       </xsd:sequence>
       <!-- URL to the resource, can be file based -->
-      <xsd:attribute name="source" use="required" type="xsd:anyURI"/>
+      <xsd:attribute artifactId="source" use="required" type="xsd:anyURI"/>
       <!-- for example, DRL, or PKG -->
-      <xsd:attribute name="type" use="required" type="xsd:string"/>
-      <xsd:attribute name="basicAuthentication" type="xsd:string"/>
-      <xsd:attribute name="username" type="xsd:string"/>
-      <xsd:attribute name="password" type="xsd:string"/>
+      <xsd:attribute artifactId="type" use="required" type="xsd:string"/>
+      <xsd:attribute artifactId="basicAuthentication" type="xsd:string"/>
+      <xsd:attribute artifactId="username" type="xsd:string"/>
+      <xsd:attribute artifactId="password" type="xsd:string"/>
     </xsd:complexType>
     
   </xsd:element>
-  <xsd:element name="decisiontable-conf">
+  <xsd:element artifactId="decisiontable-conf">
     <xsd:complexType>
-      <xsd:attribute name="input-type" use="required" type="xsd:NCName"/>
-      <xsd:attribute name="worksheet-name" use="required" type="xsd:NCName"/>
+      <xsd:attribute artifactId="input-type" use="required" type="xsd:NCName"/>
+      <xsd:attribute artifactId="worksheet-artifactId" use="required" type="xsd:NCName"/>
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

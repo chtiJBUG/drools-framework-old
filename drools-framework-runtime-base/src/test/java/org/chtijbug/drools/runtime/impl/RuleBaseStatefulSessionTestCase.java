@@ -23,7 +23,7 @@ public class RuleBaseStatefulSessionTestCase {
 
     @Before
     public void before() throws Exception {
-        ruleBase = new RuleBaseSingleton(5000, null, "com.pymmasoftware.test", "fibonacci");
+        ruleBase = new RuleBaseSingleton(5000, null, "com.pymmasoftware.test", "fibonacci","1.0.0-SNAPSHOT");
         // TODO Créer une kbase
         ruleBase.createKBase(Arrays.asList("fibonacci.drl"));
         // TODO créer une session à partir dela KBase

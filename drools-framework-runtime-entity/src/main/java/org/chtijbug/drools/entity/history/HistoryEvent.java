@@ -34,7 +34,7 @@ public class HistoryEvent implements Serializable {
     private Long ruleBaseID;
     private Long sessionId;
     private DroolsChtijbugException droolsChtijbugException;
-    private ArrayList<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
+    private ArrayList<ResourceFile> resourceFiles = new ArrayList<>();
 
     public enum TypeEvent {
         Fact, Rule, BPMN, RuleFlowGroup, KnowledgeBaseSingleton, Session

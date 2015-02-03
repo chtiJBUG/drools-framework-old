@@ -15,7 +15,7 @@
  */
 package org.chtijbug.drools.entity.history.knowledge;
 
-import org.chtijbug.drools.entity.history.WorkbenchResourceFile;
+import org.chtijbug.drools.entity.history.WorkbenchResource;
 
 import java.util.Date;
 
@@ -30,11 +30,10 @@ public class KnowledgeBaseReloadedEvent extends KnowledgeBaseEvent {
         super(eventID, dateEvent, ruleBaseID);
     }
 
-    public KnowledgeBaseReloadedEvent(Long eventID, Date dateEvent, Long ruleBaseID, String baseUrl) {
+    public KnowledgeBaseReloadedEvent(Long eventID, Date dateEvent, Long ruleBaseID, String baseUrl,String groupId, String artifactId, String version) {
         super(eventID, dateEvent, ruleBaseID);
-        WorkbenchResourceFile workbenchResourceFile = new WorkbenchResourceFile(baseUrl, null, null);
-        this.getResourceFiles().add(workbenchResourceFile);
-
+        WorkbenchResource workbenchResource = new WorkbenchResource(baseUrl, groupId, artifactId,version);
+        this.getResourceFiles().add(workbenchResource);
     }
 
 

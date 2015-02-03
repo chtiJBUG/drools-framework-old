@@ -26,7 +26,7 @@ import java.io.Serializable;
 public class DrlResourceFile implements Serializable, ResourceFile {
     private String fileName;
     private String content;
-
+    private boolean bpmn2;
     public DrlResourceFile() {
     }
 
@@ -44,6 +44,14 @@ public class DrlResourceFile implements Serializable, ResourceFile {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public boolean isBpmn2() {
+        return bpmn2;
+    }
+
+    public void setBpmn2(boolean bpmn2) {
+        this.bpmn2 = bpmn2;
     }
 
     @Override

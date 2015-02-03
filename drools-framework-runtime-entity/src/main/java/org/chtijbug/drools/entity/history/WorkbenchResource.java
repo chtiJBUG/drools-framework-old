@@ -23,19 +23,27 @@ import java.io.Serializable;
  * Time: 15:40
  * To change this template use File | Settings | File Templates.
  */
-public class WorkbenchResourceFile implements Serializable, ResourceFile {
+public class WorkbenchResource implements Serializable, ResourceFile {
+
 
     private String guvnor_url;
-    private String guvnor_userName;
-    private String guvnor_password;
 
-    public WorkbenchResourceFile() {
+
+    private String groupId;
+    private String artifactID;
+    private String version;
+    private String userName;
+    private String password;
+
+
+    public WorkbenchResource(String guvnor_url, String groupId, String artifactID, String version) {
+        this.guvnor_url = guvnor_url;
+        this.groupId = groupId;
+        this.artifactID = artifactID;
+        this.version = version;
     }
 
-    public WorkbenchResourceFile(String guvnor_url, String guvnor_userName, String guvnor_password) {
-        this.guvnor_url = guvnor_url;
-        this.guvnor_userName = guvnor_userName;
-        this.guvnor_password = guvnor_password;
+    public WorkbenchResource() {
     }
 
     public String getGuvnor_url() {
@@ -46,28 +54,50 @@ public class WorkbenchResourceFile implements Serializable, ResourceFile {
         this.guvnor_url = guvnor_url;
     }
 
-    public String getGuvnor_userName() {
-        return guvnor_userName;
+    public String getGroupId() {
+        return groupId;
     }
 
-    public void setGuvnor_userName(String guvnor_userName) {
-        this.guvnor_userName = guvnor_userName;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
-    public String getGuvnor_password() {
-        return guvnor_password;
+    public String getArtifactID() {
+        return artifactID;
     }
 
-    public void setGuvnor_password(String guvnor_password) {
-        this.guvnor_password = guvnor_password;
+    public void setArtifactID(String artifactID) {
+        this.artifactID = artifactID;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("GuvnorRessourceFile{");
         sb.append("guvnor_url='").append(guvnor_url).append('\'');
-        sb.append(", guvnor_userName='").append(guvnor_userName).append('\'');
-        sb.append(", guvnor_password='").append(guvnor_password).append('\'');
         sb.append('}');
         return sb.toString();
     }

@@ -34,6 +34,7 @@ import org.jbpm.workflow.core.node.RuleSetNode;
 import org.jbpm.workflow.instance.node.*;
 import org.kie.api.definition.rule.Rule;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.ObjectFilter;
 import org.kie.api.runtime.process.NodeInstance;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.rule.FactHandle;
@@ -457,6 +458,11 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
     public Long getRuleBaseID() {
         return ruleBaseID;
+    }
+
+    @Override
+    public Collection<? extends  java.lang.Object> getObjects(ObjectFilter objectFilter) {
+        return this.knowledgeSession.getObjects(objectFilter);
     }
 
     private RuleSetNode getRuleSetNode(NodeInstance nodeInstance) {

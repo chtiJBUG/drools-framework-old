@@ -32,9 +32,9 @@ public abstract class RuleBaseBuilder {
     private static Logger logger = LoggerFactory.getLogger(RuleBaseBuilder.class);
 
 
-    public static RuleBasePackage createWorkbenchRuleBasePackage(HistoryListener historyListener, String modulePackage, String moduleName, String version, String workbenchUrl, String username, String password) throws DroolsChtijbugException {
+    public static RuleBasePackage createWorkbenchRuleBasePackage(Long ruleBaseId,HistoryListener historyListener, String modulePackage, String moduleName, String version, String workbenchUrl, String username, String password) throws DroolsChtijbugException {
         logger.debug(">> createWorkbenchRuleBasePackage()");
-        RuleBaseSingleton newRuleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener, modulePackage, moduleName);
+        RuleBaseSingleton newRuleBasePackage = new RuleBaseSingleton(ruleBaseId,RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener, modulePackage, moduleName,version);
         try {
            newRuleBasePackage.createKBase(version, workbenchUrl, username, password);
             //_____ Returning the result
@@ -44,13 +44,13 @@ public abstract class RuleBaseBuilder {
         }
     }
 
-    public static RuleBasePackage createPackageBasePackage(String modulePackage, String moduleName, List<String> fileNames) throws DroolsChtijbugException {
-        return RuleBaseBuilder.newRuleBasePackage(null, modulePackage, moduleName, fileNames);
+    public static RuleBasePackage createPackageBasePackage(Long ruleBaseId,String modulePackage, String moduleName, List<String> fileNames) throws DroolsChtijbugException {
+        return RuleBaseBuilder.newRuleBasePackage(ruleBaseId,null, modulePackage, moduleName, fileNames);
     }
 
-    public static RuleBasePackage newRuleBasePackage(HistoryListener historyListener, String modulePackage, String moduleName, List<String> filenames) throws DroolsChtijbugException {
+    public static RuleBasePackage newRuleBasePackage(Long ruleBaseId,HistoryListener historyListener, String modulePackage, String moduleName, List<String> filenames) throws DroolsChtijbugException {
         logger.debug(">>createPackageBasePackage");
-        RuleBaseSingleton ruleBasePackage = new RuleBaseSingleton(RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener, modulePackage, moduleName);
+        RuleBaseSingleton ruleBasePackage = new RuleBaseSingleton(ruleBaseId,RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener, modulePackage, moduleName,"1.0.0-SNAPSHOT");
         try {
             ruleBasePackage.createKBase(filenames);
             //_____ Returning the result

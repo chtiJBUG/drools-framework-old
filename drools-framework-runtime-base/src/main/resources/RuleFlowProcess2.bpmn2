@@ -12,14 +12,14 @@
              xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
              xmlns:tns="http://www.jboss.org/drools">
 
-  <process processType="Private" isExecutable="true" id="P1" name="Hello World" tns:packageName="org.chtijbug.drools.runtime.test" >
+  <process processType="Private" isExecutable="true" id="P1" artifactId="Hello World" tns:groupId="org.chtijbug.drools.runtime.test" >
 
     <!-- nodes -->
-    <startEvent id="_1" name="StartProcess" />
-    <endEvent id="_3" name="EndProcess" />
-    <businessRuleTask id="_4" name="Group1" g:ruleFlowGroup="Group1" >
+    <startEvent id="_1" artifactId="StartProcess" />
+    <endEvent id="_3" artifactId="EndProcess" />
+    <businessRuleTask id="_4" artifactId="Group1" g:ruleFlowGroup="Group1" >
     </businessRuleTask>
-    <businessRuleTask id="_5" name="Group2" g:ruleFlowGroup="Group2" >
+    <businessRuleTask id="_5" artifactId="Group2" g:ruleFlowGroup="Group2" >
     </businessRuleTask>
 
     <!-- connections -->

@@ -18,6 +18,7 @@ package org.chtijbug.drools.runtime;
 import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.DroolsRuleObject;
 import org.chtijbug.drools.entity.history.HistoryContainer;
+import org.kie.api.runtime.ObjectFilter;
 
 import java.util.Collection;
 
@@ -77,5 +78,6 @@ public interface RuleBaseSession {
     public Long getSessionId();
 
     public Long getRuleBaseID();
+    public Collection<? extends Object> getObjects(ObjectFilter objectFilter);
 
 }

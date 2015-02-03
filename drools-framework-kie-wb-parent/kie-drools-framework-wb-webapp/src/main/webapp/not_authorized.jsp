@@ -153,7 +153,7 @@
     <form action="kie-wb.html" method="GET">
       <p>
         <% if (request.getParameter("gwt.codesvr") != null) { %>
-        <input type="hidden" name="gwt.codesvr" value="<%= org.owasp.encoder.Encode.forHtmlAttribute(request.getParameter("gwt.codesvr")) %>"/>
+        <input type="hidden" artifactId="gwt.codesvr" value="<%= org.owasp.encoder.Encode.forHtmlAttribute(request.getParameter("gwt.codesvr")) %>"/>
         <% } %>
 
         <input class="button" type="submit" value='<i18n:message key="loginAsAnotherUser">Login as another user</i18n:message>'/>

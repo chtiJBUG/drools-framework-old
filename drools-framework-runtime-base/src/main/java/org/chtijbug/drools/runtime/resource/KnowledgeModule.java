@@ -12,6 +12,7 @@ import org.kie.api.io.Resource;
 import org.kie.api.runtime.KieContainer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,8 +20,9 @@ import static com.google.common.base.Throwables.propagate;
 
 public class KnowledgeModule {
 
-    private final String packageName;
-    private final String name;
+    private final String groupId;
+    private final String artifactId;
+    private final String version;
     private final KieServices kieServices;
 
     private final KieResources kieResources;
@@ -28,16 +30,17 @@ public class KnowledgeModule {
     private final KieRepository kieRepository;
     private final HistoryListener historyListener;
     private final EventCounter sharedCounter;
-    private String version;
+
     private final Long ruleBaseId;
     private ReleaseId releaseId;
     private boolean fileBaseModule = false;
 
-    public KnowledgeModule(Long ruleBaseId, HistoryListener historyListener, String packageName, String name, EventCounter sharedCounter) {
+    public KnowledgeModule(Long ruleBaseId, HistoryListener historyListener, String groupId, String artifactId,String version, EventCounter sharedCounter) {
         this.ruleBaseId = ruleBaseId;
         this.historyListener = historyListener;
-        this.packageName = packageName;
-        this.name = name;
+        this.groupId = groupId;
+        this.artifactId = artifactId;
+        this.version = version;
         this.kieServices = KieServices.Factory.get();
         this.kieRepository = kieServices.getRepository();
         this.kieResources = kieServices.getResources();
@@ -47,7 +50,7 @@ public class KnowledgeModule {
 
     public void addAllFiles(List<String> filenames) {
         for (String filename : filenames) {
-            addRuleFile(packageName + ".rules", filename);
+            addRuleFile(groupId + ".rules", filename);
         }
     }
 
@@ -69,10 +72,8 @@ public class KnowledgeModule {
     }
 
     public KieContainer build() {
-        if (version == null) {
-            version = "1.0.0-SNAPSHOT";
-        }
-        this.releaseId = kieServices.newReleaseId(packageName, name, version);
+
+        this.releaseId = kieServices.newReleaseId(groupId, artifactId, version);
         if (fileBaseModule) {
             this.kieFileSystem.generateAndWritePomXML(releaseId);
             KieBuilder kb = kieServices.newKieBuilder(kieFileSystem);
@@ -84,20 +85,28 @@ public class KnowledgeModule {
         return this.kieServices.newKieContainer(releaseId);
     }
 
-    public void addWorkbenchResource(String version, String workbenchUrl, String username, String password) {
+    public void addWorkbenchResource(String workbenchUrl, String username, String password) {
         try (WorkbenchClient client = new WorkbenchClient(workbenchUrl, username, password)) {
-            this.version = version;
             Resource resource = kieServices.getResources().newInputStreamResource(client.getWorkbenchResource(this));
             this.kieRepository.addKieModule(resource);
+            if (historyListener != null)
+                try {
+                    historyListener.fireEvent(
+                            new KnowledgeBaseAddResourceEvent(
+                                    sharedCounter.next(), new Date(), this.ruleBaseId,
+                                    workbenchUrl,this.groupId,this.artifactId,this.version));
+                } catch ( DroolsChtijbugException e) {
+                    throw propagate(e);
+                }
         }
     }
 
-    public String getPackageName() {
-        return packageName;
+    public String getGroupId() {
+        return groupId;
     }
 
-    public String getName() {
-        return name;
+    public String getArtifactId() {
+        return artifactId;
     }
 
     public String getVersion() {

@@ -128,6 +128,7 @@
         <module>drools-framework-runtime-base</module>
         <module>drools-framework-runtime-entity</module>
         <module>drools-framework-rest-guvnor</module>
+        <module>drools-framework-kie-wb-parent</module>
         <!--module>drools-service-runner-archetype</module-->
         <!--module>maven-guvnor-install-pojo-plugin</module-->
         <!--module>drools-runner-generator</module-->

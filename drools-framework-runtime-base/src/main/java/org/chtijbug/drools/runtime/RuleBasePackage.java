@@ -15,7 +15,7 @@
  */
 package org.chtijbug.drools.runtime;
 
-import org.chtijbug.drools.entity.history.ResourceFile;
+import org.chtijbug.drools.entity.history.RuleResource;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
 
 import java.util.List;
@@ -38,5 +38,5 @@ public interface RuleBasePackage {
 
     public void dispose();
 
-    void RecreateKBaseWithNewRessources(List<ResourceFile> droolsResources);
+    void RecreateKBaseWithNewResources(List<RuleResource> droolsResources);
 }

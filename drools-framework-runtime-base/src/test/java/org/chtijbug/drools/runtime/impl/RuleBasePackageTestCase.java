@@ -1,10 +1,12 @@
 package org.chtijbug.drools.runtime.impl;
 
 import com.thoughtworks.xstream.XStream;
+import org.chtijbug.drools.runtime.resource.DrlRuleResource;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBaseBuilder;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -23,13 +25,20 @@ import static org.junit.Assert.fail;
  */
 public class RuleBasePackageTestCase {
 
+    private DrlRuleResource fibonacciFile;
+
+    @Before
+    public void justBefore(){
+        fibonacciFile = DrlRuleResource.createClassPathResource( "fibonacci.drl");
+    }
+
     @Test
     @Ignore
     public void testXStreamSerialization() {
 
         try {
             XStream xstream = new XStream();
-            RuleBasePackage ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("fibonacci.drl"));
+            RuleBasePackage ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,"com.pymmasoftware.test", "fibonacci", Arrays.asList(fibonacciFile));
             String pkgXML = xstream.toXML(ruleBasePackage);
             FileWriter fstream = new FileWriter("/tmp/chtijbug-rule-cache");
             BufferedWriter out = new BufferedWriter(fstream);

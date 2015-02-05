@@ -15,8 +15,7 @@
  */
 package org.chtijbug.drools.entity.history.knowledge;
 
-import org.chtijbug.drools.entity.history.DrlResourceFile;
-import org.chtijbug.drools.entity.history.WorkbenchResource;
+import org.chtijbug.drools.entity.history.RuleResource;
 
 import java.util.Date;
 
@@ -27,20 +26,12 @@ public class KnowledgeBaseDelResourceEvent extends KnowledgeBaseEvent {
     }
 
 
-    public KnowledgeBaseDelResourceEvent(Long eventID, Date dateEvent, Long ruleBaseID, String guvnor_url,String groupID,String artifactId, String version) {
+    public KnowledgeBaseDelResourceEvent(Long eventID, Date dateEvent, Long ruleBaseID, RuleResource ruleResource) {
         super(eventID, dateEvent, ruleBaseID);
-        WorkbenchResource workbenchResource = new WorkbenchResource(guvnor_url, groupID,artifactId,version);
-        this.getResourceFiles().add(workbenchResource);
+        this.getRuleResources().add(ruleResource);
     }
 
-    public KnowledgeBaseDelResourceEvent(Long eventID, Date dateEvent, Long ruleBaseID, String fileName, String content) {
-        super(eventID, dateEvent, ruleBaseID);
-        DrlResourceFile drlResourceFile = new DrlResourceFile();
-        drlResourceFile.setFileName(fileName);
-        drlResourceFile.setContent(content);
-        this.getResourceFiles().add(drlResourceFile);
 
-    }
 
     public KnowledgeBaseDelResourceEvent() {
     }

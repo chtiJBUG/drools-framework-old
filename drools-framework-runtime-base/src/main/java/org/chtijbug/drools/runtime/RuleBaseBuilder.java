@@ -15,6 +15,7 @@
  */
 package org.chtijbug.drools.runtime;
 
+import org.chtijbug.drools.runtime.resource.DrlRuleResource;
 import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.slf4j.Logger;
@@ -44,19 +45,19 @@ public abstract class RuleBaseBuilder {
         }
     }
 
-    public static RuleBasePackage createPackageBasePackage(Long ruleBaseId,String modulePackage, String moduleName, List<String> fileNames) throws DroolsChtijbugException {
-        return RuleBaseBuilder.newRuleBasePackage(ruleBaseId,null, modulePackage, moduleName, fileNames);
+    public static RuleBasePackage createRuleBasePackage(Long ruleBaseId, String modulePackage, String moduleName, List<DrlRuleResource> files) throws DroolsChtijbugException {
+        return RuleBaseBuilder.createRuleBasePackage(ruleBaseId, null, modulePackage, moduleName, files);
     }
 
-    public static RuleBasePackage newRuleBasePackage(Long ruleBaseId,HistoryListener historyListener, String modulePackage, String moduleName, List<String> filenames) throws DroolsChtijbugException {
-        logger.debug(">>createPackageBasePackage");
+    public static RuleBasePackage createRuleBasePackage(Long ruleBaseId, HistoryListener historyListener, String modulePackage, String moduleName, List<DrlRuleResource> files) throws DroolsChtijbugException {
+        logger.debug(">>createRuleBasePackage");
         RuleBaseSingleton ruleBasePackage = new RuleBaseSingleton(ruleBaseId,RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener, modulePackage, moduleName,"1.0.0-SNAPSHOT");
         try {
-            ruleBasePackage.createKBase(filenames);
+            ruleBasePackage.createKBase(files);
             //_____ Returning the result
             return ruleBasePackage;
         } finally {
-            logger.debug("<<createPackageBasePackage", ruleBasePackage);
+            logger.debug("<<createRuleBasePackage", ruleBasePackage);
         }
     }
 

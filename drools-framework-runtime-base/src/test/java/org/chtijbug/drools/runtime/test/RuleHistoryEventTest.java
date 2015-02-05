@@ -1,6 +1,7 @@
 package org.chtijbug.drools.runtime.test;
 
 import org.chtijbug.drools.entity.DroolsRuleObject;
+import org.chtijbug.drools.runtime.resource.DrlRuleResource;
 import org.chtijbug.drools.entity.history.HistoryEvent;
 import org.chtijbug.drools.entity.history.rule.AfterRuleFiredHistoryEvent;
 import org.chtijbug.drools.entity.history.rule.AfterRuleFlowActivatedHistoryEvent;
@@ -12,6 +13,7 @@ import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -27,6 +29,17 @@ import static org.assertj.core.api.Assertions.assertThat;
  * To change this template use File | Settings | File Templates.
  */
 public class RuleHistoryEventTest {
+
+    private DrlRuleResource fibonacciFile;
+    private DrlRuleResource ruleflow2File;
+    private DrlRuleResource ruleFlowProcess2File;
+
+    @Before
+    public void justBefore(){
+        fibonacciFile =   DrlRuleResource.createClassPathResource("fibonacci.drl");
+        ruleflow2File = DrlRuleResource.createClassPathResource("ruleflow2.drl");
+        ruleFlowProcess2File = DrlRuleResource.createClassPathResource("RuleFlowProcess2.bpmn2");
+    }
     @Test
     public void KnowledgeBaseFireAllRules() throws DroolsChtijbugException {
 
@@ -37,7 +50,7 @@ public class RuleHistoryEventTest {
                 historyEvents.add(newHistoryEvent);
             }
         };
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList("fibonacci.drl"));
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList(fibonacciFile));
         Long rulePackageID = ruleBasePackage.getRuleBaseID();
 
         RuleBaseSession ruleBaseSession1 = ruleBasePackage.createRuleBaseSession();
@@ -77,7 +90,7 @@ public class RuleHistoryEventTest {
                 historyEvents.add(newHistoryEvent);
             }
         };
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList("ruleflow2.drl", "RuleFlowProcess2.bpmn2"));
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList(ruleflow2File, ruleFlowProcess2File));
         Long rulePackageID = ruleBasePackage.getRuleBaseID();
 
         RuleBaseSession ruleBaseSession1 = ruleBasePackage.createRuleBaseSession();

@@ -1,6 +1,6 @@
 package org.chtijbug.drools.runtime.test;
 
-import org.chtijbug.drools.entity.history.DrlResourceFile;
+import org.chtijbug.drools.runtime.resource.DrlRuleResource;
 import org.chtijbug.drools.entity.history.HistoryEvent;
 import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseAddResourceEvent;
 import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseCreatedEvent;
@@ -9,6 +9,7 @@ import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBaseBuilder;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -24,6 +25,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  * To change this template use File | Settings | File Templates.
  */
 public class RuleBaseHistoryEventTest {
+
+    private DrlRuleResource fibonacciFile;
+
+    @Before
+    public void justBefore(){
+        fibonacciFile = DrlRuleResource.createClassPathResource( "fibonacci.drl");
+    }
     @Test
     public void PackageCreationEvent() throws DroolsChtijbugException {
 
@@ -34,7 +42,7 @@ public class RuleBaseHistoryEventTest {
                 historyEvents.add(newHistoryEvent);
             }
         };
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.newRuleBasePackage(historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList("fibonacci.drl"));
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList(fibonacciFile));
         Long rulePackageID = ruleBasePackage.getRuleBaseID();
 
         assertThat(historyEvents).hasSize(3);
@@ -48,15 +56,15 @@ public class RuleBaseHistoryEventTest {
         KnowledgeBaseAddResourceEvent knowledgeBaseAddResourceEvent = (KnowledgeBaseAddResourceEvent) historyEvents.get(2);
         assertThat(knowledgeBaseAddResourceEvent.getEventID()).isEqualTo(3);
         assertThat(knowledgeBaseAddResourceEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
-        assertThat(knowledgeBaseAddResourceEvent.getResourceFiles()).hasSize(1);
-        assertThat(knowledgeBaseAddResourceEvent.getResourceFiles().get(0)).isInstanceOf(DrlResourceFile.class);
-        DrlResourceFile drlRessourceFile =(DrlResourceFile) knowledgeBaseAddResourceEvent.getResourceFiles().get(0);
-        assertThat(drlRessourceFile.getFileName()).isEqualTo("fibonacci.drl");
+        assertThat(knowledgeBaseAddResourceEvent.getRuleResources()).hasSize(1);
+        assertThat(knowledgeBaseAddResourceEvent.getRuleResources().get(0)).isInstanceOf(DrlRuleResource.class);
+        DrlRuleResource drlRessourceFile =(DrlRuleResource) knowledgeBaseAddResourceEvent.getRuleResources().get(0);
+        assertThat(drlRessourceFile.getPath()).isEqualTo("fibonacci.drl");
         assertThat(historyEvents.get(1)).isInstanceOf(KnowledgeBaseInitialLoadEvent.class);
         KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = (KnowledgeBaseInitialLoadEvent) historyEvents.get(1);
         assertThat(knowledgeBaseInitialLoadEvent.getEventID()).isEqualTo(2);
         assertThat(knowledgeBaseInitialLoadEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
-        /** ruleBasePackage.RecreateKBaseWithNewRessources(DrlDroolsResource.createClassPathResource("fibonacciBis.drl"));
+        /** ruleBasePackage.RecreateKBaseWithNewResources(DrlDroolsResource.createClassPathResource("fibonacciBis.drl"));
         assertThat(historyEvents.size() == 6);
         assertThat(historyEvents.get(4) instanceof KnowledgeBaseAddResourceEvent);
         KnowledgeBaseAddResourceEvent knowledgeBaseAddRessourceEvent2 = (KnowledgeBaseAddResourceEvent) historyEvents.get(4);

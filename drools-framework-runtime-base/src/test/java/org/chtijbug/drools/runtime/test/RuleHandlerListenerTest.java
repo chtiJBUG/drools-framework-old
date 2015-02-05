@@ -1,6 +1,7 @@
 package org.chtijbug.drools.runtime.test;
 
 import org.chtijbug.drools.entity.DroolsFactObjectAttribute;
+import org.chtijbug.drools.runtime.resource.DrlRuleResource;
 import org.chtijbug.drools.entity.history.HistoryEvent;
 import org.chtijbug.drools.entity.history.rule.AfterRuleFiredHistoryEvent;
 import org.chtijbug.drools.entity.history.rule.BeforeRuleFiredHistoryEvent;
@@ -25,6 +26,15 @@ import static org.junit.Assert.fail;
 public class RuleHandlerListenerTest {
     RuleBaseSession session;
     static RuleBasePackage ruleBasePackage;
+    private DrlRuleResource infiniteLoopFile;
+    private DrlRuleResource ruleflow1File;
+    private DrlRuleResource ruleFlowProcess1File;
+    @Before
+    public void justBefore(){
+        infiniteLoopFile = DrlRuleResource.createClassPathResource("infiniteLoop.drl");
+        ruleflow1File = DrlRuleResource.createClassPathResource("ruleflow1.drl");
+        ruleFlowProcess1File = DrlRuleResource.createClassPathResource("RuleFlowProcess1.bpmn2");
+    }
 
     /**
      * @throws java.lang.Exception
@@ -37,9 +47,7 @@ public class RuleHandlerListenerTest {
     /**
      * @throws java.lang.Exception
      */
-    @Before
-    public void setUp() throws Exception {
-    }
+
 
     /**
      * @throws java.lang.Exception
@@ -51,7 +59,7 @@ public class RuleHandlerListenerTest {
 
     @Test
     public void DefaultMaxNumberRUleExecuted() throws Exception {
-        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("infiniteLoop.drl"));
+        ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,"com.pymmasoftware.test", "fibonacci", Arrays.asList(infiniteLoopFile));
         session = ruleBasePackage.createRuleBaseSession();
         Fibonacci newObject = new Fibonacci(0);
         session.insertObject(newObject);
@@ -66,7 +74,7 @@ public class RuleHandlerListenerTest {
 
     @Test
     public void max10tMaxNumberRUleExecuted() throws Exception {
-        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("infiniteLoop.drl"));
+        ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,"com.pymmasoftware.test", "fibonacci", Arrays.asList(infiniteLoopFile));
 
         session = ruleBasePackage.createRuleBaseSession(10);
 
@@ -83,7 +91,7 @@ public class RuleHandlerListenerTest {
 
     @Test
     public void RuleEvent() throws DroolsChtijbugException {
-        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("infiniteLoop.drl"));
+        ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,"com.pymmasoftware.test", "fibonacci", Arrays.asList(infiniteLoopFile));
 
         session = ruleBasePackage.createRuleBaseSession();
 
@@ -120,7 +128,7 @@ public class RuleHandlerListenerTest {
 
     @Test
     public void RuleFLowgroup1() throws Exception {
-        ruleBasePackage = RuleBaseBuilder.createPackageBasePackage("com.pymmasoftware.test", "fibonacci", Arrays.asList("ruleflow1.drl", "RuleFlowProcess1.bpmn2"));
+        ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,"com.pymmasoftware.test", "fibonacci", Arrays.asList(ruleflow1File, ruleFlowProcess1File));
 
         session = ruleBasePackage.createRuleBaseSession();
 

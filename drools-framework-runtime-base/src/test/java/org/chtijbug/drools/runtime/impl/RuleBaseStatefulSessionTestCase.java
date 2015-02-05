@@ -1,6 +1,7 @@
 package org.chtijbug.drools.runtime.impl;
 
 import org.chtijbug.drools.entity.DroolsFactObject;
+import org.chtijbug.drools.runtime.resource.DrlRuleResource;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,12 +21,16 @@ public class RuleBaseStatefulSessionTestCase {
     private static RuleBaseSingleton ruleBase ;
 
     private RuleBaseStatefulSession session;
+    private DrlRuleResource fibonacciFile;
+
+
 
     @Before
     public void before() throws Exception {
-        ruleBase = new RuleBaseSingleton(5000, null, "com.pymmasoftware.test", "fibonacci","1.0.0-SNAPSHOT");
+        fibonacciFile = DrlRuleResource.createClassPathResource("fibonacci.drl");
+        ruleBase = new RuleBaseSingleton(1L,5000, null, "com.pymmasoftware.test", "fibonacci","1.0.0-SNAPSHOT");
         // TODO Créer une kbase
-        ruleBase.createKBase(Arrays.asList("fibonacci.drl"));
+        ruleBase.createKBase(Arrays.asList(fibonacciFile));
         // TODO créer une session à partir dela KBase
         session = (RuleBaseStatefulSession) ruleBase.createRuleBaseSession();
     }

@@ -1,6 +1,5 @@
 package org.chtijbug.drools.runtime.resource;
 
-import org.apache.commons.io.IOUtils;
 import org.chtijbug.drools.entity.history.EventCounter;
 import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseAddResourceEvent;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
@@ -11,8 +10,6 @@ import org.kie.api.io.KieResources;
 import org.kie.api.io.Resource;
 import org.kie.api.runtime.KieContainer;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,25 +45,28 @@ public class KnowledgeModule {
         this.sharedCounter = sharedCounter;
     }
 
-    public void addAllFiles(List<String> filenames) {
-        for (String filename : filenames) {
-            addRuleFile(groupId + ".rules", filename);
+    public void addAllFiles(List<DrlRuleResource> files) {
+        for (DrlRuleResource file : files) {
+
+
+
+
+            addRuleFile(groupId + ".rules", file);
         }
     }
 
-    public void addRuleFile(String packageName, String ruleFile) {
+    public void addRuleFile(String packageName, DrlRuleResource ruleResource) {
         this.fileBaseModule = true;
-        Resource resource = kieResources.newClassPathResource(ruleFile);
+
         packageName = packageName.replace(".", "/");
-        String resourcePath = "src/main/resources/" + packageName + "/" + ruleFile;
-        kieFileSystem.write(resourcePath, resource);
+        String resourcePath = "src/main/resources/" + packageName + "/" + ruleResource.getPath();
+        kieFileSystem.write(resourcePath, ruleResource.getResource());
         if (historyListener != null)
             try {
                 historyListener.fireEvent(
                         new KnowledgeBaseAddResourceEvent(
-                                sharedCounter.next(), new Date(), this.ruleBaseId,
-                                ruleFile, IOUtils.toString(resource.getInputStream())));
-            } catch (IOException | DroolsChtijbugException e) {
+                                sharedCounter.next(), new Date(), this.ruleBaseId,ruleResource));
+            } catch (DroolsChtijbugException e) {
                 throw propagate(e);
             }
     }
@@ -91,10 +91,11 @@ public class KnowledgeModule {
             this.kieRepository.addKieModule(resource);
             if (historyListener != null)
                 try {
+                    WorkbenchRuleResource workbenchRuleResource = new WorkbenchRuleResource(workbenchUrl,this.groupId,this.artifactId,this.version);
                     historyListener.fireEvent(
                             new KnowledgeBaseAddResourceEvent(
                                     sharedCounter.next(), new Date(), this.ruleBaseId,
-                                    workbenchUrl,this.groupId,this.artifactId,this.version));
+                                    workbenchRuleResource));
                 } catch ( DroolsChtijbugException e) {
                     throw propagate(e);
                 }

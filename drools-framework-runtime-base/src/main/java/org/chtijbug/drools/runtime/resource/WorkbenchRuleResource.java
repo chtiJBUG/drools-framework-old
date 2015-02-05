@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.chtijbug.drools.entity.history;
+package org.chtijbug.drools.runtime.resource;
+
+import org.chtijbug.drools.entity.history.RuleResource;
 
 import java.io.Serializable;
 
@@ -23,7 +25,7 @@ import java.io.Serializable;
  * Time: 15:40
  * To change this template use File | Settings | File Templates.
  */
-public class WorkbenchResource implements Serializable, ResourceFile {
+public class WorkbenchRuleResource implements Serializable, RuleResource {
 
 
     private String guvnor_url;
@@ -36,14 +38,18 @@ public class WorkbenchResource implements Serializable, ResourceFile {
     private String password;
 
 
-    public WorkbenchResource(String guvnor_url, String groupId, String artifactID, String version) {
+    public WorkbenchRuleResource(String guvnor_url, String groupId, String artifactID, String version) {
         this.guvnor_url = guvnor_url;
         this.groupId = groupId;
         this.artifactID = artifactID;
         this.version = version;
     }
 
-    public WorkbenchResource() {
+
+    public static WorkbenchRuleResource createGuvnorRessource(String guvnor_url, String groupId, String artifactID, String version) {
+        return new WorkbenchRuleResource(guvnor_url, groupId, artifactID, version);
+    }
+    public WorkbenchRuleResource() {
     }
 
     public String getGuvnor_url() {

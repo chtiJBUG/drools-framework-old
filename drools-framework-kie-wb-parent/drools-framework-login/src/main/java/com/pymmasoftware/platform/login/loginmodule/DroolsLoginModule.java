@@ -54,7 +54,7 @@ public class DroolsLoginModule implements LoginModule {
     private String password;
 
     private DroolsPrincipal userPrincipal;
-    private DroolsGroup[] roles;
+    private String[] roles;
     private static Context env = null;
     private static DataSource dataSource = null;
 
@@ -128,18 +128,18 @@ public class DroolsLoginModule implements LoginModule {
                     return droolsPrincipal;
                 }
             };
-            ResultSetHandler<List<DroolsGroup>> hh = new ResultSetHandler<List<DroolsGroup>>() {
-                public List<DroolsGroup> handle(ResultSet rs) throws SQLException {
+            ResultSetHandler<List<String>> hh = new ResultSetHandler<List<String>>() {
+                public List<String> handle(ResultSet rs) throws SQLException {
                     if (!rs.next()) {
                         return null;
                     }
-                    List<DroolsGroup> droolsGroups = new ArrayList<>();
+                    List<String> droolsGroups = new ArrayList<>();
                     boolean goOne = true;
                     while (goOne) {
                         String groupName = rs.getString("groups");
 
-                        DroolsGroup droolsGroup = new DroolsGroup(groupName);
-                        droolsGroups.add(droolsGroup);
+
+                        droolsGroups.add(groupName);
                         if (rs.next() == false) {
                             goOne = false;
                         }
@@ -159,12 +159,12 @@ public class DroolsLoginModule implements LoginModule {
                 String sqlname2 = "select groups from guvnorgroups gr,guvnorusers_groups gr_user " +
                         "where gr.id = gr_user.groups_id  " +
                         "and gr_user.guvnorusers_id= ?";
-                List<DroolsGroup> droolsGroups = queryRunner.query(sqlname2, hh, user.getId());
+                List<String> droolsGroups = queryRunner.query(sqlname2, hh, user.getId());
                 if (droolsGroups != null) {
                     int i = droolsGroups.size();
-                    roles = new DroolsGroup[i];
+                    roles = new String[i];
                     i = 0;
-                    for (DroolsGroup droolsGroup : droolsGroups) {
+                    for (String droolsGroup : droolsGroups) {
                         roles[i] = droolsGroup;
                         i++;
                     }
@@ -189,9 +189,9 @@ public class DroolsLoginModule implements LoginModule {
         subject.getPrincipals().add(userPrincipal);
         // jboss requires the name 'Roles'
         DroolsGroup group = new DroolsGroup("Roles");
-        for (DroolsGroup role : roles) {
+        for (String role : roles) {
            // group.addMember(role);
-            DroolsRole droolsRole = new DroolsRole(role.getName());
+            DroolsRole droolsRole = new DroolsRole(role);
             subject.getPrincipals().add(droolsRole);
         }
         subject.getPrincipals().add(group);

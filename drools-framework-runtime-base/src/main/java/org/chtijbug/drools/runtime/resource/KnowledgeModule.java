@@ -45,8 +45,8 @@ public class KnowledgeModule {
         this.sharedCounter = sharedCounter;
     }
 
-    public void addAllFiles(List<DrlRuleResource> files) {
-        for (DrlRuleResource file : files) {
+    public void addAllFiles(List<FileKnowledgeResource> files) {
+        for (FileKnowledgeResource file : files) {
 
 
 
@@ -55,7 +55,7 @@ public class KnowledgeModule {
         }
     }
 
-    public void addRuleFile(String packageName, DrlRuleResource ruleResource) {
+    public void addRuleFile(String packageName, FileKnowledgeResource ruleResource) {
         this.fileBaseModule = true;
 
         packageName = packageName.replace(".", "/");
@@ -91,7 +91,7 @@ public class KnowledgeModule {
             this.kieRepository.addKieModule(resource);
             if (historyListener != null)
                 try {
-                    WorkbenchRuleResource workbenchRuleResource = new WorkbenchRuleResource(workbenchUrl,this.groupId,this.artifactId,this.version);
+                    WorkbenchKnowledgeResource workbenchRuleResource = new WorkbenchKnowledgeResource(workbenchUrl,this.groupId,this.artifactId,this.version);
                     historyListener.fireEvent(
                             new KnowledgeBaseAddResourceEvent(
                                     sharedCounter.next(), new Date(), this.ruleBaseId,

@@ -18,7 +18,7 @@ package org.chtijbug.drools.runtime.resource;
 
 import com.google.common.base.Throwables;
 import org.apache.commons.io.IOUtils;
-import org.chtijbug.drools.entity.history.RuleResource;
+import org.chtijbug.drools.entity.history.KnowledgeResource;
 import org.kie.api.io.Resource;
 import org.kie.internal.io.ResourceFactory;
 
@@ -35,27 +35,27 @@ import java.util.logging.Logger;
  * Time: 15:40
  * To change this template use File | Settings | File Templates.
  */
-public class DrlRuleResource implements Serializable, RuleResource {
+public class FileKnowledgeResource implements Serializable, KnowledgeResource {
     private String content;
     private String path;
     private boolean bpmn2;
     private Resource resource;
 
-    public DrlRuleResource(String content, String path, boolean bpmn2, Resource resource) {
+    public FileKnowledgeResource(String content, String path, boolean bpmn2, Resource resource) {
         this.content = content;
         this.path = path;
         this.bpmn2 = bpmn2;
         this.resource = resource;
     }
 
-    public DrlRuleResource(Resource resource, String path, String fileContent) {
+    public FileKnowledgeResource(Resource resource, String path, String fileContent) {
         this.content = fileContent;
         this.path = path;
         this.resource = resource;
         this.bpmn2=true;
     }
 
-    public DrlRuleResource() {
+    public FileKnowledgeResource() {
     }
 
     public String getPath() {
@@ -86,24 +86,30 @@ public class DrlRuleResource implements Serializable, RuleResource {
         return resource;
     }
 
-    public static DrlRuleResource createFileSystemPathResource(String path) {
+    public static FileKnowledgeResource createFileSystemPathResource(String path) {
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(path);
             String fileContent = IOUtils.toString(inputStream);
-            return new DrlRuleResource(ResourceFactory.newFileResource(path), path, fileContent);
+            return new FileKnowledgeResource(ResourceFactory.newFileResource(path), path, fileContent);
         } catch (IOException ex) {
-            Logger.getLogger(DrlRuleResource.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FileKnowledgeResource.class.getName()).log(Level.SEVERE, null, ex);
             throw Throwables.propagate(ex);
         }
     }
 
-    public static DrlRuleResource createClassPathResource(String path) {
+    public static FileKnowledgeResource createBPMN2ClassPathResource(String path) {
+        FileKnowledgeResource  bpmn2Resource= createDRLClassPathResource(path);
+        bpmn2Resource.setBpmn2(true);
+        return bpmn2Resource;
+    }
+
+    public static FileKnowledgeResource createDRLClassPathResource(String path) {
         ClassLoader classLoader = Thread.currentThread()
                 .getContextClassLoader();
         InputStream inputStream;
         if (classLoader==null) {
-            inputStream = DrlRuleResource.class.getResourceAsStream("/" + path);
+            inputStream = FileKnowledgeResource.class.getResourceAsStream("/" + path);
         } else {
             inputStream = classLoader.getResourceAsStream(path);
         }
@@ -111,10 +117,10 @@ public class DrlRuleResource implements Serializable, RuleResource {
         try {
             fileContent = IOUtils.toString(inputStream);
         } catch (IOException ex) {
-            Logger.getLogger(DrlRuleResource.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FileKnowledgeResource.class.getName()).log(Level.SEVERE, null, ex);
             throw Throwables.propagate(ex);
         }
-        return new DrlRuleResource(ResourceFactory.newClassPathResource(path), path, fileContent);
+        return new FileKnowledgeResource(ResourceFactory.newClassPathResource(path), path, fileContent);
     }
     @Override
     public String toString() {

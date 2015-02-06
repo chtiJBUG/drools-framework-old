@@ -1,6 +1,6 @@
 package org.chtijbug.drools.runtime.test;
 
-import org.chtijbug.drools.runtime.resource.DrlRuleResource;
+import org.chtijbug.drools.runtime.resource.FileKnowledgeResource;
 import org.chtijbug.drools.entity.history.HistoryEvent;
 import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseAddResourceEvent;
 import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseCreatedEvent;
@@ -26,11 +26,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class RuleBaseHistoryEventTest {
 
-    private DrlRuleResource fibonacciFile;
+    private FileKnowledgeResource fibonacciFile;
 
     @Before
     public void justBefore(){
-        fibonacciFile = DrlRuleResource.createClassPathResource( "fibonacci.drl");
+        fibonacciFile = FileKnowledgeResource.createDRLClassPathResource("fibonacci.drl");
     }
     @Test
     public void PackageCreationEvent() throws DroolsChtijbugException {
@@ -56,9 +56,9 @@ public class RuleBaseHistoryEventTest {
         KnowledgeBaseAddResourceEvent knowledgeBaseAddResourceEvent = (KnowledgeBaseAddResourceEvent) historyEvents.get(2);
         assertThat(knowledgeBaseAddResourceEvent.getEventID()).isEqualTo(3);
         assertThat(knowledgeBaseAddResourceEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.KnowledgeBaseSingleton);
-        assertThat(knowledgeBaseAddResourceEvent.getRuleResources()).hasSize(1);
-        assertThat(knowledgeBaseAddResourceEvent.getRuleResources().get(0)).isInstanceOf(DrlRuleResource.class);
-        DrlRuleResource drlRessourceFile =(DrlRuleResource) knowledgeBaseAddResourceEvent.getRuleResources().get(0);
+        assertThat(knowledgeBaseAddResourceEvent.getKnowledgeResources()).hasSize(1);
+        assertThat(knowledgeBaseAddResourceEvent.getKnowledgeResources().get(0)).isInstanceOf(FileKnowledgeResource.class);
+        FileKnowledgeResource drlRessourceFile =(FileKnowledgeResource) knowledgeBaseAddResourceEvent.getKnowledgeResources().get(0);
         assertThat(drlRessourceFile.getPath()).isEqualTo("fibonacci.drl");
         assertThat(historyEvents.get(1)).isInstanceOf(KnowledgeBaseInitialLoadEvent.class);
         KnowledgeBaseInitialLoadEvent knowledgeBaseInitialLoadEvent = (KnowledgeBaseInitialLoadEvent) historyEvents.get(1);

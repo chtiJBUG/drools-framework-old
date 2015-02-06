@@ -1,6 +1,6 @@
 package org.chtijbug.drools.runtime.test;
 
-import org.chtijbug.drools.runtime.resource.DrlRuleResource;
+import org.chtijbug.drools.runtime.resource.FileKnowledgeResource;
 import org.chtijbug.drools.entity.history.HistoryEvent;
 import org.chtijbug.drools.entity.history.knowledge.KnowledgeBaseCreateSessionEvent;
 import org.chtijbug.drools.entity.history.session.SessionCreatedEvent;
@@ -29,11 +29,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class KnowledgeBaseHistoryEventTest {
 
-    private DrlRuleResource fibonacciFile;
+    private FileKnowledgeResource fibonacciFile;
 
     @Before
     public void justBefore(){
-        fibonacciFile = DrlRuleResource.createClassPathResource("fibonacci.drl");
+        fibonacciFile = FileKnowledgeResource.createDRLClassPathResource("fibonacci.drl");
     }
     @Test
     public void KnowledgeSessionEventOneSession() throws DroolsChtijbugException {

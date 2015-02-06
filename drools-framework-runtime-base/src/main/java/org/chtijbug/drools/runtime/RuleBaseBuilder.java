@@ -15,7 +15,7 @@
  */
 package org.chtijbug.drools.runtime;
 
-import org.chtijbug.drools.runtime.resource.DrlRuleResource;
+import org.chtijbug.drools.runtime.resource.FileKnowledgeResource;
 import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
 import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.slf4j.Logger;
@@ -45,11 +45,11 @@ public abstract class RuleBaseBuilder {
         }
     }
 
-    public static RuleBasePackage createRuleBasePackage(Long ruleBaseId, String modulePackage, String moduleName, List<DrlRuleResource> files) throws DroolsChtijbugException {
+    public static RuleBasePackage createRuleBasePackage(Long ruleBaseId, String modulePackage, String moduleName, List<FileKnowledgeResource> files) throws DroolsChtijbugException {
         return RuleBaseBuilder.createRuleBasePackage(ruleBaseId, null, modulePackage, moduleName, files);
     }
 
-    public static RuleBasePackage createRuleBasePackage(Long ruleBaseId, HistoryListener historyListener, String modulePackage, String moduleName, List<DrlRuleResource> files) throws DroolsChtijbugException {
+    public static RuleBasePackage createRuleBasePackage(Long ruleBaseId, HistoryListener historyListener, String modulePackage, String moduleName, List<FileKnowledgeResource> files) throws DroolsChtijbugException {
         logger.debug(">>createRuleBasePackage");
         RuleBaseSingleton ruleBasePackage = new RuleBaseSingleton(ruleBaseId,RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener, modulePackage, moduleName,"1.0.0-SNAPSHOT");
         try {

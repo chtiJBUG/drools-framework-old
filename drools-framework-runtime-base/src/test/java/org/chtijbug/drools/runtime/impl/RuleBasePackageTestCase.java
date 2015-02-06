@@ -1,7 +1,7 @@
 package org.chtijbug.drools.runtime.impl;
 
 import com.thoughtworks.xstream.XStream;
-import org.chtijbug.drools.runtime.resource.DrlRuleResource;
+import org.chtijbug.drools.runtime.resource.FileKnowledgeResource;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBaseBuilder;
 import org.chtijbug.drools.runtime.RuleBasePackage;
@@ -25,11 +25,11 @@ import static org.junit.Assert.fail;
  */
 public class RuleBasePackageTestCase {
 
-    private DrlRuleResource fibonacciFile;
+    private FileKnowledgeResource fibonacciFile;
 
     @Before
     public void justBefore(){
-        fibonacciFile = DrlRuleResource.createClassPathResource( "fibonacci.drl");
+        fibonacciFile = FileKnowledgeResource.createDRLClassPathResource("fibonacci.drl");
     }
 
     @Test

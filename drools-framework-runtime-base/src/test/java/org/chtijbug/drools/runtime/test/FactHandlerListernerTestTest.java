@@ -2,7 +2,7 @@ package org.chtijbug.drools.runtime.test;
 
 import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.DroolsFactObjectAttribute;
-import org.chtijbug.drools.runtime.resource.DrlRuleResource;
+import org.chtijbug.drools.runtime.resource.FileKnowledgeResource;
 import org.chtijbug.drools.entity.history.HistoryEvent;
 import org.chtijbug.drools.entity.history.fact.DeletedFactHistoryEvent;
 import org.chtijbug.drools.entity.history.fact.InsertedFactHistoryEvent;
@@ -23,11 +23,11 @@ import java.util.Arrays;
 public class FactHandlerListernerTestTest {
     static RuleBaseSession session;
     static RuleBasePackage ruleBasePackage;
-    private DrlRuleResource insert1File;
+    private FileKnowledgeResource insert1File;
 
     @Before
     public void justBefore(){
-        insert1File = DrlRuleResource.createClassPathResource("insert1.drl");
+        insert1File = FileKnowledgeResource.createDRLClassPathResource("insert1.drl");
     }
 
     /**

@@ -3,7 +3,7 @@
  */
 package org.chtijbug.drools.runtime.test;
 
-import org.chtijbug.drools.runtime.resource.DrlRuleResource;
+import org.chtijbug.drools.runtime.resource.FileKnowledgeResource;
 import org.chtijbug.drools.entity.history.HistoryEvent;
 import org.chtijbug.drools.runtime.RuleBaseBuilder;
 import org.chtijbug.drools.runtime.RuleBasePackage;
@@ -23,7 +23,7 @@ public class RuleBaseStatefullSessionfibonacciTest {
     RuleBaseSession session;
     static RuleBasePackage ruleBasePackage;
 
-    static private DrlRuleResource fibonacciFile;
+    static private FileKnowledgeResource fibonacciFile;
 
     @Before
     public void justBefore(){
@@ -35,7 +35,7 @@ public class RuleBaseStatefullSessionfibonacciTest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        fibonacciFile = DrlRuleResource.createClassPathResource( "fibonacci.drl");
+        fibonacciFile = FileKnowledgeResource.createDRLClassPathResource("fibonacci.drl");
         ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,"com.pymmasoftware.test", "fibonacci", Arrays.asList(fibonacciFile));
     }
 

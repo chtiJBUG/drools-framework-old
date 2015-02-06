@@ -15,7 +15,7 @@
  */
 package org.chtijbug.drools.entity.history.knowledge;
 
-import org.chtijbug.drools.entity.history.RuleResource;
+import org.chtijbug.drools.entity.history.KnowledgeResource;
 
 import java.util.Date;
 
@@ -26,9 +26,9 @@ public class KnowledgeBaseAddResourceEvent extends KnowledgeBaseEvent {
     }
 
 
-    public KnowledgeBaseAddResourceEvent(Long eventID, Date dateEvent, Long ruleBaseID, RuleResource ruleResource) {
+    public KnowledgeBaseAddResourceEvent(Long eventID, Date dateEvent, Long ruleBaseID, KnowledgeResource knowledgeResource) {
         super(eventID, dateEvent, ruleBaseID);
-        this.getRuleResources().add(ruleResource);
+        this.getKnowledgeResources().add(knowledgeResource);
     }
 
 

@@ -2,7 +2,7 @@ package org.chtijbug.drools.runtime.test;
 
 import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.DroolsFactObjectAttribute;
-import org.chtijbug.drools.runtime.resource.DrlRuleResource;
+import org.chtijbug.drools.runtime.resource.FileKnowledgeResource;
 import org.chtijbug.drools.entity.history.HistoryEvent;
 import org.chtijbug.drools.entity.history.fact.*;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
@@ -26,11 +26,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * To change this template use File | Settings | File Templates.
  */
 public class FactHistoryEventTest {
-    private DrlRuleResource fibonacciFile;
+    private FileKnowledgeResource fibonacciFile;
 
     @Before
     public void justBefore(){
-        fibonacciFile = DrlRuleResource.createClassPathResource("fibonacci.drl");
+        fibonacciFile = FileKnowledgeResource.createDRLClassPathResource("fibonacci.drl");
     }
     @Test
     public void KnowledgeSessionFact() throws DroolsChtijbugException {

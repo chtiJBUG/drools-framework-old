@@ -15,9 +15,9 @@
  */
 package org.chtijbug.drools.runtime.impl;
 
-import org.chtijbug.drools.runtime.resource.DrlRuleResource;
+import org.chtijbug.drools.runtime.resource.FileKnowledgeResource;
 import org.chtijbug.drools.entity.history.EventCounter;
-import org.chtijbug.drools.entity.history.RuleResource;
+import org.chtijbug.drools.entity.history.KnowledgeResource;
 import org.chtijbug.drools.entity.history.knowledge.*;
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBasePackage;
@@ -171,11 +171,11 @@ public class RuleBaseSingleton implements RuleBasePackage {
     }
 
     @Override
-    public void RecreateKBaseWithNewResources(List<RuleResource> droolsResources) {
+    public void RecreateKBaseWithNewResources(List<KnowledgeResource> droolsResources) {
 
     }
 
-    public void createKBase(List<DrlRuleResource> files) {
+    public void createKBase(List<FileKnowledgeResource> files) {
         try {
             if (this.historyListener != null) {
                 this.historyListener.fireEvent(new KnowledgeBaseInitialLoadEvent(eventCounter.next(), new Date(), this.ruleBaseID));

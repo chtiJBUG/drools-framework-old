@@ -23,5 +23,5 @@ import java.io.Serializable;
  * Time: 11:14
  * To change this template use File | Settings | File Templates.
  */
-public interface RuleResource extends Serializable {
+public interface KnowledgeResource extends Serializable {
 }

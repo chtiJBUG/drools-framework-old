@@ -34,7 +34,7 @@ public class HistoryEvent implements Serializable {
     private Long ruleBaseID;
     private Long sessionId;
     private DroolsChtijbugException droolsChtijbugException;
-    private ArrayList<RuleResource> ruleResources = new ArrayList<>();
+    private ArrayList<KnowledgeResource> knowledgeResources = new ArrayList<>();
 
     public enum TypeEvent {
         Fact, Rule, BPMN, RuleFlowGroup, KnowledgeBaseSingleton, Session
@@ -56,12 +56,12 @@ public class HistoryEvent implements Serializable {
         this.typeEvent = typeEvent;
     }
 
-    public ArrayList<RuleResource> getRuleResources() {
-        return ruleResources;
+    public ArrayList<KnowledgeResource> getKnowledgeResources() {
+        return knowledgeResources;
     }
 
-    public void setRuleResources(ArrayList<RuleResource> ruleResources) {
-        this.ruleResources = ruleResources;
+    public void setKnowledgeResources(ArrayList<KnowledgeResource> knowledgeResources) {
+        this.knowledgeResources = knowledgeResources;
     }
 
     public DroolsChtijbugException getDroolsChtijbugException() {

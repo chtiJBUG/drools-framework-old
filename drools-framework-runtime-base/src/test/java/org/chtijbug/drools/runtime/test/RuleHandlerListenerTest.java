@@ -1,7 +1,7 @@
 package org.chtijbug.drools.runtime.test;
 
 import org.chtijbug.drools.entity.DroolsFactObjectAttribute;
-import org.chtijbug.drools.runtime.resource.DrlRuleResource;
+import org.chtijbug.drools.runtime.resource.FileKnowledgeResource;
 import org.chtijbug.drools.entity.history.HistoryEvent;
 import org.chtijbug.drools.entity.history.rule.AfterRuleFiredHistoryEvent;
 import org.chtijbug.drools.entity.history.rule.BeforeRuleFiredHistoryEvent;
@@ -26,14 +26,14 @@ import static org.junit.Assert.fail;
 public class RuleHandlerListenerTest {
     RuleBaseSession session;
     static RuleBasePackage ruleBasePackage;
-    private DrlRuleResource infiniteLoopFile;
-    private DrlRuleResource ruleflow1File;
-    private DrlRuleResource ruleFlowProcess1File;
+    private FileKnowledgeResource infiniteLoopFile;
+    private FileKnowledgeResource ruleflow1File;
+    private FileKnowledgeResource ruleFlowProcess1File;
     @Before
     public void justBefore(){
-        infiniteLoopFile = DrlRuleResource.createClassPathResource("infiniteLoop.drl");
-        ruleflow1File = DrlRuleResource.createClassPathResource("ruleflow1.drl");
-        ruleFlowProcess1File = DrlRuleResource.createClassPathResource("RuleFlowProcess1.bpmn2");
+        infiniteLoopFile = FileKnowledgeResource.createDRLClassPathResource("infiniteLoop.drl");
+        ruleflow1File = FileKnowledgeResource.createDRLClassPathResource("ruleflow1.drl");
+        ruleFlowProcess1File = FileKnowledgeResource.createDRLClassPathResource("RuleFlowProcess1.bpmn2");
     }
 
     /**

@@ -1,7 +1,7 @@
 package org.chtijbug.drools.runtime.test;
 
 import org.chtijbug.drools.entity.DroolsRuleObject;
-import org.chtijbug.drools.runtime.resource.DrlRuleResource;
+import org.chtijbug.drools.runtime.resource.FileKnowledgeResource;
 import org.chtijbug.drools.entity.history.HistoryEvent;
 import org.chtijbug.drools.entity.history.rule.AfterRuleFiredHistoryEvent;
 import org.chtijbug.drools.entity.history.rule.AfterRuleFlowActivatedHistoryEvent;
@@ -30,15 +30,15 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class RuleHistoryEventTest {
 
-    private DrlRuleResource fibonacciFile;
-    private DrlRuleResource ruleflow2File;
-    private DrlRuleResource ruleFlowProcess2File;
+    private FileKnowledgeResource fibonacciFile;
+    private FileKnowledgeResource ruleflow2File;
+    private FileKnowledgeResource ruleFlowProcess2File;
 
     @Before
     public void justBefore(){
-        fibonacciFile =   DrlRuleResource.createClassPathResource("fibonacci.drl");
-        ruleflow2File = DrlRuleResource.createClassPathResource("ruleflow2.drl");
-        ruleFlowProcess2File = DrlRuleResource.createClassPathResource("RuleFlowProcess2.bpmn2");
+        fibonacciFile =   FileKnowledgeResource.createDRLClassPathResource("fibonacci.drl");
+        ruleflow2File = FileKnowledgeResource.createDRLClassPathResource("ruleflow2.drl");
+        ruleFlowProcess2File = FileKnowledgeResource.createDRLClassPathResource("RuleFlowProcess2.bpmn2");
     }
     @Test
     public void KnowledgeBaseFireAllRules() throws DroolsChtijbugException {

@@ -15,7 +15,7 @@
  */
 package org.chtijbug.drools.runtime.resource;
 
-import org.chtijbug.drools.entity.history.RuleResource;
+import org.chtijbug.drools.entity.history.KnowledgeResource;
 
 import java.io.Serializable;
 
@@ -25,7 +25,7 @@ import java.io.Serializable;
  * Time: 15:40
  * To change this template use File | Settings | File Templates.
  */
-public class WorkbenchRuleResource implements Serializable, RuleResource {
+public class WorkbenchKnowledgeResource implements Serializable, KnowledgeResource {
 
 
     private String guvnor_url;
@@ -38,7 +38,7 @@ public class WorkbenchRuleResource implements Serializable, RuleResource {
     private String password;
 
 
-    public WorkbenchRuleResource(String guvnor_url, String groupId, String artifactID, String version) {
+    public WorkbenchKnowledgeResource(String guvnor_url, String groupId, String artifactID, String version) {
         this.guvnor_url = guvnor_url;
         this.groupId = groupId;
         this.artifactID = artifactID;
@@ -46,10 +46,10 @@ public class WorkbenchRuleResource implements Serializable, RuleResource {
     }
 
 
-    public static WorkbenchRuleResource createGuvnorRessource(String guvnor_url, String groupId, String artifactID, String version) {
-        return new WorkbenchRuleResource(guvnor_url, groupId, artifactID, version);
+    public static WorkbenchKnowledgeResource createGuvnorRessource(String guvnor_url, String groupId, String artifactID, String version) {
+        return new WorkbenchKnowledgeResource(guvnor_url, groupId, artifactID, version);
     }
-    public WorkbenchRuleResource() {
+    public WorkbenchKnowledgeResource() {
     }
 
     public String getGuvnor_url() {

@@ -3,7 +3,7 @@
 <Configure id="sample-weld" class="org.mortbay.jetty.webapp.WebAppContext">
 
   <!-- Bug fix for Jetty to properly handle login config in a per-project setup -->
-  <Set artifactId="serverClasses">
+  <Set name="serverClasses">
     <Array type="java.lang.String">
       <Item>-org.mortbay.jetty.plus.jaas.</Item>
       <Item>org.mortbay.jetty</Item>
@@ -11,11 +11,11 @@
     </Array>
   </Set>
 
-  <Get artifactId="securityHandler">
-    <Set artifactId="userRealm">
+  <Get name="securityHandler">
+    <Set name="userRealm">
       <New class="org.mortbay.jetty.plus.jaas.JAASUserRealm">
-        <Set artifactId="artifactId">ApplicationRealm</Set>
-        <Set artifactId="LoginModuleName">ApplicationRealm</Set>
+        <Set name="artifactId">ApplicationRealm</Set>
+        <Set name="LoginModuleName">ApplicationRealm</Set>
       </New>
     </Set>
   </Get>
@@ -27,14 +27,14 @@
     <Item>org.mortbay.jetty.webapp.JettyWebXmlConfiguration</Item>
   </Array>
 
-  <Call artifactId="getConfiguration" class="bitronix.tm.TransactionManagerServices">
-    <Set artifactId="serverId">jetty-btm-node0</Set>
-    <Set artifactId="logPart1Filename">
-      <SystemProperty artifactId="jetty.home" default="."/>
+  <Call name="getConfiguration" class="bitronix.tm.TransactionManagerServices">
+    <Set name="serverId">jetty-btm-node0</Set>
+    <Set name="logPart1Filename">
+      <SystemProperty name="jetty.home" default="."/>
       btm1.tlog
     </Set>
-    <Set artifactId="logPart2Filename">
-      <SystemProperty artifactId="jetty.home" default="."/>
+    <Set name="logPart2Filename">
+      <SystemProperty name="jetty.home" default="."/>
       btm2.tlog
     </Set>
   </Call>
@@ -42,21 +42,21 @@
   <New id="tx" class="org.mortbay.jetty.plus.naming.Resource">
     <Arg>java:comp/UserTransaction</Arg>
     <Arg>
-      <Call artifactId="getTransactionManager" class="bitronix.tm.TransactionManagerServices"/>
+      <Call name="getTransactionManager" class="bitronix.tm.TransactionManagerServices"/>
     </Arg>
   </New>
 
   <New id="tx" class="org.mortbay.jetty.plus.naming.Resource">
     <Arg>java:comp/TransactionManager</Arg>
     <Arg>
-      <Call artifactId="getTransactionManager" class="bitronix.tm.TransactionManagerServices"/>
+      <Call name="getTransactionManager" class="bitronix.tm.TransactionManagerServices"/>
     </Arg>
   </New>
 
   <New id="txsyncreg" class="org.mortbay.jetty.plus.naming.Resource">
     <Arg>java:comp/TransactionSynchronizationRegistry</Arg>
     <Arg>
-      <Call artifactId="getTransactionSynchronizationRegistry" class="bitronix.tm.TransactionManagerServices"/>
+      <Call name="getTransactionSynchronizationRegistry" class="bitronix.tm.TransactionManagerServices"/>
     </Arg>
   </New>
 
@@ -64,16 +64,16 @@
     <Arg>jdbc/jbpmConsoleDS</Arg>
     <Arg>
       <New class="bitronix.tm.resource.jdbc.PoolingDataSource">
-        <Set artifactId="uniqueName">jbpmConsoleDS</Set>
-        <Set artifactId="className">org.h2.jdbcx.JdbcDataSource</Set>
-        <Set artifactId="maxPoolSize">50</Set>
-        <Set artifactId="allowLocalTransactions">true</Set>
-        <Get artifactId="driverProperties">
-          <Put artifactId="user">sa</Put>
-          <Put artifactId="password">sasa</Put>
-          <Put artifactId="URL">jdbc:h2:~/jbpm-console-ng</Put>
+        <Set name="uniqueName">jbpmConsoleDS</Set>
+        <Set name="className">org.h2.jdbcx.JdbcDataSource</Set>
+        <Set name="maxPoolSize">50</Set>
+        <Set name="allowLocalTransactions">true</Set>
+        <Get name="driverProperties">
+          <Put name="user">sa</Put>
+          <Put name="password">sasa</Put>
+          <Put name="URL">jdbc:h2:~/jbpm-console-ng</Put>
         </Get>
-        <Call artifactId="init"/>
+        <Call name="init"/>
       </New>
     </Arg>
   </New>
@@ -92,7 +92,7 @@
   <New id="emf" class="org.mortbay.jetty.plus.naming.Resource">
     <Arg>jBPMEMF</Arg>
     <Arg>
-      <Call artifactId="createEntityManagerFactory" class="javax.persistence.Persistence">
+      <Call name="createEntityManagerFactory" class="javax.persistence.Persistence">
         <Arg>org.jbpm.domain</Arg>
       </Call>
     </Arg>

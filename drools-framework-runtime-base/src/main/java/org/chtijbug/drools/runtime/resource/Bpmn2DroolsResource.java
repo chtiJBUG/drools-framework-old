@@ -15,13 +15,17 @@
  */
 package org.chtijbug.drools.runtime.resource;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import org.chtijbug.drools.common.file.FileHelper;
 import org.drools.builder.ResourceType;
 import org.drools.io.Resource;
 import org.drools.io.ResourceFactory;
 
 import java.io.InputStream;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Bpmn2DroolsResource implements DroolsResource {
 
@@ -35,6 +39,22 @@ public class Bpmn2DroolsResource implements DroolsResource {
         this.fileContent = fileContent;
     }
 
+    public static Bpmn2DroolsResource createFileSystemPathResource(String path) {
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(path);
+            String fileContent = FileHelper.getFileContent(inputStream);
+          
+            return new Bpmn2DroolsResource(ResourceFactory.newFileResource(path), path, fileContent);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DrlDroolsResource.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Bpmn2DroolsResource.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           
+        }
+        return null;
+    }
 
     public static Bpmn2DroolsResource createClassPathResource(String path) {
         ClassLoader classLoader = Thread.currentThread()
@@ -65,11 +85,11 @@ public class Bpmn2DroolsResource implements DroolsResource {
     }
 
     /*
-      * (non-Javadoc)
-      *
-      * @see
-      * org.chtijbug.drools.runtime.resource.DroolsResource#getResourceType()
-      */
+     * (non-Javadoc)
+     *
+     * @see
+     * org.chtijbug.drools.runtime.resource.DroolsResource#getResourceType()
+     */
     @Override
     public ResourceType getResourceType() {
         return ResourceType.BPMN2;

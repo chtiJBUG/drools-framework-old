@@ -34,6 +34,7 @@ import org.drools.definition.rule.Rule;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.NodeInstance;
 import org.drools.runtime.process.ProcessInstance;
+import org.drools.runtime.process.WorkItemHandler;
 import org.drools.runtime.rule.FactHandle;
 import org.jbpm.workflow.core.node.RuleSetNode;
 import org.jbpm.workflow.instance.node.*;
@@ -380,6 +381,11 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         FactHandle factToDelete = listFact.get(oldObject);
         this.knowledgeSession.retract(factToDelete);
     }
+    @Override
+    public ProcessInstance StartProcess(String processName, Map<String, Object> vars){
+        ProcessInstance processInstance = this.knowledgeSession.startProcess(processName, vars);
+        return processInstance;
+    }
 
     @Override
     public Object fireAllRulesAndStartProcess(Object inputObject, String processName) throws DroolsChtijbugException {
@@ -407,6 +413,31 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     public Collection<Object> getObjects(ObjectFilter objectFilter) {
         return this.knowledgeSession.getObjects(objectFilter);
     }
+
+    @Override
+    public void completeWorkItem(long processId, Map<String, Object> vars) {
+        if (this.knowledgeSession!=null && this.knowledgeSession.getWorkItemManager()!=null){
+            this.knowledgeSession.getWorkItemManager().completeWorkItem(processId,vars);
+        }
+    }
+
+    @Override
+    public void abortWorkItem(long processId) {
+        if (this.knowledgeSession!=null && this.knowledgeSession.getWorkItemManager()!=null){
+            this.knowledgeSession.getWorkItemManager().abortWorkItem(processId);
+        }
+
+
+    }
+
+    @Override
+    public void registerWorkItemHandler(String processId, WorkItemHandler workItemHandler) {
+        if (this.knowledgeSession!=null && this.knowledgeSession.getWorkItemManager()!=null){
+            this.knowledgeSession.getWorkItemManager().registerWorkItemHandler(processId,workItemHandler);
+        }
+
+    }
+
     @Override
     public void fireAllRules() throws DroolsChtijbugException {
         if (this.historyListener != null) {

@@ -19,8 +19,11 @@ import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.DroolsRuleObject;
 import org.chtijbug.drools.entity.history.HistoryContainer;
 import org.drools.ObjectFilter;
+import org.drools.runtime.process.ProcessInstance;
+import org.drools.runtime.process.WorkItemHandler;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author nheron
@@ -77,6 +80,15 @@ public interface RuleBaseSession {
     public int getSessionId();
 
     public int getRuleBaseID();
+
     public Collection<Object> getObjects(ObjectFilter objectFilter);
+
+    void completeWorkItem(long processId, Map<String, Object> vars);
+
+    void abortWorkItem(long processId);
+
+    void registerWorkItemHandler(String processId, WorkItemHandler workItemHandler);
+
+    public ProcessInstance StartProcess(String processName, Map<String, Object> vars);
 
 }

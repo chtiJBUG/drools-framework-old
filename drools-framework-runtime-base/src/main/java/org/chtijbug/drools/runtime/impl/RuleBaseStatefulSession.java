@@ -37,6 +37,7 @@ import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.ObjectFilter;
 import org.kie.api.runtime.process.NodeInstance;
 import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.runtime.process.WorkItemHandler;
 import org.kie.api.runtime.rule.FactHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -463,6 +464,35 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     @Override
     public Collection<? extends  java.lang.Object> getObjects(ObjectFilter objectFilter) {
         return this.knowledgeSession.getObjects(objectFilter);
+    }
+
+    @Override
+    public void completeWorkItem(long processId, Map<String, Object> vars) {
+        if (this.knowledgeSession!=null && this.knowledgeSession.getWorkItemManager()!= null){
+            this.knowledgeSession.getWorkItemManager().completeWorkItem(processId,vars);
+        }
+    }
+
+    @Override
+    public void abortWorkItem(long processId) {
+        if (this.knowledgeSession!=null && this.knowledgeSession.getWorkItemManager()!= null){
+            this.knowledgeSession.getWorkItemManager().abortWorkItem(processId);
+        }
+    }
+
+    @Override
+    public void registerWorkItemHandler(String workItemName, WorkItemHandler workItemHandler) {
+        if (this.knowledgeSession!=null && this.knowledgeSession.getWorkItemManager()!= null){
+            this.knowledgeSession.getWorkItemManager().registerWorkItemHandler(workItemName,workItemHandler);
+        }
+    }
+
+    @Override
+    public ProcessInstance startProcess(String processName, Map<String, Object> vars) {
+        if (this.knowledgeSession!=null && this.knowledgeSession.getWorkItemManager()!= null){
+            return this.knowledgeSession.startProcess(processName,vars);
+        }
+        return null;
     }
 
     private RuleSetNode getRuleSetNode(NodeInstance nodeInstance) {

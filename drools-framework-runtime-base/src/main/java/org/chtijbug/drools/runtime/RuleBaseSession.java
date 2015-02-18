@@ -87,7 +87,7 @@ public interface RuleBaseSession {
 
     void abortWorkItem(long processId);
 
-    void registerWorkItemHandler(String processId, WorkItemHandler workItemHandler);
+    void registerWorkItemHandler(String workItemName, WorkItemHandler workItemHandler);
 
     public ProcessInstance StartProcess(String processName, Map<String, Object> vars);
 

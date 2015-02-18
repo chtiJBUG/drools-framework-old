@@ -427,7 +427,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     @Override
     public void completeWorkItem(long processId, Map<String, Object> vars) {
         if (this.knowledgeSession!=null && this.knowledgeSession.getWorkItemManager()!=null){
-            this.knowledgeSession.getWorkItemManager().completeWorkItem(processId,vars);
+            this.knowledgeSession.getWorkItemManager().completeWorkItem(processId, vars);
         }
     }
 
@@ -441,9 +441,9 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     }
 
     @Override
-    public void registerWorkItemHandler(String processId, WorkItemHandler workItemHandler) {
+    public void registerWorkItemHandler(String workItemName, WorkItemHandler workItemHandler) {
         if (this.knowledgeSession!=null && this.knowledgeSession.getWorkItemManager()!=null){
-            this.knowledgeSession.getWorkItemManager().registerWorkItemHandler(processId,workItemHandler);
+            this.knowledgeSession.getWorkItemManager().registerWorkItemHandler(workItemName,workItemHandler);
         }
 
     }

@@ -61,6 +61,8 @@ public interface RuleBaseSession {
 
     public Object fireAllRulesAndStartProcess(Object inputObject, String processName) throws DroolsChtijbugException;
 
+    public Object fireAllRulesAndStartProcessWithParam(Object inputObject, String processName) throws DroolsChtijbugException;
+
     public void startProcess(String processName);
 
     public void dispose();
@@ -89,6 +91,6 @@ public interface RuleBaseSession {
 
     void registerWorkItemHandler(String workItemName, WorkItemHandler workItemHandler);
 
-    public ProcessInstance StartProcess(String processName, Map<String, Object> vars);
+    public ProcessInstance startProcess(String processName, Map<String, Object> vars);
 
 }

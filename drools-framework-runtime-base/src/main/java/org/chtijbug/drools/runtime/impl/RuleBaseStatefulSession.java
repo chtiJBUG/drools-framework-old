@@ -394,7 +394,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         ProcessInstance processInstance = this.knowledgeSession.startProcess(processName, vars);
         return processInstance;
     }
-
+    @Override
     public Object fireAllRulesAndStartProcessWithParam(Object inputObject, String processName) throws DroolsChtijbugException{
         DroolsFactObject inputDroolsObject = null;
         DroolsFactObject outputDroolsObject = null;

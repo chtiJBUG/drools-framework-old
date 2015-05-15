@@ -33,16 +33,16 @@ public class DroolsFactObjectFactory {
 
     }
 
-    public static DroolsFactObject createFactObject(Object o) {
-        return createFactObject(o, 0);
+    public static DroolsFactObject createFactObject(Object o,boolean isJsonGeneratorIsable) {
+        return createFactObject(o, 0,isJsonGeneratorIsable);
     }
 
-    public static DroolsFactObject createFactObject(Object o, int version) {
+    public static DroolsFactObject createFactObject(Object o, int version,boolean isJsonGeneratorIsable) {
         logger.debug(">>createFactObject", o, version);
         DroolsFactObject createFactObject = null;
         try {
             if (o != null) {
-                createFactObject = new DroolsFactObject(o, version);
+                createFactObject = new DroolsFactObject(o, version,isJsonGeneratorIsable);
                 createFactObject.setFullClassName(o.getClass().getCanonicalName());
                 createFactObject.setHashCode(o.hashCode());
 

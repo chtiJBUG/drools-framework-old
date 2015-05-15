@@ -44,7 +44,7 @@ public class JSONdroolsObjecttest {
         user.setUserId("1");
         user.setUserName(userName);
         user.setDob(DateHelper.getDate("2013-12-31"));
-        DroolsFactObject droolsFactObject = new DroolsFactObject(user, 1);
+        DroolsFactObject droolsFactObject = new DroolsFactObject(user, 1,false);
         InputStream stream = JSONdroolsObjecttest.class.getResourceAsStream("/user.json");
         String toto = IOUtils.toString(stream, "utf-8");
         Assert.assertTrue(toto.equals(droolsFactObject.getRealObject_JSON()));

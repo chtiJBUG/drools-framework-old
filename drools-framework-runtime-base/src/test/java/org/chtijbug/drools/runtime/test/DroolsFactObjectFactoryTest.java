@@ -43,7 +43,7 @@ public class DroolsFactObjectFactoryTest {
 	@Test
 	public void TestIntrosepct() {
 		TestPojoOne underTest = new TestPojoOne();
-		DroolsFactObject fact = DroolsFactObjectFactory.createFactObject(underTest, 1);
+		DroolsFactObject fact = DroolsFactObjectFactory.createFactObject(underTest, 1,true);
 		assertTrue(fact.getListfactObjectAttributes().size() == 7);
 
 	}

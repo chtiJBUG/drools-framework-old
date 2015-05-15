@@ -82,6 +82,8 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     private int sessionId;
     private int eventCounter;
 
+    private boolean disableJsonObjecttext=false;
+
     private HistoryListener historyListener;
 
     public RuleBaseStatefulSession(int ruleBaseID, int sessionId, StatefulKnowledgeSession knowledgeSession, int maxNumberRuleToExecute, StatefulSessionSupervision mbeanStatefulSessionSupervision, HistoryListener historyListener) throws DroolsChtijbugException {
@@ -335,7 +337,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             }
         }
         if (this.historyListener != null) {
-            DroolsFactObject topDroolsObject = DroolsFactObjectFactory.createFactObject(newObject);
+            DroolsFactObject topDroolsObject = DroolsFactObjectFactory.createFactObject(newObject,this.disableJsonObjecttext);
             InsertedByReflectionFactStartHistoryEvent insertedByReflectionFactStartHistoryEvent = new InsertedByReflectionFactStartHistoryEvent(this.getNextEventCounter(), topDroolsObject, this.ruleBaseID, this.sessionId);
             this.addHistoryElement(insertedByReflectionFactStartHistoryEvent);
         }
@@ -400,7 +402,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         DroolsFactObject outputDroolsObject = null;
         if (inputObject != null) {
             this.insertByReflection(inputObject);
-            inputDroolsObject = DroolsFactObjectFactory.createFactObject(inputObject);
+            inputDroolsObject = DroolsFactObjectFactory.createFactObject(inputObject,this.disableJsonObjecttext);
         }
         Map<String,Object> maps = new HashMap<String,Object>();
         maps.put("inputObject",inputObject);
@@ -409,7 +411,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         }
         this.fireAllRules();
         if (inputDroolsObject != null) {
-            outputDroolsObject = DroolsFactObjectFactory.createFactObject(inputObject);
+            outputDroolsObject = DroolsFactObjectFactory.createFactObject(inputObject,this.disableJsonObjecttext);
         }
 
         if (this.historyListener != null) {
@@ -425,7 +427,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         DroolsFactObject outputDroolsObject = null;
         if (inputObject != null) {
             this.insertByReflection(inputObject);
-            inputDroolsObject = DroolsFactObjectFactory.createFactObject(inputObject);
+            inputDroolsObject = DroolsFactObjectFactory.createFactObject(inputObject,this.disableJsonObjecttext);
         }
         Map<String,Object> maps = new HashMap<String,Object>();
 
@@ -434,7 +436,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         }
         this.fireAllRules();
         if (inputDroolsObject != null) {
-            outputDroolsObject = DroolsFactObjectFactory.createFactObject(inputObject);
+            outputDroolsObject = DroolsFactObjectFactory.createFactObject(inputObject,this.disableJsonObjecttext);
         }
 
         if (this.historyListener != null) {
@@ -577,5 +579,13 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             }
         }
         return ruleSetNode;
+    }
+
+    public boolean isDisableJsonObjecttext() {
+        return disableJsonObjecttext;
+    }
+
+    public void setDisableJsonObjecttext(boolean disableJsonObjecttext) {
+        this.disableJsonObjecttext = disableJsonObjecttext;
     }
 }

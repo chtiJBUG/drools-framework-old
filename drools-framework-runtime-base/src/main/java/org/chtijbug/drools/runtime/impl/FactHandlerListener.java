@@ -48,7 +48,7 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
             //((RuleTerminalNode)((RuleTerminalNodeLeftTuple)((org.drools.common.DefaultFactHandle)event.getFactHandle()).getFirstLeftTuple()).getSink()).getRule().getRuleFlowGroup()
             FactHandle f = event.getFactHandle();
             Object newObject = event.getObject();
-            DroolsFactObject ff = DroolsFactObjectFactory.createFactObject(newObject);
+            DroolsFactObject ff = DroolsFactObjectFactory.createFactObject(newObject,ruleBaseSession.isDisableJsonObjecttext());
             ruleBaseSession.setData(f, newObject, ff);
             //____ Adding the Insert Event from the History Container
             InsertedFactHistoryEvent insertFactHistoryEvent = new InsertedFactHistoryEvent(this.ruleBaseSession.getNextEventCounter(), ff, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());
@@ -74,7 +74,7 @@ public class FactHandlerListener implements WorkingMemoryEventListener {
             Object newValue = event.getObject();
 
             DroolsFactObject factOldValue = this.ruleBaseSession.getLastFactObjectVersion(oldValue);
-            DroolsFactObject factNewValue = DroolsFactObjectFactory.createFactObject(newValue, factOldValue.getNextObjectVersion());
+            DroolsFactObject factNewValue = DroolsFactObjectFactory.createFactObject(newValue, factOldValue.getNextObjectVersion(),ruleBaseSession.isDisableJsonObjecttext());
             ruleBaseSession.setData(f, newValue, factNewValue);
             //____ Adding the Update Event from the History Container
             UpdatedFactHistoryEvent updatedFactHistoryEvent = new UpdatedFactHistoryEvent(this.ruleBaseSession.getNextEventCounter(), factOldValue, factNewValue, this.ruleBaseSession.getRuleBaseID(), this.ruleBaseSession.getSessionId());

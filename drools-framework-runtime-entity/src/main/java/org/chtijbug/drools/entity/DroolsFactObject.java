@@ -47,13 +47,15 @@ public class DroolsFactObject implements Serializable {
         realObject = null;
     }
 
-    public DroolsFactObject(Object realObject, int version) throws IOException {
+    public DroolsFactObject(Object realObject, int version,boolean isJsonGeneratorDIsable) throws IOException {
         this.realObject = realObject;
         this.version = version;
-        ObjectMapper mapper = new ObjectMapper();
-        Writer strWriter = new StringWriter();
-        mapper.writeValue(strWriter, realObject);
-        this.realObject_JSON = strWriter.toString();
+        if(isJsonGeneratorDIsable=false) {
+            ObjectMapper mapper = new ObjectMapper();
+            Writer strWriter = new StringWriter();
+            mapper.writeValue(strWriter, realObject);
+            this.realObject_JSON = strWriter.toString();
+        }
     }
 
     public String getRealObject_JSON() {

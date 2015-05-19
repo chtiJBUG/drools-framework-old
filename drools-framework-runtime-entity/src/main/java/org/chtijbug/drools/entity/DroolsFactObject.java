@@ -50,7 +50,7 @@ public class DroolsFactObject implements Serializable {
     public DroolsFactObject(Object realObject, int version,boolean isJsonGeneratorDIsable) throws IOException {
         this.realObject = realObject;
         this.version = version;
-        if(isJsonGeneratorDIsable=false) {
+        if(isJsonGeneratorDIsable==false) {
             ObjectMapper mapper = new ObjectMapper();
             Writer strWriter = new StringWriter();
             mapper.writeValue(strWriter, realObject);

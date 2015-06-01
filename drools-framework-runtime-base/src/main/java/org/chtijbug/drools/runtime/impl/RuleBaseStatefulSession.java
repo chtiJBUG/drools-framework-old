@@ -83,6 +83,8 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     private int eventCounter;
 
     private boolean disableJsonObjecttext=false;
+    private boolean disableFactHandlerListener=false;
+
 
     private HistoryListener historyListener;
 
@@ -579,6 +581,14 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             }
         }
         return ruleSetNode;
+    }
+
+    public boolean isDisableFactHandlerListener() {
+        return disableFactHandlerListener;
+    }
+
+    public void setDisableFactHandlerListener(boolean disableFactHandlerListener) {
+        this.disableFactHandlerListener = disableFactHandlerListener;
     }
 
     public boolean isDisableJsonObjecttext() {

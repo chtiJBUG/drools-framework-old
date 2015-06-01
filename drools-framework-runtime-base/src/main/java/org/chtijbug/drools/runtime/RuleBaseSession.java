@@ -96,4 +96,9 @@ public interface RuleBaseSession {
 
     public void setDisableJsonObjecttext(boolean disableJsonObjecttext);
 
+
+    public boolean isDisableFactHandlerListener();
+
+    public void setDisableFactHandlerListener(boolean disableFactHandlerListener) ;
+
 }

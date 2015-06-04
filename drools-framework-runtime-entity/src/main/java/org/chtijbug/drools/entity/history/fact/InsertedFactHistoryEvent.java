@@ -55,12 +55,13 @@ public class InsertedFactHistoryEvent extends FactHistoryEvent {
     public String toString() {
         StringBuilder str = new StringBuilder();
         str.append(super.toString() + "\n");
-
-        str.append("inserted Object : " + insertedObject.getFullClassName() + "\n");
-        str.append("version Object : " + insertedObject.getObjectVersion() + "\n");
-        str.append("attributes :\n");
-        for (DroolsFactObjectAttribute foa : insertedObject.getListfactObjectAttributes()) {
-            str.append("- " + foa.getAttributeType() + " " + foa.getAttributeName() + "=" + foa.getAttributeValue() + "\n");
+        if (insertedObject!= null) {
+            str.append("inserted Object : " + insertedObject.getFullClassName() + "\n");
+            str.append("version Object : " + insertedObject.getObjectVersion() + "\n");
+            str.append("attributes :\n");
+            for (DroolsFactObjectAttribute foa : insertedObject.getListfactObjectAttributes()) {
+                str.append("- " + foa.getAttributeType() + " " + foa.getAttributeName() + "=" + foa.getAttributeValue() + "\n");
+            }
         }
 
         return str.toString();

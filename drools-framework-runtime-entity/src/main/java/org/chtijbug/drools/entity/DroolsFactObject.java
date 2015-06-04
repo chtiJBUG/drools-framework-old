@@ -51,10 +51,15 @@ public class DroolsFactObject implements Serializable {
         this.realObject = realObject;
         this.version = version;
         if(isJsonGeneratorDIsable==false) {
-            ObjectMapper mapper = new ObjectMapper();
-            Writer strWriter = new StringWriter();
-            mapper.writeValue(strWriter, realObject);
-            this.realObject_JSON = strWriter.toString();
+            try{
+                ObjectMapper mapper = new ObjectMapper();
+                Writer strWriter = new StringWriter();
+                mapper.writeValue(strWriter, realObject);
+                this.realObject_JSON = strWriter.toString();
+            }catch (Exception e){
+                this.realObject_JSON=e.getMessage();
+            }
+
         }
     }
 

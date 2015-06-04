@@ -321,8 +321,12 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
     @Override
     public void insertObject(Object newObject) {
-        FactHandle newFactHandle = this.knowledgeSession.insert(newObject);
-        listFact.put(newObject, newFactHandle);
+        if (!listFact.containsKey(newObject)) {
+            FactHandle newFactHandle = this.knowledgeSession.insert(newObject);
+            listFact.put(newObject, newFactHandle);
+        }else{
+            logger.trace("Object Already Inserted {0}",newObject);
+        }
     }
 
     @Override

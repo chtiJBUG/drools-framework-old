@@ -279,6 +279,11 @@ public class RuleBaseSingleton implements RuleBasePackage {
 
     @Override
     public RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute) throws DroolsChtijbugException {
+      return this.createRuleBaseSession(maxNumberRulesToExecute,this.historyListener);
+    }
+
+    @Override
+    public RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute, HistoryListener sessionHistoryListener) throws DroolsChtijbugException {
         logger.debug(">>createRuleBaseSession", maxNumberRulesToExecute);
         RuleBaseSession newRuleBaseSession = null;
         try {
@@ -293,14 +298,14 @@ public class RuleBaseSingleton implements RuleBasePackage {
                 StatefulKnowledgeSession newDroolsSession = kbase.newStatefulKnowledgeSession();
                 //_____ Increment session counter
                 this.sessionCounter++;
-                if (this.historyListener != null) {
+                if (sessionHistoryListener != null) {
                     KnowledgeBaseCreateSessionEvent knowledgeBaseCreateSessionEvent = new KnowledgeBaseCreateSessionEvent(this.getNextEventCounter(), new Date(), this.ruleBaseID);
                     knowledgeBaseCreateSessionEvent.setSessionId(this.sessionCounter);
-                    this.historyListener.fireEvent(knowledgeBaseCreateSessionEvent);
+                    sessionHistoryListener.fireEvent(knowledgeBaseCreateSessionEvent);
                 }
 
                 //_____ Wrapping the knowledge Session
-                newRuleBaseSession = new RuleBaseStatefulSession(this.ruleBaseID, this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, mbsSession, this.historyListener);
+                newRuleBaseSession = new RuleBaseStatefulSession(this.ruleBaseID, this.sessionCounter, newDroolsSession, maxNumberRulesToExecute, mbsSession, sessionHistoryListener);
                 //_____ Release semaphore
                 lockKbase.release();
             } else {

@@ -30,6 +30,8 @@ public interface RuleBasePackage {
 
     RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute) throws DroolsChtijbugException;
 
+    RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute,HistoryListener sessionHistoryListener) throws DroolsChtijbugException;
+
 
     public void createKBase(DroolsResource... res) throws DroolsChtijbugException;
 

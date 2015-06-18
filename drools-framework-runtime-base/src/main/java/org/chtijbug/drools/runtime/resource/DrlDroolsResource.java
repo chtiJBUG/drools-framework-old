@@ -15,14 +15,13 @@
  */
 package org.chtijbug.drools.runtime.resource;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import org.chtijbug.drools.common.file.FileHelper;
 import org.drools.builder.ResourceType;
 import org.drools.io.Resource;
 import org.drools.io.ResourceFactory;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -105,5 +104,14 @@ public class DrlDroolsResource implements DroolsResource {
     @Override
     public int hashCode() {
         return fileName.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("DrlDroolsResource{");
+        sb.append("resource=").append(resource);
+        sb.append(", fileName='").append(fileName).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -28,30 +28,21 @@ import org.slf4j.LoggerFactory;
  */
 public class GuvnorDroolsResource implements DroolsResource {
     /**
-     * Class Logger
-     */
-    private static Logger logger = LoggerFactory.getLogger(GuvnorDroolsResource.class);
-    /**
      * Constant used for building the web resource URL
      */
     private static final String PKG_PARTIAL_URL = "org.drools.guvnor.Guvnor/package";
-
+    /**
+     * Class Logger
+     */
+    private static Logger logger = LoggerFactory.getLogger(GuvnorDroolsResource.class);
     /**
      * the URL base part
      */
     private final String baseUrl;
     /**
-     * application name to connect
-     */
-    private String webappName = "drools-guvnor";
-    /**
      * package name
      */
     private final String packageName;
-    /**
-     * The package version to fetch from remote application
-     */
-    private String packageVersion = "LATEST";
     /**
      * the username used for connecting to Guvnor remote application
      */
@@ -61,14 +52,18 @@ public class GuvnorDroolsResource implements DroolsResource {
      */
     private final String password;
     /**
+     * application name to connect
+     */
+    private String webappName = "drools-guvnor";
+    /**
+     * The package version to fetch from remote application
+     */
+    private String packageVersion = "LATEST";
+    /**
      * The wrapepd Drools Resource
      */
     private Resource resource;
 
-
-    public static GuvnorDroolsResource createGuvnorRessource(String guvnor_url, String guvnor_appName, String guvnor_packageName, String guvnor_packageVersion, String guvnor_username, String guvnor_password) {
-        return new GuvnorDroolsResource(guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion, guvnor_username, guvnor_password);
-    }
 
     public GuvnorDroolsResource(String baseUrl, String webappName, String packageName, String packageVersion, String username, String password) {
         this.baseUrl = baseUrl;
@@ -77,6 +72,17 @@ public class GuvnorDroolsResource implements DroolsResource {
         this.password = password;
         this.webappName = webappName;
         this.packageVersion = packageVersion;
+    }
+
+    public static GuvnorDroolsResource createGuvnorRessource(String guvnor_url, String guvnor_appName, String guvnor_packageName, String guvnor_packageVersion, String guvnor_username, String guvnor_password) {
+        return new GuvnorDroolsResource(guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion, guvnor_username, guvnor_password);
+    }
+
+    protected static String removeTrailingSlash(String toCheck) {
+        if (toCheck.endsWith("/")) {
+            return toCheck.substring(0, toCheck.length() - 1);
+        }
+        return toCheck;
     }
 
     /*
@@ -126,13 +132,6 @@ public class GuvnorDroolsResource implements DroolsResource {
         }
     }
 
-    protected static String removeTrailingSlash(String toCheck) {
-        if (toCheck.endsWith("/")) {
-            return toCheck.substring(0, toCheck.length() - 1);
-        }
-        return toCheck;
-    }
-
     public String getBaseUrl() {
         return baseUrl;
     }
@@ -180,4 +179,16 @@ public class GuvnorDroolsResource implements DroolsResource {
         result = 31 * result + packageVersion.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("GuvnorDroolsResource{");
+        sb.append("baseUrl='").append(baseUrl).append('\'');
+        sb.append(", webappName='").append(webappName).append('\'');
+        sb.append(", packageName='").append(packageName).append('\'');
+        sb.append(", packageVersion='").append(packageVersion).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }
+

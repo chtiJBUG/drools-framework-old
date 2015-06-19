@@ -54,10 +54,6 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
      */
     private static Logger logger = LoggerFactory.getLogger(RuleBaseStatefulSession.class);
     /**
-     * The wrapped Drools KnowledgeSession
-     */
-    private StatefulKnowledgeSession knowledgeSession = null;
-    /**
      * All objects inserted into the session as fact
      */
     private final Map<FactHandle, Object> listObject;
@@ -70,6 +66,10 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     private final Map<String, DroolsRuleObject> listRules;
     private final Map<String, DroolsProcessObject> processList;
     private final Map<String, DroolsProcessInstanceObject> processInstanceList;
+    /**
+     * The wrapped Drools KnowledgeSession
+     */
+    private StatefulKnowledgeSession knowledgeSession = null;
     // Listeners can be dispose ...
     private FactHandlerListener factListener;
     private RuleHandlerListener ruleHandlerListener;
@@ -367,11 +367,11 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             }
             //____ If returned value is not a collection, insert it in the ksession
             if (!(getterValue instanceof Iterable)) {
-                this.insertByReflection(getterValue);
+                this.insertByReflectionInternal(getterValue);
             } else {
                 Iterable<?> iterable = (Iterable) getterValue;
                 for (Object item : iterable) {
-                    this.insertByReflection(item);
+                    this.insertByReflectionInternal(item);
                 }
             }
         }
@@ -380,6 +380,50 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
             this.addHistoryElement(insertedByReflectionFactEndHistoryEvent);
         }
     }
+
+    private void insertByReflectionInternal(Object newObject) throws DroolsChtijbugException {
+        // Avoid inserting java.* classes
+        if (newObject != null) {
+            if (newObject.getClass() != null) {
+                if (newObject.getClass().getPackage() != null) {
+                    if (newObject.getClass().getPackage().getName() != null
+                            && newObject.getClass().getPackage().getName().startsWith("java.")) {
+                        return;
+                    }
+                }
+            }
+        }
+
+        //____ First insert the root object
+        insertObject(newObject);
+        //____ Then foreach getters insert item by reflection
+        for (Method method : newObject.getClass().getMethods()) {
+            //____ only manage getters
+            if (!ReflectionUtils.IsGetter(method)) {
+                continue;
+            }
+            Object getterValue = null;
+            try {
+                getterValue = method.invoke(newObject, (Object[]) null);
+            } catch (Exception e) {
+                DroolsChtijbugException ee = new DroolsChtijbugException(DroolsChtijbugException.insertByReflection, "getterValue = method.invoke(newObject, (Object[]) null);", e);
+                throw ee;
+            }
+            if (getterValue == null) {
+                continue;
+            }
+            //____ If returned value is not a collection, insert it in the ksession
+            if (!(getterValue instanceof Iterable)) {
+                this.insertByReflectionInternal(getterValue);
+            } else {
+                Iterable<?> iterable = (Iterable) getterValue;
+                for (Object item : iterable) {
+                    this.insertByReflectionInternal(item);
+                }
+            }
+        }
+    }
+
 
     @Override
     public void setGlobal(String identifier, Object value) {

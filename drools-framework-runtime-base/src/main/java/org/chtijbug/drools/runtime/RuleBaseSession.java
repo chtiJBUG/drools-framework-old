@@ -92,9 +92,6 @@ public interface RuleBaseSession {
     void registerWorkItemHandler(String workItemName, WorkItemHandler workItemHandler);
 
     public ProcessInstance startProcess(String processName, Map<String, Object> vars);
-    public boolean isDisableJsonObjecttext() ;
-
-    public void setDisableJsonObjecttext(boolean disableJsonObjecttext);
 
 
     public boolean isDisableFactHandlerListener();

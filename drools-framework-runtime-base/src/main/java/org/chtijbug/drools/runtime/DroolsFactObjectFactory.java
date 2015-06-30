@@ -18,8 +18,11 @@ package org.chtijbug.drools.runtime;
 import org.apache.commons.beanutils.BeanMap;
 import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.DroolsFactObjectAttribute;
+import org.chtijbug.drools.runtime.util.ISO8601DateParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
 
 /**
  * @author Bertrand Gressier
@@ -33,25 +36,44 @@ public class DroolsFactObjectFactory {
 
     }
 
-    public static DroolsFactObject createFactObject(Object o,boolean isJsonGeneratorIsable) {
-        return createFactObject(o, 0,isJsonGeneratorIsable);
+    public static DroolsFactObject createFactObject(Object o) {
+        return createFactObject(o, 0);
     }
 
-    public static DroolsFactObject createFactObject(Object o, int version,boolean isJsonGeneratorIsable) {
+    public static DroolsFactObject createFactObject(Object o, int version) {
         logger.debug(">>createFactObject", o, version);
         DroolsFactObject createFactObject = null;
         try {
             if (o != null) {
-                createFactObject = new DroolsFactObject(o, version,isJsonGeneratorIsable);
+                createFactObject = new DroolsFactObject(o, version);
                 createFactObject.setFullClassName(o.getClass().getCanonicalName());
                 createFactObject.setHashCode(o.hashCode());
 
                 BeanMap m = new BeanMap(o);
+                StringBuilder jsonText = new StringBuilder();
+                jsonText.append("{");
+                boolean isFirstParam = true;
                 for (Object para : m.keySet()) {
                     if (!para.toString().equals("class")) {
                         if (m.get(para) != null) {
                             DroolsFactObjectAttribute attribute = new DroolsFactObjectAttribute(para.toString(), m.get(para).toString(), m.get(para).getClass().getSimpleName());
                             createFactObject.getListfactObjectAttributes().add(attribute);
+                            if (!m.get(para).getClass().getSimpleName().endsWith("ArrayList")) {
+                                if (!isFirstParam) {
+                                    jsonText.append(",");
+                                } else {
+                                    isFirstParam = false;
+                                }
+                                jsonText.append("\"").append(para.toString()).append("\":");
+                                if (m.get(para).getClass().getSimpleName().equals("String")) {
+                                    jsonText.append("\"").append(m.get(para).toString()).append("\"");
+                                } else if (m.get(para).getClass().getSimpleName().equals("Date")) {
+                                    jsonText.append("\"").append(ISO8601DateParser.toString(((Date) m.get(para)))).append("\"");
+                                } else {
+                                    jsonText.append("").append(m.get(para).toString()).append("");
+                                }
+
+                            }
                         } else {
                             DroolsFactObjectAttribute attribute = new DroolsFactObjectAttribute(para.toString(), "null", "null");
                             createFactObject.getListfactObjectAttributes().add(attribute);
@@ -60,6 +82,8 @@ public class DroolsFactObjectFactory {
                     }
 
                 }
+                jsonText.append("}");
+                createFactObject.setRealObject_JSON(jsonText.toString());
             }
         } catch (Exception e) {
             logger.error("Not possible to introspect {} for reason {}", o, e);

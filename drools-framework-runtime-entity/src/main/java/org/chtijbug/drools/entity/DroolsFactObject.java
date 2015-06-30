@@ -15,12 +15,9 @@
  */
 package org.chtijbug.drools.entity;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +30,11 @@ public class DroolsFactObject implements Serializable {
      *
      */
     private static final long serialVersionUID = 8185674445343213645L;
+    private final transient Object realObject;
+    protected int version;
     private String fullClassName;
     private int hashCode;
-    protected int version;
     private List<DroolsFactObjectAttribute> listfactObjectAttributes = new ArrayList<DroolsFactObjectAttribute>();
-    private final transient Object realObject;
     private String realObject_JSON;
 
     /**
@@ -47,24 +44,18 @@ public class DroolsFactObject implements Serializable {
         realObject = null;
     }
 
-    public DroolsFactObject(Object realObject, int version,boolean isJsonGeneratorDIsable) throws IOException {
+    public DroolsFactObject(Object realObject, int version) throws IOException {
         this.realObject = realObject;
         this.version = version;
-        if(isJsonGeneratorDIsable==false) {
-            try{
-                ObjectMapper mapper = new ObjectMapper();
-                Writer strWriter = new StringWriter();
-                mapper.writeValue(strWriter, realObject);
-                this.realObject_JSON = strWriter.toString();
-            }catch (Exception e){
-                this.realObject_JSON=e.getMessage();
-            }
 
-        }
     }
 
     public String getRealObject_JSON() {
         return realObject_JSON;
+    }
+
+    public void setRealObject_JSON(String realObject_JSON) {
+        this.realObject_JSON = realObject_JSON;
     }
 
     @Override

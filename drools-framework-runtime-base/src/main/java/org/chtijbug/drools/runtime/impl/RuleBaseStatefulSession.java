@@ -15,6 +15,7 @@
  */
 package org.chtijbug.drools.runtime.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 import org.chtijbug.drools.common.reflection.ReflectionUtils;
@@ -41,6 +42,8 @@ import org.jbpm.workflow.instance.node.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -82,6 +85,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     private int sessionId;
     private int eventCounter;
 
+    private ObjectMapper mapper = new ObjectMapper();
 
     private boolean disableFactHandlerListener=false;
 
@@ -453,6 +457,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         if (inputObject != null) {
             this.insertByReflection(inputObject);
             inputDroolsObject = DroolsFactObjectFactory.createFactObject(inputObject);
+            inputDroolsObject.setRealObject_JSON(this.getJSONFromObject(inputObject));
         }
         Map<String,Object> maps = new HashMap<String,Object>();
         maps.put("inputObject",inputObject);
@@ -462,6 +467,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         this.fireAllRules();
         if (inputDroolsObject != null) {
             outputDroolsObject = DroolsFactObjectFactory.createFactObject(inputObject);
+            outputDroolsObject.setRealObject_JSON(this.getJSONFromObject(inputObject));
         }
 
         if (this.historyListener != null) {
@@ -471,6 +477,19 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         return inputObject;
     }
 
+    private String getJSONFromObject(Object realObject) {
+        String result = null;
+        try {
+            Writer strWriter = new StringWriter();
+            mapper.writeValue(strWriter, realObject);
+            result = strWriter.toString();
+            strWriter = null;
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+
     @Override
     public Object fireAllRulesAndStartProcess(Object inputObject, String processName) throws DroolsChtijbugException {
         DroolsFactObject inputDroolsObject = null;
@@ -478,6 +497,7 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         if (inputObject != null) {
             this.insertByReflection(inputObject);
             inputDroolsObject = DroolsFactObjectFactory.createFactObject(inputObject);
+            inputDroolsObject.setRealObject_JSON(this.getJSONFromObject(inputObject));
         }
         Map<String,Object> maps = new HashMap<String,Object>();
 
@@ -487,10 +507,13 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
         this.fireAllRules();
         if (inputDroolsObject != null) {
             outputDroolsObject = DroolsFactObjectFactory.createFactObject(inputObject);
+            outputDroolsObject.setRealObject_JSON(this.getJSONFromObject(inputObject));
         }
 
         if (this.historyListener != null) {
             SessionFireAllRulesAndStartProcess sessionFireAllRulesAndStartProcess = new SessionFireAllRulesAndStartProcess(this.getNextEventCounter(), this.ruleBaseID, this.sessionId, inputDroolsObject, outputDroolsObject);
+
+
             this.addHistoryElement(sessionFireAllRulesAndStartProcess);
         }
         return inputObject;

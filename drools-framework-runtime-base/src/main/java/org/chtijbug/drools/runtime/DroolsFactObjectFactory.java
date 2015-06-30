@@ -67,6 +67,8 @@ public class DroolsFactObjectFactory {
                                 jsonText.append("\"").append(para.toString()).append("\":");
                                 if (m.get(para).getClass().getSimpleName().equals("String")) {
                                     jsonText.append("\"").append(m.get(para).toString()).append("\"");
+                                } else if (m.get(para).getClass().isEnum()) {
+                                    jsonText.append("\"").append(m.get(para).toString()).append("\"");
                                 } else if (m.get(para).getClass().getSimpleName().equals("Date")) {
                                     jsonText.append("\"").append(ISO8601DateParser.toString(((Date) m.get(para)))).append("\"");
                                 } else {

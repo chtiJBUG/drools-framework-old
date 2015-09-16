@@ -1231,6 +1231,11 @@
             <artifactId>kie-drools-framework-rest-backend</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.chtijbug.drools</groupId>
+            <artifactId>kie-drools-framework-rest-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- Guvnor REST api -->
         <dependency>
             <groupId>org.guvnor</groupId>
@@ -1632,7 +1637,7 @@
                     <configuration>
                         <deploy>${project.build.directory}/gwt-symbols-deploy</deploy>
                         <localWorkers>${gwt.compiler.localWorkers}</localWorkers>
-                        <extraJvmArgs>${gwt.memory.settings}
+                        <extraJvmArgs>${gwt.memory.settings} -XX:CompileThreshold=7000
                             -Derrai.jboss.home=${errai.jboss.home}
                             -Derrai.marshalling.server.classOutput=${project.build.outputDirectory} -Dorg.kie.demo=true
                             -Dorg.kie.clean.onstartup=true -Dorg.uberfire.nio.git.ssh.enabled=false
@@ -1899,6 +1904,11 @@
                             </compileSourcesArtifact>
                             <compileSourcesArtifact>org.kie.workbench.screens:kie-wb-common-home-client
                             </compileSourcesArtifact>
+                            <compileSourcesArtifact>org.chtijbug.drools:kie-drools-framework-rest-backend
+                            </compileSourcesArtifact>
+                            <compileSourcesArtifact>org.chtijbug.drools:kie-drools-framework-rest-client
+                            </compileSourcesArtifact>
+
                         </compileSourcesArtifacts>
 
                     </configuration>

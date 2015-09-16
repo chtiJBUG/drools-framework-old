@@ -15,14 +15,6 @@
  */
 package org.kie.workbench.client;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import javax.inject.Inject;
-
 import com.google.gwt.animation.client.Animation;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
@@ -45,19 +37,23 @@ import org.jboss.errai.ioc.client.container.SyncBeanManager;
 import org.jboss.errai.security.shared.api.Role;
 import org.jboss.errai.security.shared.api.identity.User;
 import org.jboss.errai.security.shared.service.AuthenticationService;
-import org.jbpm.console.ng.ht.forms.service.PlaceManagerActivityService;
+import org.jbpm.console.ng.ga.forms.service.PlaceManagerActivityService;
 import org.jbpm.dashboard.renderer.service.DashboardURLBuilder;
 import org.kie.workbench.client.home.HomeProducer;
 import org.kie.workbench.client.resources.i18n.AppConstants;
+import org.kie.workbench.common.screens.social.hp.config.SocialConfigurationService;
 import org.kie.workbench.common.services.shared.preferences.ApplicationPreferences;
 import org.kie.workbench.common.services.shared.security.KieWorkbenchSecurityService;
 import org.kie.workbench.common.widgets.client.menu.AboutMenuBuilder;
+import org.kie.workbench.common.widgets.client.menu.ResetPerspectivesMenuBuilder;
+import org.kie.workbench.common.widgets.client.menu.WorkbenchConfigurationMenuBuilder;
 import org.kie.workbench.common.widgets.client.resources.RoundedCornersResource;
 import org.uberfire.client.menu.CustomSplashHelp;
 import org.uberfire.client.mvp.AbstractWorkbenchPerspectiveActivity;
 import org.uberfire.client.mvp.ActivityBeansCache;
 import org.uberfire.client.mvp.ActivityManager;
 import org.uberfire.client.mvp.PlaceManager;
+import org.uberfire.client.workbench.docks.UberfireDocks;
 import org.uberfire.client.workbench.widgets.menu.WorkbenchMenuBarPresenter;
 import org.uberfire.mvp.Command;
 import org.uberfire.mvp.impl.DefaultPlaceRequest;
@@ -65,6 +61,9 @@ import org.uberfire.workbench.model.menu.MenuFactory;
 import org.uberfire.workbench.model.menu.MenuItem;
 import org.uberfire.workbench.model.menu.MenuPosition;
 import org.uberfire.workbench.model.menu.Menus;
+
+import javax.inject.Inject;
+import java.util.*;
 
 import static org.kie.workbench.client.security.KieWorkbenchFeatures.*;
 
@@ -74,48 +73,43 @@ import static org.kie.workbench.client.security.KieWorkbenchFeatures.*;
 @EntryPoint
 public class KieWorkbenchEntryPoint {
 
-    private AppConstants constants = AppConstants.INSTANCE;
-
-    @Inject
-    private PlaceManager placeManager;
-
-    @Inject
-    private WorkbenchMenuBarPresenter menubar;
-
-    @Inject
-    private ActivityManager activityManager;
-
-    @Inject
-    private SyncBeanManager iocManager;
-
     @Inject
     public User identity;
-
-    @Inject
-    private Caller<AppConfigService> appConfigService;
-
-    @Inject
-    private HomeProducer homeProducer;
-
-    @Inject
-    private KieWorkbenchACL kieACL;
-
-    @Inject
-    private Caller<KieWorkbenchSecurityService> kieSecurityService;
-
-    @Inject
-    private Caller<PlaceManagerActivityService> pmas;
-
-    @Inject
-    private ActivityBeansCache activityBeansCache;
-
-    @Inject
-    private Caller<AuthenticationService> authService;
-
-    private SuggestBox actionText;
-    private TextBox textSuggestBox;
     DefaultSuggestionDisplay suggestionDisplay;
     Map<String, String> actions = new HashMap<String, String>();
+    private AppConstants constants = AppConstants.INSTANCE;
+    @Inject
+    private PlaceManager placeManager;
+    @Inject
+    private WorkbenchMenuBarPresenter menubar;
+    @Inject
+    private ActivityManager activityManager;
+    @Inject
+    private SyncBeanManager iocManager;
+    @Inject
+    private Caller<AppConfigService> appConfigService;
+    @Inject
+    private HomeProducer homeProducer;
+    @Inject
+    private KieWorkbenchACL kieACL;
+    @Inject
+    private Caller<KieWorkbenchSecurityService> kieSecurityService;
+    @Inject
+    private Caller<PlaceManagerActivityService> pmas;
+    @Inject
+    private ActivityBeansCache activityBeansCache;
+    @Inject
+    private Caller<AuthenticationService> authService;
+    @Inject
+    private Caller<SocialConfigurationService> socialConfigurationService;
+    @Inject
+    private UberfireDocks uberfireDocks;
+    private SuggestBox actionText;
+    private TextBox textSuggestBox;
+
+    public static native void redirect(String url)/*-{
+        $wnd.location = url;
+    }-*/;
 
     @AfterInitialization
     public void startApp() {
@@ -131,16 +125,16 @@ public class KieWorkbenchEntryPoint {
             }
         } ).loadPolicy();
 
-        pmas.call().initActivities( activityBeansCache.getActivitiesById() );
+        pmas.call().initActivities(activityBeansCache.getActivitiesById());
     }
 
     private void loadPreferences() {
-        appConfigService.call( new RemoteCallback<Map<String, String>>() {
+        appConfigService.call(new RemoteCallback<Map<String, String>>() {
             @Override
-            public void callback( final Map<String, String> response ) {
-                ApplicationPreferences.setUp( response );
+            public void callback(final Map<String, String> response) {
+                ApplicationPreferences.setUp(response);
             }
-        } ).loadPreferences();
+        }).loadPreferences();
     }
 
     private void loadStyles() {
@@ -150,33 +144,40 @@ public class KieWorkbenchEntryPoint {
     }
 
     private void setupMenu() {
+        socialConfigurationService.call(new RemoteCallback<Boolean>() {
+            public void callback(final Boolean socialEnabled) {
+                final Menus menus =
+                        MenuFactory.newTopLevelMenu(constants.Home()).withItems(getHomeViews(socialEnabled)).endMenu()
+                                .newTopLevelMenu(constants.Authoring()).withRoles(kieACL.getGrantedRoles(G_AUTHORING)).withItems(getAuthoringViews()).endMenu()
+                                .newTopLevelMenu(constants.Deploy()).withRoles(kieACL.getGrantedRoles(G_DEPLOY)).withItems(getDeploymentViews()).endMenu()
+                                .newTopLevelMenu(constants.Process_Management()).withRoles(kieACL.getGrantedRoles(G_PROCESS_MANAGEMENT)).withItems(getProcessMGMTViews()).endMenu()
+                                .newTopLevelMenu(constants.Tasks()).withRoles(kieACL.getGrantedRoles(G_TASKS)).withItems(getTasksViews()).endMenu()
+                                .newTopLevelMenu(constants.Dashboards()).withRoles(kieACL.getGrantedRoles(G_DASHBOARDS)).withItems(getDashboardViews()).endMenu()
+                                .newTopLevelMenu(constants.Extensions()).withRoles(kieACL.getGrantedRoles(F_EXTENSIONS)).withItems(getExtensionsViews()).endMenu()
+                                .newTopLevelMenu(constants.find()).withRoles(kieACL.getGrantedRoles(F_SEARCH)).position(MenuPosition.RIGHT).respondsWith(new Command() {
+                            @Override
+                            public void execute() {
+                                placeManager.goTo("FindForm");
+                            }
+                        })
+                                .endMenu()
+                                .newTopLevelMenu(constants.User() + ": " + identity.getIdentifier())
+                                .position(MenuPosition.RIGHT)
+                                .withItems(getRoles())
+                                .endMenu()
+                                .newTopLevelCustomMenu(iocManager.lookupBean(WorkbenchConfigurationMenuBuilder.class).getInstance())
+                                .endMenu()
+                                .newTopLevelCustomMenu(iocManager.lookupBean(CustomSplashHelp.class).getInstance())
+                                .endMenu()
+                                .newTopLevelCustomMenu(iocManager.lookupBean(AboutMenuBuilder.class).getInstance())
+                                .endMenu()
+                                .newTopLevelCustomMenu(iocManager.lookupBean(ResetPerspectivesMenuBuilder.class).getInstance())
+                                .endMenu()
+                                .build();
 
-        final Menus menus =
-                MenuFactory.newTopLevelMenu( constants.Home() ).withItems( getHomeViews() ).endMenu()
-                        .newTopLevelMenu( constants.Authoring() ).withRoles( kieACL.getGrantedRoles( G_AUTHORING ) ).withItems( getAuthoringViews() ).endMenu()
-                        .newTopLevelMenu( constants.Deploy() ).withRoles( kieACL.getGrantedRoles( G_DEPLOY ) ).withItems( getDeploymentViews() ).endMenu()
-                        .newTopLevelMenu( constants.Process_Management() ).withRoles( kieACL.getGrantedRoles( G_PROCESS_MANAGEMENT ) ).withItems( getProcessMGMTViews() ).endMenu()
-                        .newTopLevelMenu( constants.Tasks() ).withRoles( kieACL.getGrantedRoles( G_TASKS ) ).withItems( getTasksViews() ).endMenu()
-                        .newTopLevelMenu( constants.Dashboards() ).withRoles( kieACL.getGrantedRoles( G_DASHBOARDS ) ).withItems( getDashboardViews() ).endMenu()
-                        .newTopLevelMenu( constants.Extensions() ).withRoles( kieACL.getGrantedRoles( F_EXTENSIONS ) ).withItems( getExtensionsViews() ).endMenu()
-                        .newTopLevelMenu( constants.find() ).withRoles( kieACL.getGrantedRoles( F_SEARCH ) ).position( MenuPosition.RIGHT ).respondsWith( new Command() {
-                    @Override
-                    public void execute() {
-                        placeManager.goTo( "FindForm" );
-                    }
-                } )
-                        .endMenu()
-                        .newTopLevelMenu( constants.User() + ": " + identity.getIdentifier() )
-                        .position( MenuPosition.RIGHT )
-                        .withItems( getRoles() )
-                        .endMenu()
-                        .newTopLevelCustomMenu( iocManager.lookupBean( CustomSplashHelp.class ).getInstance() )
-                        .endMenu()
-                        .newTopLevelCustomMenu( iocManager.lookupBean( AboutMenuBuilder.class ).getInstance() )
-                        .endMenu()
-                        .build();
-
-        menubar.addMenus( menus );
+                menubar.addMenus(menus);
+            }
+        }).isSocialEnable();
     }
 
     private List<? extends MenuItem> getRoles() {
@@ -191,11 +192,11 @@ public class KieWorkbenchEntryPoint {
         return result;
     }
 
-    private List<? extends MenuItem> getHomeViews() {
+    private List<? extends MenuItem> getHomeViews(Boolean socialEnabled) {
         final AbstractWorkbenchPerspectiveActivity defaultPerspective = getDefaultPerspectiveActivity();
         final List<MenuItem> result = new ArrayList<MenuItem>( 1 );
 
-        result.add( MenuFactory.newSimpleItem( constants.Home_Page() ).respondsWith( new Command() {
+        result.add( MenuFactory.newSimpleItem(constants.Home_Page()).respondsWith( new Command() {
             @Override
             public void execute() {
                 if ( defaultPerspective != null ) {
@@ -205,21 +206,21 @@ public class KieWorkbenchEntryPoint {
                 }
             }
         } ).endMenu().build().getItems().get( 0 ) );
+        if (socialEnabled) {
+            result.add(MenuFactory.newSimpleItem(constants.Timeline()).respondsWith(new Command() {
+                @Override
+                public void execute() {
+                    placeManager.goTo(new DefaultPlaceRequest("SocialHomePagePerspective"));
+                }
+            }).endMenu().build().getItems().get(0));
 
-        result.add( MenuFactory.newSimpleItem( constants.Timeline() ).respondsWith( new Command() {
-            @Override
-            public void execute() {
-                placeManager.goTo( new DefaultPlaceRequest( "SocialHomePagePerspective" ) );
-            }
-        } ).endMenu().build().getItems().get( 0 ) );
-
-        result.add( MenuFactory.newSimpleItem( constants.People() ).respondsWith( new Command() {
-            @Override
-            public void execute() {
-                placeManager.goTo( new DefaultPlaceRequest( "UserHomePagePerspective" ) );
-            }
-        } ).endMenu().build().getItems().get( 0 ) );
-
+            result.add(MenuFactory.newSimpleItem(constants.People()).respondsWith(new Command() {
+                @Override
+                public void execute() {
+                    placeManager.goTo(new DefaultPlaceRequest("UserHomePagePerspective"));
+                }
+            }).endMenu().build().getItems().get(0));
+        }
         return result;
     }
 
@@ -319,19 +320,31 @@ public class KieWorkbenchEntryPoint {
             }
 
         } ).endMenu().build().getItems().get( 0 ) );
+        result.add(MenuFactory.newSimpleItem(constants.DataSets()).withRoles(kieACL.getGrantedRoles(F_DATASETS)).respondsWith(new Command() {
+            @Override
+            public void execute() {
+                placeManager.goTo(new DefaultPlaceRequest("DataSetAuthoringPerspective"));
+            }
+
+        }).endMenu().build().getItems().get(0));
         return result;
     }
 
     private List<? extends MenuItem> getTasksViews() {
-        final List<MenuItem> result = new ArrayList<MenuItem>( 2 );
+        final List<MenuItem> result = new ArrayList<MenuItem>(1);
 
+//        result.add( MenuFactory.newSimpleItem( constants.Tasks_List() ).withRoles( kieACL.getGrantedRoles( F_TASKS ) ).respondsWith( new Command() {
+//            @Override
+//            public void execute() {
+//                placeManager.goTo( new DefaultPlaceRequest( "Tasks" ) );
+//            }
+//        } ).endMenu().build().getItems().get( 0 ) );
         result.add( MenuFactory.newSimpleItem( constants.Tasks_List() ).withRoles( kieACL.getGrantedRoles( F_TASKS ) ).respondsWith( new Command() {
             @Override
             public void execute() {
-                placeManager.goTo( new DefaultPlaceRequest( "Tasks" ) );
+                placeManager.goTo(new DefaultPlaceRequest("Tasks"));
             }
         } ).endMenu().build().getItems().get( 0 ) );
-
         return result;
     }
 
@@ -345,7 +358,7 @@ public class KieWorkbenchEntryPoint {
             }
         } ).endMenu().build().getItems().get( 0 ) );
 
-        final String dashbuilderURL = DashboardURLBuilder.getDashboardURL( "/dashbuilder/workspace", "showcase", LocaleInfo.getCurrentLocale().getLocaleName() );
+        final String dashbuilderURL = DashboardURLBuilder.getDashboardURL("/dashbuilder/workspace", "showcase", LocaleInfo.getCurrentLocale().getLocaleName());
         result.add( MenuFactory.newSimpleItem( constants.Business_Dashboard() ).withRoles( kieACL.getGrantedRoles( F_DASHBOARD_BUILDER ) ).respondsWith( new Command() {
             @Override
             public void execute() {
@@ -404,9 +417,5 @@ public class KieWorkbenchEntryPoint {
             } ).logout();
         }
     }
-
-    public static native void redirect( String url )/*-{
-        $wnd.location = url;
-    }-*/;
 
 }

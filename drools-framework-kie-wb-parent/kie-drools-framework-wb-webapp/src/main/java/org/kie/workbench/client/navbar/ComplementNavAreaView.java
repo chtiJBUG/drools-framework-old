@@ -16,10 +16,6 @@
 
 package org.kie.workbench.client.navbar;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.event.Observes;
-import javax.inject.Inject;
-
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
@@ -27,55 +23,51 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.RequiresResize;
 import org.kie.workbench.common.widgets.client.search.ClearSearchEvent;
 import org.kie.workbench.common.widgets.client.search.ContextualSearch;
 import org.kie.workbench.common.widgets.client.search.SearchBehavior;
 import org.kie.workbench.common.widgets.client.search.SetSearchTextEvent;
 import org.uberfire.client.mvp.PlaceManager;
-import org.uberfire.client.workbench.widgets.menu.PespectiveContextMenusPresenter;
+import org.uberfire.client.workbench.widgets.menu.PerspectiveContextMenusPresenter;
 import org.uberfire.mvp.impl.DefaultPlaceRequest;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.event.Observes;
+import javax.inject.Inject;
 
 /**
  * A stand-alone (i.e. devoid of Workbench dependencies) View
  */
 public class ComplementNavAreaView
         extends Composite
-        implements RequiresResize,
-                   ComplementNavAreaPresenter.View {
-
-    interface ViewBinder
-            extends
-            UiBinder<Panel, ComplementNavAreaView> {
-
-    }
+        implements ComplementNavAreaPresenter.View {
 
     private static ViewBinder uiBinder = GWT.create( ViewBinder.class );
-
     @UiField
     public Button searchButton;
-
     @UiField
     public TextBox searchTextBox;
-
-    @Inject
-    private ContextualSearch contextualSearch;
-
-    @Inject
-    private PlaceManager placeManager;
-
     @UiField
     public FlowPanel contextMenuArea;
-
+    @UiField
+    public FlowPanel searchPanel;
     @Inject
-    private PespectiveContextMenusPresenter contextMenu;
+    private ContextualSearch contextualSearch;
+    @Inject
+    private PlaceManager placeManager;
+    @Inject
+    private PerspectiveContextMenusPresenter contextMenu;
 
     @PostConstruct
     public void init() {
         initWidget( uiBinder.createAndBindUi( this ) );
+        if (Window.Location.getParameterMap().containsKey("no_search")) {
+            searchPanel.setVisible(false);
+        }
         contextMenuArea.add( contextMenu.getView() );
         contextualSearch.setDefaultSearchBehavior( new SearchBehavior() {
             @Override
@@ -83,13 +75,6 @@ public class ComplementNavAreaView
                 placeManager.goTo( new DefaultPlaceRequest( "FullTextSearchForm" ).addParameter( "term", term ) );
             }
         } );
-    }
-
-    @Override
-    public void onResize() {
-        int height = getParent().getOffsetHeight();
-        int width = getParent().getOffsetWidth();
-//        panel.setPixelSize( width, height );
     }
 
     @UiHandler("searchButton")
@@ -103,6 +88,12 @@ public class ComplementNavAreaView
 
     public void onSetSearchText( @Observes SetSearchTextEvent setSearchText ) {
         searchTextBox.setText( setSearchText.getSearchText() );
+    }
+
+    interface ViewBinder
+            extends
+            UiBinder<Panel, ComplementNavAreaView> {
+
     }
 
 }

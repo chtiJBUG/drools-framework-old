@@ -15,22 +15,23 @@
  */
 package org.kie.workbench.backend;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.inject.Named;
-
 import org.apache.lucene.analysis.Analyzer;
+import org.kie.workbench.common.screens.datamodeller.model.index.terms.*;
+import org.kie.workbench.common.services.refactoring.backend.server.indexing.FullyQualifiedClassNameAnalyzer;
 import org.kie.workbench.common.services.refactoring.backend.server.indexing.RuleAttributeNameAnalyzer;
-import org.kie.workbench.common.services.refactoring.model.index.terms.ProjectRootPathIndexTerm;
-import org.kie.workbench.common.services.refactoring.model.index.terms.RuleIndexTerm;
+import org.kie.workbench.common.services.refactoring.model.index.terms.*;
 import org.uberfire.ext.metadata.backend.lucene.LuceneConfig;
 import org.uberfire.ext.metadata.backend.lucene.LuceneConfigBuilder;
 import org.uberfire.ext.metadata.backend.lucene.analyzer.FilenameAnalyzer;
 
-import static org.apache.lucene.util.Version.*;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
+import javax.inject.Named;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.apache.lucene.util.Version.LUCENE_40;
 
 @ApplicationScoped
 public class LuceneConfigProducer {
@@ -57,8 +58,28 @@ public class LuceneConfigProducer {
         return new HashMap<String, Analyzer>() {{
             put( RuleIndexTerm.TERM,
                  new RuleAttributeNameAnalyzer( LUCENE_40 ) );
+            put(RuleAttributeIndexTerm.TERM,
+                    new RuleAttributeNameAnalyzer(LUCENE_40));
+            put(RuleAttributeValueIndexTerm.TERM,
+                    new RuleAttributeNameAnalyzer(LUCENE_40));
+
             put( ProjectRootPathIndexTerm.TERM,
                  new FilenameAnalyzer( LUCENE_40 ) );
+
+            put(PackageNameIndexTerm.TERM,
+                    new FullyQualifiedClassNameAnalyzer(LUCENE_40));
+            put(FieldTypeIndexTerm.TERM,
+                    new FullyQualifiedClassNameAnalyzer(LUCENE_40));
+            put(JavaTypeIndexTerm.TERM,
+                    new FullyQualifiedClassNameAnalyzer(LUCENE_40));
+            put(JavaTypeInterfaceIndexTerm.TERM,
+                    new FullyQualifiedClassNameAnalyzer(LUCENE_40));
+            put(JavaTypeNameIndexTerm.TERM,
+                    new FullyQualifiedClassNameAnalyzer(LUCENE_40));
+            put(JavaTypeParentIndexTerm.TERM,
+                    new FullyQualifiedClassNameAnalyzer(LUCENE_40));
+            put(TypeIndexTerm.TERM,
+                    new FullyQualifiedClassNameAnalyzer(LUCENE_40));
         }};
     }
 

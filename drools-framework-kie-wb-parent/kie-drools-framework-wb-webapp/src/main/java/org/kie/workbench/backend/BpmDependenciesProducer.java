@@ -1,27 +1,39 @@
-package org.kie.workbench.backend;
+/*
+ * Copyright 2015 JBoss Inc
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+*/
 
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceUnit;
+package org.kie.workbench.backend;
 
 import org.jbpm.runtime.manager.impl.jpa.EntityManagerFactoryManager;
 import org.jbpm.services.cdi.Selectable;
 import org.jbpm.services.cdi.producer.UserGroupInfoProducer;
-import org.jbpm.services.task.audit.JPATaskLifeCycleEventListener;
-import org.jbpm.services.task.lifecycle.listeners.BAMTaskEventListener;
-
-import org.kie.api.task.TaskLifeCycleEventListener;
 import org.kie.internal.task.api.UserInfo;
+
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 
 public class BpmDependenciesProducer {
 
     @PersistenceUnit(unitName = "org.jbpm.domain")
     private EntityManagerFactory emf;
+    @Inject
+    @Selectable
+    private UserGroupInfoProducer userGroupInfoProducer;
 
     @Produces
     public EntityManagerFactory getEntityManagerFactory() {
@@ -36,23 +48,6 @@ public class BpmDependenciesProducer {
         }
         return this.emf;
     }
-
-    @Inject
-    @Selectable
-    private UserGroupInfoProducer userGroupInfoProducer;
-
-    @Produces
-    @Named("BAM")
-    public TaskLifeCycleEventListener produceBAMListener() {
-        return new BAMTaskEventListener(true);
-    }
-
-    @Produces
-    @Named("Logs")
-    public TaskLifeCycleEventListener produceTaskAuditListener() {
-        return new JPATaskLifeCycleEventListener(true);
-    }
-
 
     @Produces
     public org.kie.api.task.UserGroupCallback produceSelectedUserGroupCalback() {

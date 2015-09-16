@@ -15,11 +15,8 @@
  */
 package org.kie.workbench.client.perspectives;
 
-import java.util.List;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-
 import org.guvnor.inbox.client.InboxPresenter;
+import org.kie.workbench.client.docks.AuthoringWorkbenchDocks;
 import org.kie.workbench.client.resources.i18n.AppConstants;
 import org.kie.workbench.common.screens.projecteditor.client.menu.ProjectMenu;
 import org.kie.workbench.common.widgets.client.handlers.NewResourcePresenter;
@@ -30,19 +27,17 @@ import org.uberfire.client.annotations.WorkbenchMenu;
 import org.uberfire.client.annotations.WorkbenchPerspective;
 import org.uberfire.client.mvp.PlaceManager;
 import org.uberfire.client.workbench.panels.impl.MultiListWorkbenchPanelPresenter;
-import org.uberfire.client.workbench.panels.impl.SimpleWorkbenchPanelPresenter;
 import org.uberfire.mvp.Command;
 import org.uberfire.mvp.PlaceRequest;
 import org.uberfire.mvp.impl.DefaultPlaceRequest;
-import org.uberfire.workbench.model.CompassPosition;
-import org.uberfire.workbench.model.PanelDefinition;
 import org.uberfire.workbench.model.PerspectiveDefinition;
-import org.uberfire.workbench.model.impl.PanelDefinitionImpl;
-import org.uberfire.workbench.model.impl.PartDefinitionImpl;
 import org.uberfire.workbench.model.impl.PerspectiveDefinitionImpl;
 import org.uberfire.workbench.model.menu.MenuFactory;
-import org.uberfire.workbench.model.menu.MenuItem;
 import org.uberfire.workbench.model.menu.Menus;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 @ApplicationScoped
 @WorkbenchPerspective(identifier = "AuthoringPerspective", isTransient = false)
@@ -65,16 +60,18 @@ public class DroolsAuthoringPerspective {
     @Inject
     private RepositoryMenu repositoryMenu;
 
+    @Inject
+    private AuthoringWorkbenchDocks docks;
+
+    @PostConstruct
+    public void setup() {
+        docks.setup("AuthoringPerspective", new DefaultPlaceRequest("org.kie.guvnor.explorer"));
+    }
+
     @Perspective
     public PerspectiveDefinition getPerspective() {
         PerspectiveDefinitionImpl perspective = new PerspectiveDefinitionImpl( MultiListWorkbenchPanelPresenter.class.getName() );
-        perspective.setName( constants.Project_Authoring() );
-
-        final PanelDefinition west = new PanelDefinitionImpl( SimpleWorkbenchPanelPresenter.class.getName() );
-        west.setWidth( 400 );
-        west.addPart( new PartDefinitionImpl( new DefaultPlaceRequest( "org.kie.guvnor.explorer" ) ) );
-
-        perspective.getRoot().insertChild( CompassPosition.WEST, west );
+        perspective.setName(constants.Project_Authoring());
 
         return perspective;
     }

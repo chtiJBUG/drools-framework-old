@@ -1,12 +1,19 @@
-package org.kie.workbench.backend;
+/*
+ * Copyright 2015 JBoss Inc
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+*/
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import javax.inject.Named;
+package org.kie.workbench.backend;
 
 import org.guvnor.common.services.backend.metadata.attribute.OtherMetaView;
 import org.guvnor.messageconsole.backend.DefaultIndexEngineObserver;
@@ -27,6 +34,13 @@ import org.uberfire.io.impl.cluster.IOServiceClusterImpl;
 import org.uberfire.java.nio.base.version.VersionAttributeView;
 import org.uberfire.security.authz.AuthorizationManager;
 import org.uberfire.security.impl.authz.RuntimeAuthorizationManager;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * This class should contain all ApplicationScoped producers
@@ -85,12 +99,6 @@ public class ApplicationScopedProducer {
 
         this.ioSearchService = new IOSearchIndex( config.getSearchIndex(),
                                                   ioService );
-    }
-
-    @PreDestroy
-    private void cleanup() {
-        config.dispose();
-        ioService.dispose();
     }
 
     @Produces

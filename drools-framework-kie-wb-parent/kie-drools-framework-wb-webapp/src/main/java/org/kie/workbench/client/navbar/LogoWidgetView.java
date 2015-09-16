@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 JBoss Inc
+ * Copyright 2015 JBoss Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,37 +16,49 @@
 
 package org.kie.workbench.client.navbar;
 
+import com.github.gwtbootstrap.client.ui.Label;
+import com.google.gwt.http.client.*;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import org.kie.workbench.client.resources.i18n.AppConstants;
+
 import javax.annotation.PostConstruct;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.RequiresResize;
-
 /**
- * A stand-alone (i.e. devoid of Workbench dependencies) View
+ * The Logo banner for the application
  */
 public class LogoWidgetView
         extends Composite
-        implements RequiresResize,
-                   LogoWidgetPresenter.View {
+        implements LogoWidgetPresenter.View {
 
-    interface ViewBinder
-            extends
-            UiBinder<Panel, LogoWidgetView> {
-
-    }
-
-    private static ViewBinder uiBinder = GWT.create( ViewBinder.class );
+    private SimplePanel container = new SimplePanel();
 
     @PostConstruct
     public void init() {
-        initWidget( uiBinder.createAndBindUi( this ) );
-    }
+        final RequestBuilder rb = new RequestBuilder(RequestBuilder.GET,
+                "banner/banner.html");
+        rb.setCallback(new RequestCallback() {
+            @Override
+            public void onResponseReceived(final Request request,
+                                           final Response response) {
+                final HTMLPanel html = new HTMLPanel(response.getText());
+                container.setWidget(html);
+            }
 
-    @Override
-    public void onResize() {
+            @Override
+            public void onError(final Request request,
+                                final Throwable exception) {
+                container.setWidget(new Label(AppConstants.INSTANCE.logoBannerError()));
+            }
+        });
+        try {
+            final Request r = rb.send();
+        } catch (RequestException re) {
+            container.setWidget(new Label(AppConstants.INSTANCE.logoBannerError()));
+        }
+
+        initWidget(container);
     }
 
 }

@@ -15,18 +15,10 @@
  */
 package org.kie.workbench.client.perspectives;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
-
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.PopupPanel;
 import org.guvnor.m2repo.client.event.M2RepoRefreshEvent;
 import org.guvnor.m2repo.client.event.M2RepoSearchEvent;
-import org.guvnor.m2repo.client.upload.UploadForm;
+import org.guvnor.m2repo.client.upload.UploadFormPresenter;
 import org.jboss.errai.ioc.client.container.SyncBeanManager;
 import org.kie.workbench.client.resources.i18n.AppConstants;
 import org.kie.workbench.common.widgets.client.search.ContextualSearch;
@@ -41,6 +33,11 @@ import org.uberfire.mvp.Command;
 import org.uberfire.workbench.model.menu.MenuFactory;
 import org.uberfire.workbench.model.menu.Menus;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
+
 /**
  * A Perspective to show M2_REPO related screen
  */
@@ -48,26 +45,20 @@ import org.uberfire.workbench.model.menu.Menus;
 @WorkbenchPerspective(identifier = "org.guvnor.m2repo.client.perspectives.GuvnorM2RepoPerspective", isDefault = false)
 public class M2RepoPerspective extends FlowPanel {
 
-    private AppConstants constants = AppConstants.INSTANCE;
-
-    @Inject
-    private ContextualSearch contextualSearch;
-
-    @Inject
-    private Event<M2RepoSearchEvent> searchEvents;
-
-    @Inject
-    private Event<M2RepoRefreshEvent> refreshEvents;
-
-    @Inject
-    private PlaceManager placeManager;
-
-    @Inject
-    private SyncBeanManager iocManager;
-
     @Inject
     @WorkbenchPanel(parts = "M2RepoEditor")
     FlowPanel m2RepoEditor;
+    private AppConstants constants = AppConstants.INSTANCE;
+    @Inject
+    private ContextualSearch contextualSearch;
+    @Inject
+    private Event<M2RepoSearchEvent> searchEvents;
+    @Inject
+    private Event<M2RepoRefreshEvent> refreshEvents;
+    @Inject
+    private PlaceManager placeManager;
+    @Inject
+    private SyncBeanManager iocManager;
 
     @PostConstruct
     private void init() {
@@ -81,17 +72,8 @@ public class M2RepoPerspective extends FlowPanel {
                 .respondsWith( new Command() {
                     @Override
                     public void execute() {
-                        final UploadForm uploadForm = iocManager.lookupBean( UploadForm.class ).getInstance();
-                        //When pop-up is closed destroy bean to avoid memory leak
-                        uploadForm.addCloseHandler( new CloseHandler<PopupPanel>() {
-
-                            @Override
-                            public void onClose( CloseEvent<PopupPanel> event ) {
-                                iocManager.destroyBean( uploadForm );
-                            }
-
-                        } );
-                        uploadForm.show();
+                        UploadFormPresenter uploadFormPresenter = iocManager.lookupBean(UploadFormPresenter.class).getInstance();
+                        uploadFormPresenter.showView();
                     }
                 } )
                 .endMenu()

@@ -17,10 +17,7 @@ package org.chtijbug.drools.entity;
 
 import java.io.Serializable;
 
-/**
- * @author Bertrand Gressier
- * @date 14 déc. 2011
- */
+
 public class DroolsRuleObject implements Serializable {
 
     /**

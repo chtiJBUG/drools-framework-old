@@ -3,7 +3,7 @@
   <groupId>org.chtijbug.drools</groupId>
   <artifactId>drools-framework-parent</artifactId>
   <name>drools framework parent</name>
-  <version>1.5.2</version>
+  <version>1.5.3-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <parent>
@@ -45,7 +45,7 @@
     <connection>scm:git:git@github.com:chtiJBUG/drools-framework.git</connection>
     <url>scm:git:git@github.com:chtiJBUG/drools-framework.git</url>
     <developerConnection>scm:git:git@github.com:chtiJBUG/drools-framework.git</developerConnection>
-    <tag>drools-framework-parent-1.5.2</tag>
+    <tag>drools-framework-parent-1.5.0</tag>
   </scm>
   <issueManagement>
     <system>Jira</system>

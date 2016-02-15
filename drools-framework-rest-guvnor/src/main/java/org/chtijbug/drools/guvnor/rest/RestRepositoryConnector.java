@@ -29,13 +29,7 @@ import java.util.Map;
 public interface RestRepositoryConnector {
 
 
-    /**
-     * This method retrieves the decision table from Guvnor assets repository according to the name argument.
-     *
-     * @param dtName {@link String} the decision table name into the Guvnor Repository
-     * @return {@link GuidedDecisionTable52} the
-     * @throws GuvnorConnexionFailedException - if the connexion to the Guvnor repository failed.
-     */
+
     DecisionTable getGuidedDecisionTable(String dtName) throws GuvnorConnexionFailedException, ChtijbugDroolsRestException;
 
     DecisionTable getGuidedDecisionTable(String packageName, String dtName) throws GuvnorConnexionFailedException, ChtijbugDroolsRestException;
@@ -48,37 +42,23 @@ public interface RestRepositoryConnector {
 
     InputStream getPojoModel(String packageName) throws ChtijbugDroolsRestException;
 
-    /**
-     * Loads the table from a template rule
-     *
-     * @return Key : the column name.
-     */
+
     Map<String, List<String>> getTemplateTable(String templateRuleName) throws ChtijbugDroolsRestException;
 
     Map<String, List<String>> getTemplateTable(String packageName, String templateRuleName) throws ChtijbugDroolsRestException;
 
-    /**
-     * Overrides the template rule table
-     * Map size must match attended columns from the template table.
-     * Every Map entry must have the same size (number of rows).
-     */
+
     void putTemplateTable(String templateRuleName, Map<String, List<String>> table) throws ChtijbugDroolsRestException;
 
     void putTemplateTable(String packageName, String templateRuleName, Map<String, List<String>> table) throws ChtijbugDroolsRestException;
 
 
-    /**
-     * This method returns all business Assets from the Guvnor Repository
-     */
+
     List<Asset> getAllBusinessAssets() throws ChtijbugDroolsRestException;
 
     List<Asset> getAllBusinessAssets(String packageName) throws ChtijbugDroolsRestException;
 
-    /**
-     * returns all Package in a Guvnor Repository
-     *
-     * @return
-     */
+
     List<Asset> getAllPackagesInGuvnorRepo();
 
 

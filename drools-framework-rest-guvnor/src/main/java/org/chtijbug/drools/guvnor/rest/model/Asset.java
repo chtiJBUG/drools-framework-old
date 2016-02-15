@@ -18,18 +18,7 @@ package org.chtijbug.drools.guvnor.rest.model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * _____________________________________________
- * This class is located in the following :<br/>
- * <ul>
- * <li>Project : rules-management-support</li>
- * <li>Package : com.axonactive.decision</li>
- * </ul>
- * Created by : Samuel
- * Creation date : 04/03/13
- * _____________________________________________
- * TODO Add specific JAVADOC for
- */
+
 public class Asset {
     /**
      * Busines Package name where this asset is located

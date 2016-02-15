@@ -37,16 +37,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Created with IntelliJ IDEA.
- * User: smangot
- * Date: 20/12/12
- * Time: 15:28
- *
- * @goal install-file
- * @phase clean
- *
- */
+
 public class GuvnorPojoModelInstaller extends AbstractMojo {
     /** class Logger */
     private static Logger logger = LoggerFactory.getLogger(GuvnorPojoModelInstaller.class);
@@ -99,10 +90,7 @@ public class GuvnorPojoModelInstaller extends AbstractMojo {
     public GuvnorPojoModelInstaller() {
     }
 
-    /**
-     * @throws MojoExecutionException
-     * @throws MojoFailureException
-     */
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         logger.debug(" >> execute");

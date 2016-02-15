@@ -24,10 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 
-/**
- * @author Bertrand Gressier
- * @date 27 déc. 2011
- */
+
 public class DroolsFactObjectFactory {
 
     private static Logger logger = LoggerFactory.getLogger(DroolsFactObjectFactory.class);

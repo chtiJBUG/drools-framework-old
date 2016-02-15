@@ -25,32 +25,15 @@ import org.drools.runtime.process.WorkItemHandler;
 import java.util.Collection;
 import java.util.Map;
 
-/**
- * @author nheron
- */
+
 public interface RuleBaseSession {
-    /**
-     * This method injects the newObject parameter into this session.
-     * No deep insertion(using relfection) is done
-     *
-     * @param newObject
-     */
+
     public void insertObject(Object newObject);
 
-    /**
-     * This method injects the newObject parameter into this session.
-     * No deep insertion(using relfection) is done
-     *
-     * @param newObject
-     */
+
     public void insertByReflection(Object newObject) throws DroolsChtijbugException;
 
-    /**
-     * This method helps for introducing a global object into the RuleBaseSession
-     *
-     * @param identifier
-     * @param value
-     */
+
     public void setGlobal(String identifier, Object value);
 
     public void updateObject(Object updatedObject);

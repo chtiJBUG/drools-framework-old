@@ -27,9 +27,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author nheron
- */
+
 public class RuleBaseBuilder {
 
     /**
@@ -37,15 +35,7 @@ public class RuleBaseBuilder {
      */
     private static Logger logger = LoggerFactory.getLogger(RuleBaseBuilder.class);
 
-    /**
-     * @param guvnor_url
-     * @param guvnor_appName
-     * @param guvnor_packageName
-     * @param guvnor_packageVersion
-     * @param guvnor_username
-     * @param guvnor_password
-     * @return
-     */
+
     public static RuleBasePackage createGuvnorRuleBasePackage(String guvnor_url, String guvnor_appName, String guvnor_packageName, String guvnor_packageVersion,
             String guvnor_username, String guvnor_password) throws DroolsChtijbugException {
         return RuleBaseBuilder.createGuvnorRuleBasePackageWithListener(null, guvnor_url, guvnor_appName, guvnor_packageName, guvnor_packageVersion,

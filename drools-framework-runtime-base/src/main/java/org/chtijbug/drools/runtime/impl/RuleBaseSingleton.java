@@ -211,11 +211,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
     }
 
-    /**
-     * This method creates and registers MBean Object into the MBeanServer.
-     *
-     * @throws DroolsChtijbugException
-     */
+
     private void initMBeans() throws DroolsChtijbugException {
         //____ Get the MBeanServer from the platform
         MBeanServer server = ManagementFactory.getPlatformMBeanServer();
@@ -237,18 +233,12 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
     }
 
-    /**
-     * @return The ObjectName related to the Rulebase Object inside the MBeanServer
-     * @throws MalformedObjectNameException
-     */
+
     protected ObjectName getRuleBaseObjectName() throws MalformedObjectNameException {
         return new ObjectName(RULE_BASE_OBJECT_NAME + this.ruleBaseID);
     }
 
-    /**
-     * @return The ObjectName related to the RuleSession Object inside the MBeanServer
-     * @throws MalformedObjectNameException
-     */
+
     protected ObjectName getRuleSessionObjectName() throws MalformedObjectNameException {
         return new ObjectName(RULE_SESSION_OBJECT_NAME + this.ruleBaseID);
     }

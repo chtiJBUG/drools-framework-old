@@ -22,10 +22,6 @@ import org.drools.io.ResourceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author Bertrand Gressier
- * @date 9 déc. 2011
- */
 public class GuvnorDroolsResource implements DroolsResource {
     /**
      * Constant used for building the web resource URL

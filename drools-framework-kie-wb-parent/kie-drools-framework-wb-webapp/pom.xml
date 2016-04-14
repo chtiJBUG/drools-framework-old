@@ -41,16 +41,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.kie</groupId>
-            <artifactId>kie-wb-home-page-community</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.kie.workbench.screens</groupId>
-            <artifactId>kie-wb-common-home-client</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.jboss.spec.javax.annotation</groupId>
             <artifactId>jboss-annotations-api_1.1_spec</artifactId>
             <version>1.0.1.Final</version>
@@ -141,6 +131,12 @@
             <artifactId>javax.inject</artifactId>
             <version>1</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.gwtbootstrap</groupId>
+            <artifactId>gwt-bootstrap</artifactId>
+            <version>2.2.1.0</version>
+            <scope>provided</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
@@ -199,6 +195,19 @@
                     <artifactId>geronimo-activation_1.1_spec</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <!-- Needed by new Exec Server UI -->
+        <dependency>
+            <groupId>org.kie.server</groupId>
+            <artifactId>kie-server-api</artifactId>
+            <version>${kie.wb.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.kie.server</groupId>
+            <artifactId>kie-server-controller-api</artifactId>
+            <version>${kie.wb.version}</version>
         </dependency>
 
         <dependency>
@@ -543,12 +552,6 @@
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-contributors-backend</artifactId>
             <version>${drools.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.dashbuilder</groupId>
-                    <artifactId>dashbuilder-dataset-elasticsearch</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
@@ -583,17 +586,8 @@
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-data-modeller-client</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.kie.workbench.screens</groupId>
-            <artifactId>kie-wb-common-home-api</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.kie.workbench.screens</groupId>
-            <artifactId>kie-wb-common-home-client</artifactId>
-            <version>${drools.version}</version>
+            <version>${kie.wb.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Drools Workbench Screens -->
@@ -738,30 +732,37 @@
             <version>${drools.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jboss.errai</groupId>
-            <artifactId>errai-security-picketlink</artifactId>
-            <version>${version.org.jboss.errai}</version>
-        </dependency>
-        <!--dependency>
-            <groupId>org.picketlink</groupId>
-            <artifactId>picketlink-api</artifactId>
-            <version>2.6.0.Final</version>
+            <groupId>org.optaplanner</groupId>
+            <artifactId>optaplanner-wb-domain-editor-api</artifactId>
+            <version>${kie.wb.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.picketlink</groupId>
-            <artifactId>picketlink-common</artifactId>
-            <version>2.6.0.Final</version>
+            <groupId>org.optaplanner</groupId>
+            <artifactId>optaplanner-wb-domain-editor-client</artifactId>
+            <version>${kie.wb.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.picketlink</groupId>
-            <artifactId>picketlink-idm-api</artifactId>
-            <version>2.6.0.Final</version>
+            <groupId>org.optaplanner</groupId>
+            <artifactId>optaplanner-wb-domain-editor-backend</artifactId>
+            <version>${kie.wb.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.picketlink</groupId>
-            <artifactId>picketlink-idm-impl</artifactId>
-            <version>2.6.0.Final</version>
-        </dependency-->
+            <groupId>org.optaplanner</groupId>
+            <artifactId>optaplanner-wb-solver-editor-api</artifactId>
+            <version>${kie.wb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.optaplanner</groupId>
+            <artifactId>optaplanner-wb-solver-editor-client</artifactId>
+            <version>${kie.wb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.optaplanner</groupId>
+            <artifactId>optaplanner-wb-solver-editor-backend</artifactId>
+            <version>${kie.wb.version}</version>
+        </dependency>
+
         <!-- jBPM Designer -->
         <dependency>
             <groupId>org.jbpm</groupId>
@@ -889,7 +890,7 @@
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-all</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.jboss.errai</groupId>
@@ -900,32 +901,32 @@
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-api</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-commons</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-metadata-api</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-backend-api</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-client-api</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-io</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
             <exclusions>
                 <exclusion>
                     <groupId>log4j</groupId>
@@ -936,101 +937,101 @@
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-nio2-model</artifactId>
-            <version>0.7.0.CR3</version>
+                <version>${version.org.uberfire}</version>
         </dependency>
 
         <!-- UberFire Security (Extension) -->
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-security-api</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-security-client</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-servlet-security</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
 
         <!-- UberFire Plugins Extension -->
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-runtime-plugins-backend</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-runtime-plugins-client</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-commons-editor-api</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-runtime-plugins-api</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-widgets-properties-editor-api</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-widgets-service-api</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
 
         <!-- UberFire Apps -->
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-apps-client</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-apps-backend</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
 
         <!-- Kie UF Extensions -->
         <dependency>
-            <groupId>org.kie.remote</groupId>
-            <artifactId>kie-remote-services</artifactId>
-            <version>${drools.version}</version>
+            <groupId>org.kie.uberfire</groupId>
+            <artifactId>kie-uberfire-social-activities-api</artifactId>
+            <version>${kie.wb.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.uberfire</groupId>
             <artifactId>kie-uberfire-social-activities-client</artifactId>
-            <version>${drools.version}</version>
+            <version>${kie.wb.version}</version>
         </dependency>
 
         <!-- Layout Editor API -->
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-layout-editor-api</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
 
         <!-- Search -->
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-metadata-backend-lucene</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-metadata-commons-io</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
@@ -1042,87 +1043,87 @@
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-workbench-processors</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-widgets-commons</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-widgets-service-backend</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-workbench-client</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-workbench-client-backend</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-workbench-client-views-patternfly</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
 
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-backend-server</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-client</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-client-all</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-js</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
 
         <!-- Uberfire Docks extension -->
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-simple-docks-client</artifactId>
-            <version>0.7.0.CR3</version>
+            <version>${version.org.uberfire}</version>
         </dependency>
 
         <!-- Errai -->
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-common</artifactId>
-            <version>3.2.0.Final</version>
+            <version>3.2.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-ioc</artifactId>
-            <version>3.2.0.Final</version>
+            <version>3.2.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-codegen-gwt</artifactId>
-            <version>3.2.0.Final</version>
+            <version>3.2.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-security-server</artifactId>
-            <version>3.2.0.Final</version>
+            <version>3.2.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-security-client</artifactId>
-            <version>3.2.0.Final</version>
+            <version>3.2.3.Final</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.jboss.spec.javax.interceptor</groupId>
@@ -1130,28 +1131,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- Errai Core -->
-        <dependency>
-            <groupId>org.jboss.errai</groupId>
-            <artifactId>errai-bus</artifactId>
-            <version>3.2.0.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.errai</groupId>
-            <artifactId>errai-ioc</artifactId>
-            <version>3.2.0.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.errai</groupId>
-            <artifactId>errai-codegen-gwt</artifactId>
-            <version>3.2.0.Final</version>
-        </dependency>
 
         <!-- Errai UI Core -->
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-ui</artifactId>
-            <version>3.2.0.Final</version>
+            <version>3.2.3.Final</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -1166,37 +1151,37 @@
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-data-binding</artifactId>
-            <version>3.2.0.Final</version>
+            <version>3.2.3.Final</version>
         </dependency>
 
         <!-- Errai AS -->
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-jboss-as-support</artifactId>
-            <version>3.2.0.Final</version>
+            <version>3.2.3.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-cdi-jboss</artifactId>
-            <version>3.2.0.Final</version>
+            <version>3.2.3.Final</version>
         </dependency>
 
         <!-- CDI Integration Modules -->
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-cdi-client</artifactId>
-            <version>3.2.0.Final</version>
+            <version>3.2.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-javax-enterprise</artifactId>
-            <version>3.2.0.Final</version>
+            <version>3.2.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-weld-integration</artifactId>
-            <version>3.2.0.Final</version>
+            <version>3.2.3.Final</version>
         </dependency>
 
         <!-- GWT and GWT Extensions -->
@@ -1211,6 +1196,19 @@
             <version>2.7.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.gwtbootstrap3</groupId>
+            <artifactId>gwtbootstrap3</artifactId>
+            <version>0.9.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.gwtbootstrap3</groupId>
+            <artifactId>gwtbootstrap3-extras</artifactId>
+            <version>0.9.1</version>
+            <scope>provided</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.owasp.encoder</groupId>
@@ -1244,7 +1242,11 @@
         </dependency>
 
         <!-- Form Modeler dependencies -->
-
+        <dependency>
+            <groupId>org.jbpm</groupId>
+            <artifactId>jbpm-form-modeler-renderer-api</artifactId>
+            <version>${kie.wb.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-form-modeler-service-core</artifactId>
@@ -1255,14 +1257,24 @@
             <artifactId>jbpm-form-modeler-bpmn-form-builder</artifactId>
             <version>${drools.version}</version>
         </dependency>
-
-
-        <!-- jBPM Console dependencies -->
         <dependency>
             <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-rest</artifactId>
-            <version>${drools.version}</version>
+            <artifactId>jbpm-form-modeler-api</artifactId>
+            <version>${kie.wb.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jbpm</groupId>
+            <artifactId>jbpm-form-modeler-renderer-client</artifactId>
+            <version>${kie.wb.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jbpm</groupId>
+            <artifactId>jbpm-form-modeler-renderer-backend</artifactId>
+            <version>${kie.wb.version}</version>
+        </dependency>
+
+        <!-- jBPM Console dependencies -->
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-console-ng-human-tasks-forms-api</artifactId>
@@ -1332,180 +1344,9 @@
         <!-- org.jbpm -->
         <dependency>
             <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-business-domain-api</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-business-domain-client</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-executor-service-api</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-executor-service-client</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-executor-service-backend</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-rest</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-human-tasks-api</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-workbench-integration-api</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-workbench-integration-client</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-workbench-integration-backend</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-form-modeler-api</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-generic-api</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-process-runtime-client</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <!-- form-modeler dependencies -->
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-form-modeler-common</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-form-modeler-request-dispatcher</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-form-modeler-ui</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-form-modeler-form-editor</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-form-modeler-static-resources</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-form-modeler-renderer-api</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-form-modeler-renderer-client</artifactId>
-            <version>${drools.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-form-modeler-renderer-backend</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-form-modeler-editor-api</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-form-modeler-editor-client</artifactId>
-            <version>${drools.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-form-modeler-editor-backend</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-form-modeler-form-provider</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-form-modeler-data-modeler</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-form-modeler-document</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-human-tasks-forms-modeler-client</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-human-tasks-forms-modeler-api</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-human-tasks-forms-modeler-backend</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jbpm</groupId>
             <artifactId>jbpm-console-ng-data-filters-client</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-dashboard-client</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-dashboard-api</artifactId>
-            <version>${drools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-console-ng-dashboard-backend</artifactId>
-            <version>${drools.version}</version>
+            <version>${kie.wb.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- jBPM dependencies -->
@@ -1604,6 +1445,48 @@
             <scope>runtime</scope>
         </dependency>
 
+
+        <!-- Security Management. -->
+        <dependency>
+            <groupId>org.uberfire</groupId>
+            <artifactId>uberfire-security-management-api</artifactId>
+            <version>${version.org.uberfire}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.uberfire</groupId>
+            <artifactId>uberfire-security-management-backend</artifactId>
+            <version>${version.org.uberfire}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.uberfire</groupId>
+            <artifactId>uberfire-security-management-client</artifactId>
+            <version>${version.org.uberfire}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.uberfire</groupId>
+            <artifactId>uberfire-widgets-security-management</artifactId>
+            <version>${version.org.uberfire}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.uberfire</groupId>
+            <artifactId>uberfire-security-management-client-wb</artifactId>
+            <version>${version.org.uberfire}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- UF Security management provider for Wildfly / EAP. -->
+        <dependency>
+            <groupId>org.uberfire</groupId>
+            <artifactId>uberfire-security-management-wildfly</artifactId>
+            <version>${version.org.uberfire}</version>
+        </dependency>
+
         <!-- test -->
         <dependency>
             <groupId>org.reflections</groupId>
@@ -1623,6 +1506,13 @@
     <build>
         <finalName>${project.artifactId}</finalName>
         <outputDirectory>src/main/webapp/WEB-INF/classes</outputDirectory>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -1639,68 +1529,63 @@
                         <localWorkers>${gwt.compiler.localWorkers}</localWorkers>
                         <extraJvmArgs>${gwt.memory.settings} -XX:CompileThreshold=7000 -Derrai.jboss.home=${errai.jboss.home}
                             -Derrai.marshalling.server.classOutput=${project.build.outputDirectory} -Dorg.kie.demo=true
-                            -Dorg.kie.clean.onstartup=true -Dorg.uberfire.nio.git.ssh.enabled=false -Djava.util.prefs.syncInterval=2000000
+                            -Dorg.kie.clean.onstartup=true -Dorg.jbpm.designer.perspective=ruleflow -Djava.util.prefs.syncInterval=2000000
+                            -Dorg.uberfire.async.executor.safemode=true
                         </extraJvmArgs>
                         <draftCompile>true</draftCompile>
-                        <module>org.kie.workbench.FastCompiledKIEWebapp</module>
+                        <module>org.kie.workbench.drools.FastCompiledKIEDroolsWebapp</module>
                         <logLevel>INFO</logLevel>
                         <noServer>false</noServer>
                         <server>org.jboss.errai.cdi.server.gwt.EmbeddedWildFlyLauncher</server>
                         <disableCastChecking>true</disableCastChecking>
-                        <runTarget>kie-wb.html</runTarget>
+                        <runTarget>kie-drools-wb.html</runTarget>
                         <hostedWebapp>src/main/webapp</hostedWebapp>
                         <!-- drools-compiler has dependency on org.eclipse.jdt.core.compiler:ecj:jar:3.5.1:compile, see http://code.google.com/p/google-web-toolkit/issues/detail?id=4479 -->
                         <gwtSdkFirstInClasspath>true</gwtSdkFirstInClasspath>
                         <compileSourcesArtifacts>
-                            <!-- jBPM Console -->
+                            <!-- Kie Server needed by Exec Server UI -->
+                            <compileSourcesArtifact>org.kie:kie-api</compileSourcesArtifact>
+                             <compileSourcesArtifact>org.kie.server:kie-server-api</compileSourcesArtifact>
+
+
+                            <compileSourcesArtifact>org.kie.server:kie-server-controller-api</compileSourcesArtifact>
+
+                            <!-- jBPM Console NG -->
+                            <compileSourcesArtifact>org.jbpm:jbpm-console-ng-generic-api</compileSourcesArtifact>
+                            <compileSourcesArtifact>org.jbpm:jbpm-console-ng-generic-client</compileSourcesArtifact>
                             <compileSourcesArtifact>org.jbpm:jbpm-console-ng-human-tasks-api</compileSourcesArtifact>
                             <compileSourcesArtifact>org.jbpm:jbpm-console-ng-human-tasks-client</compileSourcesArtifact>
+                            <compileSourcesArtifact>
+                                org.jbpm:jbpm-console-ng-business-domain-api</compileSourcesArtifact>t>
+                            <compileSourcesArtifact>org.jbpm:jbpm-console-ng-generic-client</compileSourcesArtifact>
                             <compileSourcesArtifact>org.jbpm:jbpm-console-ng-human-tasks-forms-api
                             </compileSourcesArtifact>
                             <compileSourcesArtifact>org.jbpm:jbpm-console-ng-human-tasks-forms-client
                             </compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-console-ng-human-tasks-forms-modeler-api
-                            </compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-console-ng-human-tasks-forms-modeler-client
-                            </compileSourcesArtifact>
                             <compileSourcesArtifact>org.jbpm:jbpm-console-ng-process-runtime-api
-                            </compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-console-ng-process-runtime-client
                             </compileSourcesArtifact>
                             <compileSourcesArtifact>org.jbpm:jbpm-console-ng-process-runtime-forms-client
                             </compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-console-ng-business-domain-api
-                            </compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-console-ng-business-domain-client
-                            </compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-console-ng-generic-api</compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-console-ng-generic-client</compileSourcesArtifact>
                             <compileSourcesArtifact>org.jbpm:jbpm-console-ng-generic-forms-api</compileSourcesArtifact>
                             <compileSourcesArtifact>org.jbpm:jbpm-console-ng-generic-forms-client
                             </compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-console-ng-workbench-integration-api
-                            </compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-console-ng-workbench-integration-client
-                            </compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-console-ng-executor-service-api
-                            </compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-console-ng-executor-service-client
-                            </compileSourcesArtifact>
-
-                            <!-- jBPM Designer -->
-                            <compileSourcesArtifact>org.jbpm:jbpm-designer-api</compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-designer-client</compileSourcesArtifact>
-
-                            <!-- jBPM Dashboard integration-->
-                            <compileSourcesArtifact>org.jbpm:jbpm-console-ng-dashboard-api</compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-console-ng-dashboard-client</compileSourcesArtifact>
                             <compileSourcesArtifact>org.jbpm:jbpm-console-ng-data-filters-client
                             </compileSourcesArtifact>
 
+
+                            <compileSourcesArtifact>org.jbpm:jbpm-form-modeler-api</compileSourcesArtifact>
+                            <compileSourcesArtifact>org.jbpm:jbpm-form-modeler-renderer-api</compileSourcesArtifact>
+                            <compileSourcesArtifact>org.jbpm:jbpm-form-modeler-renderer-client</compileSourcesArtifact>
+
+                            <compileSourcesArtifact>org.jbpm:jbpm-designer-api</compileSourcesArtifact>
+                            <compileSourcesArtifact>org.jbpm:jbpm-designer-client</compileSourcesArtifact>
+
                             <!-- Dashbuilder -->
+                            <compileSourcesArtifact>org.dashbuilder:dashbuilder-json</compileSourcesArtifact>
                             <compileSourcesArtifact>org.dashbuilder:dashbuilder-widgets</compileSourcesArtifact>
                             <compileSourcesArtifact>org.dashbuilder:dashbuilder-validations</compileSourcesArtifact>
                             <compileSourcesArtifact>org.dashbuilder:dashbuilder-common-client</compileSourcesArtifact>
+                            <compileSourcesArtifact>org.dashbuilder:dashbuilder-services-api</compileSourcesArtifact>
                             <compileSourcesArtifact>org.dashbuilder:dashbuilder-dataset-api</compileSourcesArtifact>
                             <compileSourcesArtifact>org.dashbuilder:dashbuilder-dataset-shared</compileSourcesArtifact>
                             <compileSourcesArtifact>org.dashbuilder:dashbuilder-dataset-client</compileSourcesArtifact>
@@ -1715,13 +1600,6 @@
                             <compileSourcesArtifact>org.dashbuilder:dashbuilder-renderer-default
                             </compileSourcesArtifact>
                             <compileSourcesArtifact>org.dashbuilder:dashbuilder-renderer-google</compileSourcesArtifact>
-
-                            <!-- Form Modeler -->
-                            <compileSourcesArtifact>org.jbpm:jbpm-form-modeler-api</compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-form-modeler-editor-api</compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-form-modeler-editor-client</compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-form-modeler-renderer-api</compileSourcesArtifact>
-                            <compileSourcesArtifact>org.jbpm:jbpm-form-modeler-renderer-client</compileSourcesArtifact>
 
                             <!-- Guvnor -->
                             <compileSourcesArtifact>org.guvnor:guvnor-asset-mgmt-api</compileSourcesArtifact>
@@ -1855,6 +1733,16 @@
                             <compileSourcesArtifact>org.drools:drools-wb-test-scenario-editor-client
                             </compileSourcesArtifact>
 
+                            <!-- OptaPlanner WB -->
+                            <compileSourcesArtifact>org.optaplanner:optaplanner-wb-domain-editor-api
+                            </compileSourcesArtifact>
+                            <compileSourcesArtifact>org.optaplanner:optaplanner-wb-domain-editor-client
+                            </compileSourcesArtifact>
+                            <compileSourcesArtifact>org.optaplanner:optaplanner-wb-solver-editor-api
+                            </compileSourcesArtifact>
+                            <compileSourcesArtifact>org.optaplanner:optaplanner-wb-solver-editor-client
+                            </compileSourcesArtifact>
+
                             <!-- UberFire -->
                             <compileSourcesArtifact>org.uberfire:uberfire-commons</compileSourcesArtifact>
                             <compileSourcesArtifact>org.uberfire:uberfire-nio2-model</compileSourcesArtifact>
@@ -1867,7 +1755,7 @@
                             <compileSourcesArtifact>org.uberfire:uberfire-workbench-client-backend
                             </compileSourcesArtifact>
                             <compileSourcesArtifact>org.uberfire:uberfire-backend-api</compileSourcesArtifact>
-                            <compileSourcesArtifact>org.uberfire:uberfire-workbench-client-views-bs2
+                            <compileSourcesArtifact>org.uberfire:uberfire-workbench-client-views-patternfly
                             </compileSourcesArtifact>
 
                             <!-- UberFire Extensions -->
@@ -1887,6 +1775,16 @@
                             </compileSourcesArtifact>
                             <compileSourcesArtifact>org.uberfire:uberfire-simple-docks-client</compileSourcesArtifact>
 
+                            <!-- Security Management -->
+                            <compileSourcesArtifact>org.uberfire:uberfire-security-management-api
+                            </compileSourcesArtifact>
+                            <compileSourcesArtifact>org.uberfire:uberfire-security-management-client
+                            </compileSourcesArtifact>
+                            <compileSourcesArtifact>org.uberfire:uberfire-security-management-client-wb
+                            </compileSourcesArtifact>
+                            <compileSourcesArtifact>org.uberfire:uberfire-widgets-security-management
+                            </compileSourcesArtifact>
+
                             <!-- Wires -->
                             <compileSourcesArtifact>org.uberfire:uberfire-wires-core-api</compileSourcesArtifact>
                             <compileSourcesArtifact>org.uberfire:uberfire-wires-core-client</compileSourcesArtifact>
@@ -1897,16 +1795,14 @@
                             </compileSourcesArtifact>
                             <compileSourcesArtifact>org.kie.uberfire:kie-uberfire-social-activities-client
                             </compileSourcesArtifact>
-                            <compileSourcesArtifact>org.kie:kie-wb-home-page-community</compileSourcesArtifact>
-                            <compileSourcesArtifact>org.kie.workbench.screens:kie-wb-common-home-api
-                            </compileSourcesArtifact>
-                            <compileSourcesArtifact>org.kie.workbench.screens:kie-wb-common-home-client
-                            </compileSourcesArtifact>
-                            <compileSourcesArtifact>org.chtijbug.drools:kie-drools-framework-rest-backend</compileSourcesArtifact>
-                            <compileSourcesArtifact>org.chtijbug.drools:kie-drools-framework-rest-client</compileSourcesArtifact>
-
                         </compileSourcesArtifacts>
-
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>findbugs-maven-plugin</artifactId>
+                    <configuration>
+                        <excludeFilterFile>${project.basedir}/src/main/findbugs/findbugs-exclude.xml</excludeFilterFile>
                     </configuration>
                 </plugin>
             </plugins>
@@ -1928,7 +1824,8 @@
                     <execution>
                         <id>gwt-compile</id>
                         <goals>
-                            <goal>resources</goal>
+              <!-- Do not use 'resources' goal as it does not play well with resource filtering and is adding Java
+                   source files into the build output directory (and they then end up in the WAR). -->
                             <goal>compile</goal>
                         </goals>
                     </execution>
@@ -1940,10 +1837,16 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <packagingExcludes>
-                        **/javax/**/*.*,
-                        **/client/**/*.class,
-                        **/*.symbolMap,
-                        WEB-INF/classes/logback.xml
+                        WEB-INF/classes/javax/**/*.*,
+                        WEB-INF/classes/org/kie/workbench/drools/client/**/*.class,
+                        WEB-INF/classes/org/kie/workbench/drools/client/resources/i18n/App*.properties,
+                        WEB-INF/classes/org/kie/workbench/drools/client/docks/**,
+                        WEB-INF/classes/org/kie/workbench/drools/client/navbar/**,
+                        WEB-INF/classes/org/kie/workbench/drools/client/perspectives/**,
+                        WEB-INF/classes/**/public/**,
+                        WEB-INF/classes/logback.xml,
+                        **/*.gwt.xml,
+                        **/*.symbolMap
                     </packagingExcludes>
                     <archive>
                         <addMavenDescriptor>false</addMavenDescriptor>
@@ -1957,45 +1860,15 @@
                         <fileset>
                             <directory>${basedir}</directory>
                             <includes>
-                                <include>src/main/webapp/org.kie.workbench.KIEWebapp/</include>
-                                <include>src/main/webapp/formModeler/</include>
+                                <include>src/main/webapp/org.kie.workbench.drools.KIEDroolsWebapp/</include>
                                 <include>src/main/webapp/WEB-INF/deploy/</include>
                                 <include>src/main/webapp/WEB-INF/classes/</include>
                                 <include>src/main/webapp/WEB-INF/lib/</include>
-                                <include>src/main/webapp/WEB-INF/tlds/</include>
                                 <include>**/gwt-unitCache/**</include>
                                 <include>repositories/</include>
                                 <include>.errai/</include>
                                 <include>.niogit/**</include>
                                 <include>.index/**</include>
-                            </includes>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
-            <!-- Tests are skipped by default because they require additional GWT dependencies. Run mvn with
-              -Pintegration-test to enable testing. -->
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skipTests>true</skipTests>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${basedir}</directory>
-                            <includes>
-                                <include>src/main/webapp/org.drools.workbench.DroolsWorkbench/</include>
-                                <include>src/main/webapp/WEB-INF/deploy/</include>
-                                <include>src/main/webapp/WEB-INF/classes/</include>
-                                <include>src/main/webapp/WEB-INF/lib/</include>
-                                <include>**/gwt-unitCache/**</include>
-                                <include>.errai/</include>
-                                <include>.niogit/**</include>
                             </includes>
                         </fileset>
                     </filesets>
@@ -2024,96 +1897,140 @@
                             </artifactItems>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>copy-files-to-webapp-directory</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.jbpm</groupId>
-                                    <artifactId>jbpm-form-modeler-request-dispatcher</artifactId>
-                                    <type>jar</type>
-                                    <overWrite>true</overWrite>
-                                    <outputDirectory>src/main/webapp</outputDirectory>
-                                    <includes>**/*.tld, **/*.gif, **/*.jpg, **/*.js, **/*.jsp, **/*.css, **/*.png
-                                    </includes>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.jbpm</groupId>
-                                    <artifactId>jbpm-form-modeler-form-editor</artifactId>
-                                    <type>jar</type>
-                                    <overWrite>true</overWrite>
-                                    <outputDirectory>src/main/webapp</outputDirectory>
-                                    <includes>**/*.tld, **/*.gif, **/*.jpg, **/*.js, **/*.jsp, **/*.css, **/*.png
-                                    </includes>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.jbpm</groupId>
-                                    <artifactId>jbpm-form-modeler-static-resources</artifactId>
-                                    <type>jar</type>
-                                    <overWrite>true</overWrite>
-                                    <outputDirectory>src/main/webapp</outputDirectory>
-                                    <includes>**/*.tld, **/*.gif, **/*.jpg, **/*.js, **/*.jsp, **/*.css, **/*.png
-                                    </includes>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.jbpm</groupId>
-                                    <artifactId>jbpm-form-modeler-ui</artifactId>
-                                    <type>jar</type>
-                                    <overWrite>true</overWrite>
-                                    <outputDirectory>src/main/webapp</outputDirectory>
-                                    <includes>**/*.tld, **/*.gif, **/*.jpg, **/*.js, **/*.jsp, **/*.css, **/*.png
-                                    </includes>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
-            <!-- The drools-wb-webapp is used just for development/testing, we don't want to publish it into remote repos. -->
-            <plugin>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>default-deploy</id>
-                        <configuration>
-                            <skip>true</skip>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!--plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>unpack</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.wildfly</groupId>
-                                    <artifactId>wildfly-dist</artifactId>
-                                    <version>8.1</version>
-                                    <type>zip</type>
-                                    <overWrite>false</overWrite>
-                                    <outputDirectory>${project.build.directory}</outputDirectory>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin-->
         </plugins>
-
-
     </build>
 
+    <profiles>
+        <profile>
+            <id>notProductizedProfile</id>
+            <activation>
+                <property>
+                    <name>!productized</name>
+                </property>
+            </activation>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.kie</groupId>
+                    <artifactId>kie-drools-wb-home-page-community</artifactId>
+                    <version>${kie.wb.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.kie.workbench.screens</groupId>
+                    <artifactId>kie-wb-common-home-client</artifactId>
+                    <version>${kie.wb.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>gwt-maven-plugin</artifactId>
+                            <configuration>
+                                <compileSourcesArtifacts combine.children="append">
+                                    <!-- Community Home Page -->
+                                    <compileSourcesArtifact>org.kie:kie-drools-wb-home-page-community
+                                    </compileSourcesArtifact>
+                                    <compileSourcesArtifact>org.kie.workbench.screens:kie-wb-common-home-api
+                                    </compileSourcesArtifact>
+                                    <compileSourcesArtifact>org.kie.workbench.screens:kie-wb-common-home-client
+                                    </compileSourcesArtifact>
+                                </compileSourcesArtifacts>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+
+        <!-- Product Home Page -->
+        <profile>
+            <id>productizedProfile</id>
+            <activation>
+                <property>
+                    <name>productized</name>
+                </property>
+            </activation>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.kie</groupId>
+                    <artifactId>kie-drools-wb-home-page-product</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.kie.workbench.screens</groupId>
+                    <artifactId>kie-wb-common-home-client</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>gwt-maven-plugin</artifactId>
+                            <configuration>
+                                <compileSourcesArtifacts combine.children="append">
+                                    <!-- Product Home Page -->
+                                    <compileSourcesArtifact>org.kie:kie-drools-wb-home-page-product
+                                    </compileSourcesArtifact>
+                                    <compileSourcesArtifact>org.kie:kie-wb-distribution-home-api
+                                    </compileSourcesArtifact>
+                                    <compileSourcesArtifact>org.kie:kie-wb-distribution-home-client
+                                    </compileSourcesArtifact>
+                                </compileSourcesArtifacts>
+                            </configuration>
+                        </plugin>
+                        <!-- Use different classifier for "-Dproductized" builds, to be able
+                             to clearly differentiate between community and productized build
+                             (they will have different classifier). -->
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-war-plugin</artifactId>
+                            <configuration>
+                                <classifier>redhat</classifier>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+
+        <!-- Full profile builds all GWT permutations -->
+        <profile>
+            <id>fullProfile</id>
+            <activation>
+                <property>
+                    <name>full</name>
+                </property>
+            </activation>
+            <properties>
+                <gwt.compiler.localWorkers>4</gwt.compiler.localWorkers>
+            </properties>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>gwt-maven-plugin</artifactId>
+                            <configuration>
+                                <module>org.kie.workbench.drools.KIEDroolsWebapp</module>
+                                <draftCompile>false</draftCompile>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+
+    </profiles>
 
 </project>

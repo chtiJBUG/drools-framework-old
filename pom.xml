@@ -15,14 +15,14 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <drools.version>6.3.0.CR2</drools.version>
-        <jbpm.version>6.3.0.CR2</jbpm.version>
+        <drools.version>6.4.0.Final</drools.version>
+        <jbpm.version>6.4.0.Final</jbpm.version>
         <powermock.version>1.4.12</powermock.version>
         <jackson.version>2.4.0</jackson.version>
-        <guvnor.version>6.3.0.CR2</guvnor.version>
-        <kie.wb.version>6.3.0.CR2</kie.wb.version>
-        <version.org.uberfire>0.7.0.CR3</version.org.uberfire>
-        <version.org.jboss.errai>3.2.0.Final</version.org.jboss.errai>
+        <guvnor.version>6.4.0.Final</guvnor.version>
+        <kie.wb.version>6.4.0.Final</kie.wb.version>
+        <version.org.uberfire>0.8.0.Final</version.org.uberfire>
+        <version.org.jboss.errai>3.2.3.Final</version.org.jboss.errai>
         <version.com.google.gwt>2.7.0</version.com.google.gwt>
         <version>${kie.wb.version}</version>
         <version.org.mortbay.jetty>6.1.25</version.org.mortbay.jetty>
@@ -133,7 +133,13 @@
         <!--module>maven-guvnor-install-pojo-plugin</module-->
         <!--module>drools-runner-generator</module-->
     </modules>
-
+<repositories>
+    <repository>
+        <id>staging kie</id>
+        <name>staging kie</name>
+        <url>https://origin-repository.jboss.org/nexus/content/groups/kie-group/</url>
+    </repository>
+</repositories>
 
     <build>
 

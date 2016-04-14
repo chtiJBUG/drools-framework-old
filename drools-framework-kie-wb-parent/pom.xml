@@ -17,6 +17,7 @@
         <module>drools-framework-login</module>
         <module>drools-framework-kie-wb-wars</module>
     </modules>
+
     <build>
         <plugins>
             <plugin>

@@ -1,1 +1,1 @@
-application.context=/org.kie.workbench.KIEWebapp/
+application.context=/org.kie.workbench.drools.KIEDroolsWebapp/

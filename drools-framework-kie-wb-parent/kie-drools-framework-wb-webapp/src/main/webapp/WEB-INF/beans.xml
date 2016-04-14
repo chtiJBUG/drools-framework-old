@@ -9,6 +9,8 @@
     <!-- End of Errai exclusions -->
 
 
-    <exclude name="org.kie.workbench.client.**"/>
+
+
+    <exclude name="org.kie.workbench.drools.client.**"/>
   </scan>
 </beans>

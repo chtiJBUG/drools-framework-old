@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.0"
-         xmlns="http://java.sun.com/xml/ns/javaee"
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
 
   <!--
   <distributable/>
@@ -14,7 +15,6 @@
     <servlet-name>javax.ws.rs.core.Application</servlet-name>
     <url-pattern>/rest/*</url-pattern>
   </servlet-mapping>
-
   <context-param>
     <param-name>resteasy.role.based.security</param-name>
     <param-value>true</param-value>
@@ -31,13 +31,18 @@
   </filter-mapping>
 
   <filter>
-    <filter-name>Avoid Host Page Cache</filter-name>
+    <filter-name>Cache Filter</filter-name>
     <filter-class>org.uberfire.ext.security.server.CacheHeadersFilter</filter-class>
   </filter>
 
   <filter-mapping>
-    <filter-name>Avoid Host Page Cache</filter-name>
-    <url-pattern>/kie-wb.html</url-pattern>
+    <filter-name>Cache Filter</filter-name>
+    <url-pattern>/kie-drools-wb.html</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>Cache Filter</filter-name>
+    <url-pattern>*.js</url-pattern>
   </filter-mapping>
 
   <filter>
@@ -47,7 +52,7 @@
 
   <filter-mapping>
     <filter-name>Host Page Patch</filter-name>
-    <url-pattern>/kie-wb.html</url-pattern>
+    <url-pattern>/kie-drools-wb.html</url-pattern>
   </filter-mapping>
 
   <filter>
@@ -57,7 +62,7 @@
 
   <filter-mapping>
     <filter-name>GWT Locale Filter</filter-name>
-    <url-pattern>/kie-wb.html</url-pattern>
+    <url-pattern>/kie-drools-wb.html</url-pattern>
   </filter-mapping>
 
   <filter>
@@ -87,7 +92,7 @@
     <servlet-class>org.uberfire.ext.security.server.LoginRedirectServlet</servlet-class>
     <init-param>
       <param-name>display-after-login</param-name>
-      <param-value>/kie-wb.html</param-value>
+      <param-value>/kie-drools-wb.html</param-value>
     </init-param>
   </servlet>
 
@@ -114,10 +119,8 @@
     <filter-name>HTTP Basic Auth Filter</filter-name>
     <url-pattern>/rest/*</url-pattern>
     <url-pattern>/maven2/*</url-pattern>
-    <url-pattern>/ws/*</url-pattern>
   </filter-mapping>
 
-  <!-- drools-wb servlets -->
   <servlet>
     <servlet-name>DTableXLSFileServlet</servlet-name>
     <servlet-class>org.drools.workbench.screens.dtablexls.backend.server.DecisionTableXLSFileServlet</servlet-class>
@@ -132,7 +135,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>DTableXLSFileServlet</servlet-name>
-    <url-pattern>/org.kie.workbench.KIEWebapp/dtablexls/file</url-pattern>
+    <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/dtablexls/file</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -149,7 +152,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ArchiveServlet</servlet-name>
-    <url-pattern>/org.kie.workbench.KIEWebapp/archive</url-pattern>
+    <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/archive</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -166,7 +169,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ScoreCardFileServlet</servlet-name>
-    <url-pattern>/org.kie.workbench.KIEWebapp/scorecardxls/file</url-pattern>
+    <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/scorecardxls/file</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -183,7 +186,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>UberfireFileUploadServlet</servlet-name>
-    <url-pattern>/org.kie.workbench.KIEWebapp/defaulteditor/upload/*</url-pattern>
+    <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/defaulteditor/upload/*</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -200,7 +203,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>UberfireFileDownloadServlet</servlet-name>
-    <url-pattern>/org.kie.workbench.KIEWebapp/defaulteditor/download/*</url-pattern>
+    <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/defaulteditor/download/*</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -227,12 +230,7 @@
     <url-pattern>/plugins/*</url-pattern>
   </servlet-mapping>
 
-  <!-- Errai servlets -->
   <servlet>
-    <!-- NOTE: the integration-test profile uses this web.xml. Integration tests only work properly
-with the DefaultBlockingServlet. If you change this setting, make a backup of this web.xml
-(perhaps under src/integration-test-settings/web.xml and alter the integration-test
-profile in pom.xml to use that. -->
     <servlet-name>ErraiServlet</servlet-name>
     <servlet-class>org.jboss.errai.bus.server.servlet.DefaultBlockingServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
@@ -243,14 +241,20 @@ profile in pom.xml to use that. -->
     <url-pattern>*.erraiBus</url-pattern>
   </servlet-mapping>
 
-  <!-- Designer -->
-  <!-- Designer Injection Filter -->
+  <context-param>
+    <param-name>org.jboss.seam.transaction.disableListener</param-name>
+    <param-value>true</param-value>
+  </context-param>
+
+  <!-- START DESIGNER -->
   <filter>
     <filter-name>Redirect Filter</filter-name>
-    <filter-class>org.jbpm.designer.filter.DesignerResourcesRedirectFilter</filter-class>
+    <filter-class>
+      org.jbpm.designer.filter.DesignerResourcesRedirectFilter
+    </filter-class>
     <init-param>
       <param-name>redirectTo</param-name>
-      <param-value>/org.kie.workbench.KIEWebapp</param-value>
+      <param-value>/org.kie.workbench.drools.KIEDroolsWebapp</param-value>
     </init-param>
   </filter>
   <filter-mapping>
@@ -504,7 +508,6 @@ profile in pom.xml to use that. -->
     <servlet-name>StencilSetServiceServlet</servlet-name>
     <url-pattern>/stencilset/*</url-pattern>
   </servlet-mapping>
-
   <!-- the number within the session-timout element must be expressed in
 minutes. it is now 24 hours. -->
   <session-config>
@@ -531,42 +534,29 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
     <extension>ico</extension>
     <mime-type>image/x-icon</mime-type>
   </mime-mapping>
-  <!-- end designer -->
-
-  <!-- start form-modeler -->
-  <servlet>
-    <servlet-name>Controller</servlet-name>
-    <servlet-class>org.jbpm.formModeler.service.bb.mvc.controller.ControllerServlet</servlet-class>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name>Controller</servlet-name>
-    <url-pattern>/org.kie.workbench.KIEWebapp/Controller</url-pattern>
-  </servlet-mapping>
-  <!-- end form-modeler-->
+  <!-- END DESIGNER -->
 
   <!-- security settings -->
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>download</web-resource-name>
-      <url-pattern>/org.kie.workbench.KIEWebapp/archive</url-pattern>
-      <url-pattern>/org.kie.workbench.KIEWebapp/defaulteditor/upload/*</url-pattern>
-      <url-pattern>/org.kie.workbench.KIEWebapp/defaulteditor/download/*</url-pattern>
-      <url-pattern>/org.kie.workbench.KIEWebapp/dtablexls/file</url-pattern>
-      <url-pattern>/org.kie.workbench.KIEWebapp/scorecardxls/file</url-pattern>
+      <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/archive</url-pattern>
+      <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/defaulteditor/upload/*</url-pattern>
+      <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/defaulteditor/download/*</url-pattern>
+      <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/dtablexls/file</url-pattern>
+      <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/scorecardxls/file</url-pattern>
     </web-resource-collection>
     <auth-constraint>
       <role-name>admin</role-name>
       <role-name>analyst</role-name>
-      <role-name>developer</role-name>
     </auth-constraint>
   </security-constraint>
 
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>console</web-resource-name>
-      <url-pattern>/kie-wb.html</url-pattern>
-      <url-pattern>/org.kie.workbench.KIEWebapp/*</url-pattern>
+      <url-pattern>/kie-drools-wb.html</url-pattern>
+      <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/*</url-pattern>
       <url-pattern>*.erraiBus</url-pattern>
       <url-pattern>/resourceList</url-pattern>
       <url-pattern>/editor</url-pattern>
@@ -600,9 +590,6 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
     <auth-constraint>
       <role-name>admin</role-name>
       <role-name>analyst</role-name>
-      <role-name>developer</role-name>
-      <role-name>user</role-name>
-      <role-name>manager</role-name>
     </auth-constraint>
   </security-constraint>
 
@@ -614,9 +601,6 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
     <auth-constraint>
       <role-name>admin</role-name>
       <role-name>analyst</role-name>
-      <role-name>developer</role-name>
-      <role-name>user</role-name>
-      <role-name>manager</role-name>
     </auth-constraint>
   </security-constraint>
 
@@ -629,7 +613,7 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
   </login-config>
 
   <security-role>
-    <description>Administrator - Administrates the BPMS system. Has full access
+    <description>Administrator - Administrates the BRMS system. Has full access
       rights to make any changes necessary. Also has the
       ability to add and remove users from the system.
     </description>
@@ -637,36 +621,10 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
   </security-role>
 
   <security-role>
-    <description>Analyst - Responsible for creating and designing processes
-      into the system. Creates process flows and handles
-      process change requests. Needs to test processes that
-      they create. Also creates forms and dashboards.
+    <description>Analyst - Responsible for authoring rules within the system and
+      authoring tests for those rules.
     </description>
     <role-name>analyst</role-name>
-  </security-role>
-
-  <security-role>
-    <description>Developer - Implements code required for process to work. Mostly uses
-      the JBDS connection to view processes, but may use the
-      web tool occasionally.
-    </description>
-    <role-name>developer</role-name>
-  </security-role>
-
-  <security-role>
-    <description>Business user - Daily user of the system to take actions on business tasks
-      that are required for the processes to continue forward. Works
-      primarily with the task lists.
-    </description>
-    <role-name>user</role-name>
-  </security-role>
-
-  <security-role>
-    <description>Manager/Viewer-only User - Viewer of the system that is interested in statistics
-      around the business processes and their performance, business indicators, and other
-      reporting of the system and people who interact with the system.
-    </description>
-    <role-name>manager</role-name>
   </security-role>
 
   <error-page>
@@ -679,24 +637,4 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
     <param-value>false</param-value>
   </context-param>
 
-  <filter>
-    <filter-name>Dynamic JAXBContext Filter</filter-name>
-    <filter-class>org.kie.remote.services.rest.jaxb.DynamicJaxbContextFilter</filter-class>
-  </filter>
-  <filter-mapping>
-    <filter-name>Dynamic JAXBContext Filter</filter-name>
-    <url-pattern>/rest/*</url-pattern>
-    <url-pattern>/ws/*</url-pattern>
-  </filter-mapping>
-
-  <!-- web services -->
-  <servlet>
-    <servlet-name>CommandWebService</servlet-name>
-    <servlet-class>org.kie.remote.services.ws.command.CommandWebServiceImpl</servlet-class>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name>CommandWebService</servlet-name>
-    <url-pattern>/ws/CommandService</url-pattern>
-  </servlet-mapping>
 </web-app>

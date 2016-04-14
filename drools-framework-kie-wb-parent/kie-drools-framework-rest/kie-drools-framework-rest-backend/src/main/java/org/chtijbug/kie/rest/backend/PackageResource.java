@@ -65,7 +65,7 @@ public class PackageResource {
         Collection<Repository> repositories = organizationalUnit.getRepositories();
         for (Repository repository : repositories) {
             if (repository.getAlias().equals(repositoryName)) {
-                String branch = repository.getCurrentBranch();
+                String branch = repository.getDefaultBranch();
                 Set<Project> projects = projectService.getProjects(repository, branch);
                 Collection<Package> packages = new ArrayList<>();
                 for (Project project : projects) {
@@ -114,7 +114,7 @@ public class PackageResource {
         Collection<Repository> repositories = organizationalUnit.getRepositories();
         for (Repository repository : repositories) {
             if (repository.getAlias().equals(repositoryName)) {
-                String branch = repository.getCurrentBranch();
+                String branch = repository.getDefaultBranch();
                 Set<Project> projects = projectService.getProjects(repository, branch);
                 for (Project project : projects) {
                     if (project.getProjectName().equals(packageName)) {

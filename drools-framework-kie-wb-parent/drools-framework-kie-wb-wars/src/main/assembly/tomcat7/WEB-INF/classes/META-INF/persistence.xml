@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-~ Copyright 2012 JBoss Inc
+~ Copyright 2012 Red Hat, Inc. and/or its affiliates.
 ~
 ~ Licensed under the Apache License, Version 2.0 (the "License");
 ~ you may not use this file except in compliance with the License.
@@ -59,6 +59,7 @@
      
     <!-- Task Audit Classes --> 
     <class>org.jbpm.services.task.audit.impl.model.AuditTaskImpl</class>
+    <class>org.jbpm.services.task.audit.impl.model.TaskVariableImpl</class>
       
     <!--BAM for task service -->
     <class>org.jbpm.services.task.audit.impl.model.BAMTaskSummaryImpl</class>
@@ -79,10 +80,12 @@
 
     <!-- deployment store -->
     <class>org.jbpm.kie.services.impl.store.DeploymentStoreEntry</class>
+    <!-- query service storage -->
+    <class>org.jbpm.kie.services.impl.query.persistence.QueryDefinitionEntity</class>
 
     <shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode>
     <properties>
-      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
       <property name="hibernate.max_fetch_depth" value="3"/>
       <property name="hibernate.hbm2ddl.auto" value="update"/>
       <property name="hibernate.show_sql" value="false"/>

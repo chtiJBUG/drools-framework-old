@@ -119,10 +119,10 @@ public class RuleHistoryEventTest {
         assertThat(afterRuleFiredHistoryEvent.getRuleInstanceId()).isEqualTo(1);
 
 
-        assertThat(historyEvents.get(39)).isInstanceOf(AfterRuleFlowDeactivatedHistoryEvent.class);
-        AfterRuleFlowDeactivatedHistoryEvent afterRuleFlowDeactivatedHistoryEvent = (AfterRuleFlowDeactivatedHistoryEvent) historyEvents.get(39);
+        assertThat(historyEvents.get(31)).isInstanceOf(AfterRuleFlowDeactivatedHistoryEvent.class);
+        AfterRuleFlowDeactivatedHistoryEvent afterRuleFlowDeactivatedHistoryEvent = (AfterRuleFlowDeactivatedHistoryEvent) historyEvents.get(31);
         assertThat(afterRuleFlowDeactivatedHistoryEvent.getRuleBaseID()).isEqualTo(rulePackageID);
-        assertThat(afterRuleFlowDeactivatedHistoryEvent.getEventID()).isEqualTo(35);
+        assertThat(afterRuleFlowDeactivatedHistoryEvent.getEventID()).isEqualTo(27);
         assertThat(afterRuleFlowDeactivatedHistoryEvent.getSessionId()).isEqualTo(1);
         assertThat(afterRuleFlowDeactivatedHistoryEvent.getTypeEvent()).isEqualTo(HistoryEvent.TypeEvent.RuleFlowGroup);
         assertThat(afterRuleFlowDeactivatedHistoryEvent.getDroolsRuleFlowGroupObject().getName()).isEqualTo("Group2");

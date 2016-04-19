@@ -1,6 +1,6 @@
 package org.chtijbug.kie.rest.backend;
 
-import org.drools.guvnor.server.jaxrs.jaxb.*;
+import org.drools.guvnor.server.jaxrs.jaxb.Asset;
 import org.drools.guvnor.server.jaxrs.jaxb.Package;
 import org.guvnor.common.services.project.model.Project;
 import org.guvnor.common.services.project.service.ProjectService;
@@ -8,12 +8,10 @@ import org.guvnor.structure.organizationalunit.OrganizationalUnit;
 import org.guvnor.structure.organizationalunit.OrganizationalUnitService;
 import org.guvnor.structure.repositories.Repository;
 import org.guvnor.structure.repositories.RepositoryService;
-import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+import org.kie.workbench.common.services.shared.project.KieProjectService;
 import org.slf4j.LoggerFactory;
 import org.uberfire.backend.server.util.Paths;
-
 import org.uberfire.io.IOService;
-import org.kie.workbench.common.services.shared.project.KieProjectService;
 import org.uberfire.java.nio.base.options.CommentedOption;
 import org.uberfire.java.nio.file.DirectoryStream;
 
@@ -21,7 +19,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.*;
-import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;

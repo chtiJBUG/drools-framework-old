@@ -133,6 +133,7 @@
         <!--module>maven-guvnor-install-pojo-plugin</module-->
         <!--module>drools-runner-generator</module-->
     </modules>
+    <!--
 <repositories>
     <repository>
         <id>staging kie</id>
@@ -140,7 +141,7 @@
         <url>https://origin-repository.jboss.org/nexus/content/groups/kie-group/</url>
     </repository>
 </repositories>
-
+-->
     <build>
 
         <plugins>

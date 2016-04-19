@@ -39,10 +39,16 @@
         </dependency>
 
         <!-- External dependencies -->
+
         <dependency>
-            <groupId>org.apache.ant</groupId>
-            <artifactId>ant</artifactId>
-            <version>1.8.2</version>
+            <groupId>ch.qos.cal10n</groupId>
+            <artifactId>cal10n-api</artifactId>
+            <version>0.7.7</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
         </dependency>
         <dependency>
             <groupId>javax.enterprise</groupId>
@@ -156,13 +162,19 @@
             <groupId>org.jboss.weld.se</groupId>
             <artifactId>weld-se-core</artifactId>
             <version>1.1.33.Final</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>el-api</artifactId>
+                    <groupId>javax.el</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
-        <dependency>
+        <!--dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.3.168</version>
-        </dependency>
+        </dependency-->
 
         <dependency>
             <groupId>net.jcip</groupId>
@@ -191,6 +203,64 @@
             <version>1.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr</artifactId>
+            <version>3.5</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.2.11</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-xjc</artifactId>
+            <version>2.2.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging</artifactId>
+            <version>3.1.4.GA</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.neethi</groupId>
+            <artifactId>neethi</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-ext</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.woodstox</groupId>
+            <artifactId>woodstox-core-asl</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>wsdl4j</groupId>
+            <artifactId>wsdl4j</artifactId>
+            <version>1.6.3</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
@@ -207,11 +277,7 @@
             <artifactId>hibernate-core</artifactId>
             <version>${version.org.hibernate}</version>
         </dependency>
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr</artifactId>
-            <version>3.5</version>
-        </dependency>
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
@@ -303,7 +369,7 @@
                                 <artifactItem>
                                     <groupId>org.jboss.errai</groupId>
                                     <artifactId>errai-weld-integration</artifactId>
-                                    <version>${version.org.jboss.errai.cdi10-compatible}</version>
+                                    <version>3.0.6.Final</version>
                                     <type>jar</type>
                                 </artifactItem>
                             </artifactItems>
@@ -389,15 +455,15 @@
             </activation>
 
             <properties>
-                <webapp.war>org.kie:kie-drools-wb-webapp:war:redhat</webapp.war>
+                <webapp.war>org.chtijbug.drools:kie-drools-framework-wb-webapp:war</webapp.war>
             </properties>
 
             <dependencyManagement>
                 <dependencies>
                     <dependency>
-                        <groupId>org.kie</groupId>
-                        <artifactId>kie-drools-wb-webapp</artifactId>
-                        <version>${version.org.kie}</version>
+                        <groupId>org.chtijbug.drools</groupId>
+                        <artifactId>kie-drools-framework-wb-webapp</artifactId>
+                        <version>${project.version}</version>
                         <type>war</type>
                         <classifier>redhat</classifier>
                     </dependency>
@@ -406,10 +472,9 @@
 
             <dependencies>
                 <dependency>
-                    <groupId>org.kie</groupId>
-                    <artifactId>kie-drools-wb-webapp</artifactId>
+                    <groupId>org.chtijbug.drools</groupId>
+                    <artifactId>kie-drools-framework-wb-webapp</artifactId>
                     <type>war</type>
-                    <classifier>redhat</classifier>
                 </dependency>
             </dependencies>
 

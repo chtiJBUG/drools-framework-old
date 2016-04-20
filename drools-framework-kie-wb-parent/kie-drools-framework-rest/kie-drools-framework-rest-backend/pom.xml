@@ -17,7 +17,7 @@
   <dependencies>
     <dependency>
       <groupId>org.chtijbug.drools</groupId>
-      <artifactId>kie-drools-framework-rest-client</artifactId>
+      <artifactId>kie-drools-framework-rest-pojo</artifactId>
       <version>${project.version}</version>
     </dependency>
 

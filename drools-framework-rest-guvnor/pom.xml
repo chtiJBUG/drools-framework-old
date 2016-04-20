@@ -76,6 +76,7 @@
         <dependency>
             <groupId>org.chtijbug.drools</groupId>
             <artifactId>kie-drools-framework-rest-client</artifactId>
+            <scope>provided</scope>
             <version>${project.version}</version>
         </dependency>
 

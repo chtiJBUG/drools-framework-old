@@ -29,7 +29,7 @@
   <name>kie-drools-framework - Rest</name>
 
   <modules>
-    <module>kie-drools-framework-rest-client</module>
+    <module>kie-drools-framework-rest-pojo</module>
     <module>kie-drools-framework-rest-backend</module>
   </modules>
   

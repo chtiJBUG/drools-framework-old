@@ -7,10 +7,10 @@
         <groupId>org.chtijbug.drools</groupId>
         <version>2.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>kie-drools-framework-rest-client</artifactId>
+    <artifactId>kie-drools-framework-rest-pojo</artifactId>
     <packaging>jar</packaging>
 
-    <name>kie drools Framework - REST Client</name>
+    <name>kie drools Framework - REST pojo</name>
     <description>kie drools Framework - REST Client classes</description>
 
     <dependencies>

@@ -1281,7 +1281,7 @@
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-weld-integration</artifactId>
-            <version>3.2.3.Final</version>
+            <version>3.0.6.Final</version>
         </dependency>
 
         <!-- GWT and GWT Extensions -->

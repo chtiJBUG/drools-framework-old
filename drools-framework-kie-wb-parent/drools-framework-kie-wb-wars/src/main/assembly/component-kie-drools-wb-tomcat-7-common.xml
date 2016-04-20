@@ -98,9 +98,9 @@
 
           <!-- Errai -->
           <exclude>WEB-INF/lib/errai-jboss-as-support-*.jar</exclude>
-          <!-- Errai 1.1+ CDI Compat -->
+          <!-- Errai 1.1+ CDI Compat
           <exclude>WEB-INF/lib/errai-weld-integration-*.jar</exclude>
-          
+           -->
           <!-- Exclude the UF Security management provider for Wildfly, the default one in the workbench, and provide the one for this distro, if any.   -->
           <exclude>WEB-INF/lib/uberfire-security-management-wildfly-*.jar</exclude>
 

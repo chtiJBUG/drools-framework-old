@@ -329,7 +329,7 @@
                 <executions>
                     <execution>
                         <id>was-specific</id>
-                        <phase>compile</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
@@ -360,7 +360,7 @@
                 <executions>
                     <execution>
                         <id>prepare-cdi1.0-libs</id>
-                        <phase>compile</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>copy</goal>
                         </goals>

@@ -1648,7 +1648,7 @@
                             -Dorg.uberfire.async.executor.safemode=true
                         </extraJvmArgs>
                         <draftCompile>true</draftCompile>
-                        <module>org.kie.workbench.drools.FastCompiledKIEDroolsWebapp</module>
+                        <module>org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp</module>
                         <logLevel>INFO</logLevel>
                         <noServer>false</noServer>
                         <server>org.jboss.errai.cdi.server.gwt.EmbeddedWildFlyLauncher</server>

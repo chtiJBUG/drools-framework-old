@@ -11,6 +11,6 @@
 
 
 
-    <exclude name="org.kie.workbench.drools.client.**"/>
+    <exclude name="org.chtijbug.workbench.drools.client.**"/>
   </scan>
 </beans>

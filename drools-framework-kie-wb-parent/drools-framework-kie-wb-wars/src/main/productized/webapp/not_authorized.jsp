@@ -12,7 +12,7 @@
         locale= request.getLocale();
     }
 %>
-<i18n:bundle id="bundle" baseName="org.kie.workbench.drools.client.resources.i18n.LoginConstants"
+<i18n:bundle id="bundle" baseName="org.chtijbug.workbench.drools.client.resources.i18n.LoginConstants"
              locale='<%= locale%>' />
 <%
     request.getSession().invalidate();

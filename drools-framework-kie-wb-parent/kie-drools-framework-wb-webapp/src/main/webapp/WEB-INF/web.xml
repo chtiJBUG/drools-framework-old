@@ -135,7 +135,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>DTableXLSFileServlet</servlet-name>
-    <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/dtablexls/file</url-pattern>
+    <url-pattern>/org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp/dtablexls/file</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -152,7 +152,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ArchiveServlet</servlet-name>
-    <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/archive</url-pattern>
+    <url-pattern>/org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp/archive</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -169,7 +169,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ScoreCardFileServlet</servlet-name>
-    <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/scorecardxls/file</url-pattern>
+    <url-pattern>/org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp/scorecardxls/file</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -186,7 +186,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>UberfireFileUploadServlet</servlet-name>
-    <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/defaulteditor/upload/*</url-pattern>
+    <url-pattern>/org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp/defaulteditor/upload/*</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -203,7 +203,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>UberfireFileDownloadServlet</servlet-name>
-    <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/defaulteditor/download/*</url-pattern>
+    <url-pattern>/org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp/defaulteditor/download/*</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -254,7 +254,7 @@
     </filter-class>
     <init-param>
       <param-name>redirectTo</param-name>
-      <param-value>/org.kie.workbench.drools.KIEDroolsWebapp</param-value>
+      <param-value>/org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp</param-value>
     </init-param>
   </filter>
   <filter-mapping>

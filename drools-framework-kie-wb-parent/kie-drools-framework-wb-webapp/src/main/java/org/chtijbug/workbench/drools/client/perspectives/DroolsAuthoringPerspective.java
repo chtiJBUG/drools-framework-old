@@ -19,6 +19,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import org.fusesource.jansi.WindowsAnsiOutputStream;
 import org.guvnor.inbox.client.InboxPresenter;
 import org.kie.workbench.common.widgets.client.handlers.NewResourcePresenter;
 import org.kie.workbench.common.widgets.client.handlers.NewResourcesMenu;
@@ -30,10 +31,12 @@ import org.uberfire.client.annotations.WorkbenchMenu;
 import org.uberfire.client.annotations.WorkbenchPerspective;
 import org.uberfire.client.mvp.PlaceManager;
 import org.uberfire.client.workbench.panels.impl.MultiListWorkbenchPanelPresenter;
+import org.uberfire.client.workbench.panels.impl.StaticWorkbenchPanelPresenter;
 import org.uberfire.mvp.Command;
 import org.uberfire.mvp.PlaceRequest;
 import org.uberfire.mvp.impl.DefaultPlaceRequest;
 import org.uberfire.workbench.model.PerspectiveDefinition;
+import org.uberfire.workbench.model.impl.PartDefinitionImpl;
 import org.uberfire.workbench.model.impl.PerspectiveDefinitionImpl;
 import org.uberfire.workbench.model.menu.MenuFactory;
 import org.uberfire.workbench.model.menu.MenuPosition;
@@ -65,73 +68,83 @@ public class DroolsAuthoringPerspective {
 
     @PostConstruct
     public void setup() {
+        com.google.gwt.user.client.Window.alert("beforsetup");
         docks.setup( "AuthoringPerspective", new DefaultPlaceRequest( "org.kie.guvnor.explorer" ) );
+        com.google.gwt.user.client.Window.alert("Aftersetup");
+    }
+
+    public DroolsAuthoringPerspective() {
+        com.google.gwt.user.client.Window.alert("Start");
     }
 
     @Perspective
     public PerspectiveDefinition getPerspective() {
+        com.google.gwt.user.client.Window.alert("beforegetPerspective");
         final PerspectiveDefinition perspective = new PerspectiveDefinitionImpl( MultiListWorkbenchPanelPresenter.class.getName() );
         perspective.setName( constants.project_authoring() );
-
+        com.google.gwt.user.client.Window.alert("afterPerspective");
         return perspective;
     }
 
     @WorkbenchMenu
     public Menus getMenus() {
-        return MenuFactory
-                .newTopLevelMenu( constants.explore() )
+        com.google.gwt.user.client.Window.alert("beforeMenus");
+        Menus tptp = MenuFactory
+                .newTopLevelMenu(constants.explore())
                 .menus()
-                .menu( constants.inboxIncomingChanges() )
-                .respondsWith( new Command() {
+                .menu(constants.inboxIncomingChanges())
+                .respondsWith(new Command() {
                     @Override
                     public void execute() {
-                        placeManager.goTo( "Inbox" );
+                        placeManager.goTo("Inbox");
                     }
-                } )
+                })
                 .endMenu()
-                .menu( constants.inboxRecentlyEdited() )
-                .respondsWith( new Command() {
+                .menu(constants.inboxRecentlyEdited())
+                .respondsWith(new Command() {
                     @Override
                     public void execute() {
-                        PlaceRequest p = new DefaultPlaceRequest( "Inbox" );
-                        p.addParameter( "inboxname", InboxPresenter.RECENT_EDITED_ID );
-                        placeManager.goTo( p );
+                        PlaceRequest p = new DefaultPlaceRequest("Inbox");
+                        p.addParameter("inboxname", InboxPresenter.RECENT_EDITED_ID);
+                        placeManager.goTo(p);
                     }
-                } )
+                })
                 .endMenu()
-                .menu( constants.inboxRecentlyOpened() )
-                .respondsWith( new Command() {
+                .menu(constants.inboxRecentlyOpened())
+                .respondsWith(new Command() {
                     @Override
                     public void execute() {
-                        PlaceRequest p = new DefaultPlaceRequest( "Inbox" );
-                        p.addParameter( "inboxname", InboxPresenter.RECENT_VIEWED_ID );
-                        placeManager.goTo( p );
+                        PlaceRequest p = new DefaultPlaceRequest("Inbox");
+                        p.addParameter("inboxname", InboxPresenter.RECENT_VIEWED_ID);
+                        placeManager.goTo(p);
                     }
-                } )
+                })
                 .endMenu()
                 .endMenus()
                 .endMenu()
-                .newTopLevelMenu( constants.newItem() )
-                .withItems( newResourcesMenu.getMenuItems() )
+                .newTopLevelMenu(constants.newItem())
+                .withItems(newResourcesMenu.getMenuItems())
                 .endMenu()
-                .newTopLevelMenu( constants.Repository() )
-                .withItems( repositoryMenu.getMenuItems() )
+                .newTopLevelMenu(constants.Repository())
+                .withItems(repositoryMenu.getMenuItems())
                 .endMenu()
-                .newTopLevelMenu( constants.assetSearch() ).position( MenuPosition.RIGHT ).respondsWith( new Command() {
+                .newTopLevelMenu(constants.assetSearch()).position(MenuPosition.RIGHT).respondsWith(new Command() {
                     @Override
                     public void execute() {
-                        placeManager.goTo( "FindForm" );
+                        placeManager.goTo("FindForm");
                     }
-                } )
+                })
                 .endMenu()
-                .newTopLevelMenu( constants.Messages() ).position( MenuPosition.RIGHT ).respondsWith( new Command() {
+                .newTopLevelMenu(constants.Messages()).position(MenuPosition.RIGHT).respondsWith(new Command() {
                     @Override
                     public void execute() {
-                        placeManager.goTo( "org.kie.workbench.common.screens.messageconsole.MessageConsole" );
+                        placeManager.goTo("org.kie.workbench.common.screens.messageconsole.MessageConsole");
                     }
-                } )
+                })
                 .endMenu()
                 .build();
+        com.google.gwt.user.client.Window.alert("afterMenus");
+        return tptp;
     }
 
 }

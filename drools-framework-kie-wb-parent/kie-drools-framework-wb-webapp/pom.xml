@@ -1642,7 +1642,7 @@
                     <configuration>
                         <deploy>${project.build.directory}/gwt-symbols-deploy</deploy>
                         <localWorkers>${gwt.compiler.localWorkers}</localWorkers>
-                        <extraJvmArgs>${gwt.memory.settings} -XX:CompileThreshold=7000 -Derrai.jboss.home=${errai.jboss.home}
+                        <extraJvmArgs>${gwt.memory.settings} -Dgwt.style=DETAILED -XX:CompileThreshold=7000 -Derrai.jboss.home=${errai.jboss.home}
                             -Derrai.marshalling.server.classOutput=${project.build.outputDirectory} -Dorg.kie.demo=true
                             -Dorg.kie.clean.onstartup=true -Dorg.jbpm.designer.perspective=ruleflow -Djava.util.prefs.syncInterval=2000000
                             -Dorg.uberfire.async.executor.safemode=true
@@ -1948,11 +1948,11 @@
                 <configuration>
                     <packagingExcludes>
                         WEB-INF/classes/javax/**/*.*,
-                        WEB-INF/classes/org/kie/workbench/drools/client/**/*.class,
-                        WEB-INF/classes/org/kie/workbench/drools/client/resources/i18n/App*.properties,
-                        WEB-INF/classes/org/kie/workbench/drools/client/docks/**,
-                        WEB-INF/classes/org/kie/workbench/drools/client/navbar/**,
-                        WEB-INF/classes/org/kie/workbench/drools/client/perspectives/**,
+                        WEB-INF/classes/org/chtijbug/workbench/drools/client/**/*.class,
+                        WEB-INF/classes/org/chtijbug/workbench/drools/client/resources/i18n/App*.properties,
+                        WEB-INF/classes/org/chtijbug/workbench/drools/client/docks/**,
+                        WEB-INF/classes/org/chtijbug/workbench/drools/client/navbar/**,
+                        WEB-INF/classes/org/chtijbug/workbench/drools/client/perspectives/**,
                         WEB-INF/classes/**/public/**,
                         WEB-INF/classes/logback.xml,
                         **/*.gwt.xml,
@@ -1970,7 +1970,7 @@
                         <fileset>
                             <directory>${basedir}</directory>
                             <includes>
-                                <include>src/main/webapp/org.kie.workbench.drools.KIEDroolsWebapp/</include>
+                                <include>src/main/webapp/org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp/</include>
                                 <include>src/main/webapp/WEB-INF/deploy/</include>
                                 <include>src/main/webapp/WEB-INF/classes/</include>
                                 <include>src/main/webapp/WEB-INF/lib/</include>
@@ -2128,7 +2128,7 @@
                             <groupId>org.codehaus.mojo</groupId>
                             <artifactId>gwt-maven-plugin</artifactId>
                             <configuration>
-                                <module>org.kie.workbench.drools.KIEDroolsWebapp</module>
+                                <module>org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp</module>
                                 <draftCompile>false</draftCompile>
                             </configuration>
                         </plugin>

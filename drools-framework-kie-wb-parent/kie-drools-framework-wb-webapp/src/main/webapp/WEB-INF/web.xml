@@ -540,11 +540,11 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>download</web-resource-name>
-      <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/archive</url-pattern>
-      <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/defaulteditor/upload/*</url-pattern>
-      <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/defaulteditor/download/*</url-pattern>
-      <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/dtablexls/file</url-pattern>
-      <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/scorecardxls/file</url-pattern>
+      <url-pattern>/org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp/archive</url-pattern>
+      <url-pattern>/org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp/defaulteditor/upload/*</url-pattern>
+      <url-pattern>/org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp/defaulteditor/download/*</url-pattern>
+      <url-pattern>/org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp/dtablexls/file</url-pattern>
+      <url-pattern>/org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp/scorecardxls/file</url-pattern>
     </web-resource-collection>
     <auth-constraint>
       <role-name>admin</role-name>
@@ -556,7 +556,7 @@ See http://www.w3.org/TR/SVG/intro.html#MIMEType. -->
     <web-resource-collection>
       <web-resource-name>console</web-resource-name>
       <url-pattern>/kie-drools-wb.html</url-pattern>
-      <url-pattern>/org.kie.workbench.drools.KIEDroolsWebapp/*</url-pattern>
+      <url-pattern>/org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp/*</url-pattern>
       <url-pattern>*.erraiBus</url-pattern>
       <url-pattern>/resourceList</url-pattern>
       <url-pattern>/editor</url-pattern>

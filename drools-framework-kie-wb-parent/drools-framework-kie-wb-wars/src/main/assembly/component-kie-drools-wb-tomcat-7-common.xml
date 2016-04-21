@@ -93,8 +93,8 @@
           <exclude>WEB-INF/classes/application-users.properties</exclude>
 
           <exclude>WEB-INF/classes/META-INF/persistence.xml</exclude>
-          <exclude>WEB-INF/classes/org/kie/workbench/backend/wildfly/</exclude>
-          <exclude>WEB-INF/classes/org/kie/workbench/backend/weblogic/</exclude>
+          <exclude>WEB-INF/classes/org/chtijbug/workbench/backend/wildfly/</exclude>
+          <exclude>WEB-INF/classes/org/chtijbug/workbench/backend/weblogic/</exclude>
 
           <!-- Errai -->
           <exclude>WEB-INF/lib/errai-jboss-as-support-*.jar</exclude>

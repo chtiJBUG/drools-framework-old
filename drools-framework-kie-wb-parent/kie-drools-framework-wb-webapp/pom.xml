@@ -257,7 +257,6 @@
         <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kie-internal</artifactId>
-            <version>${kie.wb.version}</version>
         </dependency>
 
         <!-- identity provider -->
@@ -1325,24 +1324,26 @@
             <version>4.11</version>
         </dependency>
 
+        <!--
+                <dependency>
+                    <groupId>org.chtijbug.drools</groupId>
+                    <artifactId>kie-drools-framework-rest-backend</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <artifactId>activation</artifactId>
+                            <groupId>javax.activation</groupId>
+                        </exclusion>
+                    </exclusions>
+                    <version>${project.version}</version>
+                </dependency>
 
-        <dependency>
-            <groupId>org.chtijbug.drools</groupId>
-            <artifactId>kie-drools-framework-rest-backend</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>activation</artifactId>
-                    <groupId>javax.activation</groupId>
-                </exclusion>
-            </exclusions>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.chtijbug.drools</groupId>
-            <artifactId>kie-drools-framework-rest-client</artifactId>
-            <scope>provided</scope>
-            <version>${project.version}</version>
-        </dependency>
+                <dependency>
+                    <groupId>org.chtijbug.drools</groupId>
+                    <artifactId>kie-drools-framework-rest-client</artifactId>
+                    <scope>provided</scope>
+                    <version>${project.version}</version>
+                </dependency>
+         -->
         <!-- Guvnor REST api -->
         <dependency>
             <groupId>org.guvnor</groupId>

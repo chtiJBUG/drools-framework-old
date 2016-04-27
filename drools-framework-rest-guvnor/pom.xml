@@ -35,7 +35,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.8.1</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -73,13 +72,13 @@
             <artifactId>cxf-rt-frontend-jaxrs</artifactId>
             <version>${version.org.apache.cxf}</version>
         </dependency>
+
         <dependency>
             <groupId>org.chtijbug.drools</groupId>
-            <artifactId>kie-drools-framework-rest-client</artifactId>
+            <artifactId>kie-drools-framework-rest-pojo</artifactId>
             <scope>provided</scope>
             <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.chtijbug.osgi</groupId>
             <artifactId>lambdaj.osgi</artifactId>
@@ -114,7 +113,6 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.4</version>
         </dependency>
         <dependency>
             <groupId>org.easytesting</groupId>

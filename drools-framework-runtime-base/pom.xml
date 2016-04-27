@@ -19,7 +19,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -63,16 +62,8 @@
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-bpmn2</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-flow-builder</artifactId>
-            <version>${jbpm.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.jettison</groupId>
-            <artifactId>jettison</artifactId>
-            <version>1.3.3</version>
-        </dependency>
+
+
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
@@ -83,7 +74,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.commons</groupId>
+            <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
 
@@ -101,11 +92,7 @@
             <artifactId>logback-classic</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <scope>test</scope>
-        </dependency>
+
 
         <dependency>
             <groupId>org.powermock</groupId>
@@ -124,8 +111,8 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.3.4</version>
         </dependency>
+
 
     </dependencies>
 

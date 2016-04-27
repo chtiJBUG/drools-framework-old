@@ -72,11 +72,7 @@
       <artifactId>guvnor-asset-mgmt-api</artifactId>
       <version>${guvnor.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.guvnor</groupId>
-      <artifactId>guvnor-structure-api</artifactId>
-      <version>${guvnor.version}</version>
-    </dependency>
+
     <dependency>
       <groupId>org.guvnor</groupId>
       <artifactId>guvnor-project-builder</artifactId>
@@ -136,7 +132,6 @@
       <groupId>org.kie</groupId>
       <artifactId>kie-internal</artifactId>
 
-      <version>${kie.wb.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.deltaspike.core</groupId>

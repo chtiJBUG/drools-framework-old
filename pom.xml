@@ -7,91 +7,28 @@
     <version>2.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <parent>
+    <!--parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
         <version>7</version>
+    </parent-->
+
+
+    <parent>
+        <groupId>org.kie</groupId>
+        <artifactId>kie-parent-with-dependencies</artifactId>
+        <version>6.4.0.Final</version>
     </parent>
-
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <drools.version>6.4.0.Final</drools.version>
-        <jbpm.version>6.4.0.Final</jbpm.version>
-        <powermock.version>1.4.12</powermock.version>
-        <jackson.version>2.4.0</jackson.version>
-        <guvnor.version>6.4.0.Final</guvnor.version>
-        <kie.wb.version>6.4.0.Final</kie.wb.version>
-        <version.org.uberfire>0.8.0.Final</version.org.uberfire>
-        <version.org.jboss.errai>3.2.3.Final</version.org.jboss.errai>
-        <version.com.google.gwt>2.7.0</version.com.google.gwt>
-        <version>${kie.wb.version}</version>
-        <version.org.mortbay.jetty>6.1.25</version.org.mortbay.jetty>
-        <version.org.jboss.resteasy>2.3.10.Final</version.org.jboss.resteasy>
-        <version.org.jboss.weld.weld>1.1.30.Final</version.org.jboss.weld.weld>
-        <version.com.github.gwtbootstrap>2.2.1.0</version.com.github.gwtbootstrap>
-        <version.org.owasp.encoder>1.1</version.org.owasp.encoder>
-        <version.org.osgi>4.3.1</version.org.osgi>
-        <version.org.jboss.spec.javax.xml.bind.jboss-jaxb-api_2.2_spec>1.0.4.Final</version.org.jboss.spec.javax.xml.bind.jboss-jaxb-api_2.2_spec>
-        <version.org.jboss.spec.javax.servlet.jstl.jboss-jstl-api_1.2_spec>1.0.6.Final</version.org.jboss.spec.javax.servlet.jstl.jboss-jstl-api_1.2_spec>
-        <version.org.hibernate>4.2.15.Final</version.org.hibernate>
-        <version.org.hibernate.validator>4.3.1.Final</version.org.hibernate.validator>
-        <version.org.jboss.spec.javax.transaction.jboss-transaction-api_1.1_spec>1.0.1.Final</version.org.jboss.spec.javax.transaction.jboss-transaction-api_1.1_spec>
-        <version.com.h2database>1.3.168</version.com.h2database>
-        <version.org.codehaus.btm>2.1.4</version.org.codehaus.btm>
-        <version.org.apache.lucene>4.1.0</version.org.apache.lucene>
-        <version.org.apache.cxf>2.7.10</version.org.apache.cxf>
-
-
-
-        <!-- ################################################################################ -->
-        <!-- New and overwritten dependencies -->
-        <!-- ################################################################################ -->
-        <!--
-          CONVENTIONS:
-          - A version property must be specified in the format "version.{groupId}", optionally with a suffix to make it unique.
-          - Version properties must be sorted alphabetically (other form of sorting were found to be unclear and ambiguous).
-        -->
-
-        <version.avalon-framework>4.1.4</version.avalon-framework>
-        <version.com.rht-emitrom.lienzo-core>1.2.1-RELEASE</version.com.rht-emitrom.lienzo-core>
-        <version.jakarta-regexp>1.4</version.jakarta-regexp>
-        <version.org.apache.lucene>4.0.0</version.org.apache.lucene>
-        <version.org.apache.xmlgraphics.batik>1.6-1</version.org.apache.xmlgraphics.batik>
-        <version.org.apache.xmlgraphics.commons>1.4</version.org.apache.xmlgraphics.commons>
-        <version.org.apache.xmlgraphics.fop>0.95</version.org.apache.xmlgraphics.fop>
-        <version.org.eclipse.jetty>8.1.14.v20131031</version.org.eclipse.jetty>
-        <version.org.mortbay.jetty>6.1.25</version.org.mortbay.jetty>
-        <version.org.mortbay.jetty.runner>8.1.7.v20120910</version.org.mortbay.jetty.runner>
-        <version.org.apache.xmlbeans>2.3.0</version.org.apache.xmlbeans>
-        <version.org.owasp.encoder>1.1</version.org.owasp.encoder>
-
-        <version.org.apache.maven>3.2.2</version.org.apache.maven>
-        <version.org.eclipse.aether>1.0.0.v20140518</version.org.eclipse.aether>
-        <version.org.eclipse.sisu>0.0.0.M5</version.org.eclipse.sisu> <!-- Dependency of maven 3.2.2  -->
-        <version.org.codehaus.plexus.plexus-classworlds>2.5.1</version.org.codehaus.plexus.plexus-classworlds> <!-- Dependency of maven 3.2.2  -->
-        <version.org.codehaus.plexus.plexus-interpolation>1.19</version.org.codehaus.plexus.plexus-interpolation> <!-- Dependency of maven 3.2.2  -->
-        <version.org.sonatype.plexus.plexus-cipher>1.4</version.org.sonatype.plexus.plexus-cipher> <!-- Dependency of maven 3.2.2  -->
-        <version.org.sonatype.plexus.plexus-sec-dispatcher>1.3</version.org.sonatype.plexus.plexus-sec-dispatcher> <!-- Dependency of maven 3.2.2  -->
-        <version.org.sonatype.sisu.sisu-guice>3.1.0</version.org.sonatype.sisu.sisu-guice> <!-- Dependency of maven 3.2.2  -->
-        <version.org.jboss.errai>3.0.4.Final</version.org.jboss.errai>
-        <version.com.wordnik.swagger>1.3.10</version.com.wordnik.swagger>
-        <version.org.jboss.byteman>2.2.0.1</version.org.jboss.byteman>
-
-        <version.javax.security.jacc>1.4</version.javax.security.jacc>
-        <!-- temporary because it was removed/rename in jboss-ip-bom and it is needed by droolsjbpm-knowledge/kie-api/pom.xml -->
-        <version.javax.xml.stream.stax>1.0-2</version.javax.xml.stream.stax>
-        <!-- overrides <version.org.jboss.as> 7.4.0.Final used in jboss-ip-bom 6.0.0.CR13 -->
-        <version.org.jboss.as>7.2.0.Final</version.org.jboss.as>
-        <version.org.ops4j.pax.url>2.2.0</version.org.ops4j.pax.url>
-        <version.org.geronimo.atinject>1.0</version.org.geronimo.atinject>
-        <!-- overrides <version.org.codehaus.plexus>3.0.7 used in jbos-ip-bom 6.0.0.CR13 -->
-        <version.org.codehaus.plexus>3.0.17</version.org.codehaus.plexus>
-        <!-- overrides <version.org.apache.ws.xmlschema>2.0.2 used in jboss-ip-bom 6.0.0.CR13 -->
-        <version.org.apache.ws.xmlschema>2.0.3</version.org.apache.ws.xmlschema>
-        <!-- overrides <version.org.jboss.spec.javax.servlet.jstl.jboss-jstl-api_1.2_spec> 1.0.6.Final used in jboss-ip-bom 6.0.0.CR13 -->
-        <version.org.jboss.spec.javax.servlet.jstl.jboss-jstl-api_1.2_spec>1.0.5.Final</version.org.jboss.spec.javax.servlet.jstl.jboss-jstl-api_1.2_spec>
-         <version.org.jboss.logging.jboss-logging>3.1.4.GA</version.org.jboss.logging.jboss-logging>
+        <kie.wb.version>${version.org.kie}</kie.wb.version>
+        <drools.version>${version.org.kie}</drools.version>
+        <jbpm.version>${version.org.kie}</jbpm.version>
+        <powermock.version>${version.org.powermock}</powermock.version>
+        <guvnor.version>${version.org.kie}</guvnor.version>
+        <jackson.version>${version.com.fasterxml.jackson}</jackson.version>
     </properties>
+
+
 
     <licenses>
         <license>
@@ -148,7 +85,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>1.3.1</version>
                 <executions>
                     <execution>
                         <id>enforce-plugin-versions</id>
@@ -169,7 +105,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.7</version>
                 <configuration>
                     <retryFailedDeploymentCount>10</retryFailedDeploymentCount>
                 </configuration>
@@ -177,47 +112,38 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-install-plugin</artifactId>
-                <version>2.3.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.4</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.3.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.5</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
-                <version>2.4.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.8</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.5.1</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
@@ -227,12 +153,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.4.2</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -261,7 +185,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.15</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -297,11 +220,7 @@
                 <artifactId>drools-core</artifactId>
                 <version>${drools.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.chtijbug.drools</groupId>
-                <artifactId>guvnor-jaxb-entities</artifactId>
-                <version>${guvnor.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>org.drools</groupId>
                 <artifactId>drools-compiler</artifactId>
@@ -322,11 +241,7 @@
                 <artifactId>powermock-module-junit4</artifactId>
                 <version>${powermock.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.powermock</groupId>
-                <artifactId>powermock-api-mockito</artifactId>
-                <version>${powermock.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>org.eclipse.jdt.core.compiler</groupId>
                 <artifactId>ecj</artifactId>
@@ -340,18 +255,14 @@
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.1.2</version>
+                <version>1.0.9</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.11</version>
             </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-all</artifactId>
-                <version>1.9.5</version>
-            </dependency>
+
             <dependency>
                 <groupId>org.codehaus.jettison</groupId>
                 <artifactId>jettison</artifactId>
@@ -386,7 +297,7 @@
             <dependency>
                 <groupId>com.thoughtworks.xstream</groupId>
                 <artifactId>xstream</artifactId>
-                <version>1.4.7</version>
+                <version>${version.com.thoughtworks.xstream}</version>
             </dependency>
             <dependency>
                 <groupId>org.chtijbug.osgi</groupId>
@@ -394,9 +305,9 @@
                 <version>2.3.3</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.commons</groupId>
+                <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>1.3.2</version>
+                <version>${version.commons-io}</version>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
@@ -451,11 +362,7 @@
                 <artifactId>guava</artifactId>
                 <version>18.0</version>
             </dependency>
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>2.4</version>
-            </dependency>
+
 
             <dependency>
                 <groupId>com.squareup.retrofit</groupId>

@@ -68,27 +68,22 @@ public class DroolsAuthoringPerspective {
 
     @PostConstruct
     public void setup() {
-        com.google.gwt.user.client.Window.alert("beforsetup");
+
         docks.setup( "AuthoringPerspective", new DefaultPlaceRequest( "org.kie.guvnor.explorer" ) );
-        com.google.gwt.user.client.Window.alert("Aftersetup");
+
     }
 
-    public DroolsAuthoringPerspective() {
-        com.google.gwt.user.client.Window.alert("Start");
-    }
+
 
     @Perspective
     public PerspectiveDefinition getPerspective() {
-        com.google.gwt.user.client.Window.alert("beforegetPerspective");
         final PerspectiveDefinition perspective = new PerspectiveDefinitionImpl( MultiListWorkbenchPanelPresenter.class.getName() );
         perspective.setName( constants.project_authoring() );
-        com.google.gwt.user.client.Window.alert("afterPerspective");
         return perspective;
     }
 
     @WorkbenchMenu
     public Menus getMenus() {
-        com.google.gwt.user.client.Window.alert("beforeMenus");
         Menus tptp = MenuFactory
                 .newTopLevelMenu(constants.explore())
                 .menus()
@@ -143,7 +138,6 @@ public class DroolsAuthoringPerspective {
                 })
                 .endMenu()
                 .build();
-        com.google.gwt.user.client.Window.alert("afterMenus");
         return tptp;
     }
 

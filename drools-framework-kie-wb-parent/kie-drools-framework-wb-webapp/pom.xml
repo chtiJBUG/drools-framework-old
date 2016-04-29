@@ -39,126 +39,114 @@
 
     </properties>
 
+    <dependencyManagement>
     <dependencies>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>9.4-1203-jdbc4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.annotation</groupId>
-            <artifactId>jboss-annotations-api_1.1_spec</artifactId>
-            <scope>provided</scope>
-            <version>1.0.1.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.transaction</groupId>
-            <artifactId>jboss-transaction-api_1.1_spec</artifactId>
-            <scope>provided</scope>
-            <version>1.0.1.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.servlet</groupId>
-            <artifactId>jboss-servlet-api_3.0_spec</artifactId>
-            <scope>provided</scope>
-            <version>1.0.2.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.servlet.jsp</groupId>
-            <artifactId>jboss-jsp-api_2.2_spec</artifactId>
-            <scope>provided</scope>
-            <version>1.0.2.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.el</groupId>
-            <artifactId>jboss-el-api_2.2_spec</artifactId>
-            <scope>provided</scope>
-            <version>1.0.4.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.servlet.jstl</groupId>
-            <artifactId>jboss-jstl-api_1.2_spec</artifactId>
-            <scope>provided</scope>
-
-            <version>1.0.6.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.jms</groupId>
-            <artifactId>jboss-jms-api_1.1_spec</artifactId>
-            <scope>provided</scope>
-            <version>1.0.1.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.xml.ws</groupId>
-            <artifactId>jboss-jaxws-api_2.2_spec</artifactId>
-            <scope>provided</scope>
-            <version>2.0.2.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.ws.rs</groupId>
-            <artifactId>jboss-jaxrs-api_1.1_spec</artifactId>
-            <scope>provided</scope>
-            <version>1.0.1.Final</version>
-        </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
 
             <version>13.0.1</version>
         </dependency>
+            </dependencies>
+    </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.annotation</groupId>
+            <artifactId>jboss-annotations-api_1.1_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.transaction</groupId>
+            <artifactId>jboss-transaction-api_1.1_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.servlet</groupId>
+            <artifactId>jboss-servlet-api_3.0_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.servlet.jsp</groupId>
+            <artifactId>jboss-jsp-api_2.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.el</groupId>
+            <artifactId>jboss-el-api_2.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.servlet.jstl</groupId>
+            <artifactId>jboss-jstl-api_1.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.jms</groupId>
+            <artifactId>jboss-jms-api_1.1_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.xml.ws</groupId>
+            <artifactId>jboss-jaxws-api_2.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.ws.rs</groupId>
+            <artifactId>jboss-jaxrs-api_1.1_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.jboss.spec.javax.xml.bind</groupId>
             <artifactId>jboss-jaxb-api_2.2_spec</artifactId>
             <scope>provided</scope>
-            <version>1.0.4.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.spec.javax.security.jacc</groupId>
             <artifactId>jboss-jacc-api_1.4_spec</artifactId>
             <scope>provided</scope>
-            <version>1.0.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.spec.javax.ejb</groupId>
             <artifactId>jboss-ejb-api_3.1_spec</artifactId>
             <scope>provided</scope>
-            <version>1.0.2.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>jaxrs-api</artifactId>
             <scope>provided</scope>
-            <version>2.3.10.Final</version>
         </dependency>
         <dependency>
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
             <scope>provided</scope>
-            <version>1.0-SP4</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.0-api</artifactId>
             <scope>provided</scope>
-            <version>1.0.1.Final</version>
         </dependency>
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <scope>provided</scope>
-            <version>1.0.0.GA</version>
         </dependency>
         <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <scope>provided</scope>
-            <version>1</version>
         </dependency>
         <dependency>
             <groupId>com.github.gwtbootstrap</groupId>
             <artifactId>gwt-bootstrap</artifactId>
             <scope>provided</scope>
-            <version>2.2.1.0</version>
         </dependency>
 
         <dependency>
@@ -175,40 +163,33 @@
                     <groupId>javassist</groupId>
                 </exclusion>
             </exclusions>
-            <version>2.3.10.Final</version>
-
         </dependency>
 
         <dependency>
             <groupId>xalan</groupId>
             <artifactId>xalan</artifactId>
             <scope>provided</scope>
-            <version>2.7.1</version>
         </dependency>
         <dependency>
             <groupId>xalan</groupId>
             <artifactId>serializer</artifactId>
             <scope>provided</scope>
-            <version>2.7.1</version>
         </dependency>
         <dependency>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
             <scope>provided</scope>
-            <version>2.11.0</version>
         </dependency>
 
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
             <scope>provided</scope>
-            <version>1.6.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.abdera</groupId>
             <artifactId>abdera-i18n</artifactId>
-            <version>1.1.3</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.geronimo.specs</groupId>
@@ -219,7 +200,6 @@
         <dependency>
             <groupId>org.apache.abdera</groupId>
             <artifactId>abdera-core</artifactId>
-            <version>1.1.3</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -240,19 +220,16 @@
         <dependency>
             <groupId>org.kie.server</groupId>
             <artifactId>kie-server-api</artifactId>
-            <version>${kie.wb.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.kie.server</groupId>
             <artifactId>kie-server-controller-api</artifactId>
-            <version>${kie.wb.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kie-api</artifactId>
-            <version>${kie.wb.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie</groupId>
@@ -263,7 +240,6 @@
         <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kie-identity-session-provider</artifactId>
-            <version>${kie.wb.version}</version>
         </dependency>
 
 
@@ -272,7 +248,6 @@
         <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kie-ci</artifactId>
-            <version>${kie.wb.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -286,19 +261,16 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <scope>provided</scope>
-            <version>1.7.2</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <scope>provided</scope>
-            <version>1.0.9</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
             <scope>provided</scope>
-            <version>1.0.9</version>
         </dependency>
 
 
@@ -306,337 +278,275 @@
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
             <scope>provided</scope>
-            <version>1.7.2</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>log4j-over-slf4j</artifactId>
             <scope>provided</scope>
-            <version>1.7.2</version>
         </dependency>
 
         <!-- Models held within Drools -->
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-workbench-models-commons</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-workbench-models-datamodel-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-workbench-models-guided-dtable</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-workbench-models-guided-scorecard</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-workbench-models-guided-template</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-workbench-models-test-scenarios</artifactId>
-            <version>${drools.version}</version>
         </dependency>
 
         <!-- Guvnor -->
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-structure-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-structure-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-services-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-m2repo-editor-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-m2repo-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-m2repo-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-inbox-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-inbox-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-inbox-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-project-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-project-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-workingset-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-workingset-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-project-builder</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-message-console-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-message-console-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-message-console-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-organizationalunit-manager</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-services-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-structure-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-asset-mgmt-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-asset-mgmt-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-asset-mgmt-project</artifactId>
-            <version>${drools.version}</version>
         </dependency>
 
         <!-- Common -->
         <dependency>
             <groupId>org.kie.workbench.services</groupId>
             <artifactId>kie-wb-common-datamodel-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.services</groupId>
             <artifactId>kie-wb-common-datamodel-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.services</groupId>
             <artifactId>kie-wb-common-refactoring-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.widgets</groupId>
             <artifactId>kie-wb-common-ui</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.services</groupId>
             <artifactId>kie-wb-common-services-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.services</groupId>
             <artifactId>kie-wb-common-services-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-project-editor-client</artifactId>
-            <version>${drools.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-project-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-project-imports-editor-client</artifactId>
-            <version>${drools.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-search-screen-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-search-screen-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-search-screen-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-project-explorer-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-project-explorer-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-project-explorer-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-java-editor-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-java-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-default-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-default-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-server-ui-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-server-ui-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-contributors-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-contributors-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-contributors-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-social-home-page-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-social-home-page-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-social-home-page-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.services</groupId>
             <artifactId>kie-wb-common-data-modeller-core</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-data-modeller-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-data-modeller-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.workbench.screens</groupId>
             <artifactId>kie-wb-common-data-modeller-client</artifactId>
             <scope>provided</scope>
-            <version>${kie.wb.version}</version>
         </dependency>
 
         <!-- Drools Workbench Screens -->
@@ -644,186 +554,152 @@
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-guided-rule-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-guided-rule-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-guided-template-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-guided-template-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-guided-dtable-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-guided-dtable-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-guided-dtree-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-guided-dtree-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-guided-scorecard-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-guided-scorecard-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-drl-text-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-drl-text-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-enum-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-enum-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-factmodel-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-dsl-text-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-dsl-text-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-dtable-xls-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-dtable-xls-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-scorecard-xls-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-scorecard-xls-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-globals-editor-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-globals-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-globals-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-test-scenario-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-test-scenario-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-workitems-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-wb-workitems-editor-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.optaplanner</groupId>
             <artifactId>optaplanner-wb-domain-editor-api</artifactId>
-            <version>${kie.wb.version}</version>
         </dependency>
         <dependency>
             <groupId>org.optaplanner</groupId>
             <artifactId>optaplanner-wb-domain-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${kie.wb.version}</version>
         </dependency>
         <dependency>
             <groupId>org.optaplanner</groupId>
             <artifactId>optaplanner-wb-domain-editor-backend</artifactId>
-            <version>${kie.wb.version}</version>
         </dependency>
         <dependency>
             <groupId>org.optaplanner</groupId>
             <artifactId>optaplanner-wb-solver-editor-api</artifactId>
-            <version>${kie.wb.version}</version>
         </dependency>
         <dependency>
             <groupId>org.optaplanner</groupId>
             <artifactId>optaplanner-wb-solver-editor-client</artifactId>
             <scope>provided</scope>
-            <version>${kie.wb.version}</version>
         </dependency>
         <dependency>
             <groupId>org.optaplanner</groupId>
             <artifactId>optaplanner-wb-solver-editor-backend</artifactId>
-            <version>${kie.wb.version}</version>
         </dependency>
 
         <!-- jBPM Designer -->
@@ -831,17 +707,14 @@
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-designer-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-designer-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-designer-backend</artifactId>
-            <version>${drools.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.jbpm</groupId>
@@ -858,36 +731,30 @@
         <dependency>
             <groupId>org.dashbuilder</groupId>
             <artifactId>dashbuilder-dataset-sql</artifactId>
-            <version>0.4.0.Final</version>
         </dependency>
         <dependency>
             <groupId>org.dashbuilder</groupId>
             <artifactId>dashbuilder-dataset-api</artifactId>
-            <version>0.4.0.Final</version>
         </dependency>
         <dependency>
             <groupId>org.dashbuilder</groupId>
             <artifactId>dashbuilder-dataset-core</artifactId>
-            <version>0.4.0.Final</version>
         </dependency>
         <dependency>
             <groupId>org.dashbuilder</groupId>
             <artifactId>dashbuilder-displayer-api</artifactId>
-            <version>0.4.0.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.dashbuilder</groupId>
             <artifactId>dashbuilder-common-client</artifactId>
             <scope>provided</scope>
-            <version>0.4.0.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.dashbuilder</groupId>
             <artifactId>dashbuilder-dataset-client</artifactId>
             <scope>provided</scope>
-            <version>0.4.0.Final</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -904,49 +771,42 @@
             <groupId>org.dashbuilder</groupId>
             <artifactId>dashbuilder-dataset-editor</artifactId>
             <scope>provided</scope>
-            <version>0.4.0.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.dashbuilder</groupId>
             <artifactId>dashbuilder-displayer-client</artifactId>
             <scope>provided</scope>
-            <version>0.4.0.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.dashbuilder</groupId>
             <artifactId>dashbuilder-displayer-screen</artifactId>
             <scope>provided</scope>
-            <version>0.4.0.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.dashbuilder</groupId>
             <artifactId>dashbuilder-displayer-editor</artifactId>
             <scope>provided</scope>
-            <version>0.4.0.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.dashbuilder</groupId>
             <artifactId>dashbuilder-renderer-default</artifactId>
             <scope>provided</scope>
-            <version>0.4.0.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.dashbuilder</groupId>
             <artifactId>dashbuilder-renderer-google</artifactId>
             <scope>provided</scope>
-            <version>0.4.0.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.dashbuilder</groupId>
             <artifactId>dashbuilder-widgets</artifactId>
             <scope>provided</scope>
-            <version>0.4.0.Final</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -963,7 +823,6 @@
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-all</artifactId>
-            <version>${version.org.uberfire}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.jboss.errai</groupId>
@@ -974,34 +833,28 @@
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-api</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-commons</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-metadata-api</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-backend-api</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-client-api</artifactId>
 
             <scope>provided</scope>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-io</artifactId>
-            <version>${version.org.uberfire}</version>
             <exclusions>
                 <exclusion>
                     <groupId>log4j</groupId>
@@ -1012,59 +865,49 @@
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-nio2-model</artifactId>
-                <version>${version.org.uberfire}</version>
         </dependency>
 
         <!-- UberFire Security (Extension) -->
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-security-api</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-security-client</artifactId>
             <scope>provided</scope>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-servlet-security</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
 
         <!-- UberFire Plugins Extension -->
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-runtime-plugins-backend</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-runtime-plugins-client</artifactId>
-            <version>${version.org.uberfire}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-commons-editor-api</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-runtime-plugins-api</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-widgets-properties-editor-api</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-widgets-service-api</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
 
         <!-- UberFire Apps -->
@@ -1072,49 +915,41 @@
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-apps-client</artifactId>
             <scope>provided</scope>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-apps-backend</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
 
         <!-- Kie UF Extensions -->
         <dependency>
             <groupId>org.kie.uberfire</groupId>
             <artifactId>kie-uberfire-social-activities-api</artifactId>
-            <version>${kie.wb.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie.uberfire</groupId>
             <artifactId>kie-uberfire-social-activities-client</artifactId>
             <scope>provided</scope>
-            <version>${kie.wb.version}</version>
         </dependency>
 
         <!-- Layout Editor API -->
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-layout-editor-api</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
 
         <!-- Search -->
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-metadata-backend-lucene</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-metadata-commons-io</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
-            <version>4.0.0</version>
         </dependency>
 
         <!-- Other UberFire -->
@@ -1122,60 +957,50 @@
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-workbench-processors</artifactId>
             <scope>provided</scope>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-widgets-commons</artifactId>
             <scope>provided</scope>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-widgets-service-backend</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-workbench-client</artifactId>
             <scope>provided</scope>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-workbench-client-backend</artifactId>
             <scope>provided</scope>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-workbench-client-views-patternfly</artifactId>
             <scope>provided</scope>
-            <version>${version.org.uberfire}</version>
         </dependency>
 
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-backend-server</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-client</artifactId>
             <scope>provided</scope>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-client-all</artifactId>
             <scope>provided</scope>
-            <version>${version.org.uberfire}</version>
         </dependency>
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-js</artifactId>
             <scope>provided</scope>
-            <version>${version.org.uberfire}</version>
         </dependency>
 
         <!-- Uberfire Docks extension -->
@@ -1183,36 +1008,30 @@
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-simple-docks-client</artifactId>
             <scope>provided</scope>
-            <version>${version.org.uberfire}</version>
         </dependency>
 
         <!-- Errai -->
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-common</artifactId>
-            <version>3.2.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-ioc</artifactId>
-            <version>3.2.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-codegen-gwt</artifactId>
             <scope>provided</scope>
-            <version>3.2.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-security-server</artifactId>
-            <version>3.2.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-security-client</artifactId>
             <scope>provided</scope>
-            <version>3.2.3.Final</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.jboss.spec.javax.interceptor</groupId>
@@ -1226,7 +1045,6 @@
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-ui</artifactId>
             <scope>provided</scope>
-            <version>3.2.3.Final</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -1247,40 +1065,33 @@
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-data-binding</artifactId>
             <scope>provided</scope>
-            <version>3.2.3.Final</version>
         </dependency>
 
         <!-- Errai AS -->
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-jboss-as-support</artifactId>
-            <version>3.2.3.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-cdi-jboss</artifactId>
             <scope>provided</scope>
-            <version>3.2.3.Final</version>
         </dependency>
 
         <!-- CDI Integration Modules -->
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-cdi-client</artifactId>
-            <version>3.2.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-javax-enterprise</artifactId>
             <scope>provided</scope>
-
-            <version>3.2.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-weld-integration</artifactId>
-            <version>3.0.6.Final</version>
         </dependency>
 
         <!-- GWT and GWT Extensions -->
@@ -1288,40 +1099,34 @@
             <groupId>de.benediktmeurer.gwt-slf4j</groupId>
             <artifactId>gwt-slf4j</artifactId>
             <scope>provided</scope>
-            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
             <scope>provided</scope>
-            <version>2.7.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.gwtbootstrap3</groupId>
             <artifactId>gwtbootstrap3</artifactId>
-            <version>0.9.1</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.gwtbootstrap3</groupId>
             <artifactId>gwtbootstrap3-extras</artifactId>
-            <version>0.9.1</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.owasp.encoder</groupId>
             <artifactId>encoder</artifactId>
-            <version>1.1</version>
         </dependency>
 
         <!--JUnit for Test scenarios -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
         </dependency>
 
         <!--
@@ -1348,120 +1153,99 @@
         <dependency>
             <groupId>org.guvnor</groupId>
             <artifactId>guvnor-rest-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
 
         <!-- Form Modeler dependencies -->
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-form-modeler-renderer-api</artifactId>
-            <version>${kie.wb.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-form-modeler-service-core</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-form-modeler-bpmn-form-builder</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-form-modeler-api</artifactId>
-            <version>${kie.wb.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-form-modeler-renderer-client</artifactId>
-            <version>${kie.wb.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-form-modeler-renderer-backend</artifactId>
-            <version>${kie.wb.version}</version>
         </dependency>
 
         <!-- jBPM Console dependencies -->
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-console-ng-human-tasks-forms-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-console-ng-generic-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-console-ng-asset-mgmt-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-console-ng-business-domain-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-console-ng-human-tasks-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-console-ng-human-tasks-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-console-ng-human-tasks-forms-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
 
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-console-ng-human-tasks-forms-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-console-ng-process-runtime-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-console-ng-generic-forms-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-console-ng-generic-forms-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-console-ng-process-runtime-forms-client</artifactId>
             <scope>provided</scope>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-console-ng-process-runtime-forms-backend</artifactId>
-            <version>${drools.version}</version>
         </dependency>
 
         <!-- org.jbpm -->
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-console-ng-data-filters-client</artifactId>
-            <version>${kie.wb.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -1469,32 +1253,26 @@
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-services-api</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-kie-services</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-services-cdi</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-runtime-manager</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-human-task-audit</artifactId>
-            <version>${drools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-human-task-core</artifactId>
-            <version>${drools.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.activation</groupId>
@@ -1510,7 +1288,6 @@
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-workitems</artifactId>
-            <version>${drools.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.cxf</groupId>
@@ -1550,14 +1327,12 @@
         <dependency>
             <groupId>org.kie.uberfire</groupId>
             <artifactId>i18n-taglib</artifactId>
-            <version>${drools.version}</version>
         </dependency>
 
         <!-- hack to disable sisu annotation processing (that scans client side types) -->
         <dependency>
             <groupId>org.eclipse.sisu</groupId>
             <artifactId>org.eclipse.sisu.inject</artifactId>
-            <version>0.3.0.M1</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -1566,33 +1341,28 @@
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-security-management-api</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
 
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-security-management-backend</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
 
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-security-management-client</artifactId>
-            <version>${version.org.uberfire}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-widgets-security-management</artifactId>
-            <version>${version.org.uberfire}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-security-management-client-wb</artifactId>
-            <version>${version.org.uberfire}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -1600,20 +1370,17 @@
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-security-management-wildfly</artifactId>
-            <version>${version.org.uberfire}</version>
         </dependency>
 
         <!-- test -->
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
-            <version>0.9.10</version>
             <!--<scope>test</scope>--> <!-- Required at runtime as well (transitive dep), so can't have test scope -->
         </dependency>
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.8.3</version>
             <!--<scope>test</scope>--> <!-- Required at runtime as well (transitive dep), so can't have test scope -->
         </dependency>
     </dependencies>
@@ -2026,12 +1793,10 @@
                 <dependency>
                     <groupId>org.kie</groupId>
                     <artifactId>kie-drools-wb-home-page-community</artifactId>
-                    <version>${kie.wb.version}</version>
                 </dependency>
                 <dependency>
                     <groupId>org.kie.workbench.screens</groupId>
                     <artifactId>kie-wb-common-home-client</artifactId>
-                    <version>${kie.wb.version}</version>
                 </dependency>
             </dependencies>
 

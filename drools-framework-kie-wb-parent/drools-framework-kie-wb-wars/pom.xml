@@ -35,125 +35,101 @@
         <dependency>
             <groupId>ch.qos.cal10n</groupId>
             <artifactId>cal10n-api</artifactId>
-            <version>0.7.7</version>
         </dependency>
         <dependency>
             <groupId>javax.activation</groupId>
             <artifactId>activation</artifactId>
-            <version>1.1.1</version>
         </dependency>
         <dependency>
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
-            <version>1.0-SP4</version>
         </dependency>
         <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
-            <version>1</version>
         </dependency>
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>1.4.5</version>
         </dependency>
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
-            <version>1.0.0.GA</version>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.spec.javax.annotation</groupId>
             <artifactId>jboss-annotations-api_1.1_spec</artifactId>
-            <version>1.0.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.spec.javax.interceptor</groupId>
             <artifactId>jboss-interceptors-api_1.1_spec</artifactId>
-            <version>1.0.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.spec.javax.servlet.jstl</groupId>
             <artifactId>jboss-jstl-api_1.2_spec</artifactId>
-            <version>1.0.9.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.spec.javax.jms</groupId>
             <artifactId>jboss-jms-api_1.1_spec</artifactId>
-            <version>1.0.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.spec.javax.xml.ws</groupId>
             <artifactId>jboss-jaxws-api_2.2_spec</artifactId>
-            <version>2.0.2.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.spec.javax.ws.rs</groupId>
             <artifactId>jboss-jaxrs-api_1.1_spec</artifactId>
-            <version>1.0.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.spec.javax.xml.bind</groupId>
             <artifactId>jboss-jaxb-api_2.2_spec</artifactId>
-            <version>1.0.4.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.spec.javax.ejb</groupId>
             <artifactId>jboss-ejb-api_3.1_spec</artifactId>
-            <version>1.0.2.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>jaxrs-api</artifactId>
-            <version>2.3.10.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxrs</artifactId>
-            <version>2.3.10.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-cdi</artifactId>
-            <version>2.3.10.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jackson-provider</artifactId>
-            <version>2.3.10.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxb-provider</artifactId>
-            <version>2.3.10.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.weld</groupId>
             <artifactId>weld-api</artifactId>
-            <version>1.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.weld</groupId>
             <artifactId>weld-core</artifactId>
-            <version>1.1.33.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.weld.servlet</groupId>
             <artifactId>weld-servlet-core</artifactId>
-            <version>1.1.33.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.weld</groupId>
             <artifactId>weld-spi</artifactId>
-            <version>1.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.weld.se</groupId>
             <artifactId>weld-se-core</artifactId>
-            <version>1.1.33.Final</version>
             <exclusions>
                 <exclusion>
                     <artifactId>el-api</artifactId>
@@ -171,114 +147,86 @@
         <dependency>
             <groupId>net.jcip</groupId>
             <artifactId>jcip-annotations</artifactId>
-            <version>1.0</version>
         </dependency>
 
         <dependency>
             <groupId>xalan</groupId>
             <artifactId>xalan</artifactId>
-            <version>2.7.1</version>
         </dependency>
         <dependency>
             <groupId>xalan</groupId>
             <artifactId>serializer</artifactId>
-            <version>2.7.1</version>
         </dependency>
         <dependency>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
-            <version>2.9.1</version>
         </dependency>
         <dependency>
             <groupId>xml-resolver</groupId>
             <artifactId>xml-resolver</artifactId>
-            <version>1.2</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr</artifactId>
-            <version>3.5</version>
-        </dependency>
 
 
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
-            <version>1.6.1</version>
         </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>2.2.11</version>
-        </dependency>
+
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-xjc</artifactId>
-            <version>2.2.11</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.logging</groupId>
             <artifactId>jboss-logging</artifactId>
-            <version>3.1.4.GA</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.7.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.neethi</groupId>
             <artifactId>neethi</artifactId>
-            <version>3.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-ext</artifactId>
-            <version>1.7.2</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk14</artifactId>
-            <version>1.7.2</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>woodstox-core-asl</artifactId>
-            <version>4.2.0</version>
         </dependency>
         <dependency>
             <groupId>wsdl4j</groupId>
             <artifactId>wsdl4j</artifactId>
-            <version>1.6.3</version>
         </dependency>
 
 
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.0-api</artifactId>
-            <version>1.0.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>${version.org.hibernate}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>${version.org.hibernate}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>4.3.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate.common</groupId>
             <artifactId>hibernate-commons-annotations</artifactId>
-            <version>4.0.2.Final</version>
         </dependency>
 
         <!-- UF Security management provider for Tomcat. -->
@@ -291,7 +239,6 @@
         <dependency>
             <groupId>org.scannotation</groupId>
             <artifactId>scannotation</artifactId>
-            <version>1.0.3</version>
         </dependency>
 
 
@@ -300,12 +247,10 @@
         <dependency>
             <groupId>org.jbpm</groupId>
             <artifactId>jbpm-services-ejb-timer</artifactId>
-            <version>${kie.wb.version}</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>stax2-api</artifactId>
-            <version>3.1.1</version>
         </dependency>
 
     </dependencies>
@@ -430,7 +375,6 @@
                 <dependency>
                     <groupId>org.chtijbug.drools</groupId>
                     <artifactId>kie-drools-framework-wb-webapp</artifactId>
-                    <version>${project.version}</version>
                     <type>war</type>
                 </dependency>
             </dependencies>
@@ -455,7 +399,6 @@
                     <dependency>
                         <groupId>org.chtijbug.drools</groupId>
                         <artifactId>kie-drools-framework-wb-webapp</artifactId>
-                        <version>${project.version}</version>
                         <type>war</type>
                         <classifier>redhat</classifier>
                     </dependency>

@@ -40,14 +40,14 @@
     </properties>
 
     <dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
+        <dependencies>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
 
-            <version>13.0.1</version>
-        </dependency>
-            </dependencies>
+                <version>13.0.1</version>
+            </dependency>
+        </dependencies>
     </dependencyManagement>
     <dependencies>
         <dependency>
@@ -1129,26 +1129,14 @@
             <artifactId>junit</artifactId>
         </dependency>
 
-        <!--
-                <dependency>
-                    <groupId>org.chtijbug.drools</groupId>
-                    <artifactId>kie-drools-framework-rest-backend</artifactId>
-                    <exclusions>
-                        <exclusion>
-                            <artifactId>activation</artifactId>
-                            <groupId>javax.activation</groupId>
-                        </exclusion>
-                    </exclusions>
-                    <version>${project.version}</version>
-                </dependency>
 
-                <dependency>
-                    <groupId>org.chtijbug.drools</groupId>
-                    <artifactId>kie-drools-framework-rest-client</artifactId>
-                    <scope>provided</scope>
-                    <version>${project.version}</version>
-                </dependency>
-         -->
+        <dependency>
+            <groupId>org.chtijbug.drools</groupId>
+            <artifactId>kie-drools-framework-rest-backend</artifactId>
+        </dependency>
+
+
+
         <!-- Guvnor REST api -->
         <dependency>
             <groupId>org.guvnor</groupId>
@@ -1428,7 +1416,7 @@
                         <compileSourcesArtifacts>
                             <!-- Kie Server needed by Exec Server UI -->
                             <compileSourcesArtifact>org.kie:kie-api</compileSourcesArtifact>
-                             <compileSourcesArtifact>org.kie.server:kie-server-api</compileSourcesArtifact>
+                            <compileSourcesArtifact>org.kie.server:kie-server-api</compileSourcesArtifact>
 
 
                             <compileSourcesArtifact>org.kie.server:kie-server-controller-api</compileSourcesArtifact>
@@ -1474,10 +1462,14 @@
                             <compileSourcesArtifact>org.dashbuilder:dashbuilder-dataset-client</compileSourcesArtifact>
                             <compileSourcesArtifact>org.dashbuilder:dashbuilder-dataset-editor</compileSourcesArtifact>
                             <compileSourcesArtifact>org.dashbuilder:dashbuilder-displayer-api</compileSourcesArtifact>
-                            <compileSourcesArtifact>org.dashbuilder:dashbuilder-displayer-client</compileSourcesArtifact>
-                            <compileSourcesArtifact>org.dashbuilder:dashbuilder-displayer-screen</compileSourcesArtifact>
-                            <compileSourcesArtifact>org.dashbuilder:dashbuilder-displayer-editor</compileSourcesArtifact>
-                            <compileSourcesArtifact>org.dashbuilder:dashbuilder-renderer-default</compileSourcesArtifact>
+                            <compileSourcesArtifact>org.dashbuilder:dashbuilder-displayer-client
+                            </compileSourcesArtifact>
+                            <compileSourcesArtifact>org.dashbuilder:dashbuilder-displayer-screen
+                            </compileSourcesArtifact>
+                            <compileSourcesArtifact>org.dashbuilder:dashbuilder-displayer-editor
+                            </compileSourcesArtifact>
+                            <compileSourcesArtifact>org.dashbuilder:dashbuilder-renderer-default
+                            </compileSourcesArtifact>
                             <compileSourcesArtifact>org.dashbuilder:dashbuilder-renderer-google</compileSourcesArtifact>
                             <!-- Guvnor -->
                             <compileSourcesArtifact>org.guvnor:guvnor-asset-mgmt-api</compileSourcesArtifact>
@@ -1702,8 +1694,8 @@
                     <execution>
                         <id>gwt-compile</id>
                         <goals>
-              <!-- Do not use 'resources' goal as it does not play well with resource filtering and is adding Java
-                   source files into the build output directory (and they then end up in the WAR). -->
+                            <!-- Do not use 'resources' goal as it does not play well with resource filtering and is adding Java
+                                 source files into the build output directory (and they then end up in the WAR). -->
                             <goal>compile</goal>
                         </goals>
                     </execution>
@@ -1738,7 +1730,8 @@
                         <fileset>
                             <directory>${basedir}</directory>
                             <includes>
-                                <include>src/main/webapp/org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp/</include>
+                                <include>src/main/webapp/org.chtijbug.workbench.drools.KIEChtijbugDroolsWebapp/
+                                </include>
                                 <include>src/main/webapp/WEB-INF/deploy/</include>
                                 <include>src/main/webapp/WEB-INF/classes/</include>
                                 <include>src/main/webapp/WEB-INF/lib/</include>

@@ -65,6 +65,7 @@
         <module>drools-framework-runtime-entity</module>
         <module>drools-framework-rest-guvnor</module>
         <module>drools-framework-kie-wb-parent</module>
+        <module>drools-framework-examples</module>
         <!--module>drools-service-runner-archetype</module-->
         <!--module>maven-guvnor-install-pojo-plugin</module-->
         <!--module>drools-runner-generator</module-->
@@ -195,6 +196,17 @@
     <dependencyManagement>
 
         <dependencies>
+            <dependency>
+                <groupId>org.chtijbug.drools</groupId>
+                <artifactId>kie-drools-framework-rest-backend</artifactId>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>activation</artifactId>
+                        <groupId>javax.activation</groupId>
+                    </exclusion>
+                </exclusions>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.chtijbug.drools</groupId>
                 <artifactId>kie-drools-framework-wb-webapp</artifactId>

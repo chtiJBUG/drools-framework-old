@@ -4,7 +4,6 @@ package org.chtijbug.drools.guvnor.rest;
 import org.drools.guvnor.server.jaxrs.jaxb.Asset;
 import retrofit.http.*;
 
-import javax.ws.rs.PathParam;
 import java.util.Collection;
 import java.util.List;
 

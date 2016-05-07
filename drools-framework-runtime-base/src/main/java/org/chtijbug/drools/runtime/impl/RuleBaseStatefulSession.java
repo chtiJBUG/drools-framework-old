@@ -508,4 +508,30 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
     public Long nextEventId() {
         return this.eventCounter.next();
     }
+
+    @Override
+    public Object fireAllRulesAndStartProcessWithParam(Object inputObject, String processName) throws DroolsChtijbugException{
+
+        DroolsFactObject inputDroolsObject = null;
+        DroolsFactObject outputDroolsObject = null;
+        if (inputObject != null) {
+            this.insertByReflection(inputObject);
+            inputDroolsObject = DroolsFactObjectFactory.createFactObject(inputObject);
+        }
+        Map<String,Object> maps = new HashMap<String,Object>();
+        maps.put("inputObject",inputObject);
+        if (processName != null && processName.length() > 0) {
+            this.startProcess(processName, maps);
+        }
+        this.fireAllRules();
+        if (inputDroolsObject != null) {
+            outputDroolsObject = DroolsFactObjectFactory.createFactObject(inputObject);
+        }
+        if (this.historyListener != null) {
+            SessionFireAllRulesAndStartProcess sessionFireAllRulesAndStartProcess = new SessionFireAllRulesAndStartProcess(eventCounter.next(), this.ruleBaseID, this.sessionId, inputDroolsObject, outputDroolsObject);
+            this.addHistoryElement(sessionFireAllRulesAndStartProcess);
+        }
+        return inputObject;
+
+    }
 }

@@ -45,9 +45,18 @@ public class WorkbenchKnowledgeResource implements Serializable, KnowledgeResour
         this.version = version;
     }
 
+    public WorkbenchKnowledgeResource(String guvnor_url, String groupId, String artifactId, String version, String userName, String password) {
+        this(guvnor_url,groupId,artifactId, version);
+        this.userName=userName;
+        this.password=password;
+    }
+
 
     public static WorkbenchKnowledgeResource createGuvnorRessource(String guvnor_url, String groupId, String artifactID, String version) {
         return new WorkbenchKnowledgeResource(guvnor_url, groupId, artifactID, version);
+    }
+    public static WorkbenchKnowledgeResource createGuvnorRessource(String guvnor_url, String groupId, String artifactID, String version, String userName, String password) {
+        return new WorkbenchKnowledgeResource(guvnor_url, groupId, artifactID, version,userName,password);
     }
     public WorkbenchKnowledgeResource() {
     }

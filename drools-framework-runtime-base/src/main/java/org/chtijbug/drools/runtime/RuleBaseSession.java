@@ -62,6 +62,8 @@ public interface RuleBaseSession {
 
     public Object fireAllRulesAndStartProcess(Object inputObject, String processName) throws DroolsChtijbugException;
 
+    public Object fireAllRulesAndStartProcessWithParam(Object inputObject, String processName) throws DroolsChtijbugException;
+
     public void startProcess(String processName);
 
     public void dispose();

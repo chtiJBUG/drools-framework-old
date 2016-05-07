@@ -26,11 +26,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * To change this template use File | Settings | File Templates.
  */
 public class FactHistoryEventTest {
-    private FileKnowledgeResource fibonacciFile;
 
     @Before
     public void justBefore(){
-        fibonacciFile = FileKnowledgeResource.createDRLClassPathResource("fibonacci.drl");
+        //fibonacciFile = FileKnowledgeResource.createDRLClassPathResource("fibonacci.drl");
     }
     @Test
     public void KnowledgeSessionFact() throws DroolsChtijbugException {
@@ -42,7 +41,7 @@ public class FactHistoryEventTest {
                 historyEvents.add(newHistoryEvent);
             }
         };
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList(fibonacciFile));
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(new Long(1L),historyListener, "com.pymmasoftware.test", "fibonacci","1.0.0_SNAPSHOT", "fibonacci.drl");
         Long rulePackageID = ruleBasePackage.getRuleBaseID();
         RuleBaseSession ruleBaseSession = ruleBasePackage.createRuleBaseSession();
         Fibonacci fibonacci = new Fibonacci(1);
@@ -136,7 +135,7 @@ public class FactHistoryEventTest {
                 historyEvents.add(newHistoryEvent);
             }
         };
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList(fibonacciFile));
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(new Long(1L),historyListener, "com.pymmasoftware.test", "fibonacci","1.0.0_SNAPSHOT", "fibonacci.drl");
         Long rulePackageID = ruleBasePackage.getRuleBaseID();
 
         RuleBaseSession ruleBaseSession = ruleBasePackage.createRuleBaseSession();

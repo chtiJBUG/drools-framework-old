@@ -30,6 +30,8 @@ public interface RuleBasePackage {
 
     RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute) throws DroolsChtijbugException;
 
+    RuleBaseSession createRuleBaseSession(int maxNumberRulesToExecute, HistoryListener sessionHistoryListener) throws DroolsChtijbugException;
+
     public void loadKBase(String version) throws DroolsChtijbugException;
 
     public HistoryListener getHistoryListener();
@@ -38,5 +40,4 @@ public interface RuleBasePackage {
 
     public void dispose();
 
-    void RecreateKBaseWithNewResources(List<KnowledgeResource> droolsResources);
 }

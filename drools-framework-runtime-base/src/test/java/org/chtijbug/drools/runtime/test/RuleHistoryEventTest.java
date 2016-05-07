@@ -30,15 +30,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class RuleHistoryEventTest {
 
-    private FileKnowledgeResource fibonacciFile;
-    private FileKnowledgeResource ruleflow2File;
-    private FileKnowledgeResource ruleFlowProcess2File;
+
 
     @Before
     public void justBefore(){
-        fibonacciFile =   FileKnowledgeResource.createDRLClassPathResource("fibonacci.drl");
-        ruleflow2File = FileKnowledgeResource.createDRLClassPathResource("ruleflow2.drl");
-        ruleFlowProcess2File = FileKnowledgeResource.createDRLClassPathResource("RuleFlowProcess2.bpmn2");
+     //   fibonacciFile =   FileKnowledgeResource.createDRLClassPathResource("fibonacci.drl");
+      //  ruleflow2File = FileKnowledgeResource.createDRLClassPathResource("ruleflow2.drl");
+      //  ruleFlowProcess2File = FileKnowledgeResource.createDRLClassPathResource("RuleFlowProcess2.bpmn2");
     }
     @Test
     public void KnowledgeBaseFireAllRules() throws DroolsChtijbugException {
@@ -50,7 +48,7 @@ public class RuleHistoryEventTest {
                 historyEvents.add(newHistoryEvent);
             }
         };
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList(fibonacciFile));
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,historyListener, "com.pymmasoftware.test", "fibonacci", "1.0.0_SNAPSHOT","fibonacci.drl");
         Long rulePackageID = ruleBasePackage.getRuleBaseID();
 
         RuleBaseSession ruleBaseSession1 = ruleBasePackage.createRuleBaseSession();
@@ -90,7 +88,7 @@ public class RuleHistoryEventTest {
                 historyEvents.add(newHistoryEvent);
             }
         };
-        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,historyListener, "com.pymmasoftware.test", "fibonacci", Arrays.asList(ruleflow2File, ruleFlowProcess2File));
+        RuleBasePackage ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,historyListener, "com.pymmasoftware.test", "fibonacci", "1.0.0_SNAPSHOT","ruleflow2.drl","RuleFlowProcess2.bpmn2");
         Long rulePackageID = ruleBasePackage.getRuleBaseID();
 
         RuleBaseSession ruleBaseSession1 = ruleBasePackage.createRuleBaseSession();

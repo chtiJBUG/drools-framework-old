@@ -32,7 +32,9 @@ public class KnowledgeModule {
     private ReleaseId releaseId;
     private boolean fileBaseModule = false;
 
-    public KnowledgeModule(Long ruleBaseId, HistoryListener historyListener, String groupId, String artifactId,String version, EventCounter sharedCounter) {
+    private WorkbenchClient workbenchClient;
+
+    public KnowledgeModule(Long ruleBaseId, HistoryListener historyListener, String groupId, String artifactId, String version, EventCounter sharedCounter) {
         this.ruleBaseId = ruleBaseId;
         this.historyListener = historyListener;
         this.groupId = groupId;
@@ -47,10 +49,6 @@ public class KnowledgeModule {
 
     public void addAllFiles(List<FileKnowledgeResource> files) {
         for (FileKnowledgeResource file : files) {
-
-
-
-
             addRuleFile(groupId + ".rules", file);
         }
     }
@@ -65,7 +63,7 @@ public class KnowledgeModule {
             try {
                 historyListener.fireEvent(
                         new KnowledgeBaseAddResourceEvent(
-                                sharedCounter.next(), new Date(), this.ruleBaseId,ruleResource));
+                                sharedCounter.next(), new Date(), this.ruleBaseId, ruleResource));
             } catch (DroolsChtijbugException e) {
                 throw propagate(e);
             }
@@ -87,16 +85,17 @@ public class KnowledgeModule {
 
     public void addWorkbenchResource(String workbenchUrl, String username, String password) {
         try (WorkbenchClient client = new WorkbenchClient(workbenchUrl, username, password)) {
+            this.workbenchClient = client;
             Resource resource = kieServices.getResources().newInputStreamResource(client.getWorkbenchResource(this));
             this.kieRepository.addKieModule(resource);
             if (historyListener != null)
                 try {
-                    WorkbenchKnowledgeResource workbenchRuleResource = new WorkbenchKnowledgeResource(workbenchUrl,this.groupId,this.artifactId,this.version);
+                    WorkbenchKnowledgeResource workbenchRuleResource = new WorkbenchKnowledgeResource(workbenchUrl, this.groupId, this.artifactId, this.version);
                     historyListener.fireEvent(
                             new KnowledgeBaseAddResourceEvent(
                                     sharedCounter.next(), new Date(), this.ruleBaseId,
                                     workbenchRuleResource));
-                } catch ( DroolsChtijbugException e) {
+                } catch (DroolsChtijbugException e) {
                     throw propagate(e);
                 }
         }
@@ -114,4 +113,7 @@ public class KnowledgeModule {
         return version;
     }
 
+    public WorkbenchClient getWorkbenchClient() {
+        return workbenchClient;
+    }
 }

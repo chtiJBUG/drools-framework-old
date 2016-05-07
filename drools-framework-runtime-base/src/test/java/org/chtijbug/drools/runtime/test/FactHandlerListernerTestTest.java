@@ -23,11 +23,11 @@ import java.util.Arrays;
 public class FactHandlerListernerTestTest {
     static RuleBaseSession session;
     static RuleBasePackage ruleBasePackage;
-    private FileKnowledgeResource insert1File;
+
 
     @Before
     public void justBefore(){
-        insert1File = FileKnowledgeResource.createDRLClassPathResource("insert1.drl");
+      //  insert1File = FileKnowledgeResource.createDRLClassPathResource("insert1.drl");
     }
 
     /**
@@ -51,7 +51,7 @@ public class FactHandlerListernerTestTest {
 
     @Test
     public void test1ObjectInserted() throws Exception {
-        ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,"com.pymmasoftware.test", "fibonacci", Arrays.asList(insert1File));
+        ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(new Long(1L), "com.pymmasoftware.test", "fibonacci","1.0.0_SNAPSHOT)", "insert1.drl");
         session = ruleBasePackage.createRuleBaseSession();
         Fibonacci newObject = new Fibonacci(0);
         session.insertObject(newObject);
@@ -75,7 +75,7 @@ public class FactHandlerListernerTestTest {
 
     @Test
     public void test1ObjectUpdated() throws Exception {
-        ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,"com.pymmasoftware.test", "fibonacci", Arrays.asList(insert1File));
+        ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(new Long(1L), "com.pymmasoftware.test", "fibonacci","1.0.0_SNAPSHOT)", "insert1.drl");
         session = ruleBasePackage.createRuleBaseSession();
         Fibonacci newObject = new Fibonacci(0);
         session.insertObject(newObject);
@@ -110,7 +110,7 @@ public class FactHandlerListernerTestTest {
 
     @Test
     public void retracted() throws Exception {
-        ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,"com.pymmasoftware.test", "fibonacci", Arrays.asList(insert1File));
+        ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(new Long(1L), "com.pymmasoftware.test", "fibonacci","1.0.0_SNAPSHOT)", "insert1.drl");
         session = ruleBasePackage.createRuleBaseSession();
         Fibonacci newObject = new Fibonacci(0);
         session.insertObject(newObject);
@@ -135,7 +135,7 @@ public class FactHandlerListernerTestTest {
 
     @Test
     public void test1RuleFired() throws Exception {
-        ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,"com.pymmasoftware.test", "fibonacci", Arrays.asList(insert1File));
+        ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(new Long(1L), "com.pymmasoftware.test", "fibonacci","1.0.0_SNAPSHOT)", "insert1.drl");
         session = ruleBasePackage.createRuleBaseSession();
         session.fireAllRules();
         Assert.assertEquals(session.listRules().size(), 1);

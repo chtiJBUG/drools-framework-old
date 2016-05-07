@@ -36,7 +36,7 @@ public class RuleBaseStatefullSessionfibonacciTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         fibonacciFile = FileKnowledgeResource.createDRLClassPathResource("fibonacci.drl");
-        ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,"com.pymmasoftware.test", "fibonacci", Arrays.asList(fibonacciFile));
+        ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(new Long(1L), "com.pymmasoftware.test", "fibonacci","1.0.0_SNAPSHOT", "fibonacci.drl");
     }
 
     /**

@@ -25,11 +25,11 @@ import static org.junit.Assert.fail;
  */
 public class RuleBasePackageTestCase {
 
-    private FileKnowledgeResource fibonacciFile;
+
 
     @Before
     public void justBefore(){
-        fibonacciFile = FileKnowledgeResource.createDRLClassPathResource("fibonacci.drl");
+       // fibonacciFile = FileKnowledgeResource.createDRLClassPathResource("fibonacci.drl");
     }
 
     @Test
@@ -38,7 +38,7 @@ public class RuleBasePackageTestCase {
 
         try {
             XStream xstream = new XStream();
-            RuleBasePackage ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,"com.pymmasoftware.test", "fibonacci", Arrays.asList(fibonacciFile));
+            RuleBasePackage ruleBasePackage = RuleBaseBuilder.createRuleBasePackage(1L,"com.pymmasoftware.test", "fibonacci", "1.0.0_SNAPSHOT","fibonacci.drl");
             String pkgXML = xstream.toXML(ruleBasePackage);
             FileWriter fstream = new FileWriter("/tmp/chtijbug-rule-cache");
             BufferedWriter out = new BufferedWriter(fstream);

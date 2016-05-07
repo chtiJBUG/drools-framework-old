@@ -22,9 +22,13 @@ public class WorkbenchClient implements Closeable {
     private final CloseableHttpClient httpClient;
     private final String workbenchUrl;
     private CloseableHttpResponse response;
+    private String username;
+    private String password;
 
     public WorkbenchClient(String workbenchUrl, String username, String password) {
         this.workbenchUrl = workbenchUrl;
+        this.username=username;
+        this.password=password;
         try {
             URI submittedURI = new URI(workbenchUrl);
             CredentialsProvider credsProvider = new BasicCredentialsProvider();
@@ -57,4 +61,15 @@ public class WorkbenchClient implements Closeable {
         closeQuietly(this.httpClient);
     }
 
+    public String getWorkbenchUrl() {
+        return workbenchUrl;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

@@ -75,7 +75,6 @@
             <groupId>org.chtijbug.drools</groupId>
             <artifactId>kie-drools-framework-rest-pojo</artifactId>
             <scope>provided</scope>
-
         </dependency>
         <dependency>
             <groupId>org.chtijbug.osgi</groupId>
@@ -155,8 +154,6 @@
             <groupId>org.drools</groupId>
             <artifactId>drools-workbench-models-guided-template</artifactId>
         </dependency>
-
-
 
 
         <dependency>

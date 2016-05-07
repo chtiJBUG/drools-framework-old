@@ -21,6 +21,7 @@ import org.chtijbug.drools.runtime.listener.HistoryListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,11 +34,11 @@ public abstract class RuleBaseBuilder {
     private static Logger logger = LoggerFactory.getLogger(RuleBaseBuilder.class);
 
 
-    public static RuleBasePackage createWorkbenchRuleBasePackage(Long ruleBaseId,HistoryListener historyListener, String modulePackage, String moduleName, String version, String workbenchUrl, String username, String password) throws DroolsChtijbugException {
+    public static RuleBasePackage createWorkbenchRuleBasePackage(Long ruleBaseId,HistoryListener historyListener, String groupId, String artifactId, String version, String workbenchUrl, String username, String password) throws DroolsChtijbugException {
         logger.debug(">> createWorkbenchRuleBasePackage()");
-        RuleBaseSingleton newRuleBasePackage = new RuleBaseSingleton(ruleBaseId,RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener, modulePackage, moduleName,version);
+        RuleBaseSingleton newRuleBasePackage = new RuleBaseSingleton(ruleBaseId,RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener, groupId, artifactId,version);
         try {
-           newRuleBasePackage.createKBase(version, workbenchUrl, username, password);
+           newRuleBasePackage.createKBase(workbenchUrl, username, password);
             //_____ Returning the result
             return newRuleBasePackage;
         } finally {
@@ -45,15 +46,27 @@ public abstract class RuleBaseBuilder {
         }
     }
 
-    public static RuleBasePackage createRuleBasePackage(Long ruleBaseId, String modulePackage, String moduleName, List<FileKnowledgeResource> files) throws DroolsChtijbugException {
-        return RuleBaseBuilder.createRuleBasePackage(ruleBaseId, null, modulePackage, moduleName, files);
+    public static RuleBasePackage createRuleBasePackage(Long ruleBaseId, String modulePackage, String moduleName,String version, String ...files) throws DroolsChtijbugException {
+        return RuleBaseBuilder.createRuleBasePackage(ruleBaseId, null, modulePackage, moduleName, version,files);
     }
 
-    public static RuleBasePackage createRuleBasePackage(Long ruleBaseId, HistoryListener historyListener, String modulePackage, String moduleName, List<FileKnowledgeResource> files) throws DroolsChtijbugException {
+    public static RuleBasePackage createRuleBasePackage(Long ruleBaseId, HistoryListener historyListener, String groupId, String artifactId,String version, String ...files) throws DroolsChtijbugException {
         logger.debug(">>createRuleBasePackage");
-        RuleBaseSingleton ruleBasePackage = new RuleBaseSingleton(ruleBaseId,RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener, modulePackage, moduleName,"1.0.0-SNAPSHOT");
+        List<FileKnowledgeResource> fileKnowledgeResources= new ArrayList<>();
+        for (String s : files){
+            if (s.contains("bpmn2")){
+                FileKnowledgeResource fileKnowledgeResource = FileKnowledgeResource.createBPMN2ClassPathResource(s);
+                fileKnowledgeResources.add(fileKnowledgeResource);
+
+            }else {
+                FileKnowledgeResource fileKnowledgeResource = FileKnowledgeResource.createDRLClassPathResource(s);
+                fileKnowledgeResources.add(fileKnowledgeResource);
+            }
+
+        }
+        RuleBaseSingleton ruleBasePackage = new RuleBaseSingleton(ruleBaseId,RuleBaseSingleton.DEFAULT_RULE_THRESHOLD, historyListener, artifactId,groupId, version);
         try {
-            ruleBasePackage.createKBase(files);
+            ruleBasePackage.createKBase(fileKnowledgeResources);
             //_____ Returning the result
             return ruleBasePackage;
         } finally {

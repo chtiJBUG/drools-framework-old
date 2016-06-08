@@ -66,6 +66,7 @@
         <module>drools-framework-rest-guvnor</module>
         <module>drools-framework-kie-wb-parent</module>
         <module>drools-framework-examples</module>
+        <module>drools-framework-kie-server-parent</module>
         <!--module>drools-service-runner-archetype</module-->
         <!--module>maven-guvnor-install-pojo-plugin</module-->
         <!--module>drools-runner-generator</module-->
@@ -2925,6 +2926,117 @@
                 <version>${version.org.jboss.byteman}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.kie.server</groupId>
+                <artifactId>kie-server-services-common</artifactId>
+                <version>${version.org.drools}</version>
+
+            </dependency>
+            <dependency>
+                <groupId>org.kie.server</groupId>
+                <artifactId>kie-server-services-drools</artifactId>
+                <version>${version.org.drools}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kie.server</groupId>
+                <artifactId>kie-server-services-jbpm</artifactId>
+                <version>${version.org.drools}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kie.server</groupId>
+                <artifactId>kie-server-services-jbpm-ui</artifactId>
+                <version>${version.org.drools}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kie.server</groupId>
+                <artifactId>kie-server-services-optaplanner</artifactId>
+                <version>${version.org.drools}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kie.server</groupId>
+                <artifactId>kie-server-jms</artifactId>
+                <version>${version.org.drools}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kie.server</groupId>
+                <artifactId>kie-server-rest-common</artifactId>
+                <version>${version.org.drools}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kie.server</groupId>
+                <artifactId>kie-server-rest-drools</artifactId>
+                <version>${version.org.drools}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kie.server</groupId>
+                <artifactId>kie-server-rest-jbpm</artifactId>
+                <version>${version.org.drools}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kie.server</groupId>
+                <artifactId>kie-server-rest-jbpm-ui</artifactId>
+                <version>${version.org.drools}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kie.server</groupId>
+                <artifactId>kie-server-rest-optaplanner</artifactId>
+                <version>${version.org.drools}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-jdk14</artifactId>
+                <version>${version.org.slf4j}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jbpm</groupId>
+                <artifactId>jbpm-services-ejb-timer</artifactId>
+                <version>${version.org.drools}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-jdk14</artifactId>
+                <version>${version.org.slf4j}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.kie</groupId>
+                <artifactId>kie-api</artifactId>
+                <version>${version.org.kie}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kie</groupId>
+                <artifactId>kie-internal</artifactId>
+                <version>${version.org.kie}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.kie.server</groupId>
+                <artifactId>kie-server-api</artifactId>
+                <version>${version.org.kie}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kie.server</groupId>
+                <artifactId>kie-server-services-common</artifactId>
+                <version>${version.org.kie}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kie.server</groupId>
+                <artifactId>kie-server-services-drools</artifactId>
+                <version>${version.org.kie}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.kie.server</groupId>
+                <artifactId>kie-server-rest-common</artifactId>
+                <version>${version.org.kie}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.chtijbug.drools</groupId>
+                <artifactId>drools-framework-kie-server-extension</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
         </dependencies>
 

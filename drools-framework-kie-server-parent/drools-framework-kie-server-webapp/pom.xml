@@ -10,7 +10,7 @@
     <artifactId>kie-server</artifactId>
     <packaging>pom</packaging>
 
-    <name>KIE :: Execution Server ::</name>
+    <name>KIE :: Execution Server</name>
     <description>KIE Execution Server Distribution Wars. Name of the module is just 'kie-server' so that the final WARs
         have nicer names.
     </description>
@@ -29,6 +29,38 @@
         <dependency>
             <groupId>org.chtijbug.drools</groupId>
             <artifactId>drools-framework-kie-server-services-drools</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-compiler</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jdt.core.compiler</groupId>
+            <artifactId>ecj</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jbpm</groupId>
+            <artifactId>jbpm-bpmn2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.kie</groupId>
+            <artifactId>kie-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.kie</groupId>
+            <artifactId>kie-internal</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.kie.server</groupId>
+            <artifactId>kie-server-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.kie.server</groupId>
@@ -244,11 +276,11 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <finalName>kie-server-${project.version}</finalName>
+                    <finalName>kie-server</finalName>
                     <descriptors>
-                        <!--descriptor>src/main/assembly/assembly-ee6-container.xml</descriptor>
-                        <descriptor>src/main/assembly/assembly-ee7-container.xml</descriptor-->
-                        <descriptor>src/main/assembly/assembly-servlet-container.xml</descriptor>
+                        <!--descriptor>src/main/assembly/assembly-ee6-container.xml</descriptor-->
+                        <descriptor>src/main/assembly/assembly-ee7-container.xml</descriptor>
+                        <!--descriptor>src/main/assembly/assembly-servlet-container.xml</descriptor-->
                     </descriptors>
                     <archive>
                         <addMavenDescriptor>false</addMavenDescriptor>
@@ -281,6 +313,7 @@
                             <description>KIE Server REST API</description>
                             <includes>
                                 <include>org.kie.server</include>
+                                <include>org.chtijbug.kieserver</include>
                             </includes>
                         </group>
                     </groups>

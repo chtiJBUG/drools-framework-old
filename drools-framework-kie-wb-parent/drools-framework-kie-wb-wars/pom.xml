@@ -256,7 +256,7 @@
     </dependencies>
 
     <build>
-        <finalName>kie-wb</finalName>
+
         <plugins>
             <!-- special handling for WAS8.5 as sisu-inject-bean:2.2.3 contains javax.inject classes which conflicts with WAS-->
             <!--plugin>
@@ -306,7 +306,7 @@
                                 <artifactItem>
                                     <groupId>org.jboss.errai</groupId>
                                     <artifactId>errai-weld-integration</artifactId>
-                                    <version>3.0.6.Final</version>
+                                    <version>${version.org.jboss.errai.cdi10-compatible}</version>
                                     <type>jar</type>
                                 </artifactItem>
                             </artifactItems>
@@ -330,9 +330,10 @@
                     <finalName>kie-wb</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptors>
-                            <descriptor>${project.basedir}/src/main/community/assembly-kie-drools-wb-tomcat-7.xml
+                        <!--descriptor>${project.basedir}/src/main/community/assembly-kie-drools-wb-tomcat-7.xml
+                    </descriptor-->
+                        <descriptor>${project.basedir}/src/main/community/assembly-kie-drools-wb-jboss-wildfly-8.xml
                         </descriptor>
-
                     </descriptors>
                     <archive>
                         <addMavenDescriptor>false</addMavenDescriptor>

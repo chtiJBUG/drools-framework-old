@@ -277,6 +277,7 @@
                 </executions>
                 <configuration>
                     <finalName>kie-server</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
                     <descriptors>
                         <!--descriptor>src/main/assembly/assembly-ee6-container.xml</descriptor-->
                         <descriptor>src/main/assembly/assembly-ee7-container.xml</descriptor>

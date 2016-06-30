@@ -14,7 +14,7 @@
     <artifactId>drools-framework-kie-wb-wars</artifactId>
     <packaging>pom</packaging>
 
-    <name>KIE Drools Platform Workbench For Tomcat 7</name>
+    <name>KIE Drools Platform Workbench For Wildly 8</name>
 
     <dependencyManagement>
         <dependencies>
@@ -89,28 +89,28 @@
             <groupId>org.jboss.spec.javax.ejb</groupId>
             <artifactId>jboss-ejb-api_3.1_spec</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>jaxrs-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-jaxrs</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-cdi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-jackson-provider</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-jaxb-provider</artifactId>
-        </dependency>
-
+        <!--
+                <dependency>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>jaxrs-api</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-jaxrs</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-cdi</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-jackson-provider</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-jaxb-provider</artifactId>
+                </dependency>
+        -->
         <dependency>
             <groupId>org.jboss.weld</groupId>
             <artifactId>weld-api</artifactId>
@@ -233,13 +233,19 @@
         <dependency>
             <groupId>org.uberfire</groupId>
             <artifactId>uberfire-security-management-tomcat</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>resteasy-cdi</artifactId>
+                    <groupId>org.jboss.resteasy</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- for tomcat and RestEasy -->
-        <dependency>
+        <!--dependency>
             <groupId>org.scannotation</groupId>
             <artifactId>scannotation</artifactId>
-        </dependency>
+        </dependency-->
 
 
         <!-- WAS8 uses JUL, so just bind slf4j to that -->
@@ -359,6 +365,7 @@
         </repository>
     </distributionManagement>
 
+
     <profiles>
         <profile>
             <id>notProductizedProfile</id>
@@ -429,11 +436,11 @@
                         </executions>
                         <configuration>
                             <finalName>kie-drools-wb-${project.version}</finalName>
-                            <descriptors>
+                            <!--descriptors>
                                 <descriptor>
                                     ${project.basedir}/src/main/productized/assembly-kie-drools-wb-tomcat-7-redhat.xml
                                 </descriptor>
-                            </descriptors>
+                            </descriptors-->
                             <archive>
                                 <addMavenDescriptor>false</addMavenDescriptor>
                             </archive>

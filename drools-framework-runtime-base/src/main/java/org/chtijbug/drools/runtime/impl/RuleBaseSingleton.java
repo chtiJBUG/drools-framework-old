@@ -49,6 +49,11 @@ public class RuleBaseSingleton implements RuleBasePackage {
      */
     private static Logger logger = LoggerFactory.getLogger(RuleBaseSingleton.class);
     /**
+     * unique ID of the RuleBase in the JVM
+     */
+    protected EventCounter eventCounter = EventCounter.newCounter();
+    protected EventCounter sessionCounter = EventCounter.newCounter();
+    /**
      * Rule Base ID
      */
     private Long ruleBaseID;
@@ -70,11 +75,18 @@ public class RuleBaseSingleton implements RuleBasePackage {
      * History Listener
      */
     private HistoryListener historyListener = null;
-    /**
-     * unique ID of the RuleBase in the JVM
-     */
-    protected EventCounter eventCounter = EventCounter.newCounter();
-    protected EventCounter sessionCounter = EventCounter.newCounter();
+
+
+    public RuleBaseSingleton(KieContainer kieContainer, int maxNumberRulesToExecute) {
+        this.kieContainer = kieContainer;
+        this.maxNumberRuleToExecute = maxNumberRulesToExecute;
+    }
+
+    public RuleBaseSingleton(KieContainer kieContainer, int maxNumberRulesToExecute, HistoryListener historyListener) {
+        this.kieContainer = kieContainer;
+        this.maxNumberRuleToExecute = maxNumberRulesToExecute;
+        this.historyListener = historyListener;
+    }
 
     public RuleBaseSingleton(Long ruleBaseID, int maxNumberRulesToExecute, HistoryListener historyListener, String groupId, String artifactId, String version) throws DroolsChtijbugException {
         this.ruleBaseID = ruleBaseID;

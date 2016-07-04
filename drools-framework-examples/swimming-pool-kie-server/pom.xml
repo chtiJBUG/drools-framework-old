@@ -9,8 +9,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>drools-framework-kie-server-extension</artifactId>
+    <artifactId>swimming-pool-kie-server</artifactId>
     <dependencies>
+
+        <dependency>
+            <groupId>org.chtijbug.drools</groupId>
+            <artifactId>drools-framework-kie-server-services-drools</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.chtijbug.drools</groupId>
+            <artifactId>drools-framework-swimming-pool-model</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.chtijbug.drools</groupId>
             <artifactId>drools-framework-runtime-base</artifactId>

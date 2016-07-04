@@ -36,7 +36,7 @@ public class DroolsFrameworkKieServerExtension implements KieServerExtension {
     private static final Boolean filterRemoteable = Boolean.parseBoolean(System.getProperty(KieServerConstants.KIE_DROOLS_FILTER_REMOTEABLE_CLASSES, "false"));
 
     private DroolsFrameworkRulesExecutionService rulesExecutionService;
-    private KieContainerCommandService batchCommandService;
+
     private KieServerRegistry registry;
 
     private List<Object> services = new ArrayList<Object>();
@@ -49,12 +49,8 @@ public class DroolsFrameworkKieServerExtension implements KieServerExtension {
     @Override
     public void init(KieServerImpl kieServer, KieServerRegistry registry) {
         this.rulesExecutionService = new DroolsFrameworkRulesExecutionService(registry);
-        this.batchCommandService = new DroolsFrameworkKieContainerCommandServiceImpl(kieServer, registry, this.rulesExecutionService);
         this.registry = registry;
-        if (registry.getKieSessionLookupManager() != null) {
-            registry.getKieSessionLookupManager().addHandler(new DroolsFrameworkKieSessionLookupHandler());
-        }
-        services.add(batchCommandService);
+
         services.add(rulesExecutionService);
     }
 
@@ -114,7 +110,6 @@ public class DroolsFrameworkKieServerExtension implements KieServerExtension {
                 = ServiceLoader.load(KieServerApplicationComponentsService.class);
         List<Object> appComponentsList = new ArrayList<Object>();
         Object[] services = {
-                batchCommandService,
                 rulesExecutionService,
                 registry
 
@@ -127,8 +122,8 @@ public class DroolsFrameworkKieServerExtension implements KieServerExtension {
 
     @Override
     public <T> T getAppComponents(Class<T> serviceType) {
-        if (serviceType.isAssignableFrom(batchCommandService.getClass())) {
-            return (T) batchCommandService;
+        if (serviceType.isAssignableFrom(rulesExecutionService.getClass())) {
+            return (T) rulesExecutionService;
         }
 
         return null;

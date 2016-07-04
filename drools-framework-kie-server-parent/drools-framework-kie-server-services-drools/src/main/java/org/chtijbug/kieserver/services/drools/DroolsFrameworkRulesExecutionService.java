@@ -15,48 +15,53 @@
 
 package org.chtijbug.kieserver.services.drools;
 
-import org.drools.core.command.runtime.BatchExecutionCommandImpl;
-import org.kie.api.command.BatchExecutionCommand;
-import org.kie.api.runtime.CommandExecutor;
-import org.kie.api.runtime.ExecutionResults;
+import org.chtijbug.drools.runtime.DroolsChtijbugException;
+import org.chtijbug.drools.runtime.RuleBasePackage;
+import org.chtijbug.drools.runtime.RuleBaseSession;
+import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
+import org.kie.api.runtime.KieContainer;
 import org.kie.server.services.api.KieContainerInstance;
 import org.kie.server.services.api.KieServerRegistry;
-import org.kie.server.services.impl.KieContainerInstanceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Direct rules execution service that allow use of typed objects instead of string only
  */
 public class DroolsFrameworkRulesExecutionService {
+    private static final Logger logger = LoggerFactory.getLogger(DroolsFrameworkRulesExecutionService.class);
 
     private KieServerRegistry context;
+    private RuleBasePackage ruleBasePackage = null;
 
     public DroolsFrameworkRulesExecutionService(KieServerRegistry context) {
         this.context = context;
     }
 
-    public ExecutionResults call(KieContainerInstance kci, BatchExecutionCommand executionCommand) {
 
-        BatchExecutionCommandImpl command = (BatchExecutionCommandImpl) executionCommand;
+    public KieServerRegistry getContext() {
+        return context;
+    }
 
-        if (kci != null && kci.getKieContainer() != null) {
-            // find the session
-            CommandExecutor ks = null;
-            if (command.getLookup() != null) {
-                ks = context.getKieSessionLookupManager().lookup(command.getLookup(), kci, context);
-            } else {
-                // if no session ID is defined, then the default is a stateful session
-                ks = ((KieContainerInstanceImpl) kci).getKieContainer().getKieSession();
+    public Object FireAllRulesAndStartProcess(KieContainerInstance kci, Object object, String processID) {
+        Object result = null;
+        try {
+
+            if (kci != null && kci.getKieContainer() != null) {
+
+                KieContainer kieContainer = kci.getKieContainer();
+                ruleBasePackage = new RuleBaseSingleton(kieContainer, 20000);
             }
+            RuleBaseSession session = ruleBasePackage.createRuleBaseSession();
+            result = session.fireAllRulesAndStartProcess(object, processID);
+            logger.debug("Returning OK response with content '{}'", object);
+            return result;
 
-            if (ks != null) {
-                ExecutionResults results = ks.execute(command);
-
-                return results;
-            } else {
-                throw new IllegalStateException("Session '" + command.getLookup() + "' not found on container '" + kci.getContainerId() + "'.");
-            }
+        } catch (DroolsChtijbugException e) {
+            e.printStackTrace();
         }
 
-        throw new IllegalStateException("Unable to execute command " + command);
+
+        throw new IllegalStateException("Unable to execute command " + object);
     }
 }

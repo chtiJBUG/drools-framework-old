@@ -49,15 +49,18 @@
     <dependencySets>
         <dependencySet>
             <includes>
+
+                <include>org.chtijbug.drools:swimming-pool-kie-server</include>
+
+                <include>org.chtijbug.drools:drools-framework-kie-server-services-drools</include>
+
                 <include>org.drools:drools-core</include>
                 <include>org.drools:drools-compiler</include>
                 <include>org.eclipse.jdt.core.compiler:ecj</include>
                 <include>org.kie:kie-api</include>
                 <include>org.jbpm:jbpm-bpmn2</include>
                 <include>org.kie.server:kie-server-api</include>
-                <include>org.chtijbug.kieserver:drools-framework-kie-server-rest-drools</include>
                 <include>org.kie:kie-internal</include>
-                <include>org.chtijbug.kieserver:drools-framework-kie-server-services-drools</include>
                 <include>org.kie.server:kie-server-services-common</include>
                 <include>org.kie.server:kie-server-services-drools</include>
                 <include>org.kie.server:kie-server-services-jbpm</include>

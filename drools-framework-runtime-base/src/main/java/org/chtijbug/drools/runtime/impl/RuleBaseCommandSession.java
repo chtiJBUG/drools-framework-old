@@ -1,5 +1,6 @@
 package org.chtijbug.drools.runtime.impl;
 
+import org.chtijbug.drools.common.reflection.ReflectionUtils;
 import org.chtijbug.drools.entity.DroolsFactObject;
 import org.chtijbug.drools.entity.DroolsRuleObject;
 import org.chtijbug.drools.entity.history.HistoryContainer;
@@ -12,6 +13,7 @@ import org.kie.api.runtime.ObjectFilter;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkItemHandler;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -38,6 +40,34 @@ public class RuleBaseCommandSession implements RuleBaseSession {
 
     @Override
     public void insertByReflection(Object newObject) throws DroolsChtijbugException {
+        if (newObject.getClass().getPackage().getName().startsWith("java.")) {
+            return;
+        }
+        this.insertObject(newObject);
+        //____ Then foreach getters insert item by reflection
+        for (Method method : newObject.getClass().getMethods()) {
+            //____ only manage getters
+            if (!ReflectionUtils.IsGetter(method)) {
+                continue;
+            }
+            Object getterValue;
+            try {
+                getterValue = method.invoke(newObject, (Object[]) null);
+            } catch (Exception e) {
+                throw new DroolsChtijbugException(DroolsChtijbugException.insertByReflection, "getterValue = method.invoke(newObject, (Object[]) null);", e);
+            }
+            if (getterValue == null)
+                continue;
+            //____ If returned value is not a collection, insert it in the ksession
+            if (!(getterValue instanceof Iterable)) {
+                this.insertByReflection(getterValue);
+            } else {
+                Iterable<?> iterable = (Iterable) getterValue;
+                for (Object item : iterable) {
+                    this.insertByReflection(item);
+                }
+            }
+        }
 
     }
 

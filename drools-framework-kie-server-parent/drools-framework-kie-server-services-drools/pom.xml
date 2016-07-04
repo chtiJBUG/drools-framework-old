@@ -17,6 +17,15 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.chtijbug.drools</groupId>
+            <artifactId>drools-framework-runtime-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.chtijbug.drools</groupId>
+            <artifactId>drools-framework-runtime-entity</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kie-api</artifactId>
         </dependency>

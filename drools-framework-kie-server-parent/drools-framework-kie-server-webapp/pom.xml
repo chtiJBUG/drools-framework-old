@@ -16,16 +16,20 @@
     </description>
 
     <dependencies>
-        <!--dependency>
-          <groupId>org.chtijbug.drools</groupId>
-          <artifactId>drools-framework-kie-server-extension</artifactId>
-        </dependency-->
-
 
         <dependency>
             <groupId>org.chtijbug.drools</groupId>
-            <artifactId>drools-framework-kie-server-rest-drools</artifactId>
+            <artifactId>swimming-pool-kie-server</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.chtijbug.drools</groupId>
+            <artifactId>swimming-pool-kie-server</artifactId>
+        </dependency>
+        <!--dependency>
+            <groupId>org.chtijbug.drools</groupId>
+            <artifactId>drools-framework-kie-server-rest-drools</artifactId>
+        </dependency-->
         <dependency>
             <groupId>org.chtijbug.drools</groupId>
             <artifactId>drools-framework-kie-server-services-drools</artifactId>

@@ -26,6 +26,8 @@
         <powermock.version>${version.org.powermock}</powermock.version>
         <guvnor.version>${version.org.kie}</guvnor.version>
         <jackson.version>${version.com.fasterxml.jackson}</jackson.version>
+
+        <org.jboss.resteasy.client.version>3.0.10.Final</org.jboss.resteasy.client.version>
     </properties>
 
 
@@ -197,6 +199,21 @@
     <dependencyManagement>
 
         <dependencies>
+            <dependency>
+                <groupId>javax.ws.rs</groupId>
+                <artifactId>javax.ws.rs-api</artifactId>
+                <version>2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-client</artifactId>
+                <version>${org.jboss.resteasy.client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.chtijbug.drools</groupId>
+                <artifactId>drools-framework-swimming-model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.chtijbug.drools</groupId>
                 <artifactId>swimming-pool-kie-server</artifactId>

@@ -35,7 +35,7 @@ public class LoyaltyKieServerApplicationComponentsService implements KieServerAp
 
         List<Object> components = new ArrayList<Object>(1);
         if (SupportedTransports.REST.equals(type)) {
-            components.add(new LoyaltyResource(rulesExecutionService, context));
+            components.add(new swimmingpoolResource(rulesExecutionService, context));
         }
 
         return components;

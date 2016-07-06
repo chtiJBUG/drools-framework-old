@@ -32,7 +32,7 @@ public class GuvnorConnexionConfigurationTestCase {
 
     @Before
     public void setUp() throws Exception {
-        String hostname = "http://localhist:8080/kie-server";
+        String hostname = "http://localhost:8080/kie-server";
 
         String username = "admin";
         String password = "admin";

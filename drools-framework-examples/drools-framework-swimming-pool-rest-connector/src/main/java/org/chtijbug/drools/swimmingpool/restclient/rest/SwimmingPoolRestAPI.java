@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 public interface SwimmingPoolRestAPI {
 
     @POST
-    @Path("/kie-server/services/rest/server/containers/instances/loyalty/run/{id}")
+    @Path("/services/rest/server/containers/instances/swimmingpool/run/{id}")
     @Produces("application/json")
     @Consumes(value = MediaType.APPLICATION_JSON)
     Quote runSession(@PathParam("id") String id,

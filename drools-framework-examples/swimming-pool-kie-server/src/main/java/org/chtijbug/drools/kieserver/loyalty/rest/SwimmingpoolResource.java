@@ -1,8 +1,11 @@
 package org.chtijbug.drools.kieserver.loyalty.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.example.swimmingpool.Quote;
+import org.chtijbug.kieserver.services.drools.ChtijbugObjectRequest;
 import org.chtijbug.kieserver.services.drools.DroolsFrameworkRulesExecutionService;
+import org.chtijbug.kieserver.services.runtimeevent.SessionContext;
 import org.kie.api.KieServices;
 import org.kie.api.command.KieCommands;
 import org.kie.server.services.api.KieContainerInstance;
@@ -39,7 +42,7 @@ public class swimmingpoolResource {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public String toto() {
-        return "toto ";
+        return "Swimming pool rest service Alive ";
     }
 
     @POST
@@ -50,9 +53,16 @@ public class swimmingpoolResource {
                             Quote quoteRequest) {
         try {
             KieContainerInstance kci = registry.getContainer(id);
-            quoteRequest = (Quote) rulesExecutionService.FireAllRulesAndStartProcess(kci, quoteRequest, "swimmingpool.P000");
+            ChtijbugObjectRequest chtijbugObjectRequest = new ChtijbugObjectRequest();
+            chtijbugObjectRequest.setObjectRequest(quoteRequest);
+            ChtijbugObjectRequest chtijbutObjectResponse = (ChtijbugObjectRequest) rulesExecutionService.FireAllRulesAndStartProcess(kci, chtijbugObjectRequest, "swimmingpool.P000");
+            SessionContext log = chtijbutObjectResponse.getSessionLogging();
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonInString = mapper.writeValueAsString(chtijbutObjectResponse.getObjectRequest());
+            Quote response = (Quote) chtijbutObjectResponse.getObjectRequest();
+            response.setSessionLogging(jsonInString);
             logger.debug("Returning OK response with content '{}'", quoteRequest);
-            return quoteRequest;
+            return response;
         } catch (Exception e) {
             // in case marshalling failed return the FireAllRulesAndStartProcess container response to keep backward compatibility
             String response = "Execution failed with error : " + e.getMessage();

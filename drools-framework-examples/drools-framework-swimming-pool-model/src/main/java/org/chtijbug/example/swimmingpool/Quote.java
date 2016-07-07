@@ -29,7 +29,7 @@ public class Quote extends BaseElement {
     private List<Person> personList = new ArrayList<>();
     private Address address;
     private List<Price> priceList = new ArrayList<>();
-
+    private String sessionLogging;
     public Quote() {
     }
 
@@ -89,6 +89,13 @@ public class Quote extends BaseElement {
         this.priceList = priceList;
     }
 
+    public String getSessionLogging() {
+        return sessionLogging;
+    }
+
+    public void setSessionLogging(String sessionLogging) {
+        this.sessionLogging = sessionLogging;
+    }
 
     @Override
     public String toString() {

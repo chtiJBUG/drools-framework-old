@@ -19,6 +19,8 @@ import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.RuleBasePackage;
 import org.chtijbug.drools.runtime.RuleBaseSession;
 import org.chtijbug.drools.runtime.impl.RuleBaseSingleton;
+import org.chtijbug.kieserver.services.runtimeevent.MessageHandlerResolver;
+import org.chtijbug.kieserver.services.runtimeevent.SessionContext;
 import org.kie.api.runtime.KieContainer;
 import org.kie.server.services.api.KieContainerInstance;
 import org.kie.server.services.api.KieServerRegistry;
@@ -33,9 +35,11 @@ public class DroolsFrameworkRulesExecutionService {
 
     private KieServerRegistry context;
     private RuleBasePackage ruleBasePackage = null;
+    private MessageHandlerResolver messageHandlerResolver;
 
     public DroolsFrameworkRulesExecutionService(KieServerRegistry context) {
         this.context = context;
+        this.messageHandlerResolver = new MessageHandlerResolver();
     }
 
 
@@ -43,7 +47,7 @@ public class DroolsFrameworkRulesExecutionService {
         return context;
     }
 
-    public Object FireAllRulesAndStartProcess(KieContainerInstance kci, Object object, String processID) {
+    public ChtijbugObjectRequest FireAllRulesAndStartProcess(KieContainerInstance kci, ChtijbugObjectRequest chtijbugObjectRequest, String processID) {
         Object result = null;
         try {
 
@@ -52,16 +56,20 @@ public class DroolsFrameworkRulesExecutionService {
                 KieContainer kieContainer = kci.getKieContainer();
                 ruleBasePackage = new RuleBaseSingleton(kieContainer, 20000);
             }
-            RuleBaseSession session = ruleBasePackage.createRuleBaseSession();
-            result = session.fireAllRulesAndStartProcess(object, processID);
-            logger.debug("Returning OK response with content '{}'", object);
-            return result;
+            ChtijbugHistoryListener chtijbugHistoryListener = new ChtijbugHistoryListener();
+            RuleBaseSession session = ruleBasePackage.createRuleBaseSession(20000, chtijbugHistoryListener);
+            result = session.fireAllRulesAndStartProcess(chtijbugObjectRequest.getObjectRequest(), processID);
+            SessionContext sessionContext = this.messageHandlerResolver.getSessionFromHistoryEvent(chtijbugHistoryListener.getHistoryEventLinkedList());
+            chtijbugObjectRequest.setSessionLogging(sessionContext);
+            chtijbugObjectRequest.setObjectRequest(result);
+            logger.debug("Returning OK response with content '{}'", chtijbugObjectRequest.getObjectRequest());
+            return chtijbugObjectRequest;
 
         } catch (DroolsChtijbugException e) {
             e.printStackTrace();
         }
 
 
-        throw new IllegalStateException("Unable to execute command " + object);
+        throw new IllegalStateException("Unable to execute command " + chtijbugObjectRequest.getObjectRequest());
     }
 }

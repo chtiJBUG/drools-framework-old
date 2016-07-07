@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project xmlns:con="http://eviware.com/soapui/config" activeEnvironment="Default"
+                    name="calculateService?wsdl" resourceRoot=""
+                    soapui-version="4.6.4" abortOnError="false" runType="SEQUENTIAL">
+    <con:settings/>
+    <con:interface xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="con:WsdlInterface" wsaVersion="NONE"
+                   name="ServiceCalculateServiceSoapBinding"
+                   type="wsdl" bindingName="{http://loyalty.droolscours/}ServiceCalculateServiceSoapBinding"
+                   soapVersion="1_1" anonymous="optional"
+                   definition="http://localhost:8080/simpleWebApp/calculateService?wsdl">
+        <con:settings/>
+        <con:definitionCache type="TEXT" rootPart="http://localhost:8080/simpleWebApp/calculateService?wsdl">
+            <con:part>
+                <con:url>http://localhost:8080/simpleWebApp/calculateService?wsdl</con:url>
+                <con:content><![CDATA[<wsdl:definitions name="ServiceCalculateService" targetNamespace="http://loyalty.droolscours/" xmlns:ns1="http://cxf.apache.org/bindings/xformat" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://loyalty.droolscours/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://loyalty.droolscours/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="ticket">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="amount" type="xs:float"/>
+          <xs:element minOccurs="0" name="customer" type="tns:customer"/>
+          <xs:element minOccurs="0" name="date" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+          <xs:element minOccurs="0" name="loyaltyCard" type="tns:card"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="ticketLines" nillable="true" type="tns:ticketLine"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="customer">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="birthDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="customerID" type="xs:string"/>
+          <xs:element minOccurs="0" name="gender" type="tns:gender"/>
+          <xs:element minOccurs="0" name="maritalName" type="xs:string"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="surName" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="card">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="cartType" type="xs:string"/>
+          <xs:element minOccurs="0" name="customer" type="tns:customer"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="number" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ticketLine">
+        <xs:sequence>
+          <xs:element name="lineNumber" type="xs:int"/>
+          <xs:element minOccurs="0" name="lineTotal" type="xs:float"/>
+          <xs:element minOccurs="0" name="op" type="tns:ligneop"/>
+          <xs:element minOccurs="0" name="price" type="xs:float"/>
+          <xs:element minOccurs="0" name="product" type="tns:product"/>
+          <xs:element minOccurs="0" name="productID" type="xs:string"/>
+          <xs:element name="quantity" type="xs:long"/>
+          <xs:element minOccurs="0" name="ticket" type="tns:ticket"/>
+          <xs:element minOccurs="0" name="ticketID" type="xs:string"/>
+          <xs:element name="valid" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ligneop">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="montantReduction" type="xs:float"/>
+          <xs:element minOccurs="0" name="nomOP" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="product">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="price" type="tns:price"/>
+          <xs:element minOccurs="0" name="provider" type="tns:provider"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="price">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="currency" type="tns:currency"/>
+          <xs:element minOccurs="0" name="price" type="xs:float"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="provider">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="country" type="xs:string"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="gender">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Mr"/>
+          <xs:enumeration value="Mrs"/>
+          <xs:enumeration value="Miss"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="currency">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Euro"/>
+          <xs:enumeration value="Dollar"/>
+          <xs:enumeration value="Yen"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="calculate" type="tns:calculate"/>
+      <xs:complexType name="calculate">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="tns:ticket"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="calculateResponse" type="tns:calculateResponse"/>
+      <xs:complexType name="calculateResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:ticket"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="calculateResponse">
+    <wsdl:part element="tns:calculateResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="calculate">
+    <wsdl:part element="tns:calculate" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="IServiceCalculate">
+    <wsdl:operation name="calculate">
+      <wsdl:input message="tns:calculate" name="calculate"></wsdl:input>
+      <wsdl:output message="tns:calculateResponse" name="calculateResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiceCalculateServiceSoapBinding" type="tns:IServiceCalculate">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="calculate">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="calculate">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="calculateResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ServiceCalculateService">
+    <wsdl:port binding="tns:ServiceCalculateServiceSoapBinding" name="ServiceCalculatePort">
+      <soap:address location="http://localhost:8080/simpleWebApp/calculateService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content>
+                <con:type>http://schemas.xmlsoap.org/wsdl/</con:type>
+            </con:part>
+        </con:definitionCache>
+        <con:endpoints>
+            <con:endpoint>http://localhost:8080/simpleWebApp/calculateService</con:endpoint>
+        </con:endpoints>
+        <con:operation isOneWay="false" action="" name="calculate" bindingOperationName="calculate"
+                       type="Request-Response"
+                       outputName="calculateResponse" inputName="calculate" receivesAttachments="false"
+                       sendsAttachments="false" anonymous="optional">
+            <con:settings/>
+            <con:call name="Request 1">
+                <con:settings>
+                    <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
+                    </con:setting>
+                </con:settings>
+                <con:encoding>UTF-8</con:encoding>
+                <con:endpoint>http://localhost:8080/simpleWebApp/calculateService</con:endpoint>
+                <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:loy="http://loyalty.droolscours/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <loy:calculate>
+         <!--Optional:-->
+         <arg0>
+            <!--Optional:-->
+            <amount>1000.0</amount>
+            <!--Optional:-->
+            
+            <!--Optional:-->
+            <dateTicket>2012-01-01</dateTicket>
+            <!--Optional:-->
+            <id>1</id>
+            <!--Optional:-->
+            <loyaltyCard>
+               <!--Optional:-->
+               <cartType>Gold</cartType>
+               <!--Optional:-->
+               <customer>
+                  <!--Optional:-->
+                  <birthDate>1968-08-23</birthDate>
+                  <!--Optional:-->
+                  <customerID>12</customerID>
+                  <!--Optional:-->
+                  <gender>?</gender>
+                  <!--Optional:-->
+                  <maritalName>Male</maritalName>
+                  <!--Optional:-->
+                  <name>Heron</name>
+                  <!--Optional:-->
+                  <surName>Nicolas</surName>
+               </customer>
+               <!--Optional:-->
+               <name>VISA</name>
+               <!--Optional:-->
+               <number>4859569558</number>
+            </loyaltyCard>
+            <!--Zero or more repetitions:-->
+            <ticketLines>
+               <lineNumber>1</lineNumber>
+               <!--Optional:-->
+               <lineTotal>100</lineTotal>
+               <!--Optional:-->
+                 <!--Optional:-->
+               <price>120</price>
+               <!--Optional:-->
+               <product>
+                  <!--Optional:-->
+                  <id>12</id>
+                  <!--Optional:-->
+                  <name>pampers</name>
+                  <!--Optional:-->
+                  <price>
+                     <!--Optional:-->
+                     <currency>EURO</currency>
+                     <!--Optional:-->
+                     <price>12.0</price>
+                  </price>
+                  <!--Optional:-->
+                  <provider>
+                     <!--Optional:-->
+                     <country>GB</country>
+                     <!--Optional:-->
+                     <name>Nobleprog</name>
+                  </provider>
+               </product>
+               <!--Optional:-->
+               <productID>12</productID>
+               <quantity>5</quantity>
+               <!--Optional:-->
+               <ticket/>
+               <!--Optional:-->
+               <ticketID>1</ticketID>
+               <valid>true</valid>
+            </ticketLines>
+         </arg0>
+      </loy:calculate>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+                <con:credentials>
+                    <con:authType>Global HTTP Settings</con:authType>
+                </con:credentials>
+                <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                <con:jmsPropertyConfig/>
+                <con:wsaConfig mustUnderstand="NONE" version="200508"
+                               action="http://loyalty.droolscours/IServiceCalculate/calculate"/>
+                <con:wsrmConfig version="1.2"/>
+            </con:call>
+        </con:operation>
+    </con:interface>
+    <con:properties/>
+    <con:wssContainer/>
+</con:soapui-project>

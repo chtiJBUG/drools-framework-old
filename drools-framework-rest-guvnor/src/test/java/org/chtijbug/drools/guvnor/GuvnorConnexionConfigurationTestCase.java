@@ -1,9 +1,6 @@
 package org.chtijbug.drools.guvnor;
 
 import org.junit.Before;
-import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,14 +29,4 @@ public class GuvnorConnexionConfigurationTestCase {
 //
 //        assertEquals("The expected calculated path did not match.", expectedPath, restApiPath);
 //    }
-
-    @Test
-    public void testCreateAuthenticationHeader() throws Exception {
-        String base64EncodedHeader = toTest.createAuthenticationHeader();
-
-        String expectedEncodedHeader = "Basic dG9tY2F0OnRvbWNhdA==";
-
-        assertEquals("The expected encoded header did not match.", expectedEncodedHeader, base64EncodedHeader);
-
-    }
 }

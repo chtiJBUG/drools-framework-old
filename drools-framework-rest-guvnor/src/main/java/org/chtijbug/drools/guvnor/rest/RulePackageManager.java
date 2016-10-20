@@ -1,6 +1,5 @@
 package org.chtijbug.drools.guvnor.rest;
 
-import org.apache.cxf.jaxrs.client.WebClient;
 import org.chtijbug.drools.common.jaxb.JAXBContextUtils;
 import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
 import org.chtijbug.drools.guvnor.rest.model.Snapshot;
@@ -38,11 +37,8 @@ public class RulePackageManager {
             String path = format("%s/rest/packages/%s/snapshot/%s", this.configuration.getWebappName(), this.configuration.getPackageName(), snapshotName);
 
             String xmlObject = JAXBContextUtils.marshallObjectAsString(SnapshotCreationData.class, snapshotCreationData);
-            WebClient webClient = this.configuration.webClient();
-            this.configuration.noTimeout(webClient);
-            webClient.path(path)
-                    .type(MediaType.APPLICATION_XML_TYPE)
-                    .post(xmlObject);
+            GuvnorRestClient webClient = this.configuration.webClient();
+            webClient.post(path, MediaType.APPLICATION_XML,xmlObject);
         } catch (JAXBException e) {
             throw new ChtijbugDroolsRestException(e);
         }
@@ -52,16 +48,14 @@ public class RulePackageManager {
         List<Snapshot> result = new ArrayList<Snapshot>();
         try {
             String path = format("%s/rest/packages/%s/snapshots", this.configuration.getWebappName(), this.configuration.getPackageName());
-            WebClient webClient = this.configuration.webClient();
-            this.configuration.noTimeout(webClient);
-            Snapshots list = webClient.path(path)
-                    .type(MediaType.APPLICATION_ATOM_XML)
-                    .get(Snapshots.class);
+            GuvnorRestClient webClient = this.configuration.webClient();
+            Snapshots list = webClient.get(path, MediaType.APPLICATION_ATOM_XML, Snapshots.class);
             for (int i=0;i< list.getListNames().length;i++){
                 Snapshot snapshot = new Snapshot(this.configuration.getPackageName(),list.getListNames()[i]);
                 result.add(snapshot);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ChtijbugDroolsRestException(e);
         }
         return result;

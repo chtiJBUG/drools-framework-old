@@ -1,12 +1,14 @@
 package org.chtijbug.drools.guvnor.rest;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.chtijbug.drools.guvnor.rest.dt.DecisionTable;
 import org.chtijbug.drools.guvnor.rest.model.*;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.FileOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -36,13 +38,10 @@ public class GuvnorRepositoryConnectorLocalTestCase {
     public void testGetModel() throws Exception {
         InputStream inputStream = guvnorRepositoryConnector.getPojoModel();
 
-        FileOutputStream outputStream = new FileOutputStream("/tmp/chtijbug/model.jar");
-        int ch;
-        while ((ch = inputStream.read()) != -1) {
-            outputStream.write(ch);
-        }
-        outputStream.close();
-        inputStream.close();
+        File tmp = File.createTempFile("chtijbug-model", "jar");
+
+        List<String> readLines = IOUtils.readLines(inputStream);
+        FileUtils.writeLines(tmp, readLines);
     }
 
 
@@ -58,6 +57,8 @@ public class GuvnorRepositoryConnectorLocalTestCase {
         Asset newAsset = new Asset();
         newAsset.setName("FirstRule2");
         newAsset.setSumary("First Rule via Rest");
+        newAsset.setStatus("DEV_1");
+        newAsset.setType(AssetType.GuidedRule.getId());
         AssetCategory newCategoryOne = new AssetCategory("amag");
         newAsset.getCategories().add(newCategoryOne) ;
         AssetCategory newCategorytwo = new AssetCategory("amag");

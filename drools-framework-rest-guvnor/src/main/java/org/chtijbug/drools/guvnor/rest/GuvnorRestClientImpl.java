@@ -27,6 +27,8 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import static java.lang.String.valueOf;
+
 public class GuvnorRestClientImpl implements GuvnorRestClient {
 
     private final CloseableHttpClient httpClient;
@@ -72,7 +74,7 @@ public class GuvnorRestClientImpl implements GuvnorRestClient {
             HttpGet httpGet = new HttpGet(assetPath);
             httpGet.addHeader("accept", mediaType);
             CloseableHttpResponse response = this.httpClient.execute(targetHost, httpGet, context);
-            if (response.getStatusLine().getStatusCode() != 200)
+            if (!valueOf(response.getStatusLine().getStatusCode()).startsWith("2"))
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
             return response.getEntity().getContent();
         } catch (IOException e) {
@@ -87,7 +89,7 @@ public class GuvnorRestClientImpl implements GuvnorRestClient {
             httpPut.addHeader("Content-Type", contentType);
             httpPut.setEntity(new StringEntity(newAssetVersion));
             CloseableHttpResponse response = this.httpClient.execute(targetHost, httpPut, context);
-            if (response.getStatusLine().getStatusCode() != 200)
+            if (!valueOf(response.getStatusLine().getStatusCode()).startsWith("2"))
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
         } catch (IOException e) {
             throw new RuntimeException("Failed ", e);
@@ -102,7 +104,7 @@ public class GuvnorRestClientImpl implements GuvnorRestClient {
             httpPost.addHeader("accept", acceptedType);
             httpPost.setEntity(new StringEntity(newAssetVersion));
             CloseableHttpResponse response = this.httpClient.execute(targetHost, httpPost, context);
-            if (response.getStatusLine().getStatusCode() != 200)
+            if (!valueOf(response.getStatusLine().getStatusCode()).startsWith("2"))
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
             return JAXBContextUtils.unmarshallObject(expectedClass, response.getEntity().getContent());
         } catch (IOException | JAXBException e) {
@@ -117,7 +119,7 @@ public class GuvnorRestClientImpl implements GuvnorRestClient {
             httpPost.addHeader("Content-Type", contentType);
             httpPost.setEntity(new StringEntity(object));
             CloseableHttpResponse response = this.httpClient.execute(targetHost, httpPost, context);
-            if (response.getStatusLine().getStatusCode() != 200)
+            if (!valueOf(response.getStatusLine().getStatusCode()).startsWith("2"))
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
         } catch (IOException e) {
             throw new RuntimeException("Failed ", e);

@@ -6,11 +6,11 @@
   <version>1.5.3-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <parent>
+  <!--parent>
     <groupId>org.sonatype.oss</groupId>
     <artifactId>oss-parent</artifactId>
     <version>7</version>
-  </parent>
+  </parent-->
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -66,17 +66,7 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.7</version>
-        <extensions>true</extensions>
-        <configuration>
-          <serverId>ossrh</serverId>
-          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-          <autoReleaseAfterClose>false</autoReleaseAfterClose>
-        </configuration>
-      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -138,6 +128,25 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.2</version>
+        <configuration>
+          <tagNameFormat>v@{project.version}</tagNameFormat>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <pushChanges>true</pushChanges>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.scm</groupId>
+            <artifactId>maven-scm-provider-gitexe</artifactId>
+            <version>1.9</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+
+
     </plugins>
     <pluginManagement>
       <plugins>
@@ -359,28 +368,14 @@
       <artifactId>slf4j-api</artifactId>
     </dependency>
   </dependencies>
-
   <distributionManagement>
     <snapshotRepository>
-      <id>ossrh</id>
+      <id>sonatype-nexus-snapshots</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
     <repository>
-      <id>ossrh</id>
+      <id>sonatype-nexus-staging</id>
       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
-
-  <!--distributionManagement>
-    <repository>
-      <id>chtijbug-release</id>
-      <name>chtijbug repo release</name>
-      <url>http://openesb-dev.org:8081/nexus/content/repositories/chtijbug-release/</url>
-    </repository>
-    <snapshotRepository>
-      <id>chtijbug-snapshot</id>
-      <name>chtijbug repo release</name>
-      <url>http://nexus.openesb-dev.org:8081/nexus/content/repositories/chtijbug-snapshot/</url>
-    </snapshotRepository>
-  </distributionManagement-->
 </project>

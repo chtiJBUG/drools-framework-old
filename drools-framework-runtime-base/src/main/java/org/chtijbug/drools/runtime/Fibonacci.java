@@ -5,7 +5,7 @@ package org.chtijbug.drools.runtime;
 
 /**
  * @author Bertrand Gressier
- * @date 12 déc. 2011
+ * 12 déc. 2011
  * 
  * 
  *       Source: http://legacy.drools.codehaus.org/Fibonacci+Example

@@ -3,20 +3,16 @@
  */
 package org.chtijbug.drools.runtime.resource;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.chtijbug.drools.common.log.Logger;
 import org.chtijbug.drools.common.log.LoggerFactory;
 import org.drools.builder.ResourceType;
-import org.drools.core.util.IoUtils;
 import org.drools.io.Resource;
 import org.drools.io.ResourceFactory;
 
-import java.io.*;
-
 /**
  * @author Bertrand Gressier
- * @date 9 déc. 2011
+ * 9 déc. 2011
  */
 public class GuvnorDroolsResource implements DroolsResource {
     /** Class Logger */

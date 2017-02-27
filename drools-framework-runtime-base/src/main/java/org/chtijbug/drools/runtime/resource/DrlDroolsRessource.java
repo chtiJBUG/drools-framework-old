@@ -11,7 +11,7 @@ import java.io.File;
 
 /**
  * @author Bertrand Gressier
- * @date 9 déc. 2011
+ * 9 déc. 2011
  */
 public class DrlDroolsRessource implements DroolsResource {
 

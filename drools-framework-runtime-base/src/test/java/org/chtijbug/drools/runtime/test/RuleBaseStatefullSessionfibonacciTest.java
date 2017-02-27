@@ -13,7 +13,8 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
- * @author Bertrand Gressier @date 12 déc. 2011
+ * @author Bertrand Gressier
+ * 12 déc. 2011
  */
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")

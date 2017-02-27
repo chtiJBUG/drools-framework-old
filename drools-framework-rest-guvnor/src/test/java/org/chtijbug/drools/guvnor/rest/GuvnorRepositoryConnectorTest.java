@@ -1,21 +1,6 @@
 package org.chtijbug.drools.guvnor.rest;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.chtijbug.drools.guvnor.GuvnorConnexionConfiguration;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-
-import java.util.List;
-import java.util.Map;
-
-import static com.google.common.collect.Maps.newHashMap;
-import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.assertThat;
-
+/**
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(HttpClient.class)
 public class GuvnorRepositoryConnectorTest {
@@ -29,7 +14,6 @@ public class GuvnorRepositoryConnectorTest {
         //mockWebClient = mockWebClient();
     }
 
-    @Test
     @Ignore
     public void should_get_latest_asset_version() throws Exception {
         Integer latestAssetVersion = guvnorRepositoryConnector.getAssetVersion("AssetWithVersions");
@@ -39,7 +23,6 @@ public class GuvnorRepositoryConnectorTest {
 
     }
 
-    @Test
     @Ignore
     public void should_get_template_model() throws Exception {
         Map<String, List<String>> table = guvnorRepositoryConnector.getTemplateTable("MyTemplateRule");
@@ -50,7 +33,6 @@ public class GuvnorRepositoryConnectorTest {
         //verify(mockWebClient).header("Authorization", "Basic dG9tY2F0OnRvbWNhdA==");
     }
 
-    @Test
     @Ignore
     public void should_put_template_table() throws Exception {
         Map<String,List<String>> table = newHashMap();
@@ -64,7 +46,6 @@ public class GuvnorRepositoryConnectorTest {
     }
 
 
-    @Test(expected = ChtijbugDroolsRestException.class)
     @Ignore
     public void should_detect_wrong_column_number() throws Exception {
         Map<String,List<String>> table = newHashMap();
@@ -105,5 +86,6 @@ public class GuvnorRepositoryConnectorTest {
         return IOUtils.toString(this.getClass().getResource(resource).openStream());
     }
 
- **/
+
 }
+ **/

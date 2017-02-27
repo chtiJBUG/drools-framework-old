@@ -27,8 +27,8 @@ import java.io.InputStream;
  * Date: 20/12/12
  * Time: 15:28
  *
- * @goal install-file
- * @phase clean
+ * goal install-file
+ * phase clean
  *
  */
 public class GuvnorPojoModelInstaller extends AbstractMojo {

@@ -11,7 +11,7 @@ import org.chtijbug.drools.entity.DroolsFactObjectAttribute;
 
 /**
  * @author Bertrand Gressier
- * @date 27 déc. 2011
+ * 27 déc. 2011
  */
 public class DroolsFactObjectFactory {
 

@@ -21,7 +21,7 @@ public class HistoryContainer implements Serializable {
 	protected List<HistoryEvent> listHistoryEvent = new LinkedList<HistoryEvent>();
 
 	/**
-	 * 
+	 * @param sessionID Session UUID 
 	 */
 	public HistoryContainer(int sessionID) {
         this.sessionID = sessionID;
@@ -31,6 +31,9 @@ public class HistoryContainer implements Serializable {
         return sessionID;
     }
 
+	/**
+	 * @param sessionID Session UUID 
+	 */
     public void setSessionID(int sessionID) {
         this.sessionID = sessionID;
     }

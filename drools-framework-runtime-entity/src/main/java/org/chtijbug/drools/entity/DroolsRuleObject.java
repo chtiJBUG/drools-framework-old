@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 /**
  * @author Bertrand Gressier
- * @date 14 déc. 2011
+ * 14 déc. 2011
  * 
  * 
  */

@@ -6,7 +6,7 @@ import org.drools.io.Resource;
 
 /**
  * @author Bertrand Gressier
- * @date 9 déc. 2011
+ * 9 déc. 2011
  */
 public interface DroolsResource {
 

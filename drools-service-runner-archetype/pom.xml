@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.chtijbug.drools</groupId>
         <artifactId>drools-framework-parent</artifactId>
-        <version>1.1.0.17-2-SNAPSHOT</version>
+        <version>1.1.0.18-SNASPHOT</version>
     </parent>
 
     <artifactId>drools-service-runner-archetype</artifactId>

@@ -11,7 +11,17 @@
     <artifactId>oss-parent</artifactId>
     <version>7</version>
   </parent-->
+  <description>
+    Our first work is to create a set of tools to help in the adoption drools in our local companies. Those tools are here to make drools "enterprise ready "by adopting an industrial approach :
 
+    we want to put in common a standard library that we shall all use in our drools project. This tools are of course open source and we use a friendly apache licence.
+
+    Indeed, drools like any other jboss framework is a swiss knife that offers all possibilities. Our framework implements the best practices that we implemented in real projects that goes from how to monitor, report and supervise the use of drools.
+
+    We hope you will enjoy our work and invite you to contact us in case of trouble. But do not forget we are a community !
+
+  </description>
+  <url>http://www.chtijbug.org/</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <drools.version>5.6.0.Final</drools.version>

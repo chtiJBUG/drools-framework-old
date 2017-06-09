@@ -2,6 +2,7 @@ package org.chtijbug.drools.runtime.impl;
 
 import org.chtijbug.drools.runtime.DroolsChtijbugException;
 import org.chtijbug.drools.runtime.mbeans.StatefulSessionSupervision;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -32,6 +33,7 @@ public class RuleBaseSingletonTest {
     }
 
     @Test
+    @Ignore
     public void should_register_and_unregister_mbeans() throws DroolsChtijbugException, MalformedObjectNameException, InstanceNotFoundException {
         //___ First create RuleBaseSingleton to initialize counter
         MBeanServer server = ManagementFactory.getPlatformMBeanServer();
@@ -58,6 +60,7 @@ public class RuleBaseSingletonTest {
     }
 
     @Test
+    @Ignore
     public void should_unregister_mbeans_ond_demand() throws Exception {
         MBeanServer server = ManagementFactory.getPlatformMBeanServer();
 

@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.chtijbug.drools</groupId>
     <artifactId>drools-framework-parent</artifactId>
-    <version>1.5.4-SNAPSHOT</version>
+    <version>drools-framework-parent-1.5.3</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>

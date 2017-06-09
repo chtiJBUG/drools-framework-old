@@ -3,7 +3,7 @@
     <parent>
         <artifactId>drools-framework-parent</artifactId>
         <groupId>org.chtijbug.drools</groupId>
-        <version>1.5.4-SNAPSHOT</version>
+        <version>drools-framework-parent-1.5.3</version>
     </parent>
     <artifactId>drools-framework-runtime-supervision</artifactId>
     <name>runtime supervision project</name>

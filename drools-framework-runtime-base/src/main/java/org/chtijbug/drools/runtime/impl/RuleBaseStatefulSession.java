@@ -565,7 +565,9 @@ public class RuleBaseStatefulSession implements RuleBaseSession {
 
         long stopTime = System.currentTimeMillis();
         long afterNumberRules = ruleHandlerListener.getNbRuleFired();
-        mbeanStatefulSessionSupervision.fireAllRulesExecuted(stopTime - startTime, afterNumberRules - beforeNumberRules, historyContainer);
+        if (mbeanStatefulSessionSupervision != null) {
+            mbeanStatefulSessionSupervision.fireAllRulesExecuted(stopTime - startTime, afterNumberRules - beforeNumberRules, historyContainer);
+        }
         if (ruleHandlerListener.isMaxNumerExecutedRulesReached() == true) {
             StringBuffer stringBuffer = new StringBuffer();
             stringBuffer.append("nbRulesExecuted").append(afterNumberRules).append(" and MaxNumberRules for the session is set to ").append(maxNumberRuleToExecute);

@@ -29,9 +29,7 @@ import org.chtijbug.drools.runtime.resource.DrlDroolsResource;
 import org.chtijbug.drools.runtime.resource.DroolsResource;
 import org.chtijbug.drools.runtime.resource.GuvnorDroolsResource;
 import org.drools.KnowledgeBase;
-import org.drools.builder.KnowledgeBuilder;
-import org.drools.builder.KnowledgeBuilderConfiguration;
-import org.drools.builder.KnowledgeBuilderFactory;
+import org.drools.builder.*;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,21 +40,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Semaphore;
-import org.drools.builder.KnowledgeBuilderError;
-import org.drools.builder.KnowledgeBuilderErrors;
 
 /**
  * @author Bertrand Gressier
  */
 public class RuleBaseSingleton implements RuleBasePackage {
     /**
-     * Class Logger
-     */
-    private static Logger logger = LoggerFactory.getLogger(RuleBaseSingleton.class);
-    /**
      * default rule threshold
      */
     public static int DEFAULT_RULE_THRESHOLD = 2000;
+    /**
+     * unique indentifier of the RuleBase in the JVM
+     */
+    protected static int ruleBaseCounter = 0;
+    /**
+     * Class Logger
+     */
+    private static Logger logger = LoggerFactory.getLogger(RuleBaseSingleton.class);
     /**
      * static part of the RuleBase Object Name *
      */
@@ -66,9 +66,9 @@ public class RuleBaseSingleton implements RuleBasePackage {
      */
     private static String RULE_SESSION_OBJECT_NAME = HistoryContainer.nameSessionObjectName + "ruleBaseID ";
     /**
-     * unique indentifier of the RuleBase in the JVM
+     * All Drools resources inserted into the RuleBase
      */
-    protected static int ruleBaseCounter = 0;
+    private final List<DroolsResource> listResouces = new ArrayList<DroolsResource>();
     /**
      * Rule Base ID
      */
@@ -77,10 +77,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
      * KnowledgeBase reference
      */
     private KnowledgeBase kbase = null;
-    /**
-     * All Drools resources inserted into the RuleBase
-     */
-    private final List<DroolsResource> listResouces = new ArrayList<DroolsResource>();
     /**
      * MBean JMX to enable Dynamics rule base operation
      */
@@ -134,7 +130,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
             this.ruleBaseID = addRuleBase();
         }
 
-        initMBeans();
+        // initMBeans();
     }
 
     public RuleBaseSingleton(Integer ruleBaseID, int maxNumberRulesToExecute) throws DroolsChtijbugException {
@@ -211,6 +207,11 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
     }
 
+    private static int addRuleBase() {
+        ruleBaseCounter++;
+        logger.info("New rule base ID : " + ruleBaseCounter);
+        return ruleBaseCounter;
+    }
 
     private void initMBeans() throws DroolsChtijbugException {
         //____ Get the MBeanServer from the platform
@@ -233,11 +234,9 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
     }
 
-
     protected ObjectName getRuleBaseObjectName() throws MalformedObjectNameException {
         return new ObjectName(RULE_BASE_OBJECT_NAME + this.ruleBaseID);
     }
-
 
     protected ObjectName getRuleSessionObjectName() throws MalformedObjectNameException {
         return new ObjectName(RULE_SESSION_OBJECT_NAME + this.ruleBaseID);
@@ -307,7 +306,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
             logger.debug("<<createRuleBaseSession", newRuleBaseSession);
         }
     }
-
 
     private void addDroolsResource(DroolsResource res) throws DroolsChtijbugException {
         if (this.listResouces.contains(res) == true) {
@@ -380,14 +378,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
         }
     }
 
-    public void setGuvnor_username(String guvnor_username) {
-        this.guvnor_username = guvnor_username;
-    }
-
-    public void setGuvnor_password(String guvnor_password) {
-        this.guvnor_password = guvnor_password;
-    }
-
     private synchronized void createKBase() throws DroolsChtijbugException {
 
         if (kbase != null) {
@@ -416,7 +406,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
                for (KnowledgeBuilderError error: errors) {
                     System.err.println(error);
                }
-               
+
                throw new IllegalArgumentException("Could not parse knowledge.");
           }
             KnowledgeBase newkbase = kbuilder.newKnowledgeBase();
@@ -475,12 +465,6 @@ public class RuleBaseSingleton implements RuleBasePackage {
         return historyListener;
     }
 
-    private static int addRuleBase() {
-        ruleBaseCounter++;
-        logger.info("New rule base ID : " + ruleBaseCounter);
-        return ruleBaseCounter;
-    }
-
     public int getRuleBaseID() {
         return ruleBaseID;
     }
@@ -492,7 +476,7 @@ public class RuleBaseSingleton implements RuleBasePackage {
      * @throws DroolsChtijbugException
      */
     private Object readResolve() throws DroolsChtijbugException {
-        initMBeans();
+        //   initMBeans();
         return this;
     }
 
@@ -553,8 +537,16 @@ public class RuleBaseSingleton implements RuleBasePackage {
         return guvnor_username;
     }
 
+    public void setGuvnor_username(String guvnor_username) {
+        this.guvnor_username = guvnor_username;
+    }
+
     public String getGuvnor_password() {
         return guvnor_password;
+    }
+
+    public void setGuvnor_password(String guvnor_password) {
+        this.guvnor_password = guvnor_password;
     }
 
     public StatefulSessionSupervision getMbsSession() {
